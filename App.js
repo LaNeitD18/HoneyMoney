@@ -8,17 +8,30 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screen/HomeScreen'
 import TransactionScreen from './screen/TransactionScreen'
 
+//Redux
+import {createStore} from 'redux';
+import { Provider } from 'react-redux';
+
+import allReducers from './reducers/allReducers';
+import SampleContainer from './containers/SampleContainer';
+
+//Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+//Redux
+let store = createStore(allReducers);
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-        <Tab.Screen name="Home" component={HomeScreen} options={{tittle: 'Home'}} />
-        <Tab.Screen name="Transaction" component={TransactionScreen} options={{tittle: 'Transaction'}}/>
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
+          <Tab.Screen name="Home" component={HomeScreen} options={{tittle: 'Home'}} />
+          <Tab.Screen name="Transaction" component={TransactionScreen} options={{tittle: 'Transaction'}}/>
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

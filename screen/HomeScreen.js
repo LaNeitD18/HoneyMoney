@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
+import SampleContainer from '../containers/SampleContainer'
+
 const Stack = createStackNavigator();
 
 export default class HomeScreen extends Component
@@ -49,6 +51,7 @@ class Home extends Component
                 <Text style = {{fontSize: 22, color: 'black'}}>
                     Đây là trang chủ
                 </Text>
+                <SampleContainer />
             </View>
         )
     }
