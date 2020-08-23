@@ -7,6 +7,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screen/HomeScreen'
 import TransactionScreen from './screen/TransactionScreen'
+import Wallet from './screens/Wallet'
+import Categories from './screens/Categories'
 
 //Redux
 import {createStore} from 'redux';
@@ -27,19 +29,10 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-          <Tab.Screen name="Home" component={HomeScreen} options={{tittle: 'Home'}} />
-          <Tab.Screen name="Transaction" component={TransactionScreen} options={{tittle: 'Transaction'}}/>
+          <Tab.Screen name="Home" component={Wallet} options={{tittle: 'Wallet'}} />
+          <Tab.Screen name="Transaction" component={Categories} options={{tittle: 'Categories'}}/>
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
