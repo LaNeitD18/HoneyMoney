@@ -18,13 +18,20 @@ import {
   NegativeNumber,
   Wallet,
   colors,
+  Title,
+  Button,
+  OutlineToggleButton,
+  sizeFactor,
+  TouchableText,
 } from "../components/Basic";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export default class WalletScreen extends Component {
   render() {
     return (
       <ScreenView>
-        <Card heading="Tất cả ví" color="white">
+        <Title>Tổng quan</Title>
+        <Card heading="Tất cả ví" headingColor={colors.dark} color="white">
           <Row>
             <String>Số dư</String>
             <Number>5,000,000</Number>
@@ -34,9 +41,10 @@ export default class WalletScreen extends Component {
             <NegativeNumber>250,000</NegativeNumber>
           </Row>
         </Card>
+        <Title>Quản lí ví</Title>
         <Wallet
           heading="Ví chính"
-          color={colors.yellow}
+          color={colors.indigo}
           date="20/08/2020"
           isDefault="true"
         >
@@ -45,21 +53,14 @@ export default class WalletScreen extends Component {
         </Wallet>
         <Wallet
           heading="Ví cho người yêu"
-          color={colors.green}
+          color={colors.pink}
           date="01/01/2014"
           isDefault="false"
         >
           25,000,000
         </Wallet>
-        <TouchableOpacity>
-          <Card
-            color="white"
-            heading="Tạo ví mới"
-            headingColor={colors.darkGreen}
-            icon="wallet-plus"
-            iconColor={colors.darkGreen}
-          ></Card>
-        </TouchableOpacity>
+        <TouchableText>Tạo ví mới</TouchableText>
+        <Divider />
       </ScreenView>
     );
   }
