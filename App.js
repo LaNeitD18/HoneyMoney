@@ -29,8 +29,8 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-          <Tab.Screen name="Home" component={Wallet} options={{tittle: 'Wallet'}} />
-          <Tab.Screen name="Transaction" component={Categories} options={{tittle: 'Categories'}}/>
+          <Tab.Screen name="Trang chủ" component={Wallet} options={{tittle: 'Wallet'}} />
+          <Tab.Screen name="Danh mục" component={Categories} options={{tittle: 'Categories'}}/>
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
