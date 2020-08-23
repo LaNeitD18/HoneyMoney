@@ -106,7 +106,7 @@ export class String extends Component {
   render() {
     return (
       <TextTicker
-        duration={3000}
+        duration={5000}
         loop
         bounce
         repeatSpacer={5}
@@ -127,6 +127,7 @@ export class Title extends Component {
     );
   }
 }
+
 export class Number extends Component {
   render() {
     return (
@@ -337,7 +338,7 @@ export class TouchableText extends Component {
         <TouchableOpacity>
           <String
             style={{
-              fontSize: sizeFactor * 1.25,
+              fontSize: sizeFactor,
               color: colors.blue,
             }}
           >
