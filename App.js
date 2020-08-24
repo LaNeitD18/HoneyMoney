@@ -5,5 +5,5 @@ import WalletScreen from "./screens/Wallet";
 import CategoriesScreen from "./screens/Categories";
 
 export default function App() {
-  return <CategoriesScreen />;
+  return <WalletScreen />;
 }
