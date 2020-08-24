@@ -127,7 +127,7 @@ export class Title extends Component {
     );
   }
 }
-export class Number extends Component {
+export class PositiveNumber extends Component {
   render() {
     return (
       <String style={[styles.number, this.props.style]}>
@@ -141,7 +141,7 @@ export class NegativeNumber extends Component {
   render() {
     return (
       <String style={[styles.negativeNumber, this.props.style]}>
-        -{this.props.children}
+        {this.props.children}
       </String>
     );
   }
@@ -165,7 +165,7 @@ export class Card extends Component {
           <Heading style={[styles.heading, { color: this.props.headingColor }]}>
             {this.props.heading}
           </Heading>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPress}>
             <Icon
               name={this.props.icon}
               type="material-community"
@@ -232,6 +232,7 @@ export class Button extends Component {
           },
           this.props.style,
         ]}
+        onPress={this.props.onPress}
       >
         <String
           style={{
@@ -263,6 +264,7 @@ export class OutlineToggleButton extends Component {
           flexDirection: "row",
           marginBottom: sizeFactor,
         }}
+        onPress={this.props.onPress}
       >
         <Icon
           name={
@@ -301,9 +303,9 @@ export class Wallet extends Component {
           <String style={{ color: "white", fontSize: sizeFactor * 2 }}>
             VNĐ
           </String>
-          <Number style={{ color: "white", fontSize: sizeFactor * 2 }}>
+          <PositiveNumber style={{ color: "white", fontSize: sizeFactor * 2 }}>
             {this.props.children}
-          </Number>
+          </PositiveNumber>
         </Row>
         <Row>
           <String style={{ color: "white" }}>Ngày tạo</String>
@@ -334,7 +336,7 @@ export class TouchableText extends Component {
     return (
       <Row style={{ marginHorizontal: sizeFactor * 1.5 }}>
         <String></String>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.props.onPress}>
           <String
             style={{
               fontSize: sizeFactor * 1.25,
@@ -395,7 +397,7 @@ export class KindSelect extends Component {
 export class Category extends Component {
   render() {
     return (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={this.props.onPress}>
         <View style={{ marginHorizontal: sizeFactor }}>
           <Image
             source={this.props.source}

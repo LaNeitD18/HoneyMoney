@@ -25,6 +25,7 @@ import {
   TouchableText,
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import SignedNumber from '../components/SignedNumber'
 
 export default class WalletScreen extends Component {
   render() {
@@ -34,11 +35,11 @@ export default class WalletScreen extends Component {
         <Card heading="Tất cả ví" headingColor={colors.dark} color="white">
           <Row>
             <String>Số dư</String>
-            <Number>5,000,000</Number>
+            <SignedNumber>5,000,000</SignedNumber>
           </Row>
           <Row>
             <String>Tháng này</String>
-            <NegativeNumber>250,000</NegativeNumber>
+            <SignedNumber>-250,000</SignedNumber>
           </Row>
         </Card>
         <Title>Quản lí ví</Title>
@@ -60,7 +61,7 @@ export default class WalletScreen extends Component {
           25,000,000
         </Wallet>
         <TouchableText>Tạo ví mới</TouchableText>
-        <Divider />
+        <Divider/>
       </ScreenView>
     );
   }
