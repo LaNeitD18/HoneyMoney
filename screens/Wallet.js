@@ -15,7 +15,7 @@ import {
   Card,
   Divider,
   Row,
-  Number,
+  PositiveNumber,
   NegativeNumber,
   Wallet,
   colors,
@@ -47,7 +47,7 @@ export default class WalletScreen extends Component {
             >
               <View>
                 <Heading2>Số dư</Heading2>
-                <Number>5,000,000</Number>
+                <PositiveNumber>5,000,000</PositiveNumber>
               </View>
             </HeadlessCard>
             <HeadlessCard

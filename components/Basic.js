@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     fontSize: sizeFactor,
     marginBottom: sizeFactor * 0.75,
   },
-  number: {
+  positiveNumber: {
     fontWeight: "bold",
     color: colors.green,
     fontSize: sizeFactor * 1.25,
@@ -81,8 +81,8 @@ export const styles = StyleSheet.create({
     borderRadius: sizeFactor,
   },
   divider: {
-    height: 1,
-    marginBottom: sizeFactor * 0.5,
+    height: 0,
+    marginBottom: sizeFactor / 2,
   },
   row: {
     flex: 1,
@@ -128,7 +128,7 @@ export class String extends Component {
 export class Heading2 extends Component {
   render() {
     return (
-      <String style={{ color: colors.gray, fontWeight: "bold" }}>
+      <String style={{ color: colors.black, fontWeight: "bold" }}>
         {this.props.children}
       </String>
     );
@@ -145,10 +145,10 @@ export class Title extends Component {
   }
 }
 
-export class Number extends Component {
+export class PositiveNumber extends Component {
   render() {
     return (
-      <String style={[styles.number, this.props.style]}>
+      <String style={[styles.positiveNumber, this.props.style]}>
         {this.props.children}
       </String>
     );
@@ -168,9 +168,9 @@ export class NegativeNumber extends Component {
 export class Heading extends Component {
   render() {
     return (
-      <Text style={[styles.heading, this.props.style]}>
+      <String style={[styles.heading, this.props.style]}>
         {this.props.children}
-      </Text>
+      </String>
     );
   }
 }
@@ -307,6 +307,40 @@ export class Button extends Component {
   }
 }
 
+export class ToggleButton extends Component {
+  render() {
+    var choosed = this.props.choosed;
+    return (
+      <TouchableOpacity
+        style={[
+          {
+            justifyContent: "center",
+            borderWidth: 1,
+            backgroundColor:
+              choosed == "true" ? this.props.color : this.props.background,
+            paddingHorizontal: sizeFactor,
+            borderColor: this.props.color,
+            borderRadius: 9999,
+            paddingTop: sizeFactor * 0.75,
+            flexDirection: "row",
+            marginBottom: sizeFactor,
+          },
+          this.props.style,
+        ]}
+      >
+        <String
+          style={{
+            color: choosed == "true" ? this.props.background : this.props.color,
+            fontWeight: "bold",
+          }}
+        >
+          {this.props.children}
+        </String>
+      </TouchableOpacity>
+    );
+  }
+}
+
 export class OutlineToggleButton extends Component {
   render() {
     //change this to state instead
@@ -315,7 +349,7 @@ export class OutlineToggleButton extends Component {
       <TouchableOpacity
         style={{
           justifyContent: "center",
-          borderWidth: 1,
+          borderWidth: 1.25,
           paddingHorizontal: sizeFactor,
           borderColor: this.props.color,
           borderRadius: 9999,
@@ -347,6 +381,35 @@ export class OutlineToggleButton extends Component {
   }
 }
 
+export class OutlineButton extends Component {
+  render() {
+    return (
+      <TouchableOpacity
+        style={{
+          justifyContent: "center",
+          borderWidth: 1.25,
+          paddingHorizontal: sizeFactor,
+          borderColor: this.props.color,
+          borderRadius: 9999,
+          borderStyle: "solid",
+          paddingTop: sizeFactor * 0.75,
+          flexDirection: "row",
+          marginBottom: sizeFactor,
+          marginHorizontal: sizeFactor,
+        }}
+      >
+        <String
+          style={{
+            color: this.props.color,
+            fontWeight: "bold",
+          }}
+        >
+          {this.props.children}
+        </String>
+      </TouchableOpacity>
+    );
+  }
+}
 export class Wallet extends Component {
   render() {
     const isDefault = this.props.isDefault;
@@ -362,9 +425,9 @@ export class Wallet extends Component {
           <String style={{ color: "white", fontSize: sizeFactor * 2 }}>
             VNĐ
           </String>
-          <Number style={{ color: "white", fontSize: sizeFactor * 2 }}>
+          <PositiveNumber style={{ color: "white", fontSize: sizeFactor * 2 }}>
             {this.props.children}
-          </Number>
+          </PositiveNumber>
         </Row>
         <Row>
           <String style={{ color: "white" }}>Ngày tạo</String>
