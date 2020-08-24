@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  Platform,
+  Platform, Alert
 } from "react-native";
 import {
   String,
@@ -27,22 +27,76 @@ import {
   Category,
   TouchableText,
   LargeScrollSelect,
-  CategoryTable,
+  CategoryTable
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
+import * as firebase from 'firebase';
+import Cate from '../components/Category';
 
 export default class CategoriesScreen extends React.Component {
   state = {
     search: "",
+    categories: [],
+    rowsOfCategory: []
   };
 
   updateSearch = (search) => {
     this.setState({ search });
   };
 
+  // demo functions 
+  getData = () => {
+    firebase.database().ref('Category/').on('value', (snapshot) => {
+        snapshot.forEach(element => {
+            //let temp = new Cate(element.val().TypeID, element.val().CategoryName, element.val().Icon, element.val().ParentID);
+            this.state.categories.push(element.val());
+            //Alert.alert(temp.CategoryName);
+        });
+    });
+  }
+
+  renderCategoryTable = () => {
+    const categories = this.state.categories;
+    const numberOfRows = Math.ceil(categories.length / 4);
+
+    for(let i=0; i<numberOfRows; i++) {
+        let row = [];
+        for(let j=0; j<4; j++) {
+            const index = 4*i + j;
+            if(index < categories.length) {
+              const name = categories[index].CategoryName;
+              row.push(
+                <Category source={require("../assets/categories/tuthien.png")}>
+                    {name}
+                </Category>  
+              );
+            }
+        }
+        this.state.rowsOfCategory.push(
+            <RowLeft>{row}</RowLeft>
+        );
+    }
+    //Alert.alert(this.state.categories[5].CategoryName);
+  }
+
+  createDatabase = () => {
+    // firebase.database().ref('users/' + 2).set({
+    //   highscore: 4
+    // });
+    firebase.database()
+    .ref('Category/').push({
+        TypeID: "003",
+        CategoryName: "Khoản thu khác",
+        Icon: "",
+        ParentID: ""
+    });
+  }
+
   render() {
     const { search } = this.state;
+    this.getData();
+    this.renderCategoryTable();
 
     return (
       <ScreenView style={{ flex: 1 }}>
@@ -67,8 +121,11 @@ export default class CategoriesScreen extends React.Component {
         <LargeScrollSelect />
         <Title>Danh mục</Title>
         <KindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
-        <CategoryTable />
+        <CategoryTable onPress={() => this.getData()} rows={this.state.rowsOfCategory}/>
         <Divider />
+        <TouchableOpacity onPress={() => this.renderCategoryTable()}>
+          <Text>ZZZ</Text>
+        </TouchableOpacity>
       </ScreenView>
     );
   }

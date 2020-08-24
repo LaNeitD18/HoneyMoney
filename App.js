@@ -5,8 +5,6 @@ import {createStackNavigator} from '@react-navigation/stack'
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import HomeScreen from './screen/HomeScreen'
-import TransactionScreen from './screen/TransactionScreen'
 import Wallet from './screens/Wallet'
 import Categories from './screens/Categories'
 
@@ -15,7 +13,6 @@ import {createStore} from 'redux';
 import { Provider } from 'react-redux';
 
 import allReducers from './reducers/allReducers';
-import SampleContainer from './containers/SampleContainer';
 
 //Navigator
 const Tab = createBottomTabNavigator();

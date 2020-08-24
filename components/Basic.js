@@ -334,7 +334,7 @@ export class TouchableText extends Component {
     return (
       <Row style={{ marginHorizontal: sizeFactor * 1.5 }}>
         <String></String>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.props.onPress}>
           <String
             style={{
               fontSize: sizeFactor * 1.25,
@@ -418,43 +418,8 @@ export class CategoryTable extends Component {
   render() {
     return (
       <View>
-        <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-        </RowLeft>
-        <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-        </RowLeft>
-        <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-        </RowLeft>
-        <TouchableText>Tạo danh mục mới</TouchableText>
+        {this.props.rows}
+        <TouchableText onPress={this.props.onPress}>Tạo danh mục mới</TouchableText>
       </View>
     );
   }
