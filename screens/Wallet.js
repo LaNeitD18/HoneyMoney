@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   SafeAreaView,
+  Image,
   TouchableOpacity,
 } from "react-native";
 import {
@@ -20,9 +21,14 @@ import {
   colors,
   Title,
   Button,
+  styles,
   OutlineToggleButton,
   sizeFactor,
   TouchableText,
+  Heading2,
+  HeadlessCard,
+  windowWidth,
+  AddWalletButton,
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 
@@ -31,24 +37,51 @@ export default class WalletScreen extends Component {
     return (
       <ScreenView>
         <Title>Tổng quan</Title>
-        <Card heading="Tất cả ví" headingColor={colors.dark} color="white">
+        <View style={{ paddingHorizontal: sizeFactor }}>
           <Row>
-            <String>Số dư</String>
-            <Number>5,000,000</Number>
+            <HeadlessCard
+              color="white"
+              icon="wallet"
+              width={(windowWidth - sizeFactor * 3) / 2}
+              iconColor={colors.blue}
+            >
+              <View>
+                <Heading2>Số dư</Heading2>
+                <Number>5,000,000</Number>
+              </View>
+            </HeadlessCard>
+            <HeadlessCard
+              color="white"
+              width={(windowWidth - sizeFactor * 3) / 2}
+              icon="wallet"
+              iconColor={colors.blue}
+            >
+              <View>
+                <Heading2>Tháng này</Heading2>
+                <NegativeNumber>250,000</NegativeNumber>
+              </View>
+            </HeadlessCard>
           </Row>
-          <Row>
-            <String>Tháng này</String>
-            <NegativeNumber>250,000</NegativeNumber>
-          </Row>
-        </Card>
-        <Title>Quản lí ví</Title>
+        </View>
+        <Row>
+          <Title>Quản lí ví</Title>
+          <View
+            style={{
+              alignSelf: "flex-end",
+              marginBottom: sizeFactor,
+              marginRight: sizeFactor,
+              flexDirection: "row",
+            }}
+          >
+            <AddWalletButton color={colors.blue} />
+          </View>
+        </Row>
         <Wallet
           heading="Ví chính"
           color={colors.indigo}
           date="20/08/2020"
           isDefault="true"
         >
-          {" "}
           1,500,000
         </Wallet>
         <Wallet
@@ -59,7 +92,6 @@ export default class WalletScreen extends Component {
         >
           25,000,000
         </Wallet>
-        <TouchableText>Tạo ví mới</TouchableText>
         <Divider />
       </ScreenView>
     );

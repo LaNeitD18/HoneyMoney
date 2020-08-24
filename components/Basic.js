@@ -14,8 +14,8 @@ import {
 import { Icon, SearchBar, ButtonGroup } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+export const windowWidth = Dimensions.get("window").width;
+export const windowHeight = Dimensions.get("window").height;
 
 //UNIVERSAL SIZE UNIT
 export const sizeFactor = 16;
@@ -46,10 +46,12 @@ export const styles = StyleSheet.create({
   number: {
     fontWeight: "bold",
     color: colors.green,
+    fontSize: sizeFactor * 1.25,
   },
   negativeNumber: {
     fontWeight: "bold",
     color: colors.red,
+    fontSize: sizeFactor * 1.25,
   },
   heading: {
     fontSize: sizeFactor * 1.25,
@@ -97,6 +99,11 @@ export const styles = StyleSheet.create({
   largeCategory: {
     alignSelf: "center",
     marginBottom: sizeFactor / 2,
+    width: (windowWidth - 8 * sizeFactor) / 4.5,
+    height: (windowWidth - 8 * sizeFactor) / 4.5,
+  },
+  smallCategory: {
+    marginBottom: sizeFactor,
     width: (windowWidth - 8 * sizeFactor) / 4,
     height: (windowWidth - 8 * sizeFactor) / 4,
   },
@@ -109,11 +116,21 @@ export class String extends Component {
         duration={5000}
         loop
         bounce
-        repeatSpacer={5}
+        repeatSpacer={50}
         style={[styles.text, this.props.style]}
       >
         {this.props.children}
       </TextTicker>
+    );
+  }
+}
+
+export class Heading2 extends Component {
+  render() {
+    return (
+      <String style={{ color: colors.gray, fontWeight: "bold" }}>
+        {this.props.children}
+      </String>
     );
   }
 }
@@ -177,6 +194,49 @@ export class Card extends Component {
         </Row>
         {this.props.children}
       </View>
+    );
+  }
+}
+
+export class HeadlessCard extends Component {
+  render() {
+    return (
+      <View
+        name="headLessCard"
+        style={[
+          styles.container,
+          {
+            marginHorizontal: 0,
+            backgroundColor: this.props.color,
+            width: this.props.width,
+          },
+          this.props.style,
+        ]}
+      >
+        <View
+          style={{
+            alignSelf: "flex-end",
+            flexDirection: "row",
+            position: "absolute",
+            paddingRight: sizeFactor,
+            paddingTop: sizeFactor,
+          }}
+        ></View>
+        <Row>{this.props.children}</Row>
+      </View>
+    );
+  }
+}
+
+export class AddWalletButton extends Component {
+  render() {
+    return (
+      <Icon
+        name="credit-card-plus-outline"
+        type="material-community"
+        color={this.props.color}
+        size={sizeFactor * 2}
+      />
     );
   }
 }
@@ -255,7 +315,7 @@ export class OutlineToggleButton extends Component {
       <TouchableOpacity
         style={{
           justifyContent: "center",
-          borderWidth: 1.5,
+          borderWidth: 1,
           paddingHorizontal: sizeFactor,
           borderColor: this.props.color,
           borderRadius: 9999,
@@ -393,19 +453,132 @@ export class KindSelect extends Component {
   }
 }
 
+export class SmallKindSelect extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: 1,
+    };
+    this.updateIndex = this.updateIndex.bind(this);
+  }
+
+  updateIndex(selectedIndex) {
+    this.setState({ selectedIndex });
+  }
+  render() {
+    const buttons = this.props.buttons;
+    const { selectedIndex } = this.state;
+    return (
+      <ButtonGroup
+        onPress={this.updateIndex}
+        selectedIndex={selectedIndex}
+        buttons={buttons}
+        containerStyle={{
+          borderRadius: sizeFactor,
+          borderWidth: 0,
+          borderColor: colors.gray3,
+          marginBottom: sizeFactor,
+          marginHorizontal: sizeFactor,
+          backgroundColor: colors.gray5,
+          height: sizeFactor * 2,
+        }}
+        textStyle={{
+          fontSize: sizeFactor * 0.75,
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          color: colors.gray,
+        }}
+        buttonStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+        }}
+        buttonContainerStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+          borderColor: colors.gray5,
+        }}
+        innerBorderStyle={{ color: colors.gray3 }}
+        selectedButtonStyle={{ backgroundColor: colors.blue }}
+        selectedTextStyle={{ color: "white" }}
+      />
+    );
+  }
+}
+
 export class Category extends Component {
+  render() {
+    var choosed = this.props.choosed;
+    return (
+      <TouchableOpacity>
+        <View style={{ marginRight: sizeFactor }}>
+          <View
+            style={{
+              height: styles.largeCategory.height + sizeFactor / 2,
+              alignContent: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              source={require("../assets/categories/choosed.png")}
+              style={[
+                styles.largeCategory,
+                { opacity: this.props.choosed ? 1 : 0, position: "absolute" },
+              ]}
+            ></Image>
+            <Image
+              source={this.props.source}
+              style={[
+                styles.largeCategory,
+                {
+                  opacity: 1,
+                  width: styles.largeCategory.height - sizeFactor * 1.25,
+                  height: styles.largeCategory.height - sizeFactor * 1.25,
+                },
+              ]}
+            ></Image>
+          </View>
+          <View
+            style={{
+              width: styles.largeCategory.width,
+              alignItems: "center",
+            }}
+          >
+            <String
+              style={{
+                fontSize: sizeFactor * 0.75,
+                fontWeight: this.props.choosed ? "bold" : "normal",
+                color: this.props.choosed ? colors.blue : "black",
+              }}
+            >
+              {this.props.children}
+            </String>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
+
+export class SmallCategory extends Component {
   render() {
     return (
       <TouchableOpacity>
-        <View style={{ marginHorizontal: sizeFactor }}>
+        <View style={{ marginHorizontal: sizeFactor, alignItems: "center" }}>
           <Image
             source={this.props.source}
-            style={styles.largeCategory}
+            style={styles.smallCategory}
           ></Image>
           <View
-            style={{ width: styles.largeCategory.width, alignItems: "center" }}
+            style={{ width: styles.smallCategory.width, alignItems: "center" }}
           >
-            <String style={{ fontSize: sizeFactor * 0.75 }}>
+            <String
+              style={{
+                fontSize: sizeFactor * 0.75,
+                width: styles.smallCategory.width + sizeFactor,
+                alignSelf: "center",
+              }}
+            >
               {this.props.children}
             </String>
           </View>
@@ -454,35 +627,74 @@ export class CategoryTable extends Component {
           <Category source={require("../assets/categories/tuthien.png")}>
             Từ thiện
           </Category>
+          <Category source={require("../assets/categories/themdanhmuc.png")}>
+            Thêm mới
+          </Category>
         </RowLeft>
-        <TouchableText>Tạo danh mục mới</TouchableText>
       </View>
     );
   }
 }
 
-export class LargeScrollSelect extends Component {
+export class ScrollSelect extends Component {
+  render() {
+    return (
+      <ScrollView
+        style={{ marginHorizontal: sizeFactor }}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      >
+        <Category
+          choosed="true"
+          source={require("../assets/categories/tuthien.png")}
+        >
+          Từ thiện
+        </Category>
+        <Category source={require("../assets/categories/tuthien.png")}>
+          Từ thiện
+        </Category>
+        <Category source={require("../assets/categories/tuthien.png")}>
+          Từ thiện
+        </Category>
+        <Category source={require("../assets/categories/tuthien.png")}>
+          Từ thiện
+        </Category>
+        <Category source={require("../assets/categories/tuthien.png")}>
+          Từ thiện
+        </Category>
+        <Category source={require("../assets/categories/tuthien.png")}>
+          Từ thiện
+        </Category>
+      </ScrollView>
+    );
+  }
+}
+
+export class SmallScrollSelect extends Component {
   render() {
     return (
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <Category source={require("../assets/categories/tuthien.png")}>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
+          Từ thiệnaaaaaaaaa
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
           Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
           Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
           Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện nhiều lên nhé bạn tôi ơi
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
           Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
           Từ thiện
-        </Category>
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>
+          Từ thiện
+        </SmallCategory>
       </ScrollView>
     );
   }
