@@ -4,7 +4,8 @@ import { StyleSheet, Text, View } from "react-native";
 import WalletScreen from "./screens/Wallet";
 import CategoriesScreen from "./screens/Categories";
 import AddTransactionScreen from "./screens/AddTransaction";
+import AddWalletScreen from "./screens/AddWallet";
 
 export default function App() {
-  return <AddTransactionScreen />;
+  return <AddWalletScreen />;
 }

@@ -31,6 +31,7 @@ import {
   AddWalletButton,
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import AddWalletScreen from "../screens/AddWallet";
 
 export default class WalletScreen extends Component {
   render() {

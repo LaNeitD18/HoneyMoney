@@ -30,10 +30,10 @@ export const colors = {
   purple: "#af52de",
   pink: "#ff2d55",
   gray: "#8e8e93",
+  dark: "#48484a",
   gray3: "#c7c7cc",
   gray5: "#e5e5ea",
   gray6: "#f2f2f7",
-  dark: "#48484a",
   white: "#ffffff",
   black: "#000000",
 };
@@ -41,6 +41,10 @@ export const colors = {
 export const styles = StyleSheet.create({
   text: {
     fontSize: sizeFactor,
+    marginBottom: sizeFactor * 0.75,
+  },
+  inputText: {
+    fontSize: sizeFactor * 1.5,
     marginBottom: sizeFactor * 0.75,
   },
   positiveNumber: {
@@ -106,6 +110,16 @@ export const styles = StyleSheet.create({
     marginBottom: sizeFactor,
     width: (windowWidth - 8 * sizeFactor) / 4,
     height: (windowWidth - 8 * sizeFactor) / 4,
+  },
+  colorSelect: (thecolor, selected) => {
+    return {
+      width: (windowWidth - 10 * sizeFactor) / 9,
+      height: (windowWidth - 10 * sizeFactor) / 9,
+      borderRadius: (windowWidth - 6 * sizeFactor) / 4.5,
+      backgroundColor: thecolor,
+      opacity: selected ? 1 : 0.2,
+      marginBottom: sizeFactor * 0.75,
+    };
   },
 });
 
@@ -759,6 +773,33 @@ export class SmallScrollSelect extends Component {
           Từ thiện
         </SmallCategory>
       </ScrollView>
+    );
+  }
+}
+
+export class RoundedView extends Component {
+  render() {
+    return (
+      <View
+        style={{
+          backgroundColor: "white",
+          marginHorizontal: sizeFactor,
+          borderRadius: sizeFactor,
+          paddingHorizontal: sizeFactor,
+          paddingVertical: sizeFactor,
+          marginBottom: sizeFactor,
+        }}
+      >
+        {this.props.children}
+      </View>
+    );
+  }
+}
+
+export class ColorSelectButton extends Component {
+  render() {
+    return (
+      <View style={styles.colorSelect(this.props.color, this.props.selected)} />
     );
   }
 }
