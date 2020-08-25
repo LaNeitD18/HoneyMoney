@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  KeyboardAvoidingView,
 } from "react-native";
 import { Icon, SearchBar, ButtonGroup } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -45,6 +46,10 @@ export const styles = StyleSheet.create({
   },
   inputText: {
     fontSize: sizeFactor * 1.5,
+    marginBottom: sizeFactor * 0.75,
+  },
+  inputMultilineText: {
+    fontSize: sizeFactor,
     marginBottom: sizeFactor * 0.75,
   },
   positiveNumber: {
@@ -105,6 +110,12 @@ export const styles = StyleSheet.create({
     marginBottom: sizeFactor / 2,
     width: (windowWidth - 8 * sizeFactor) / 4.5,
     height: (windowWidth - 8 * sizeFactor) / 4.5,
+  },
+  hugeCategory: {
+    alignSelf: "center",
+    marginBottom: sizeFactor / 2,
+    width: (windowWidth - 5 * sizeFactor) / 4,
+    height: (windowWidth - 5 * sizeFactor) / 4,
   },
   smallCategory: {
     marginBottom: sizeFactor,
@@ -259,7 +270,14 @@ export class ScreenView extends Component {
   render() {
     return (
       <SafeAreaView style={[styles.background, this.props.style]}>
-        <ScrollView>{this.props.children}</ScrollView>
+        <KeyboardAvoidingView
+          behavior="position"
+          enabled={Platform.OS === "android" ? false : true}
+        >
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {this.props.children}
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -582,7 +600,7 @@ export class SmallKindSelect extends Component {
   }
 }
 
-export class Category extends Component {
+export class SmallCategory extends Component {
   render() {
     var choosed = this.props.choosed;
     return (
@@ -637,23 +655,50 @@ export class Category extends Component {
   }
 }
 
-export class SmallCategory extends Component {
+export class Category extends Component {
   render() {
+    var choosed = this.props.choosed;
     return (
       <TouchableOpacity>
-        <View style={{ marginHorizontal: sizeFactor, alignItems: "center" }}>
-          <Image
-            source={this.props.source}
-            style={styles.smallCategory}
-          ></Image>
+        <View style={{ marginRight: sizeFactor }}>
           <View
-            style={{ width: styles.smallCategory.width, alignItems: "center" }}
+            style={{
+              height: styles.hugeCategory.height + sizeFactor / 2,
+              alignContent: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image
+              source={require("../assets/categories/choosed.png")}
+              style={[
+                styles.hugeCategory,
+                { opacity: this.props.choosed ? 1 : 0, position: "absolute" },
+              ]}
+            ></Image>
+            <Image
+              source={this.props.source}
+              style={[
+                styles.hugeCategory,
+                {
+                  opacity: 1,
+                  width: styles.hugeCategory.height - sizeFactor * 1.25,
+                  height: styles.hugeCategory.height - sizeFactor * 1.25,
+                },
+              ]}
+            ></Image>
+          </View>
+          <View
+            style={{
+              width: styles.hugeCategory.width,
+              alignItems: "center",
+            }}
           >
             <String
               style={{
                 fontSize: sizeFactor * 0.75,
-                width: styles.smallCategory.width + sizeFactor,
-                alignSelf: "center",
+                fontWeight: this.props.choosed ? "bold" : "normal",
+                color: this.props.choosed ? colors.blue : "black",
               }}
             >
               {this.props.children}
@@ -668,7 +713,7 @@ export class SmallCategory extends Component {
 export class CategoryTable extends Component {
   render() {
     return (
-      <View>
+      <View style={{ marginLeft: sizeFactor }}>
         <RowLeft>
           <Category source={require("../assets/categories/tuthien.png")}>
             Từ thiện
@@ -721,40 +766,10 @@ export class ScrollSelect extends Component {
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        <Category
+        <SmallCategory
           choosed="true"
           source={require("../assets/categories/tuthien.png")}
         >
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-      </ScrollView>
-    );
-  }
-}
-
-export class SmallScrollSelect extends Component {
-  render() {
-    return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
-          Từ thiệnaaaaaaaaa
-        </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
           Từ thiện
         </SmallCategory>
         <SmallCategory source={require("../assets/categories/tuthien.png")}>

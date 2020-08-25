@@ -50,39 +50,41 @@ export default class AddTransactionScreen extends Component {
   render() {
     return (
       <ScreenView style={{ backgroundColor: colors.indigo }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignContent: "center",
-            marginHorizontal: sizeFactor * 1.75,
-            marginRight: sizeFactor * 3,
-          }}
-        >
-          <Icon
-            name="unfold-more-horizontal"
-            type="material-community"
-            color="white"
-            size={sizeFactor * 1.45}
+        <TouchableOpacity>
+          <View
             style={{
-              marginRight: sizeFactor / 2,
-              opacity: 0,
-              marginTop: 1,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignContent: "center",
+              marginHorizontal: sizeFactor * 1.75,
+              marginRight: sizeFactor * 3,
             }}
-          />
-          <Heading style={{ color: "white" }}>Ví chính</Heading>
-          <Icon
-            name="unfold-more-horizontal"
-            type="material-community"
-            color="white"
-            size={sizeFactor * 1.45}
-            style={{
-              marginLeft: sizeFactor / 2,
-              opacity: 0.75,
-              marginTop: 1,
-            }}
-          />
-        </View>
+          >
+            <Icon
+              name="unfold-more-horizontal"
+              type="material-community"
+              color="white"
+              size={sizeFactor * 1.45}
+              style={{
+                marginRight: sizeFactor / 2,
+                opacity: 0,
+                marginTop: 1,
+              }}
+            />
+            <Heading style={{ color: "white" }}>Ví chính</Heading>
+            <Icon
+              name="unfold-more-horizontal"
+              type="material-community"
+              color="white"
+              size={sizeFactor * 1.45}
+              style={{
+                marginLeft: sizeFactor / 2,
+                opacity: 0.75,
+                marginTop: 1,
+              }}
+            />
+          </View>
+        </TouchableOpacity>
         <View
           style={{
             alignItems: "flex-end",
@@ -146,45 +148,65 @@ export default class AddTransactionScreen extends Component {
           Thực hiện giao dịch
         </OutlineButton>
         <Title style={{ color: "white" }}>Nâng cao</Title>
-        <View
-          style={{
-            backgroundColor: "white",
-            paddingHorizontal: sizeFactor * 1.5,
-            paddingVertical: sizeFactor,
-          }}
-        >
-          <String style={{ fontWeight: "bold" }}>Chọn ngày</String>
-          <RowLeft style={{ flex: 9 }}>
-            <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-              <ToggleButton
-                color={colors.indigo}
-                background="white"
-                choosed="true"
-              >
-                Hôm nay
-              </ToggleButton>
-            </View>
-            <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-              <ToggleButton
-                color={colors.indigo}
-                background="white"
-                choosed="false"
-              >
-                Hôm qua
-              </ToggleButton>
-            </View>
-            <View style={{ flex: 3.5 }}>
-              <ToggleButton
-                color={colors.indigo}
-                background="white"
-                choosed="false"
-              >
-                Chọn ngày
-              </ToggleButton>
-            </View>
-          </RowLeft>
-          <Divider />
-          <String style={{ fontWeight: "bold" }}>Ghi chú</String>
+        <View>
+          <View
+            style={{
+              position: "absolute",
+              backgroundColor: "white",
+              height: windowHeight * 2,
+              width: windowWidth,
+              marginTop: sizeFactor * 2,
+            }}
+          />
+          <View
+            style={{
+              backgroundColor: "white",
+              paddingHorizontal: sizeFactor * 1.25,
+              paddingVertical: sizeFactor,
+              borderRadius: sizeFactor * 2,
+            }}
+          >
+            <String style={{ fontWeight: "bold" }}>Chọn ngày</String>
+            <RowLeft style={{ flex: 9 }}>
+              <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
+                <ToggleButton
+                  color={colors.indigo}
+                  background="white"
+                  choosed="true"
+                  style={{ paddingHorizontal: sizeFactor / 4 }}
+                >
+                  Hôm nay
+                </ToggleButton>
+              </View>
+              <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
+                <ToggleButton
+                  color={colors.indigo}
+                  background="white"
+                  choosed="false"
+                  style={{ paddingHorizontal: sizeFactor / 4 }}
+                >
+                  Hôm qua
+                </ToggleButton>
+              </View>
+              <View style={{ flex: 3.5 }}>
+                <ToggleButton
+                  color={colors.indigo}
+                  background="white"
+                  choosed="false"
+                  style={{ paddingHorizontal: sizeFactor / 4 }}
+                >
+                  12/12/2020
+                </ToggleButton>
+              </View>
+            </RowLeft>
+            <Divider />
+            <String style={{ fontWeight: "bold" }}>Ghi chú</String>
+            <TextInput
+              style={styles.inputMultilineText}
+              multiline={true}
+              placeholder="50k cho một ly trà sữa?"
+            />
+          </View>
         </View>
       </ScreenView>
     );
