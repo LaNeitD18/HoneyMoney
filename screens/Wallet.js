@@ -49,7 +49,7 @@ export default class WalletScreen extends Component {
         wallet.push(
         {
           key: element.key,
-          Name: element.toJSON().Name,
+          name: element.toJSON().name,
           color: element.toJSON().color,
           date: element.toJSON().date,
           isDefault:element.toJSON().isDefault,
@@ -80,17 +80,27 @@ export default class WalletScreen extends Component {
         <FlatList 
           data = {this.state.wallet}
           renderItem={({item})=>{return (<Wallet
-            heading={item.Name}
+            heading={item.name}
             color={item.color}
             date={item.date}
             isDefault={item.isDefault}
-            onPressDefault={()=>{console.log('default changed')}}
+            onPressDefault={()=>{
+              if(item.isDefault == "false")
+              {
+                defaultChanged(item);
+              }
+            }}
             onPressSuDung={()=>{}}
           >
             {item.money}
           </Wallet>)}}>
         </FlatList>
-        <TouchableText onPress={()=>{ }}>
+        <TouchableText onPress={()=>{walletRef.push({
+          name: "Ví cho người yêu",
+          color: "#ff2d55",
+          date: "01/01/2014",
+          isDefault: "false",
+          money: "25,000,000"})}}>
             Tạo ví mới
         </TouchableText>
         <Divider/>
@@ -99,10 +109,34 @@ export default class WalletScreen extends Component {
   }
 }
 
+defaultChanged = (walletItem)=>{
+  walletRef.once('value',(snap)=>{
+    snap.forEach(element => {
+      if(element.toJSON().isDefault == "true")
+      {
+        walletRef.child(element.key).set({
+          name: element.toJSON().name,
+          color: element.toJSON().color,
+          date: element.toJSON().date,
+          money: element.toJSON().money,
+          isDefault: "false"
+        });
+      }
+    });
+  });
+  walletRef.child(walletItem.key).set({
+    name: walletItem.name,
+    color: walletItem.color,
+    date:walletItem.date,
+    money: walletItem.money,
+    isDefault: "true"
+    });
+}
+
 var WalletData = [
   {
     "key":"WL000001",
-    "Name": "Ví chính",
+    "name": "Ví chính",
     "color": "#5856d6",
     "date": "20/08/2020",
     "isDefault":"true",
@@ -110,7 +144,7 @@ var WalletData = [
   },
   {
     "key":"WL000002",
-    "Name": "Ví cho người yêu",
+    "name": "Ví cho người yêu",
     "color": "#ff2d55",
     "date": "01/01/2014",
     "isDefault":"false",
@@ -118,7 +152,7 @@ var WalletData = [
   },
   {
     "key":"WL000003",
-    "Name": "Tiền dưỡng già",
+    "name": "Tiền dưỡng già",
     "color": "#ff9500",
     "date": "01/01/2018",
     "isDefault":"false",
