@@ -32,7 +32,7 @@ import {
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from 'firebase';
-import Cate from '../components/Category';
+import IconImage, { findIcon } from '../components/Image';
 
 export default class CategoriesScreen extends React.Component {
   state = {
@@ -76,28 +76,30 @@ export default class CategoriesScreen extends React.Component {
             const index = 4*i + j;
             if(index < categories.length) {
               const name = categories[index].categoryName;
+              const icon = categories[index].icon;
+              const path = findIcon(icon);
               row.push(
-                <Category source={require("../assets/categories/tuthien.png")}>
+                <Category key={categories[index].key} source={path}>
                     {name}
                 </Category>  
               );
             }
         }
         rows.push(
-            <RowLeft>{row}</RowLeft>
+            <RowLeft key={i}>{row}</RowLeft>
         );
     }
+    //console.log(this.state.categories[0]);
     return rows;
   }
 
   createDatabase = () => {
-    firebase.database()
-    .ref('Category/').push({
-        TypeID: "003",
-        CategoryName: "Khoản thu khác",
-        Icon: "",
-        ParentID: ""
-    });
+    for(let i=4; i<22; i++) {
+      const temp = this.state.categories[i];
+      firebase.database().ref('Category/').child(temp.key).update({
+        Icon: 'thuno'
+      })
+    }
   }
 
   componentDidMount() {
@@ -131,7 +133,7 @@ export default class CategoriesScreen extends React.Component {
         <LargeScrollSelect />
         <Title>Danh mục</Title>
         <KindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
-        <CategoryTable rows={rows}/>
+        <CategoryTable onPress={this.createDatabase} rows={rows}/>
         <Divider />
       </ScreenView>
     );
