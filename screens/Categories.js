@@ -35,12 +35,14 @@ import * as firebase from 'firebase';
 import IconImage, { findIcon } from '../components/Image';
 
 export default class CategoriesScreen extends React.Component {
-  state = {
-    search: "",
-    categories: [],
-    rowsOfCategory: [],
-    count: 0
-  };
+  constructor() {
+    super();
+    this.state = {
+      search: '',
+      categories: [],
+    };
+    this.arrayholder = [];
+  }
 
   updateSearch = (search) => {
     this.setState({ search });
@@ -58,10 +60,12 @@ export default class CategoriesScreen extends React.Component {
               parentID: element.toJSON().ParentID,
               typeID: element.toJSON().TypeID
           });
-          this.setState({
-            categories: temp
-          })
+          
       });
+      this.setState({
+        categories: temp
+      });
+      this.arrayholder = temp;
     });
   }
 
@@ -106,8 +110,38 @@ export default class CategoriesScreen extends React.Component {
      this.getData();
   }
 
+  SearchFilterFunction(text) {
+    //passing the inserted text in textinput
+    const newData = this.arrayholder.filter(function(item) {
+      //applying filter for the inserted text in search bar
+      const itemData = item.categoryName ? item.categoryName.toUpperCase() : ''.toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      //setting the filtered newData on datasource
+      //After setting the data it will automatically re-render the view
+      categories: newData,
+      search: text,
+    });
+    //console.log(this.arrayholder);
+    //console.log(newData);
+  }
+  ListViewItemSeparator = () => {
+    //Item sparator view
+    return (
+      <View
+        style={{
+          height: 0.3,
+          width: '90%',
+          backgroundColor: '#080808',
+        }}
+      />
+    );
+  };
+
   render() {
-    const { search } = this.state;
+    const search = this.state.search;
     let rows = this.renderCategoryTable();
 
     return (
@@ -115,8 +149,8 @@ export default class CategoriesScreen extends React.Component {
         <SearchBar
           platform={Platform.OS}
           placeholder="Tìm danh mục..."
-          onChangeText={this.updateSearch}
-          value={search}
+          onChangeText={text => this.SearchFilterFunction(text)}
+          value={this.state.search}
           lightTheme="true"
           containerStyle={{
             backgroundColor: "",
