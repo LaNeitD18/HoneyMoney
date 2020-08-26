@@ -1,7 +1,11 @@
 import registerRootComponent from "expo/build/launch/registerRootComponent";
 
 import App from "./App";
+
+registerRootComponent(App);
+
 import * as firebase from 'firebase';
+//import FirebaseApp from '@firebase/app';
 
 // Optionally import the services that you want to use
 //import "firebase/auth";
@@ -11,16 +15,16 @@ import * as firebase from 'firebase';
 //import "firebase/storage";
 
 // Initialize Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCHGOg6zhT96i4YiFMqk_kRacXr_VryqqM",
-    authDomain: "homodemo-a72ec.firebaseapp.com",
-    databaseURL: "https://homodemo-a72ec.firebaseio.com",
-    projectId: "homodemo-a72ec",
-    storageBucket: "homodemo-a72ec.appspot.com",
-    messagingSenderId: "156508141120",
-    appId: "1:156508141120:web:f9be3034b96298d48e51a5"  
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCHGOg6zhT96i4YiFMqk_kRacXr_VryqqM",
+//   authDomain: "homodemo-a72ec.firebaseapp.com",
+//   databaseURL: "https://homodemo-a72ec.firebaseio.com",
+//   projectId: "homodemo-a72ec",
+//   storageBucket: "homodemo-a72ec.appspot.com",
+//   messagingSenderId: "156508141120",
+//   appId: "1:156508141120:web:f9be3034b96298d48e51a5"
+// };
 
-firebase.initializeApp(firebaseConfig);
+// //FirebaseApp.initializeApp();
+// firebase.initializeApp(firebaseConfig);
 
-registerRootComponent(App);

@@ -27,8 +27,41 @@ import {
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import SignedNumber from '../components/SignedNumber'
 import { FlatList } from "react-native-gesture-handler";
+import * as firebase from 'firebase'
+
+//const rootRef = firebase.database().ref();
+//const walletRef = rootRef.child('Wallet');
+
+import {rootRef,walletRef} from '../components/DataConnect'
 
 export default class WalletScreen extends Component {
+  constructor(props)
+  {
+    super(props);
+    this.state = ({
+      wallet: [],
+    })
+  }
+  componentDidMount(){
+    walletRef.on('value',(snap)=>{
+      const wallet = [];
+      snap.forEach(element => {
+        wallet.push(
+        {
+          key: element.key,
+          Name: element.name,
+          color: element.color,
+          date: element.date,
+          isDefault:element.isDefault,
+          money: element.money
+        });
+        this.setState({
+          wallet: wallet
+        })
+        console.log(this.state.wallet);
+      });
+    });
+  }
   render() {
     return (
       <ScreenView>
@@ -45,7 +78,7 @@ export default class WalletScreen extends Component {
         </Card>
         <Title>Quản lí ví</Title>
         <FlatList 
-          data = {WalletData}
+          data = {this.state.wallet}
           renderItem={({item})=>{return (<Wallet
             heading={item.Name}
             color={item.color}
@@ -55,7 +88,16 @@ export default class WalletScreen extends Component {
             {item.money}
           </Wallet>)}}>
         </FlatList>
-        <TouchableText>Tạo ví mới</TouchableText>
+        <TouchableText onPress={()=>{
+          firebase.database().ref('Wallet/').push({
+            Name: "Ví cho người yêu",
+            color: "#ff2d55",
+            date: "01/01/2014",
+            isDefault:"false",
+            money: "25,000,000"});
+        }}>
+            Tạo ví mới
+        </TouchableText>
         <Divider/>
       </ScreenView>
     );
