@@ -38,7 +38,8 @@ export default class CategoriesScreen extends React.Component {
   state = {
     search: "",
     categories: [],
-    rowsOfCategory: []
+    rowsOfCategory: [],
+    count: 0
   };
 
   updateSearch = (search) => {
@@ -47,25 +48,34 @@ export default class CategoriesScreen extends React.Component {
 
   // demo functions 
   getData = () => {
-    firebase.database().ref('Category/').on('value', (snapshot) => {
-        snapshot.forEach(element => {
-            //let temp = new Cate(element.val().TypeID, element.val().CategoryName, element.val().Icon, element.val().ParentID);
-            this.state.categories.push(element.val());
-            //Alert.alert(temp.CategoryName);
-        });
+    firebase.database().ref().child('Category').on('value', (snapshot) => {
+      const temp = [];
+      snapshot.forEach(element => {
+          temp.push({
+              key: element.key,
+              categoryName: element.toJSON().CategoryName,
+              icon: element.toJSON().Icon,
+              parentID: element.toJSON().ParentID,
+              typeID: element.toJSON().TypeID
+          });
+          this.setState({
+            categories: temp
+          })
+      });
     });
   }
 
   renderCategoryTable = () => {
     const categories = this.state.categories;
     const numberOfRows = Math.ceil(categories.length / 4);
+    const rows = [];
 
     for(let i=0; i<numberOfRows; i++) {
-        let row = [];
+        const row = [];
         for(let j=0; j<4; j++) {
             const index = 4*i + j;
             if(index < categories.length) {
-              const name = categories[index].CategoryName;
+              const name = categories[index].categoryName;
               row.push(
                 <Category source={require("../assets/categories/tuthien.png")}>
                     {name}
@@ -73,17 +83,14 @@ export default class CategoriesScreen extends React.Component {
               );
             }
         }
-        this.state.rowsOfCategory.push(
+        rows.push(
             <RowLeft>{row}</RowLeft>
         );
     }
-    //Alert.alert(this.state.categories[5].CategoryName);
+    return rows;
   }
 
   createDatabase = () => {
-    // firebase.database().ref('users/' + 2).set({
-    //   highscore: 4
-    // });
     firebase.database()
     .ref('Category/').push({
         TypeID: "003",
@@ -93,10 +100,13 @@ export default class CategoriesScreen extends React.Component {
     });
   }
 
+  componentDidMount() {
+     this.getData();
+  }
+
   render() {
     const { search } = this.state;
-    this.getData();
-    this.renderCategoryTable();
+    let rows = this.renderCategoryTable();
 
     return (
       <ScreenView style={{ flex: 1 }}>
@@ -121,11 +131,8 @@ export default class CategoriesScreen extends React.Component {
         <LargeScrollSelect />
         <Title>Danh mục</Title>
         <KindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
-        <CategoryTable onPress={() => this.getData()} rows={this.state.rowsOfCategory}/>
+        <CategoryTable rows={rows}/>
         <Divider />
-        <TouchableOpacity onPress={() => this.renderCategoryTable()}>
-          <Text>ZZZ</Text>
-        </TouchableOpacity>
       </ScreenView>
     );
   }
