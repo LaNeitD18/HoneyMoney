@@ -19,7 +19,7 @@ export const windowWidth = Dimensions.get("window").width;
 export const windowHeight = Dimensions.get("window").height;
 
 //UNIVERSAL SIZE UNIT
-export const sizeFactor = 16;
+export const sizeFactor = windowWidth / 25.7;
 
 export const colors = {
   red: "#ff3b30",
@@ -32,6 +32,8 @@ export const colors = {
   pink: "#ff2d55",
   gray: "#8e8e93",
   dark: "#48484a",
+  redDark: "#d70015",
+  greenDark: "#32a852",
   gray3: "#c7c7cc",
   gray5: "#e5e5ea",
   gray6: "#f2f2f7",
@@ -54,12 +56,12 @@ export const styles = StyleSheet.create({
   },
   positiveNumber: {
     fontWeight: "bold",
-    color: colors.green,
+    color: colors.greenDark,
     fontSize: sizeFactor * 1.25,
   },
   negativeNumber: {
     fontWeight: "bold",
-    color: colors.red,
+    color: colors.redDark,
     fontSize: sizeFactor * 1.25,
   },
   heading: {
@@ -256,12 +258,15 @@ export class HeadlessCard extends Component {
 export class AddWalletButton extends Component {
   render() {
     return (
-      <Icon
-        name="credit-card-plus-outline"
-        type="material-community"
-        color={this.props.color}
-        size={sizeFactor * 2}
-      />
+      <TouchableOpacity>
+        <Icon
+          name="credit-card-plus-outline"
+          type="material-community"
+          color={this.props.color}
+          size={sizeFactor * 2}
+          style={{ marginRight: sizeFactor / 2 }}
+        />
+      </TouchableOpacity>
     );
   }
 }
@@ -505,6 +510,26 @@ export class TouchableText extends Component {
   }
 }
 
+export class TouchableDeleteText extends Component {
+  render() {
+    return (
+      <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
+        <String></String>
+        <TouchableOpacity>
+          <String
+            style={{
+              fontSize: sizeFactor,
+              color: colors.redDark,
+            }}
+          >
+            {this.props.children}
+          </String>
+        </TouchableOpacity>
+      </Row>
+    );
+  }
+}
+
 export class KindSelect extends Component {
   constructor() {
     super();
@@ -576,6 +601,58 @@ export class SmallKindSelect extends Component {
           marginHorizontal: sizeFactor,
           backgroundColor: colors.gray5,
           height: sizeFactor * 2,
+        }}
+        textStyle={{
+          fontSize: sizeFactor * 0.75,
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          color: colors.gray,
+        }}
+        buttonStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+        }}
+        buttonContainerStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+          borderColor: colors.gray5,
+        }}
+        innerBorderStyle={{ color: colors.gray3 }}
+        selectedButtonStyle={{ backgroundColor: colors.blue }}
+        selectedTextStyle={{ color: "white" }}
+      />
+    );
+  }
+}
+
+export class AddWalletKindSelect extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: 1,
+    };
+    this.updateIndex = this.updateIndex.bind(this);
+  }
+
+  updateIndex(selectedIndex) {
+    this.setState({ selectedIndex });
+  }
+  render() {
+    const buttons = this.props.buttons;
+    const { selectedIndex } = this.state;
+    return (
+      <ButtonGroup
+        onPress={this.updateIndex}
+        selectedIndex={selectedIndex}
+        buttons={buttons}
+        containerStyle={{
+          borderRadius: sizeFactor,
+          borderWidth: 0,
+          borderColor: colors.gray3,
+          marginBottom: sizeFactor,
+          marginHorizontal: 0,
+          backgroundColor: colors.gray5,
+          height: sizeFactor * 2.5,
         }}
         textStyle={{
           fontSize: sizeFactor * 0.75,
