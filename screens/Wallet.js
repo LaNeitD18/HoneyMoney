@@ -49,14 +49,14 @@ export default class WalletScreen extends Component {
         wallet.push(
         {
           key: element.key,
-          Name: element.name,
-          color: element.color,
-          date: element.date,
-          isDefault:element.isDefault,
-          money: element.money
+          Name: element.toJSON().Name,
+          color: element.toJSON().color,
+          date: element.toJSON().date,
+          isDefault:element.toJSON().isDefault,
+          money: element.toJSON().money
         });
         this.setState({
-          wallet: wallet
+          wallet: wallet.sort((a,b) => {if(a.isDefault == "true") return false; else return true;})
         })
         console.log(this.state.wallet);
       });
@@ -84,18 +84,13 @@ export default class WalletScreen extends Component {
             color={item.color}
             date={item.date}
             isDefault={item.isDefault}
+            onPressDefault={()=>{console.log('default changed')}}
+            onPressSuDung={()=>{}}
           >
             {item.money}
           </Wallet>)}}>
         </FlatList>
-        <TouchableText onPress={()=>{
-          firebase.database().ref('Wallet/').push({
-            Name: "Ví cho người yêu",
-            color: "#ff2d55",
-            date: "01/01/2014",
-            isDefault:"false",
-            money: "25,000,000"});
-        }}>
+        <TouchableText onPress={()=>{ }}>
             Tạo ví mới
         </TouchableText>
         <Divider/>

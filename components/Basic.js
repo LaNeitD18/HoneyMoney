@@ -319,10 +319,15 @@ export class Wallet extends Component {
             checked={this.props.isDefault}
             checkIcon="check-circle-outline"
             color="white"
+            onPress={this.props.onPressDefault}
           >
             Ví mặc định
           </OutlineToggleButton>
-          <Button color={this.props.color} background="white">
+          <Button 
+            color={this.props.color}
+            background="white"
+            onPress={this.props.onPressSuDung}
+          >
             Sử dụng
           </Button>
         </Row>
