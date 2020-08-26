@@ -114,21 +114,21 @@ defaultChanged = (walletItem)=>{
     snap.forEach(element => {
       if(element.toJSON().isDefault == "true")
       {
-        walletRef.child(element.key).set({
-          name: element.toJSON().name,
-          color: element.toJSON().color,
-          date: element.toJSON().date,
-          money: element.toJSON().money,
+        walletRef.child(element.key).update({
+          //name: element.toJSON().name,
+          //color: element.toJSON().color,
+          //date: element.toJSON().date,
+          //money: element.toJSON().money,
           isDefault: "false"
         });
       }
     });
   });
-  walletRef.child(walletItem.key).set({
-    name: walletItem.name,
-    color: walletItem.color,
-    date:walletItem.date,
-    money: walletItem.money,
+  walletRef.child(walletItem.key).update({
+    //name: walletItem.name,
+    //color: walletItem.color,
+    //date:walletItem.date,
+    //money: walletItem.money,
     isDefault: "true"
     });
 }
