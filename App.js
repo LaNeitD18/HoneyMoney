@@ -7,7 +7,14 @@ import AddTransactionScreen from "./screens/AddTransaction";
 import AddWalletScreen from "./screens/AddWallet";
 import AddCategoryScreen from "./screens/AddCategory";
 import EditCategoryScreen from "./screens/EditCategory";
+import ConfirmDialog from "./components/ConfirmDialog";
+import AddSubcategoryDialog from "./components/AddSubcategoryDialog";
 
 export default function App() {
-  return <WalletScreen />;
+  return (
+    <View style={{ flex: 1 }}>
+      <WalletScreen />
+      <ConfirmDialog />
+    </View>
+  );
 }

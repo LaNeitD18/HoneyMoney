@@ -1,18 +1,6 @@
 import React, { Component } from "react";
-import {
-  Text,
-  StyleSheet,
-  Platform,
-  StatusBar,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-  KeyboardAvoidingView,
-} from "react-native";
-import { Icon, SearchBar, ButtonGroup } from "react-native-elements";
+import { Text, StyleSheet, Platform, StatusBar, View, SafeAreaView, ScrollView, TouchableOpacity, Image, Dimensions, KeyboardAvoidingView } from "react-native";
+import { Icon, SearchBar, ButtonGroup, Overlay } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 
 export const windowWidth = Dimensions.get("window").width;
@@ -139,13 +127,7 @@ export const styles = StyleSheet.create({
 export class String extends Component {
   render() {
     return (
-      <TextTicker
-        duration={5000}
-        loop
-        bounce
-        repeatSpacer={50}
-        style={[styles.text, this.props.style]}
-      >
+      <TextTicker duration={5000} loop bounce repeatSpacer={50} style={[styles.text, this.props.style]}>
         {this.props.children}
       </TextTicker>
     );
@@ -154,51 +136,31 @@ export class String extends Component {
 
 export class Heading2 extends Component {
   render() {
-    return (
-      <String style={{ color: colors.black, fontWeight: "bold" }}>
-        {this.props.children}
-      </String>
-    );
+    return <String style={{ color: colors.black, fontWeight: "bold" }}>{this.props.children}</String>;
   }
 }
 
 export class Title extends Component {
   render() {
-    return (
-      <Text style={[styles.title, this.props.style]}>
-        {this.props.children}
-      </Text>
-    );
+    return <Text style={[styles.title, this.props.style]}>{this.props.children}</Text>;
   }
 }
 
 export class PositiveNumber extends Component {
   render() {
-    return (
-      <String style={[styles.positiveNumber, this.props.style]}>
-        {this.props.children}
-      </String>
-    );
+    return <String style={[styles.positiveNumber, this.props.style]}>{this.props.children}</String>;
   }
 }
 
 export class NegativeNumber extends Component {
   render() {
-    return (
-      <String style={[styles.negativeNumber, this.props.style]}>
-        -{this.props.children}
-      </String>
-    );
+    return <String style={[styles.negativeNumber, this.props.style]}>-{this.props.children}</String>;
   }
 }
 
 export class Heading extends Component {
   render() {
-    return (
-      <String style={[styles.heading, this.props.style]}>
-        {this.props.children}
-      </String>
-    );
+    return <String style={[styles.heading, this.props.style]}>{this.props.children}</String>;
   }
 }
 
@@ -207,16 +169,9 @@ export class Card extends Component {
     return (
       <View style={[styles.container, { backgroundColor: this.props.color }]}>
         <Row>
-          <Heading style={[styles.heading, { color: this.props.headingColor }]}>
-            {this.props.heading}
-          </Heading>
+          <Heading style={[styles.heading, { color: this.props.headingColor }]}>{this.props.heading}</Heading>
           <TouchableOpacity>
-            <Icon
-              name={this.props.icon}
-              type="material-community"
-              color={this.props.iconColor}
-              size={sizeFactor * 1.5}
-            />
+            <Icon name={this.props.icon} type="material-community" color={this.props.iconColor} size={sizeFactor * 1.5} />
           </TouchableOpacity>
         </Row>
         {this.props.children}
@@ -259,13 +214,7 @@ export class AddWalletButton extends Component {
   render() {
     return (
       <TouchableOpacity>
-        <Icon
-          name="credit-card-plus-outline"
-          type="material-community"
-          color={this.props.color}
-          size={sizeFactor * 2}
-          style={{ marginRight: sizeFactor / 2 }}
-        />
+        <Icon name="credit-card-plus-outline" type="material-community" color={this.props.color} size={sizeFactor * 2} style={{ marginRight: sizeFactor / 2 }} />
       </TouchableOpacity>
     );
   }
@@ -275,13 +224,8 @@ export class ScreenView extends Component {
   render() {
     return (
       <SafeAreaView style={[styles.background, this.props.style]}>
-        <KeyboardAvoidingView
-          behavior="position"
-          enabled={Platform.OS === "android" ? false : true}
-        >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {this.props.children}
-          </ScrollView>
+        <KeyboardAvoidingView behavior="position" enabled={Platform.OS === "android" ? false : true}>
+          <ScrollView showsVerticalScrollIndicator={false}>{this.props.children}</ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
     );
@@ -296,19 +240,13 @@ export class Divider extends Component {
 
 export class Row extends Component {
   render() {
-    return (
-      <View style={[styles.row, this.props.style]}>{this.props.children}</View>
-    );
+    return <View style={[styles.row, this.props.style]}>{this.props.children}</View>;
   }
 }
 
 export class RowLeft extends Component {
   render() {
-    return (
-      <View style={[styles.rowLeft, this.props.style]}>
-        {this.props.children}
-      </View>
-    );
+    return <View style={[styles.rowLeft, this.props.style]}>{this.props.children}</View>;
   }
 }
 
@@ -316,6 +254,7 @@ export class Button extends Component {
   render() {
     return (
       <TouchableOpacity
+        onPress={this.props.onPress}
         style={[
           {
             justifyContent: "center",
@@ -353,8 +292,7 @@ export class ToggleButton extends Component {
           {
             justifyContent: "center",
             borderWidth: 1,
-            backgroundColor:
-              choosed == "true" ? this.props.color : this.props.background,
+            backgroundColor: choosed == "true" ? this.props.color : this.props.background,
             paddingHorizontal: sizeFactor,
             borderColor: this.props.color,
             borderRadius: 9999,
@@ -396,14 +334,7 @@ export class OutlineToggleButton extends Component {
           marginBottom: sizeFactor,
         }}
       >
-        <Icon
-          name={
-            checked == "false" ? this.props.uncheckIcon : this.props.checkIcon
-          }
-          type="material-community"
-          color={this.props.color}
-          size={sizeFactor * 1.25}
-        />
+        <Icon name={checked == "false" ? this.props.uncheckIcon : this.props.checkIcon} type="material-community" color={this.props.color} size={sizeFactor * 1.25} />
         <String
           style={{
             color: this.props.color,
@@ -422,23 +353,23 @@ export class OutlineButton extends Component {
   render() {
     return (
       <TouchableOpacity
-        style={{
-          justifyContent: "center",
-          borderWidth: 1.25,
-          paddingHorizontal: sizeFactor,
-          borderColor: this.props.color,
-          borderRadius: 9999,
-          borderStyle: "solid",
-          paddingTop: sizeFactor * 0.75,
-          flexDirection: "row",
-          marginBottom: sizeFactor,
-          marginHorizontal: sizeFactor,
-        }}
+        style={[
+          {
+            justifyContent: "center",
+            borderWidth: 1.25,
+            paddingHorizontal: sizeFactor,
+            borderColor: this.props.color,
+            borderRadius: 9999,
+            paddingTop: sizeFactor * 0.75,
+            flexDirection: "row",
+            marginBottom: sizeFactor,
+          },
+          this.props.style,
+        ]}
       >
         <String
           style={{
             color: this.props.color,
-            fontWeight: "bold",
           }}
         >
           {this.props.children}
@@ -447,38 +378,23 @@ export class OutlineButton extends Component {
     );
   }
 }
+
 export class Wallet extends Component {
   render() {
     const isDefault = this.props.isDefault;
     return (
-      <Card
-        heading={this.props.heading}
-        headingColor="white"
-        color={this.props.color}
-        icon="tune"
-        iconColor="white"
-      >
+      <Card heading={this.props.heading} headingColor="white" color={this.props.color} icon="tune" iconColor="white">
         <Row>
-          <String style={{ color: "white", fontSize: sizeFactor * 2 }}>
-            VNĐ
-          </String>
-          <PositiveNumber style={{ color: "white", fontSize: sizeFactor * 2 }}>
-            {this.props.children}
-          </PositiveNumber>
+          <String style={{ color: "white", fontSize: sizeFactor * 2 }}>VNĐ</String>
+          <PositiveNumber style={{ color: "white", fontSize: sizeFactor * 2 }}>{this.props.children}</PositiveNumber>
         </Row>
         <Row>
           <String style={{ color: "white" }}>Ngày tạo</String>
-          <String style={{ color: "white", fontWeight: "bold" }}>
-            {this.props.date}
-          </String>
+          <String style={{ color: "white", fontWeight: "bold" }}>{this.props.date}</String>
         </Row>
         <Divider />
         <Row>
-          <OutlineToggleButton
-            checked={this.props.isDefault}
-            checkIcon="check-circle-outline"
-            color="white"
-          >
+          <OutlineToggleButton checked={this.props.isDefault} checkIcon="check-circle-outline" color="white">
             Ví mặc định
           </OutlineToggleButton>
           <Button color={this.props.color} background="white">
@@ -691,13 +607,7 @@ export class SmallCategory extends Component {
               justifyContent: "center",
             }}
           >
-            <Image
-              source={require("../assets/categories/choosed.png")}
-              style={[
-                styles.largeCategory,
-                { opacity: this.props.choosed ? 1 : 0, position: "absolute" },
-              ]}
-            ></Image>
+            <Image source={require("../assets/categories/choosed.png")} style={[styles.largeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
             <Image
               source={this.props.source}
               style={[
@@ -746,13 +656,7 @@ export class Category extends Component {
               justifyContent: "center",
             }}
           >
-            <Image
-              source={require("../assets/categories/choosed.png")}
-              style={[
-                styles.hugeCategory,
-                { opacity: this.props.choosed ? 1 : 0, position: "absolute" },
-              ]}
-            ></Image>
+            <Image source={require("../assets/categories/choosed.png")} style={[styles.hugeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
             <Image
               source={this.props.source}
               style={[
@@ -792,43 +696,21 @@ export class CategoryTable extends Component {
     return (
       <View style={{ marginLeft: sizeFactor }}>
         <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
         </RowLeft>
         <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
         </RowLeft>
         <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/themdanhmuc.png")}>
-            Thêm mới
-          </Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/themdanhmuc.png")}>Thêm mới</Category>
         </RowLeft>
       </View>
     );
@@ -838,32 +720,15 @@ export class CategoryTable extends Component {
 export class ScrollSelect extends Component {
   render() {
     return (
-      <ScrollView
-        style={{ marginHorizontal: sizeFactor }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-      >
-        <SmallCategory
-          choosed="true"
-          source={require("../assets/categories/tuthien.png")}
-        >
+      <ScrollView style={{ marginHorizontal: sizeFactor }} horizontal showsHorizontalScrollIndicator={false}>
+        <SmallCategory choosed="true" source={require("../assets/categories/tuthien.png")}>
           Từ thiện
         </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
       </ScrollView>
     );
   }
@@ -890,8 +755,6 @@ export class RoundedView extends Component {
 
 export class ColorSelectButton extends Component {
   render() {
-    return (
-      <View style={styles.colorSelect(this.props.color, this.props.selected)} />
-    );
+    return <View style={styles.colorSelect(this.props.color, this.props.selected)} />;
   }
 }
