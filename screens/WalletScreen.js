@@ -27,40 +27,48 @@ import {
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import SignedNumber from '../components/SignedNumber'
 import { FlatList } from "react-native-gesture-handler";
+
+//firebase
 import * as firebase from 'firebase'
+
+//redux
+import {connect} from 'react-redux';
 
 //const rootRef = firebase.database().ref();
 //const walletRef = rootRef.child('Wallet');
 
 import {rootRef,walletRef} from '../components/DataConnect'
 
+//Redux action
+// import { ChangeDefaultAction, UpdateWalletAction } from "../actions";
+
+// //redux define container
+
+// const mapStateToProps = (state) => {
+//   return{
+//       walletData: state.walletReducer,
+//   }
+// };
+
+// const mapDispatchToProps = (dispatch) =>{
+//   return {
+//       ChangeDefault: (walletItem) => {   
+//         dispatch(ChangeDefaultAction(walletItem));
+//       },
+//       Update: () => {
+//         dispatch(UpdateWalletAction());
+//       }
+//   };
+// }
+// export default WalletContainer = connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
+
 export default class WalletScreen extends Component {
   constructor(props)
   {
     super(props);
-    this.state = ({
-      wallet: [],
-    })
   }
   componentDidMount(){
-    walletRef.on('value',(snap)=>{
-      const wallet = [];
-      snap.forEach(element => {
-        wallet.push(
-        {
-          key: element.key,
-          name: element.toJSON().name,
-          color: element.toJSON().color,
-          date: element.toJSON().date,
-          isDefault:element.toJSON().isDefault,
-          money: element.toJSON().money
-        });
-        this.setState({
-          wallet: wallet.sort((a,b) => {if(a.isDefault == "true") return false; else return true;})
-        })
-        console.log(this.state.wallet);
-      });
-    });
+    walletRef.on('value',(snap)=>{this.props.Update(snap)});
   }
   render() {
     return (
@@ -78,7 +86,7 @@ export default class WalletScreen extends Component {
         </Card>
         <Title>Quản lí ví</Title>
         <FlatList 
-          data = {this.state.wallet}
+          data = {this.props.walletData}
           renderItem={({item})=>{return (<Wallet
             heading={item.name}
             color={item.color}

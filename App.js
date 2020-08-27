@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screen/HomeScreen'
 import TransactionScreen from './screen/TransactionScreen'
-import Wallet from './screens/Wallet'
+import {WalletScreen} from './screens/WalletScreen'
 import Categories from './screens/Categories'
 
 //Redux
@@ -16,6 +16,8 @@ import { Provider } from 'react-redux';
 
 import allReducers from './reducers/allReducers';
 import SampleContainer from './containers/SampleContainer';
+
+import WalletContainer from './containers/WalletContainer'
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -29,7 +31,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-          <Tab.Screen name="Trang chủ" component={Wallet} options={{tittle: 'Wallet'}} />
+          <Tab.Screen name="Trang chủ" component={WalletContainer} options={{tittle: 'Wallet'}} />
           <Tab.Screen name="Danh mục" component={Categories} options={{tittle: 'Categories'}}/>
         </Tab.Navigator>
       </NavigationContainer>
