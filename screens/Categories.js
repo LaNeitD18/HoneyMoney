@@ -40,17 +40,37 @@ export default class CategoriesScreen extends React.Component {
     this.state = {
       search: '',
       categories: [],
+      selectedIndex: 1
     };
     this.arrayholder = [];
   }
 
-  updateSearch = (search) => {
-    this.setState({ search });
-  };
+  updateIndex = (selectedIndex) => {
+    this.setState({ selectedIndex: selectedIndex });
+    this.getDataBasedOnType(selectedIndex);
+
+  }
+
+  getDataBasedOnType = (selectedIndex) => {
+      switch(selectedIndex) {
+          case 0:
+              this.getData('001');
+              break;
+          case 1:
+              this.getData('002');
+              break;
+          case 2:
+              this.getData('003');
+              break;
+          case 3: 
+              this.getData('004');
+              break;
+      }
+  }
 
   // demo functions 
-  getData = () => {
-    firebase.database().ref().child('Category').on('value', (snapshot) => {
+  getData = (typeID) => {
+    firebase.database().ref().child('Category').orderByChild('TypeID').equalTo(typeID).on('value', (snapshot) => {
       const temp = [];
       snapshot.forEach(element => {
           temp.push({
@@ -60,7 +80,6 @@ export default class CategoriesScreen extends React.Component {
               parentID: element.toJSON().ParentID,
               typeID: element.toJSON().TypeID
           });
-          
       });
       this.setState({
         categories: temp
@@ -107,7 +126,7 @@ export default class CategoriesScreen extends React.Component {
   }
 
   componentDidMount() {
-     this.getData();
+     this.getDataBasedOnType(this.state.selectedIndex);
   }
 
   SearchFilterFunction(text) {
@@ -142,6 +161,7 @@ export default class CategoriesScreen extends React.Component {
 
   render() {
     const search = this.state.search;
+    const selectedIndex = this.state.selectedIndex;
     let rows = this.renderCategoryTable();
 
     return (
@@ -166,7 +186,10 @@ export default class CategoriesScreen extends React.Component {
         <Title>Gần đây</Title>
         <LargeScrollSelect />
         <Title>Danh mục</Title>
-        <KindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
+        <KindSelect 
+            onPress={this.updateIndex}
+            selectedIndex={selectedIndex}
+            buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
         <CategoryTable onPress={this.createDatabase} rows={rows}/>
         <Divider />
       </ScreenView>

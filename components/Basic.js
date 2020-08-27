@@ -353,21 +353,18 @@ export class KindSelect extends Component {
   constructor() {
     super();
     this.state = {
-      selectedIndex: 1,
+      selectedIndex: 0,
     };
-    this.updateIndex = this.updateIndex.bind(this);
   }
 
-  updateIndex(selectedIndex) {
-    this.setState({ selectedIndex });
-  }
+  
   render() {
     const buttons = this.props.buttons;
     const { selectedIndex } = this.state;
     return (
       <ButtonGroup
-        onPress={this.updateIndex}
-        selectedIndex={selectedIndex}
+        onPress={this.props.onPress}
+        selectedIndex={this.props.selectedIndex}
         buttons={buttons}
         containerStyle={{
           borderRadius: sizeFactor * 0.75,
