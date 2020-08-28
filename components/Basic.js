@@ -10,146 +10,146 @@ export const windowHeight = Dimensions.get("window").height;
 export const sizeFactor = windowWidth / 25.7;
 
 export const colors = {
-  red: "#ff3b30",
-  orange: "#ff9500",
-  yellow: "#ffcc00",
-  green: "#34c759",
-  blue: "#007aff",
-  indigo: "#5856d6",
-  purple: "#af52de",
-  pink: "#ff2d55",
-  gray: "#8e8e93",
-  dark: "#48484a",
-  redDark: "#d70015",
-  greenDark: "#32a852",
-  gray3: "#c7c7cc",
-  gray5: "#e5e5ea",
-  gray6: "#f2f2f7",
-  white: "#ffffff",
-  black: "#000000",
+    red: "#ff3b30",
+    orange: "#ff9500",
+    yellow: "#ffcc00",
+    green: "#34c759",
+    blue: "#007aff",
+    indigo: "#5856d6",
+    purple: "#af52de",
+    pink: "#ff2d55",
+    gray: "#8e8e93",
+    dark: "#48484a",
+    redDark: "#d70015",
+    greenDark: "#32a852",
+    gray3: "#c7c7cc",
+    gray5: "#e5e5ea",
+    gray6: "#f2f2f7",
+    white: "#ffffff",
+    black: "#000000",
 };
 
 export const styles = StyleSheet.create({
-  text: {
-    fontSize: sizeFactor,
-    marginBottom: sizeFactor * 0.75,
-  },
-  inputText: {
-    fontSize: sizeFactor * 1.5,
-    marginBottom: sizeFactor * 0.75,
-  },
-  inputMultilineText: {
-    fontSize: sizeFactor,
-    marginBottom: sizeFactor * 0.75,
-  },
-  positiveNumber: {
-    fontWeight: "bold",
-    color: colors.greenDark,
-    fontSize: sizeFactor * 1.25,
-  },
-  negativeNumber: {
-    fontWeight: "bold",
-    color: colors.redDark,
-    fontSize: sizeFactor * 1.25,
-  },
-  heading: {
-    fontSize: sizeFactor * 1.25,
-    fontWeight: "bold",
-    marginBottom: sizeFactor * 0.75,
-    color: colors.gray,
-    textTransform: "uppercase",
-  },
-  title: {
-    fontSize: sizeFactor * 1.75,
-    fontWeight: "bold",
-    marginVertical: sizeFactor,
-    marginHorizontal: sizeFactor * 1.25,
-    color: "black",
-  },
-  background: {
-    flex: 1,
-    backgroundColor: colors.gray6,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
-  container: {
-    marginHorizontal: sizeFactor,
-    marginBottom: sizeFactor * 0.75,
-    paddingTop: sizeFactor,
-    paddingBottom: sizeFactor * 0.25,
-    paddingHorizontal: sizeFactor,
-    borderRadius: sizeFactor,
-  },
-  divider: {
-    height: 0,
-    marginBottom: sizeFactor / 2,
-  },
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
-  },
-  rowLeft: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
-  },
-  largeCategory: {
-    alignSelf: "center",
-    marginBottom: sizeFactor / 2,
-    width: (windowWidth - 8 * sizeFactor) / 4.5,
-    height: (windowWidth - 8 * sizeFactor) / 4.5,
-  },
-  hugeCategory: {
-    alignSelf: "center",
-    marginBottom: sizeFactor / 2,
-    width: (windowWidth - 5 * sizeFactor) / 4,
-    height: (windowWidth - 5 * sizeFactor) / 4,
-  },
-  smallCategory: {
-    marginBottom: sizeFactor,
-    width: (windowWidth - 8 * sizeFactor) / 4,
-    height: (windowWidth - 8 * sizeFactor) / 4,
-  },
-  colorSelect: (thecolor, selected) => {
-    return {
-      width: (windowWidth - 10 * sizeFactor) / 9,
-      height: (windowWidth - 10 * sizeFactor) / 9,
-      borderRadius: (windowWidth - 6 * sizeFactor) / 4.5,
-      backgroundColor: thecolor,
-      opacity: selected ? 1 : 0.2,
-      marginBottom: sizeFactor * 0.75,
-    };
-  },
+    text: {
+        fontSize: sizeFactor,
+        marginBottom: sizeFactor * 0.75,
+    },
+    inputText: {
+        fontSize: sizeFactor * 1.5,
+        marginBottom: sizeFactor * 0.75,
+    },
+    inputMultilineText: {
+        fontSize: sizeFactor,
+        marginBottom: sizeFactor * 0.75,
+    },
+    positiveNumber: {
+        fontWeight: "bold",
+        color: colors.greenDark,
+        fontSize: sizeFactor * 1.25,
+    },
+    negativeNumber: {
+        fontWeight: "bold",
+        color: colors.redDark,
+        fontSize: sizeFactor * 1.25,
+    },
+    heading: {
+        fontSize: sizeFactor * 1.25,
+        fontWeight: "bold",
+        marginBottom: sizeFactor * 0.75,
+        color: colors.gray,
+        textTransform: "uppercase",
+    },
+    title: {
+        fontSize: sizeFactor * 1.75,
+        fontWeight: "bold",
+        marginVertical: sizeFactor,
+        marginHorizontal: sizeFactor * 1.25,
+        color: "black",
+    },
+    background: {
+        flex: 1,
+        backgroundColor: colors.gray6,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    },
+    container: {
+        marginHorizontal: sizeFactor,
+        marginBottom: sizeFactor * 0.75,
+        paddingTop: sizeFactor,
+        paddingBottom: sizeFactor * 0.25,
+        paddingHorizontal: sizeFactor,
+        borderRadius: sizeFactor,
+    },
+    divider: {
+        height: 0,
+        marginBottom: sizeFactor / 2,
+    },
+    row: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+    },
+    rowLeft: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        flexWrap: "wrap",
+    },
+    largeCategory: {
+        alignSelf: "center",
+        marginBottom: sizeFactor / 2,
+        width: (windowWidth - 8 * sizeFactor) / 4.5,
+        height: (windowWidth - 8 * sizeFactor) / 4.5,
+    },
+    hugeCategory: {
+        alignSelf: "center",
+        marginBottom: sizeFactor / 2,
+        width: (windowWidth - 5 * sizeFactor) / 4,
+        height: (windowWidth - 5 * sizeFactor) / 4,
+    },
+    smallCategory: {
+        marginBottom: sizeFactor,
+        width: (windowWidth - 8 * sizeFactor) / 4,
+        height: (windowWidth - 8 * sizeFactor) / 4,
+    },
+    colorSelect: (thecolor, selected) => {
+        return {
+            width: (windowWidth - 10 * sizeFactor) / 9,
+            height: (windowWidth - 10 * sizeFactor) / 9,
+            borderRadius: (windowWidth - 6 * sizeFactor) / 4.5,
+            backgroundColor: thecolor,
+            opacity: selected ? 1 : 0.2,
+            marginBottom: sizeFactor * 0.75,
+        };
+    },
 });
 
 export class String extends Component {
-  render() {
-    return (
-      <TextTicker duration={5000} loop bounce repeatSpacer={50} style={[styles.text, this.props.style]}>
-        {this.props.children}
-      </TextTicker>
-    );
-  }
+    render() {
+        return (
+            <TextTicker duration={5000} loop bounce repeatSpacer={50} style={[styles.text, this.props.style]}>
+                {this.props.children}
+            </TextTicker>
+        );
+    }
 }
 
 export class Heading2 extends Component {
-  render() {
-    return <String style={{ color: colors.black, fontWeight: "bold" }}>{this.props.children}</String>;
-  }
+    render() {
+        return <String style={{ color: colors.black, fontWeight: "bold" }}>{this.props.children}</String>;
+    }
 }
 
 export class Title extends Component {
-  render() {
-    return <Text style={[styles.title, this.props.style]}>{this.props.children}</Text>;
-  }
+    render() {
+        return <Text style={[styles.title, this.props.style]}>{this.props.children}</Text>;
+    }
 }
 
 export class PositiveNumber extends Component {
-  render() {
-    return <String style={[styles.positiveNumber, this.props.style]}>{this.props.children}</String>;
-  }
+    render() {
+        return <String style={[styles.positiveNumber, this.props.style]}>{this.props.children}</String>;
+    }
 }
 
 export class NegativeNumber extends Component {
@@ -162,9 +162,9 @@ export class NegativeNumber extends Component {
   }
 }
 export class Heading extends Component {
-  render() {
-    return <String style={[styles.heading, this.props.style]}>{this.props.children}</String>;
-  }
+    render() {
+        return <String style={[styles.heading, this.props.style]}>{this.props.children}</String>;
+    }
 }
 
 export class Card extends Component {
@@ -191,73 +191,73 @@ export class Card extends Component {
 }
 
 export class HeadlessCard extends Component {
-  render() {
-    return (
-      <View
-        name="headLessCard"
-        style={[
-          styles.container,
-          {
-            marginHorizontal: 0,
-            backgroundColor: this.props.color,
-            width: this.props.width,
-          },
-          this.props.style,
-        ]}
-      >
-        <View
-          style={{
-            alignSelf: "flex-end",
-            flexDirection: "row",
-            position: "absolute",
-            paddingRight: sizeFactor,
-            paddingTop: sizeFactor,
-          }}
-        ></View>
-        <Row>{this.props.children}</Row>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View
+                name="headLessCard"
+                style={[
+                    styles.container,
+                    {
+                        marginHorizontal: 0,
+                        backgroundColor: this.props.color,
+                        width: this.props.width,
+                    },
+                    this.props.style,
+                ]}
+            >
+                <View
+                    style={{
+                        alignSelf: "flex-end",
+                        flexDirection: "row",
+                        position: "absolute",
+                        paddingRight: sizeFactor,
+                        paddingTop: sizeFactor,
+                    }}
+                ></View>
+                <Row>{this.props.children}</Row>
+            </View>
+        );
+    }
 }
 
 export class AddWalletButton extends Component {
-  render() {
-    return (
-      <TouchableOpacity>
-        <Icon name="credit-card-plus-outline" type="material-community" color={this.props.color} size={sizeFactor * 2} style={{ marginRight: sizeFactor / 2 }} />
-      </TouchableOpacity>
-    );
-  }
+    render() {
+        return (
+            <TouchableOpacity>
+                <Icon name="credit-card-plus-outline" type="material-community" color={this.props.color} size={sizeFactor * 2} style={{ marginRight: sizeFactor / 2 }} />
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class ScreenView extends Component {
-  render() {
-    return (
-      <SafeAreaView style={[styles.background, this.props.style]}>
-        <KeyboardAvoidingView behavior="position" enabled={Platform.OS === "android" ? false : true}>
-          <ScrollView showsVerticalScrollIndicator={false}>{this.props.children}</ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    );
-  }
+    render() {
+        return (
+            <SafeAreaView style={[styles.background, this.props.style]}>
+                <KeyboardAvoidingView behavior="position" enabled={Platform.OS === "android" ? false : true}>
+                    <ScrollView showsVerticalScrollIndicator={false}>{this.props.children}</ScrollView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        );
+    }
 }
 
 export class Divider extends Component {
-  render() {
-    return <View style={styles.divider} />;
-  }
+    render() {
+        return <View style={styles.divider} />;
+    }
 }
 
 export class Row extends Component {
-  render() {
-    return <View style={[styles.row, this.props.style]}>{this.props.children}</View>;
-  }
+    render() {
+        return <View style={[styles.row, this.props.style]}>{this.props.children}</View>;
+    }
 }
 
 export class RowLeft extends Component {
-  render() {
-    return <View style={[styles.rowLeft, this.props.style]}>{this.props.children}</View>;
-  }
+    render() {
+        return <View style={[styles.rowLeft, this.props.style]}>{this.props.children}</View>;
+    }
 }
 
 export class Button extends Component {
@@ -279,7 +279,6 @@ export class Button extends Component {
           },
           this.props.style,
         ]}
-        onPress={this.props.onPress}
       >
         <String
           style={{
@@ -295,36 +294,36 @@ export class Button extends Component {
 }
 
 export class ToggleButton extends Component {
-  render() {
-    var choosed = this.props.choosed;
-    return (
-      <TouchableOpacity
-        style={[
-          {
-            justifyContent: "center",
-            borderWidth: 1,
-            backgroundColor: choosed == "true" ? this.props.color : this.props.background,
-            paddingHorizontal: sizeFactor,
-            borderColor: this.props.color,
-            borderRadius: 9999,
-            paddingTop: sizeFactor * 0.75,
-            flexDirection: "row",
-            marginBottom: sizeFactor,
-          },
-          this.props.style,
-        ]}
-      >
-        <String
-          style={{
-            color: choosed == "true" ? this.props.background : this.props.color,
-            fontWeight: "bold",
-          }}
-        >
-          {this.props.children}
-        </String>
-      </TouchableOpacity>
-    );
-  }
+    render() {
+        var choosed = this.props.choosed;
+        return (
+            <TouchableOpacity
+                style={[
+                    {
+                        justifyContent: "center",
+                        borderWidth: 1,
+                        backgroundColor: choosed == "true" ? this.props.color : this.props.background,
+                        paddingHorizontal: sizeFactor,
+                        borderColor: this.props.color,
+                        borderRadius: 9999,
+                        paddingTop: sizeFactor * 0.75,
+                        flexDirection: "row",
+                        marginBottom: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
+            >
+                <String
+                    style={{
+                        color: choosed == "true" ? this.props.background : this.props.color,
+                        fontWeight: "bold",
+                    }}
+                >
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class OutlineToggleButton extends Component {
@@ -362,33 +361,33 @@ export class OutlineToggleButton extends Component {
 }
 
 export class OutlineButton extends Component {
-  render() {
-    return (
-      <TouchableOpacity
-        style={[
-          {
-            justifyContent: "center",
-            borderWidth: 1.25,
-            paddingHorizontal: sizeFactor,
-            borderColor: this.props.color,
-            borderRadius: 9999,
-            paddingTop: sizeFactor * 0.75,
-            flexDirection: "row",
-            marginBottom: sizeFactor,
-          },
-          this.props.style,
-        ]}
-      >
-        <String
-          style={{
-            color: this.props.color,
-          }}
-        >
-          {this.props.children}
-        </String>
-      </TouchableOpacity>
-    );
-  }
+    render() {
+        return (
+            <TouchableOpacity
+                style={[
+                    {
+                        justifyContent: "center",
+                        borderWidth: 1.25,
+                        paddingHorizontal: sizeFactor,
+                        borderColor: this.props.color,
+                        borderRadius: 9999,
+                        paddingTop: sizeFactor * 0.75,
+                        flexDirection: "row",
+                        marginBottom: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
+            >
+                <String
+                    style={{
+                        color: this.props.color,
+                    }}
+                >
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class Wallet extends Component {
@@ -425,10 +424,10 @@ export class Wallet extends Component {
           >
             Sử dụng
           </Button>
-        </Row>
-      </Card>
-    );
-  }
+                </Row>
+            </Card>
+        );
+    }
 }
 
 export class TouchableText extends Component {
@@ -452,219 +451,219 @@ export class TouchableText extends Component {
 }
 
 export class TouchableDeleteText extends Component {
-  render() {
-    return (
-      <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
-        <String></String>
-        <TouchableOpacity>
-          <String
-            style={{
-              fontSize: sizeFactor,
-              color: colors.redDark,
-            }}
-          >
-            {this.props.children}
-          </String>
-        </TouchableOpacity>
-      </Row>
-    );
-  }
+    render() {
+        return (
+            <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
+                <String></String>
+                <TouchableOpacity>
+                    <String
+                        style={{
+                            fontSize: sizeFactor,
+                            color: colors.redDark,
+                        }}
+                    >
+                        {this.props.children}
+                    </String>
+                </TouchableOpacity>
+            </Row>
+        );
+    }
 }
 
 export class KindSelect extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedIndex: 1,
-    };
-    this.updateIndex = this.updateIndex.bind(this);
-  }
+    constructor() {
+        super();
+        this.state = {
+            selectedIndex: 1,
+        };
+        this.updateIndex = this.updateIndex.bind(this);
+    }
 
-  updateIndex(selectedIndex) {
-    this.setState({ selectedIndex });
-  }
-  render() {
-    const buttons = this.props.buttons;
-    const { selectedIndex } = this.state;
-    return (
-      <ButtonGroup
-        onPress={this.updateIndex}
-        selectedIndex={selectedIndex}
-        buttons={buttons}
-        containerStyle={{
-          borderRadius: sizeFactor * 0.75,
-          borderWidth: 1.25,
-          borderColor: colors.gray3,
-          marginBottom: sizeFactor,
-          marginHorizontal: sizeFactor,
-          backgroundColor: colors.gray5,
-          height: sizeFactor * 2,
-        }}
-        textStyle={{
-          fontSize: sizeFactor * 0.75,
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          color: colors.gray,
-        }}
-        innerBorderStyle={{ color: colors.gray3 }}
-        selectedButtonStyle={{ backgroundColor: "white" }}
-        selectedTextStyle={{ color: colors.dark }}
-      />
-    );
-  }
+    updateIndex(selectedIndex) {
+        this.setState({ selectedIndex });
+    }
+    render() {
+        const buttons = this.props.buttons;
+        const { selectedIndex } = this.state;
+        return (
+            <ButtonGroup
+                onPress={this.updateIndex}
+                selectedIndex={selectedIndex}
+                buttons={buttons}
+                containerStyle={{
+                    borderRadius: sizeFactor * 0.75,
+                    borderWidth: 1.25,
+                    borderColor: colors.gray3,
+                    marginBottom: sizeFactor,
+                    marginHorizontal: sizeFactor,
+                    backgroundColor: colors.gray5,
+                    height: sizeFactor * 2,
+                }}
+                textStyle={{
+                    fontSize: sizeFactor * 0.75,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    color: colors.gray,
+                }}
+                innerBorderStyle={{ color: colors.gray3 }}
+                selectedButtonStyle={{ backgroundColor: "white" }}
+                selectedTextStyle={{ color: colors.dark }}
+            />
+        );
+    }
 }
 
 export class SmallKindSelect extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedIndex: 1,
-    };
-    this.updateIndex = this.updateIndex.bind(this);
-  }
+    constructor() {
+        super();
+        this.state = {
+            selectedIndex: 1,
+        };
+        this.updateIndex = this.updateIndex.bind(this);
+    }
 
-  updateIndex(selectedIndex) {
-    this.setState({ selectedIndex });
-  }
-  render() {
-    const buttons = this.props.buttons;
-    const { selectedIndex } = this.state;
-    return (
-      <ButtonGroup
-        onPress={this.updateIndex}
-        selectedIndex={selectedIndex}
-        buttons={buttons}
-        containerStyle={{
-          borderRadius: sizeFactor,
-          borderWidth: 0,
-          borderColor: colors.gray3,
-          marginBottom: sizeFactor,
-          marginHorizontal: sizeFactor,
-          backgroundColor: colors.gray5,
-          height: sizeFactor * 2,
-        }}
-        textStyle={{
-          fontSize: sizeFactor * 0.75,
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          color: colors.gray,
-        }}
-        buttonStyle={{
-          borderWidth: 0,
-          backgroundColor: colors.gray5,
-        }}
-        buttonContainerStyle={{
-          borderWidth: 0,
-          backgroundColor: colors.gray5,
-          borderColor: colors.gray5,
-        }}
-        innerBorderStyle={{ color: colors.gray3 }}
-        selectedButtonStyle={{ backgroundColor: colors.blue }}
-        selectedTextStyle={{ color: "white" }}
-      />
-    );
-  }
+    updateIndex(selectedIndex) {
+        this.setState({ selectedIndex });
+    }
+    render() {
+        const buttons = this.props.buttons;
+        const { selectedIndex } = this.state;
+        return (
+            <ButtonGroup
+                onPress={this.updateIndex}
+                selectedIndex={selectedIndex}
+                buttons={buttons}
+                containerStyle={{
+                    borderRadius: sizeFactor,
+                    borderWidth: 0,
+                    borderColor: colors.gray3,
+                    marginBottom: sizeFactor,
+                    marginHorizontal: sizeFactor,
+                    backgroundColor: colors.gray5,
+                    height: sizeFactor * 2,
+                }}
+                textStyle={{
+                    fontSize: sizeFactor * 0.75,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    color: colors.gray,
+                }}
+                buttonStyle={{
+                    borderWidth: 0,
+                    backgroundColor: colors.gray5,
+                }}
+                buttonContainerStyle={{
+                    borderWidth: 0,
+                    backgroundColor: colors.gray5,
+                    borderColor: colors.gray5,
+                }}
+                innerBorderStyle={{ color: colors.gray3 }}
+                selectedButtonStyle={{ backgroundColor: colors.blue }}
+                selectedTextStyle={{ color: "white" }}
+            />
+        );
+    }
 }
 
 export class AddWalletKindSelect extends Component {
-  constructor() {
-    super();
-    this.state = {
-      selectedIndex: 1,
-    };
-    this.updateIndex = this.updateIndex.bind(this);
-  }
+    constructor() {
+        super();
+        this.state = {
+            selectedIndex: 1,
+        };
+        this.updateIndex = this.updateIndex.bind(this);
+    }
 
-  updateIndex(selectedIndex) {
-    this.setState({ selectedIndex });
-  }
-  render() {
-    const buttons = this.props.buttons;
-    const { selectedIndex } = this.state;
-    return (
-      <ButtonGroup
-        onPress={this.updateIndex}
-        selectedIndex={selectedIndex}
-        buttons={buttons}
-        containerStyle={{
-          borderRadius: sizeFactor,
-          borderWidth: 0,
-          borderColor: colors.gray3,
-          marginBottom: sizeFactor,
-          marginHorizontal: 0,
-          backgroundColor: colors.gray5,
-          height: sizeFactor * 2.5,
-        }}
-        textStyle={{
-          fontSize: sizeFactor * 0.75,
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          color: colors.gray,
-        }}
-        buttonStyle={{
-          borderWidth: 0,
-          backgroundColor: colors.gray5,
-        }}
-        buttonContainerStyle={{
-          borderWidth: 0,
-          backgroundColor: colors.gray5,
-          borderColor: colors.gray5,
-        }}
-        innerBorderStyle={{ color: colors.gray3 }}
-        selectedButtonStyle={{ backgroundColor: colors.blue }}
-        selectedTextStyle={{ color: "white" }}
-      />
-    );
-  }
+    updateIndex(selectedIndex) {
+        this.setState({ selectedIndex });
+    }
+    render() {
+        const buttons = this.props.buttons;
+        const { selectedIndex } = this.state;
+        return (
+            <ButtonGroup
+                onPress={this.updateIndex}
+                selectedIndex={selectedIndex}
+                buttons={buttons}
+                containerStyle={{
+                    borderRadius: sizeFactor,
+                    borderWidth: 0,
+                    borderColor: colors.gray3,
+                    marginBottom: sizeFactor,
+                    marginHorizontal: 0,
+                    backgroundColor: colors.gray5,
+                    height: sizeFactor * 2.5,
+                }}
+                textStyle={{
+                    fontSize: sizeFactor * 0.75,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    color: colors.gray,
+                }}
+                buttonStyle={{
+                    borderWidth: 0,
+                    backgroundColor: colors.gray5,
+                }}
+                buttonContainerStyle={{
+                    borderWidth: 0,
+                    backgroundColor: colors.gray5,
+                    borderColor: colors.gray5,
+                }}
+                innerBorderStyle={{ color: colors.gray3 }}
+                selectedButtonStyle={{ backgroundColor: colors.blue }}
+                selectedTextStyle={{ color: "white" }}
+            />
+        );
+    }
 }
 
 export class SmallCategory extends Component {
-  render() {
-    var choosed = this.props.choosed;
-    return (
-      <TouchableOpacity>
-        <View style={{ marginRight: sizeFactor }}>
-          <View
-            style={{
-              height: styles.largeCategory.height + sizeFactor / 2,
-              alignContent: "center",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image source={require("../assets/categories/choosed.png")} style={[styles.largeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
-            <Image
-              source={this.props.source}
-              style={[
-                styles.largeCategory,
-                {
-                  opacity: 1,
-                  width: styles.largeCategory.height - sizeFactor * 1.25,
-                  height: styles.largeCategory.height - sizeFactor * 1.25,
-                },
-              ]}
-            ></Image>
-          </View>
-          <View
-            style={{
-              width: styles.largeCategory.width,
-              alignItems: "center",
-            }}
-          >
-            <String
-              style={{
-                fontSize: sizeFactor * 0.75,
-                fontWeight: this.props.choosed ? "bold" : "normal",
-                color: this.props.choosed ? colors.blue : "black",
-              }}
-            >
-              {this.props.children}
-            </String>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
+    render() {
+        var choosed = this.props.choosed;
+        return (
+            <TouchableOpacity>
+                <View style={{ marginRight: sizeFactor }}>
+                    <View
+                        style={{
+                            height: styles.largeCategory.height + sizeFactor / 2,
+                            alignContent: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Image source={require("../assets/categories/choosed.png")} style={[styles.largeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
+                        <Image
+                            source={this.props.source}
+                            style={[
+                                styles.largeCategory,
+                                {
+                                    opacity: 1,
+                                    width: styles.largeCategory.height - sizeFactor * 1.25,
+                                    height: styles.largeCategory.height - sizeFactor * 1.25,
+                                },
+                            ]}
+                        ></Image>
+                    </View>
+                    <View
+                        style={{
+                            width: styles.largeCategory.width,
+                            alignItems: "center",
+                        }}
+                    >
+                        <String
+                            style={{
+                                fontSize: sizeFactor * 0.75,
+                                fontWeight: this.props.choosed ? "bold" : "normal",
+                                color: this.props.choosed ? colors.blue : "black",
+                            }}
+                        >
+                            {this.props.children}
+                        </String>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class Category extends Component {
@@ -718,69 +717,70 @@ export class Category extends Component {
 }
 
 export class CategoryTable extends Component {
-  render() {
-    return (
-      <View style={{ marginLeft: sizeFactor }}>
-        <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-        </RowLeft>
-        <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-        </RowLeft>
-        <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-          <Category source={require("../assets/categories/themdanhmuc.png")}>Thêm mới</Category>
-        </RowLeft>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={{ marginLeft: sizeFactor }}>
+                <RowLeft>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                </RowLeft>
+                <RowLeft>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                </RowLeft>
+                <RowLeft>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+                    <Category source={require("../assets/categories/themdanhmuc.png")}>Thêm mới</Category>
+                </RowLeft>
+            </View>
+        );
+    }
 }
 
 export class ScrollSelect extends Component {
-  render() {
-    return (
-      <ScrollView style={{ marginHorizontal: sizeFactor }} horizontal showsHorizontalScrollIndicator={false}>
-        <SmallCategory choosed="true" source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
+    render() {
+        return (
+            <ScrollView style={{ marginHorizontal: sizeFactor }} horizontal showsHorizontalScrollIndicator={false}>
+                <SmallCategory choosed="true" source={require("../assets/categories/tuthien.png")}>
+                    Từ thiện
         </SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
-        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
-      </ScrollView>
-    );
-  }
+                <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+                <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+                <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+                <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+                <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+            </ScrollView>
+        );
+    }
 }
 
 export class RoundedView extends Component {
-  render() {
-    return (
-      <View
-        style={{
-          backgroundColor: "white",
-          marginHorizontal: sizeFactor,
-          borderRadius: sizeFactor,
-          paddingHorizontal: sizeFactor,
-          paddingVertical: sizeFactor,
-          marginBottom: sizeFactor,
-        }}
-      >
-        {this.props.children}
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View
+                style={{
+                    backgroundColor: "white",
+                    marginHorizontal: sizeFactor,
+                    borderRadius: sizeFactor,
+                    paddingHorizontal: sizeFactor,
+                    paddingVertical: sizeFactor,
+                    marginBottom: sizeFactor,
+                }}
+            >
+                {this.props.children}
+            </View>
+        );
+    }
 }
 
 export class ColorSelectButton extends Component {
-  render() {
-    return <View style={styles.colorSelect(this.props.color, this.props.selected)} />;
-  }
+    render() {
+        return <View style={styles.colorSelect(this.props.color, this.props.selected)} />;
+    }
 }
+

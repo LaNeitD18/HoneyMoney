@@ -14,19 +14,25 @@ import {
   Card,
   Divider,
   Row,
-  Number,
+  PositiveNumber,
   NegativeNumber,
   Wallet,
   colors,
   Title,
   Button,
+  styles,
   OutlineToggleButton,
   sizeFactor,
   TouchableText,
+  Heading2,
+  HeadlessCard,
+  windowWidth,
+  AddWalletButton,
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import SignedNumber from '../components/SignedNumber'
 import { FlatList } from "react-native-gesture-handler";
+import AddWalletScreen from "./AddWalletScreen";
 
 //firebase
 import * as firebase from 'firebase'
@@ -74,17 +80,45 @@ export default class WalletScreen extends Component {
     return (
       <ScreenView>
         <Title>Tổng quan</Title>
-        <Card heading="Tất cả ví" headingColor={colors.dark} color="white">
-          <Row>
-            <String>Số dư</String>
-            <SignedNumber>5,000,000</SignedNumber>
-          </Row>
-          <Row>
-            <String>Tháng này</String>
-            <SignedNumber>-250,000</SignedNumber>
-          </Row>
-        </Card>
-        <Title>Quản lí ví</Title>
+            <View style={{ paddingHorizontal: sizeFactor }}>
+                <Row>
+                    <HeadlessCard
+                        color="white"
+                        icon="wallet"
+                        width={(windowWidth - sizeFactor * 3) / 2}
+                        iconColor={colors.blue}
+                    >
+                        <View>
+                            <Heading2>Số dư</Heading2>
+                            <SignedNumber>5,000,000</SignedNumber>
+                        </View>
+                    </HeadlessCard>
+                    <HeadlessCard
+                        color="white"
+                        width={(windowWidth - sizeFactor * 3) / 2}
+                        icon="wallet"
+                        iconColor={colors.blue}
+                    >
+                        <View>
+                            <Heading2>Tháng này</Heading2>
+                            <SignedNumber>-250,000</SignedNumber>
+                        </View>
+                    </HeadlessCard>
+                </Row>
+            </View>
+        <Row>
+            <Title>Quản lí ví</Title>
+            <View
+                style={{
+                    alignSelf: "flex-end",
+                    marginBottom: sizeFactor,
+                    marginRight: sizeFactor,
+                    flexDirection: "row",
+                }}
+            >
+                <AddWalletButton color={colors.blue} />
+            </View>
+        </Row>
         <FlatList 
           data = {this.props.walletData}
           renderItem={({item})=>{return (<Wallet
