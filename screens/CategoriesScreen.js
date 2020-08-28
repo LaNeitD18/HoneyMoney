@@ -33,26 +33,29 @@ import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from 'firebase';
 import IconImage, { findIcon } from '../components/Image';
+import { connect } from 'react-redux';
+import changeType from '../actions/index';
 
-export default class CategoriesScreen extends React.Component {
+class CategoriesScreen extends React.Component {
   constructor() {
     super();
     this.state = {
       search: '',
       categories: [],
-      selectedIndex: 1
+      //selectedIndex: 1
     };
     this.arrayholder = [];
   }
 
-  updateIndex = (selectedIndex) => {
-    this.setState({ selectedIndex: selectedIndex });
-    this.getDataBasedOnType(selectedIndex);
+  // updateIndex = (selectedIndex) => {
+  //   // update selected index when pressing on a button in kindselect to change type of category
+  //   this.setState({ selectedIndex }); 
+  //   // after changing type, reload to get categories which belong to this type
+  //   this.getDataBasedOnType(selectedIndex);
+  // }
 
-  }
-
-  getDataBasedOnType = (selectedIndex) => {
-      switch(selectedIndex) {
+  getDataBasedOnType = (selectedType) => {
+      switch(selectedType) {
           case 0:
               this.getData('001');
               break;
@@ -99,8 +102,7 @@ export default class CategoriesScreen extends React.Component {
             const index = 4*i + j;
             if(index < categories.length) {
               const name = categories[index].categoryName;
-              const icon = categories[index].icon;
-              const path = findIcon(icon);
+              const path = findIcon(name);
               row.push(
                 <Category key={categories[index].key} source={path}>
                     {name}
@@ -112,7 +114,6 @@ export default class CategoriesScreen extends React.Component {
             <RowLeft key={i}>{row}</RowLeft>
         );
     }
-    //console.log(this.state.categories[0]);
     return rows;
   }
 
@@ -126,7 +127,7 @@ export default class CategoriesScreen extends React.Component {
   }
 
   componentDidMount() {
-     this.getDataBasedOnType(this.state.selectedIndex);
+     this.getDataBasedOnType(this.props.selectedType);
   }
 
   SearchFilterFunction(text) {
@@ -161,7 +162,7 @@ export default class CategoriesScreen extends React.Component {
 
   render() {
     const search = this.state.search;
-    const selectedIndex = this.state.selectedIndex;
+    //const selectedIndex = this.state.selectedIndex;
     let rows = this.renderCategoryTable();
 
     return (
@@ -187,8 +188,8 @@ export default class CategoriesScreen extends React.Component {
         <LargeScrollSelect />
         <Title>Danh mục</Title>
         <KindSelect 
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
+            onPress={() => this.props.changeType(this.props.selectedType)}
+            selectedIndex={this.props.selectedType}
             buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
         <CategoryTable onPress={this.createDatabase} rows={rows}/>
         <Divider />
@@ -196,3 +197,17 @@ export default class CategoriesScreen extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+    return {
+        selectedType: state.selectedType
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        changeType: (selectedType) => { dispatch(changeType(selectedType))}
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen);

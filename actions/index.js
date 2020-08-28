@@ -16,3 +16,11 @@ export const decreaseAction = (step) => {
         step: step, //so luong giam xuong
     }
 }
+
+// Tien
+export function changeType(selectedType) {
+    return {
+        type: 'CHANGE_TYPE',
+        selectedType: selectedType
+    };
+}

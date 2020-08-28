@@ -5,8 +5,8 @@ import {createStackNavigator} from '@react-navigation/stack'
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Wallet from './screens/Wallet'
-import Categories from './screens/Categories'
+import Wallet from './screens/WalletScreen'
+import Categories from './screens/CategoriesScreen'
 
 //Redux
 import {createStore} from 'redux';
