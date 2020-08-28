@@ -44,7 +44,7 @@ import {
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
-import CategoriesScreen from "../screens/Categories";
+import CategoriesScreen from "../screens/CategoriesScreen";
 
 export default class AddTransactionScreen extends Component {
   render() {

@@ -159,7 +159,8 @@ export class NegativeNumber extends Component {
         {this.props.children}
       </String>
     );
-
+  }
+}
 export class Heading extends Component {
   render() {
     return <String style={[styles.heading, this.props.style]}>{this.props.children}</String>;

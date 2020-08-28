@@ -8,7 +8,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screen/HomeScreen'
 import TransactionScreen from './screen/TransactionScreen'
 import {WalletScreen} from './screens/WalletScreen'
-import Categories from './screens/Categories'
+import Categories from './screens/CategoriesScreen'
 
 
 //Redux
@@ -37,3 +37,5 @@ export default function App() {
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
+  )
+}
