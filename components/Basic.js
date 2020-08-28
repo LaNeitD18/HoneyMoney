@@ -1,24 +1,13 @@
 import React, { Component } from "react";
-import {
-  Text,
-  StyleSheet,
-  Platform,
-  StatusBar,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from "react-native";
-import { Icon, SearchBar, ButtonGroup } from "react-native-elements";
+import { Text, StyleSheet, Platform, StatusBar, View, SafeAreaView, ScrollView, TouchableOpacity, Image, Dimensions, KeyboardAvoidingView } from "react-native";
+import { Icon, SearchBar, ButtonGroup, Overlay } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 
-const windowWidth = Dimensions.get("window").width;
-const windowHeight = Dimensions.get("window").height;
+export const windowWidth = Dimensions.get("window").width;
+export const windowHeight = Dimensions.get("window").height;
 
 //UNIVERSAL SIZE UNIT
-export const sizeFactor = 16;
+export const sizeFactor = windowWidth / 25.7;
 
 export const colors = {
   red: "#ff3b30",
@@ -30,10 +19,12 @@ export const colors = {
   purple: "#af52de",
   pink: "#ff2d55",
   gray: "#8e8e93",
+  dark: "#48484a",
+  redDark: "#d70015",
+  greenDark: "#32a852",
   gray3: "#c7c7cc",
   gray5: "#e5e5ea",
   gray6: "#f2f2f7",
-  dark: "#48484a",
   white: "#ffffff",
   black: "#000000",
 };
@@ -43,13 +34,23 @@ export const styles = StyleSheet.create({
     fontSize: sizeFactor,
     marginBottom: sizeFactor * 0.75,
   },
-  number: {
+  inputText: {
+    fontSize: sizeFactor * 1.5,
+    marginBottom: sizeFactor * 0.75,
+  },
+  inputMultilineText: {
+    fontSize: sizeFactor,
+    marginBottom: sizeFactor * 0.75,
+  },
+  positiveNumber: {
     fontWeight: "bold",
-    color: colors.green,
+    color: colors.greenDark,
+    fontSize: sizeFactor * 1.25,
   },
   negativeNumber: {
     fontWeight: "bold",
-    color: colors.red,
+    color: colors.redDark,
+    fontSize: sizeFactor * 1.25,
   },
   heading: {
     fontSize: sizeFactor * 1.25,
@@ -79,8 +80,8 @@ export const styles = StyleSheet.create({
     borderRadius: sizeFactor,
   },
   divider: {
-    height: 1,
-    marginBottom: sizeFactor * 0.5,
+    height: 0,
+    marginBottom: sizeFactor / 2,
   },
   row: {
     flex: 1,
@@ -97,43 +98,57 @@ export const styles = StyleSheet.create({
   largeCategory: {
     alignSelf: "center",
     marginBottom: sizeFactor / 2,
+    width: (windowWidth - 8 * sizeFactor) / 4.5,
+    height: (windowWidth - 8 * sizeFactor) / 4.5,
+  },
+  hugeCategory: {
+    alignSelf: "center",
+    marginBottom: sizeFactor / 2,
+    width: (windowWidth - 5 * sizeFactor) / 4,
+    height: (windowWidth - 5 * sizeFactor) / 4,
+  },
+  smallCategory: {
+    marginBottom: sizeFactor,
     width: (windowWidth - 8 * sizeFactor) / 4,
     height: (windowWidth - 8 * sizeFactor) / 4,
+  },
+  colorSelect: (thecolor, selected) => {
+    return {
+      width: (windowWidth - 10 * sizeFactor) / 9,
+      height: (windowWidth - 10 * sizeFactor) / 9,
+      borderRadius: (windowWidth - 6 * sizeFactor) / 4.5,
+      backgroundColor: thecolor,
+      opacity: selected ? 1 : 0.2,
+      marginBottom: sizeFactor * 0.75,
+    };
   },
 });
 
 export class String extends Component {
   render() {
     return (
-      <TextTicker
-        duration={3000}
-        loop
-        bounce
-        repeatSpacer={5}
-        style={[styles.text, this.props.style]}
-      >
+      <TextTicker duration={5000} loop bounce repeatSpacer={50} style={[styles.text, this.props.style]}>
         {this.props.children}
       </TextTicker>
     );
   }
 }
 
-export class Title extends Component {
+export class Heading2 extends Component {
   render() {
-    return (
-      <Text style={[styles.title, this.props.style]}>
-        {this.props.children}
-      </Text>
-    );
+    return <String style={{ color: colors.black, fontWeight: "bold" }}>{this.props.children}</String>;
   }
 }
+
+export class Title extends Component {
+  render() {
+    return <Text style={[styles.title, this.props.style]}>{this.props.children}</Text>;
+  }
+}
+
 export class PositiveNumber extends Component {
   render() {
-    return (
-      <String style={[styles.number, this.props.style]}>
-        {this.props.children}
-      </String>
-    );
+    return <String style={[styles.positiveNumber, this.props.style]}>{this.props.children}</String>;
   }
 }
 
@@ -144,16 +159,10 @@ export class NegativeNumber extends Component {
         {this.props.children}
       </String>
     );
-  }
-}
 
 export class Heading extends Component {
   render() {
-    return (
-      <Text style={[styles.heading, this.props.style]}>
-        {this.props.children}
-      </Text>
-    );
+    return <String style={[styles.heading, this.props.style]}>{this.props.children}</String>;
   }
 }
 
@@ -180,11 +189,53 @@ export class Card extends Component {
   }
 }
 
+export class HeadlessCard extends Component {
+  render() {
+    return (
+      <View
+        name="headLessCard"
+        style={[
+          styles.container,
+          {
+            marginHorizontal: 0,
+            backgroundColor: this.props.color,
+            width: this.props.width,
+          },
+          this.props.style,
+        ]}
+      >
+        <View
+          style={{
+            alignSelf: "flex-end",
+            flexDirection: "row",
+            position: "absolute",
+            paddingRight: sizeFactor,
+            paddingTop: sizeFactor,
+          }}
+        ></View>
+        <Row>{this.props.children}</Row>
+      </View>
+    );
+  }
+}
+
+export class AddWalletButton extends Component {
+  render() {
+    return (
+      <TouchableOpacity>
+        <Icon name="credit-card-plus-outline" type="material-community" color={this.props.color} size={sizeFactor * 2} style={{ marginRight: sizeFactor / 2 }} />
+      </TouchableOpacity>
+    );
+  }
+}
+
 export class ScreenView extends Component {
   render() {
     return (
       <SafeAreaView style={[styles.background, this.props.style]}>
-        <ScrollView>{this.props.children}</ScrollView>
+        <KeyboardAvoidingView behavior="position" enabled={Platform.OS === "android" ? false : true}>
+          <ScrollView showsVerticalScrollIndicator={false}>{this.props.children}</ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     );
   }
@@ -198,19 +249,13 @@ export class Divider extends Component {
 
 export class Row extends Component {
   render() {
-    return (
-      <View style={[styles.row, this.props.style]}>{this.props.children}</View>
-    );
+    return <View style={[styles.row, this.props.style]}>{this.props.children}</View>;
   }
 }
 
 export class RowLeft extends Component {
   render() {
-    return (
-      <View style={[styles.rowLeft, this.props.style]}>
-        {this.props.children}
-      </View>
-    );
+    return <View style={[styles.rowLeft, this.props.style]}>{this.props.children}</View>;
   }
 }
 
@@ -218,6 +263,7 @@ export class Button extends Component {
   render() {
     return (
       <TouchableOpacity
+        onPress={this.props.onPress}
         style={[
           {
             justifyContent: "center",
@@ -247,6 +293,39 @@ export class Button extends Component {
   }
 }
 
+export class ToggleButton extends Component {
+  render() {
+    var choosed = this.props.choosed;
+    return (
+      <TouchableOpacity
+        style={[
+          {
+            justifyContent: "center",
+            borderWidth: 1,
+            backgroundColor: choosed == "true" ? this.props.color : this.props.background,
+            paddingHorizontal: sizeFactor,
+            borderColor: this.props.color,
+            borderRadius: 9999,
+            paddingTop: sizeFactor * 0.75,
+            flexDirection: "row",
+            marginBottom: sizeFactor,
+          },
+          this.props.style,
+        ]}
+      >
+        <String
+          style={{
+            color: choosed == "true" ? this.props.background : this.props.color,
+            fontWeight: "bold",
+          }}
+        >
+          {this.props.children}
+        </String>
+      </TouchableOpacity>
+    );
+  }
+}
+
 export class OutlineToggleButton extends Component {
   render() {
     //change this to state instead
@@ -255,7 +334,7 @@ export class OutlineToggleButton extends Component {
       <TouchableOpacity
         style={{
           justifyContent: "center",
-          borderWidth: 1.5,
+          borderWidth: 1.25,
           paddingHorizontal: sizeFactor,
           borderColor: this.props.color,
           borderRadius: 9999,
@@ -266,14 +345,7 @@ export class OutlineToggleButton extends Component {
         }}
         onPress={this.props.onPress}
       >
-        <Icon
-          name={
-            checked == "false" ? this.props.uncheckIcon : this.props.checkIcon
-          }
-          type="material-community"
-          color={this.props.color}
-          size={sizeFactor * 1.25}
-        />
+        <Icon name={checked == "false" ? this.props.uncheckIcon : this.props.checkIcon} type="material-community" color={this.props.color} size={sizeFactor * 1.25} />
         <String
           style={{
             color: this.props.color,
@@ -288,17 +360,41 @@ export class OutlineToggleButton extends Component {
   }
 }
 
+export class OutlineButton extends Component {
+  render() {
+    return (
+      <TouchableOpacity
+        style={[
+          {
+            justifyContent: "center",
+            borderWidth: 1.25,
+            paddingHorizontal: sizeFactor,
+            borderColor: this.props.color,
+            borderRadius: 9999,
+            paddingTop: sizeFactor * 0.75,
+            flexDirection: "row",
+            marginBottom: sizeFactor,
+          },
+          this.props.style,
+        ]}
+      >
+        <String
+          style={{
+            color: this.props.color,
+          }}
+        >
+          {this.props.children}
+        </String>
+      </TouchableOpacity>
+    );
+  }
+}
+
 export class Wallet extends Component {
   render() {
     const isDefault = this.props.isDefault;
     return (
-      <Card
-        heading={this.props.heading}
-        headingColor="white"
-        color={this.props.color}
-        icon="tune"
-        iconColor="white"
-      >
+      <Card heading={this.props.heading} headingColor="white" color={this.props.color} icon="tune" iconColor="white">
         <Row>
           <String style={{ color: "white", fontSize: sizeFactor * 2 }}>
             VNĐ
@@ -309,9 +405,7 @@ export class Wallet extends Component {
         </Row>
         <Row>
           <String style={{ color: "white" }}>Ngày tạo</String>
-          <String style={{ color: "white", fontWeight: "bold" }}>
-            {this.props.date}
-          </String>
+          <String style={{ color: "white", fontWeight: "bold" }}>{this.props.date}</String>
         </Row>
         <Divider />
         <Row>
@@ -344,8 +438,28 @@ export class TouchableText extends Component {
         <TouchableOpacity onPress={this.props.onPress}>
           <String
             style={{
-              fontSize: sizeFactor * 1.25,
+              fontSize: sizeFactor,
               color: colors.blue,
+            }}
+          >
+            {this.props.children}
+          </String>
+        </TouchableOpacity>
+      </Row>
+    );
+  }
+}
+
+export class TouchableDeleteText extends Component {
+  render() {
+    return (
+      <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
+        <String></String>
+        <TouchableOpacity>
+          <String
+            style={{
+              fontSize: sizeFactor,
+              color: colors.redDark,
             }}
           >
             {this.props.children}
@@ -399,19 +513,200 @@ export class KindSelect extends Component {
   }
 }
 
+export class SmallKindSelect extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: 1,
+    };
+    this.updateIndex = this.updateIndex.bind(this);
+  }
+
+  updateIndex(selectedIndex) {
+    this.setState({ selectedIndex });
+  }
+  render() {
+    const buttons = this.props.buttons;
+    const { selectedIndex } = this.state;
+    return (
+      <ButtonGroup
+        onPress={this.updateIndex}
+        selectedIndex={selectedIndex}
+        buttons={buttons}
+        containerStyle={{
+          borderRadius: sizeFactor,
+          borderWidth: 0,
+          borderColor: colors.gray3,
+          marginBottom: sizeFactor,
+          marginHorizontal: sizeFactor,
+          backgroundColor: colors.gray5,
+          height: sizeFactor * 2,
+        }}
+        textStyle={{
+          fontSize: sizeFactor * 0.75,
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          color: colors.gray,
+        }}
+        buttonStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+        }}
+        buttonContainerStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+          borderColor: colors.gray5,
+        }}
+        innerBorderStyle={{ color: colors.gray3 }}
+        selectedButtonStyle={{ backgroundColor: colors.blue }}
+        selectedTextStyle={{ color: "white" }}
+      />
+    );
+  }
+}
+
+export class AddWalletKindSelect extends Component {
+  constructor() {
+    super();
+    this.state = {
+      selectedIndex: 1,
+    };
+    this.updateIndex = this.updateIndex.bind(this);
+  }
+
+  updateIndex(selectedIndex) {
+    this.setState({ selectedIndex });
+  }
+  render() {
+    const buttons = this.props.buttons;
+    const { selectedIndex } = this.state;
+    return (
+      <ButtonGroup
+        onPress={this.updateIndex}
+        selectedIndex={selectedIndex}
+        buttons={buttons}
+        containerStyle={{
+          borderRadius: sizeFactor,
+          borderWidth: 0,
+          borderColor: colors.gray3,
+          marginBottom: sizeFactor,
+          marginHorizontal: 0,
+          backgroundColor: colors.gray5,
+          height: sizeFactor * 2.5,
+        }}
+        textStyle={{
+          fontSize: sizeFactor * 0.75,
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          color: colors.gray,
+        }}
+        buttonStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+        }}
+        buttonContainerStyle={{
+          borderWidth: 0,
+          backgroundColor: colors.gray5,
+          borderColor: colors.gray5,
+        }}
+        innerBorderStyle={{ color: colors.gray3 }}
+        selectedButtonStyle={{ backgroundColor: colors.blue }}
+        selectedTextStyle={{ color: "white" }}
+      />
+    );
+  }
+}
+
+export class SmallCategory extends Component {
+  render() {
+    var choosed = this.props.choosed;
+    return (
+      <TouchableOpacity>
+        <View style={{ marginRight: sizeFactor }}>
+          <View
+            style={{
+              height: styles.largeCategory.height + sizeFactor / 2,
+              alignContent: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Image source={require("../assets/categories/choosed.png")} style={[styles.largeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
+            <Image
+              source={this.props.source}
+              style={[
+                styles.largeCategory,
+                {
+                  opacity: 1,
+                  width: styles.largeCategory.height - sizeFactor * 1.25,
+                  height: styles.largeCategory.height - sizeFactor * 1.25,
+                },
+              ]}
+            ></Image>
+          </View>
+          <View
+            style={{
+              width: styles.largeCategory.width,
+              alignItems: "center",
+            }}
+          >
+            <String
+              style={{
+                fontSize: sizeFactor * 0.75,
+                fontWeight: this.props.choosed ? "bold" : "normal",
+                color: this.props.choosed ? colors.blue : "black",
+              }}
+            >
+              {this.props.children}
+            </String>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
+
 export class Category extends Component {
   render() {
+    var choosed = this.props.choosed;
     return (
+
       <TouchableOpacity onPress={this.props.onPress}>
-        <View style={{ marginHorizontal: sizeFactor }}>
-          <Image
-            source={this.props.source}
-            style={styles.largeCategory}
-          ></Image>
+        <View style={{ marginRight: sizeFactor }}>
           <View
-            style={{ width: styles.largeCategory.width, alignItems: "center" }}
+            style={{
+              height: styles.hugeCategory.height + sizeFactor / 2,
+              alignContent: "center",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            <String style={{ fontSize: sizeFactor * 0.75 }}>
+            <Image source={require("../assets/categories/choosed.png")} style={[styles.hugeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
+            <Image
+              source={this.props.source}
+              style={[
+                styles.hugeCategory,
+                {
+                  opacity: 1,
+                  width: styles.hugeCategory.height - sizeFactor * 1.25,
+                  height: styles.hugeCategory.height - sizeFactor * 1.25,
+                },
+              ]}
+            ></Image>
+          </View>
+          <View
+            style={{
+              width: styles.hugeCategory.width,
+              alignItems: "center",
+            }}
+          >
+            <String
+              style={{
+                fontSize: sizeFactor * 0.75,
+                fontWeight: this.props.choosed ? "bold" : "normal",
+                color: this.props.choosed ? colors.blue : "black",
+              }}
+            >
               {this.props.children}
             </String>
           </View>
@@ -424,72 +719,67 @@ export class Category extends Component {
 export class CategoryTable extends Component {
   render() {
     return (
-      <View>
+      <View style={{ marginLeft: sizeFactor }}>
         <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
         </RowLeft>
         <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
         </RowLeft>
         <RowLeft>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
-          <Category source={require("../assets/categories/tuthien.png")}>
-            Từ thiện
-          </Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
+          <Category source={require("../assets/categories/themdanhmuc.png")}>Thêm mới</Category>
         </RowLeft>
-        <TouchableText>Tạo danh mục mới</TouchableText>
       </View>
     );
   }
 }
 
-export class LargeScrollSelect extends Component {
+export class ScrollSelect extends Component {
   render() {
     return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <Category source={require("../assets/categories/tuthien.png")}>
+      <ScrollView style={{ marginHorizontal: sizeFactor }} horizontal showsHorizontalScrollIndicator={false}>
+        <SmallCategory choosed="true" source={require("../assets/categories/tuthien.png")}>
           Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện nhiều lên nhé bạn tôi ơi
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
-        <Category source={require("../assets/categories/tuthien.png")}>
-          Từ thiện
-        </Category>
+        </SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
+        <SmallCategory source={require("../assets/categories/tuthien.png")}>Từ thiện</SmallCategory>
       </ScrollView>
     );
+  }
+}
+
+export class RoundedView extends Component {
+  render() {
+    return (
+      <View
+        style={{
+          backgroundColor: "white",
+          marginHorizontal: sizeFactor,
+          borderRadius: sizeFactor,
+          paddingHorizontal: sizeFactor,
+          paddingVertical: sizeFactor,
+          marginBottom: sizeFactor,
+        }}
+      >
+        {this.props.children}
+      </View>
+    );
+  }
+}
+
+export class ColorSelectButton extends Component {
+  render() {
+    return <View style={styles.colorSelect(this.props.color, this.props.selected)} />;
   }
 }

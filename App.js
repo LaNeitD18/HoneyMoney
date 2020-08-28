@@ -10,6 +10,7 @@ import TransactionScreen from './screen/TransactionScreen'
 import {WalletScreen} from './screens/WalletScreen'
 import Categories from './screens/Categories'
 
+
 //Redux
 import {createStore} from 'redux';
 import { Provider } from 'react-redux';
@@ -36,5 +37,3 @@ export default function App() {
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
-  );
-}

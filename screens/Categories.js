@@ -63,8 +63,6 @@ export default class CategoriesScreen extends React.Component {
             paddingHorizontal: sizeFactor / 2.5,
           }}
         />
-        <Title>Gần đây</Title>
-        <LargeScrollSelect />
         <Title>Danh mục</Title>
         <KindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
         <CategoryTable />
