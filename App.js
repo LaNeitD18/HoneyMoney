@@ -5,10 +5,8 @@ import {createStackNavigator} from '@react-navigation/stack'
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import HomeScreen from './screen/HomeScreen'
-import TransactionScreen from './screen/TransactionScreen'
 import {WalletScreen} from './screens/WalletScreen'
-import Categories from './screens/CategoriesScreen'
+import CategoriesScreen from './screens/CategoriesScreen'
 
 
 //Redux
@@ -37,7 +35,7 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
           <Tab.Screen name="Trang chủ" component={WalletContainer} options={{tittle: 'Wallet'}} />
-          <Tab.Screen name="Danh mục" component={Categories} options={{tittle: 'Categories'}}/>
+          <Tab.Screen name="Danh mục" component={CategoriesScreen} options={{tittle: 'Categories'}}/>
           <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
           <Tab.Screen name="AddCate" component={AddCategoryScreen} options={{tittle: 'Thêm Categories'}}/>
           <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
