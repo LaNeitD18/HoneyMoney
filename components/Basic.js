@@ -716,7 +716,6 @@ export class CategoryTable extends Component {
     return (
       <View>
         {this.props.rows}
-        <TouchableText onPress={this.props.onPress}>Tạo danh mục mới</TouchableText>
       </View>
     );
   }

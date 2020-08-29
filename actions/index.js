@@ -34,3 +34,10 @@ export function changeType(selectedType) {
         selectedType: selectedType
     };
 }
+
+export function reloadCategory(selectedType) {
+    return {
+        type: 'RELOAD_CATEGORY',
+        selectedType: selectedType
+    }
+}

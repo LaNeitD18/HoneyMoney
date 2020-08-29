@@ -34,7 +34,7 @@ import TextTicker from "react-native-text-ticker";
 import * as firebase from 'firebase';
 import IconImage, { findIcon } from '../components/Image';
 import { connect } from 'react-redux';
-import changeType from '../actions/index';
+import { changeType } from '../actions/index';
 
 class CategoriesScreen extends React.Component {
   constructor() {
@@ -183,12 +183,10 @@ class CategoriesScreen extends React.Component {
             borderRadius: 99,
             paddingHorizontal: sizeFactor / 2.5,
           }}
-        />
-        <Title>Gần đây</Title>
-        <LargeScrollSelect />
+        />        
         <Title>Danh mục</Title>
         <KindSelect 
-            onPress={() => this.props.changeType(this.props.selectedType)}
+            onPress={(type) => this.props.changeType(type)}
             selectedIndex={this.props.selectedType}
             buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
         <CategoryTable onPress={this.createDatabase} rows={rows}/>
