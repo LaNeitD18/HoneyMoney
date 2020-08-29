@@ -20,10 +20,17 @@ export const decreaseAction = (step) => {
         step: step, //so luong giam xuong
     }
 }
-
+//Thang
 export const UpdateWalletAction = (snap) =>{
     return {
         type: UPDATEWALLETLIST,
         snap: snap,
     }
+}
+// Tien
+export function changeType(selectedType) {
+    return {
+        type: 'CHANGE_TYPE',
+        selectedType: selectedType
+    };
 }

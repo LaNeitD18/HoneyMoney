@@ -16,7 +16,6 @@ import {createStore} from 'redux';
 import { Provider } from 'react-redux';
 
 import allReducers from './reducers/allReducers';
-import SampleContainer from './containers/SampleContainer';
 
 import WalletContainer from './containers/WalletContainer'
 import AddTransactionScreen from './screens/AddTransactionScreen';
