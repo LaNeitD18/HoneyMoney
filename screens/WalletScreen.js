@@ -137,14 +137,6 @@ export default class WalletScreen extends Component {
             {item.money}
           </Wallet>)}}>
         </FlatList>
-        <TouchableText onPress={()=>{walletRef.push({
-          name: "Ví cho người yêu",
-          color: "#ff2d55",
-          date: "01/01/2014",
-          isDefault: "false",
-          money: "25,000,000"})}}>
-            Tạo ví mới
-        </TouchableText>
         <Divider/>
       </ScreenView>
     );
