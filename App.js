@@ -20,6 +20,7 @@ import AddTransactionScreen from './screens/AddTransactionScreen';
 import AddWalletScreen from './screens/AddWalletScreen';
 import EditCategoryScreen from './screens/EditCategoryScreen';
 import AddCategoryScreen from './screens/AddCategoryScreen';
+import Calculator from './components/Calculator';
 
 
 //Navigator
