@@ -27,17 +27,43 @@ export const UpdateWalletAction = (snap) =>{
         snap: snap,
     }
 }
-// Tien
+
+//#region Tien
+
+//#region selectedType 
 export function changeType(selectedType) {
     return {
         type: 'CHANGE_TYPE',
         selectedType: selectedType
     };
 }
+//#endregion
 
-export function reloadCategory(selectedType) {
+//#region renderedCategories
+export function reloadCategory(categories) {
     return {
         type: 'RELOAD_CATEGORY',
-        selectedType: selectedType
+        categories: categories
     }
 }
+//#endregion
+
+//#region allCategories
+export function updateCategories(categories) {
+    return {
+        type: 'UPDATE_CATEGORIES',
+        categories: categories
+    }
+}
+//#endregion
+
+//#region searchText
+export function changeSearchText(text) {
+    return {
+        type: 'CHANGE_SEARCH_TEXT',
+        text: text
+    }
+}
+//#endregion
+
+//#endregion

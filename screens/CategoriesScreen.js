@@ -32,179 +32,163 @@ import {
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from 'firebase';
+import { categoryRef } from '../components/DataConnect';
 import IconImage, { findIcon } from '../components/Image';
 import { connect } from 'react-redux';
-import { changeType } from '../actions/index';
+import { changeType, updateCategories, reloadCategory, changeSearchText } from '../actions/index';
+
 
 class CategoriesScreen extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      search: '',
-      categories: [],
-      //selectedIndex: 1
-    };
-    this.arrayholder = [];
-  }
+    _isMounted = false;
 
-  // updateIndex = (selectedIndex) => {
-  //   // update selected index when pressing on a button in kindselect to change type of category
-  //   this.setState({ selectedIndex }); 
-  //   // after changing type, reload to get categories which belong to this type
-  //   this.getDataBasedOnType(selectedIndex);
-  // }
+    constructor() {
+        super();
+    }
 
-  getDataBasedOnType = (selectedType) => {
-      switch(selectedType) {
-          case 0:
-              this.getData('001');
-              break;
-          case 1:
-              this.getData('002');
-              break;
-          case 2:
-              this.getData('003');
-              break;
-          case 3: 
-              this.getData('004');
-              break;
-      }
-  }
-
-  // demo functions 
-  getData = (typeID) => {
-    firebase.database().ref().child('Category').orderByChild('TypeID').equalTo(typeID).on('value', (snapshot) => {
-      const temp = [];
-      snapshot.forEach(element => {
-          temp.push({
-              key: element.key,
-              categoryName: element.toJSON().CategoryName,
-              icon: element.toJSON().Icon,
-              parentID: element.toJSON().ParentID,
-              typeID: element.toJSON().TypeID
-          });
-      });
-      this.setState({
-        categories: temp
-      });
-      this.arrayholder = temp;
-    });
-  }
-
-  renderCategoryTable = () => {
-    const categories = this.state.categories;
-    const numberOfRows = Math.ceil(categories.length / 4);
-    const rows = [];
-
-    for(let i=0; i<numberOfRows; i++) {
-        const row = [];
-        for(let j=0; j<4; j++) {
-            const index = 4*i + j;
-            if(index < categories.length) {
-              const name = categories[index].categoryName;
-              const path = findIcon(name);
-              row.push(
-                <Category key={categories[index].key} source={path}>
-                    {name}
-                </Category>  
-              );
-            }
+    getDataBasedOnType = (selectedType) => {
+        this.props.changeType(selectedType);
+        switch(selectedType) {
+            case 0:
+                this.getData('001');
+                break;
+            case 1:
+                this.getData('002');
+                break;
+            case 2:
+                this.getData('003');
+                break;
+            case 3: 
+                this.getData('004');
+                break;
         }
-        rows.push(
-            <RowLeft key={i}>{row}</RowLeft>
+    }
+
+    getData = (typeID) => {
+        const categories = this.props.allCategories;
+        const temp = categories.filter(item => item.typeID === typeID);
+        this.props.reloadCategory(temp);
+    }
+
+    renderCategoryTable = () => {
+        const categories = this.props.renderedCategories;
+        const numberOfRows = Math.ceil(categories.length / 4);
+        const rows = [];
+
+        for(let i=0; i<numberOfRows; i++) {
+            const row = [];
+            for(let j=0; j<4; j++) {
+                const index = 4*i + j;
+                if(index < categories.length) {
+                const name = categories[index].categoryName;
+                const path = findIcon(name);
+                row.push(
+                    <Category key={categories[index].key} source={path}>
+                        {name}
+                    </Category>  
+                );
+                }
+            }
+            rows.push(
+                <RowLeft key={i}>{row}</RowLeft>
+            );
+        }
+        return rows;
+    }
+
+    createDatabase = () => {
+        for(let i=4; i<22; i++) {
+        const temp = this.state.categories[i];
+        firebase.database().ref('Category/').child(temp.key).update({
+            Icon: 'thuno'
+        })
+        }
+    }
+
+    componentDidMount() {
+        this._isMounted = true; 
+        categoryRef.on('value', (snapshot) => {this.props.updateCategories(snapshot)});
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    searchFilterFunction(text) {
+        if(text !== "") {
+            //passing the inserted text in textinput
+            const newData = this.props.allCategories.filter(function(item) {
+                //applying filter for the inserted text in search bar
+                const itemData = item.categoryName ? item.categoryName.toUpperCase() : ''.toUpperCase();
+                const textData = text.toUpperCase();
+                return itemData.indexOf(textData) > -1;
+            });
+            this.props.reloadCategory(newData);
+        } else {
+            this.getDataBasedOnType(this.props.selectedType);
+        }
+        //setting the filtered newData on datasource
+        //After setting the data it will automatically re-render the view
+        this.props.changeSearchText(text);
+    }
+
+    renderKindSelect = () => {
+        if(this.props.searchText === "") {
+            return (
+                <KindSelect 
+                    onPress={(index) => this.getDataBasedOnType(index)}
+                    selectedIndex={this.props.selectedType}
+                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
+            );
+        }   return;
+    }
+
+    render() {
+        let rows = this.renderCategoryTable();
+        const kindSelect = this.renderKindSelect();
+
+        return (
+        <ScreenView style={{ flex: 1 }}>
+            <SearchBar
+            platform={Platform.OS}
+            placeholder="Tìm danh mục..."
+            onChangeText={text => this.searchFilterFunction(text)}
+            value={this.props.searchText}
+            lightTheme="true"
+            containerStyle={{
+                backgroundColor: "",
+                marginHorizontal:
+                Platform.OS == "ios" ? sizeFactor / 2 : sizeFactor,
+            }}
+            inputContainerStyle={{
+                backgroundColor: "white",
+                borderRadius: 99,
+                paddingHorizontal: sizeFactor / 2.5,
+            }}
+            />        
+            <Title>Danh mục</Title>
+            {kindSelect}
+            <CategoryTable onPress={this.createDatabase} rows={rows}/>
+            <Divider />
+        </ScreenView>
         );
     }
-    return rows;
-  }
-
-  createDatabase = () => {
-    for(let i=4; i<22; i++) {
-      const temp = this.state.categories[i];
-      firebase.database().ref('Category/').child(temp.key).update({
-        Icon: 'thuno'
-      })
-    }
-  }
-
-  componentDidMount() {
-     this.getDataBasedOnType(this.props.selectedType);
-  }
-
-  SearchFilterFunction(text) {
-    //passing the inserted text in textinput
-    const newData = this.arrayholder.filter(function(item) {
-      //applying filter for the inserted text in search bar
-      const itemData = item.categoryName ? item.categoryName.toUpperCase() : ''.toUpperCase();
-      const textData = text.toUpperCase();
-      return itemData.indexOf(textData) > -1;
-    });
-    this.setState({
-      //setting the filtered newData on datasource
-      //After setting the data it will automatically re-render the view
-      categories: newData,
-      search: text,
-    });
-    //console.log(this.arrayholder);
-    //console.log(newData);
-  }
-  ListViewItemSeparator = () => {
-    //Item sparator view
-    return (
-      <View
-        style={{
-          height: 0.3,
-          width: '90%',
-          backgroundColor: '#080808',
-        }}
-      />
-    );
-  };
-
-  render() {
-    const search = this.state.search;
-    //const selectedIndex = this.state.selectedIndex;
-    let rows = this.renderCategoryTable();
-
-    return (
-      <ScreenView style={{ flex: 1 }}>
-        <SearchBar
-          platform={Platform.OS}
-          placeholder="Tìm danh mục..."
-          onChangeText={text => this.SearchFilterFunction(text)}
-          value={this.state.search}
-          lightTheme="true"
-          containerStyle={{
-            backgroundColor: "",
-            marginHorizontal:
-              Platform.OS == "ios" ? sizeFactor / 2 : sizeFactor,
-          }}
-          inputContainerStyle={{
-            backgroundColor: "white",
-            borderRadius: 99,
-            paddingHorizontal: sizeFactor / 2.5,
-          }}
-        />        
-        <Title>Danh mục</Title>
-        <KindSelect 
-            onPress={(type) => this.props.changeType(type)}
-            selectedIndex={this.props.selectedType}
-            buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
-        <CategoryTable onPress={this.createDatabase} rows={rows}/>
-        <Divider />
-      </ScreenView>
-    );
-  }
 }
 
 function mapStateToProps(state) {
     return {
-        selectedType: state.selectedType
+        selectedType: state.selectedType,
+        allCategories: state.allCategories,
+        renderedCategories: state.renderedCategories,
+        searchText: state.searchText
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => { dispatch(changeType(selectedType))}
+        changeType: (selectedType) => { dispatch(changeType(selectedType))},
+        updateCategories: (categories) => {dispatch(updateCategories(categories))}, 
+        reloadCategory: (categories) => {dispatch(reloadCategory(categories))},
+        changeSearchText: (text) => {dispatch(changeSearchText(text))}
     }
 }
 

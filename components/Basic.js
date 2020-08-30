@@ -472,14 +472,14 @@ export class TouchableDeleteText extends Component {
 
 export class KindSelect extends Component {
     constructor() {
-    super();
-    this.state = {
-      selectedIndex: 0,
-    };
-  }
+        super();
+        this.state = {
+        selectedIndex: 0,
+        };
+    }
   render() {
     const buttons = this.props.buttons;
-    const { selectedIndex } = this.state;
+    //const { selectedIndex } = this.state;
     return (
       <ButtonGroup
         onPress={this.props.onPress}
