@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
             height: (windowWidth - 10 * sizeFactor) / 9,
             borderRadius: (windowWidth - 6 * sizeFactor) / 4.5,
             backgroundColor: thecolor,
-            opacity: selected ? 1 : 0.2,
+            opacity: (selected == thecolor) ? 1 : 0.2,
             marginBottom: sizeFactor * 0.75,
         };
     },
@@ -760,7 +760,11 @@ export class RoundedView extends Component {
 
 export class ColorSelectButton extends Component {
     render() {
-        return <View style={styles.colorSelect(this.props.color, this.props.selected)} />;
+        return (
+          <TouchableOpacity onPress={this.props.onPress}>
+            <View style={styles.colorSelect(this.props.color, this.props.selected)} />
+          </TouchableOpacity>
+        );
     }
 }
 
