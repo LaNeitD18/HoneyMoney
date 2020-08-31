@@ -35,7 +35,7 @@ import * as firebase from 'firebase';
 import { categoryRef } from '../components/DataConnect';
 import IconImage, { findIcon } from '../components/Image';
 import { connect } from 'react-redux';
-import { changeType, updateCategories, reloadCategory, changeSearchText } from '../actions/index';
+import { changeType, updateCategories, reloadCategory, changeSearchText, chooseCategory, changeName } from '../actions/index';
 
 
 class CategoriesScreen extends React.Component {
@@ -69,6 +69,11 @@ class CategoriesScreen extends React.Component {
         this.props.reloadCategory(temp);
     }
 
+    chooseCategory = (category) => {
+        this.props.chooseCategory(category);
+        this.props.changeName(category.categoryName);
+    }
+
     renderCategoryTable = () => {
         const categories = this.props.renderedCategories;
         const numberOfRows = Math.ceil(categories.length / 4);
@@ -80,10 +85,14 @@ class CategoriesScreen extends React.Component {
                 const index = 4*i + j;
                 if(index < categories.length) {
                 const name = categories[index].categoryName;
-                const path = findIcon(name);
+                const icon = categories[index].icon;
+                const iconPath = findIcon(icon);
                 row.push(
-                    <Category key={categories[index].key} source={path}>
-                        {name}
+                    <Category 
+                        key={categories[index].key} 
+                        source={iconPath} 
+                        onPress={() => this.chooseCategory(categories[index])}>
+                    {name}
                     </Category>  
                 );
                 }
@@ -95,18 +104,16 @@ class CategoriesScreen extends React.Component {
         return rows;
     }
 
-    createDatabase = () => {
-        for(let i=4; i<22; i++) {
-        const temp = this.state.categories[i];
-        firebase.database().ref('Category/').child(temp.key).update({
-            Icon: 'thuno'
-        })
-        }
-    }
-
     componentDidMount() {
         this._isMounted = true; 
         categoryRef.on('value', (snapshot) => {this.props.updateCategories(snapshot)});
+    }
+
+    componentDidUpdate(prevProps) {
+        // when allCategories is updated after creating new category, renderedCategories is also updated
+        if((this.props.allCategories !== prevProps.allCategories) || (this.props.selectedType !== prevProps.selectedType)) {
+            this.getDataBasedOnType(this.props.selectedType);
+        }
     }
 
     componentWillUnmount() {
@@ -167,7 +174,7 @@ class CategoriesScreen extends React.Component {
             />        
             <Title>Danh mục</Title>
             {kindSelect}
-            <CategoryTable onPress={this.createDatabase} rows={rows}/>
+            <CategoryTable rows={rows}/>
             <Divider />
         </ScreenView>
         );
@@ -186,9 +193,11 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         changeType: (selectedType) => { dispatch(changeType(selectedType))},
-        updateCategories: (categories) => {dispatch(updateCategories(categories))}, 
-        reloadCategory: (categories) => {dispatch(reloadCategory(categories))},
-        changeSearchText: (text) => {dispatch(changeSearchText(text))}
+        updateCategories: (categories) => { dispatch(updateCategories(categories)) }, 
+        reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
+        changeSearchText: (text) => { dispatch(changeSearchText(text)) },
+        chooseCategory: (category) => { dispatch(chooseCategory(category)) },
+        changeName: (text) => { dispatch(changeName(text)) },
     }
 }
 

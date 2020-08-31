@@ -66,4 +66,22 @@ export function changeSearchText(text) {
 }
 //#endregion
 
+//#region chosenCategory
+export function chooseCategory(category) {
+    return {
+        type: 'CHOOSE_CATEGORY',
+        category: category
+    }
+}
+//#endregion
+
+//#region categoryName
+export function changeName(text) {
+    return {
+        type: 'CHANGE_NAME',
+        text: text
+    }
+}
+//#endregion
+
 //#endregion

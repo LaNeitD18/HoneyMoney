@@ -455,7 +455,7 @@ export class TouchableDeleteText extends Component {
         return (
             <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
                 <String></String>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.props.onPress}>
                     <String
                         style={{
                             fontSize: sizeFactor,
@@ -577,8 +577,8 @@ export class AddWalletKindSelect extends Component {
         const { selectedIndex } = this.state;
         return (
             <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
+                onPress={this.props.onPress}
+                selectedIndex={this.props.selectedIndex}
                 buttons={buttons}
                 containerStyle={{
                     borderRadius: sizeFactor,
