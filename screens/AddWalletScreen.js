@@ -46,6 +46,7 @@ import {
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
+import { walletRef } from "../components/DataConnect";
 
 export default class AddWalletScreen extends Component {
   constructor(props) {
@@ -63,14 +64,70 @@ export default class AddWalletScreen extends Component {
   onChangeSoDu(text){
     this.setState({newSoDu: text});
   }
+  checkWalletValid(){
+    var TenVi = this.state.newTenVi;
+    var SoDu = this.state.newSoDu;
+    var Mau = this.state.selectedColor;
+    if(!TenVi)
+    {
+      return false;
+    }
+    if(!SoDu)
+    {
+      if(SoDu != '0')
+        return false;
+    }
+    return true;
+  }
+  addNewWallet(){
+    var TenVi = this.state.newTenVi;
+    var SoDu = this.state.newSoDu;
+    var Mau = this.state.selectedColor;
+    if(this.checkWalletValid())
+    {
+      walletRef.push({
+        name: TenVi,
+        money: SoDu,
+        date: this.state.date,
+        isDefault: 'false',
+        color: Mau
+      });
+      //them vao day mot cai rhong bao pop up da tao vi thanh cong
+      this.setState({
+        newTenVi: '',
+        newSoDu: '',
+        selectedColor: colors.blue
+      })
+    }
+    else
+    {this.setState({newTenVi: "Lỗi"})}
+  }
   componentDidMount() {
     var that = this;
     var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
     var year = new Date().getFullYear(); //Current Year
+    var fulldate;
+    if(date < 10)
+    {
+      fulldate = '0' + date;
+    }
+    else
+    {
+      fulldate = date;
+    }
+    if(month < 10)
+    {
+      fulldate = fulldate + '/' + '0' + month;
+    }
+    else
+    {
+      fulldate = fulldate + '/' + month;
+    }
+    fulldate = fulldate + '/' + year;
     that.setState({
       //Setting the value of the date time
-      date: date + '/' + month + '/' + year
+      date: fulldate
     });
   }
   render() {
@@ -121,6 +178,7 @@ export default class AddWalletScreen extends Component {
           color="white"
           background={colors.blue}
           style={{ marginHorizontal: sizeFactor }}
+          onPress={()=>{this.addNewWallet()}}
         >
           Lưu thay đổi
         </Button>

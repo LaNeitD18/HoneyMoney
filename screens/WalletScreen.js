@@ -116,7 +116,7 @@ export default class WalletScreen extends Component {
                     flexDirection: "row",
                 }}
             >
-                <AddWalletButton color={colors.blue} />
+                <AddWalletButton color={colors.blue} onPress={()=>{this.props.navigate(AddWalletScreen)}}/>
             </View>
         </Row>
         <FlatList 

@@ -223,7 +223,7 @@ export class HeadlessCard extends Component {
 export class AddWalletButton extends Component {
     render() {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress = {this.props.onPress}>
                 <Icon name="credit-card-plus-outline" type="material-community" color={this.props.color} size={sizeFactor * 2} style={{ marginRight: sizeFactor / 2 }} />
             </TouchableOpacity>
         );
