@@ -37,6 +37,9 @@ import IconImage, { findIcon } from '../components/Image';
 import { connect } from 'react-redux';
 import { changeType, updateCategories, reloadCategory, changeSearchText, chooseCategory, changeName } from '../actions/index';
 
+import EditCategoryScreen from './EditCategoryScreen';
+import { CommonActions } from '@react-navigation/native';
+
 
 class CategoriesScreen extends React.Component {
     _isMounted = false;
@@ -72,11 +75,12 @@ class CategoriesScreen extends React.Component {
     chooseCategory = (category) => {
         this.props.chooseCategory(category);
         this.props.changeName(category.categoryName);
+        this.props.navigation.navigate('EditCategoryScreen');
     }
 
     renderCategoryTable = () => {
         const categories = this.props.renderedCategories;
-        const numberOfRows = Math.ceil(categories.length / 4);
+        const numberOfRows = Math.ceil((categories.length + 1) / 4);
         const rows = [];
 
         for(let i=0; i<numberOfRows; i++) {
@@ -84,17 +88,26 @@ class CategoriesScreen extends React.Component {
             for(let j=0; j<4; j++) {
                 const index = 4*i + j;
                 if(index < categories.length) {
-                const name = categories[index].categoryName;
-                const icon = categories[index].icon;
-                const iconPath = findIcon(icon);
-                row.push(
-                    <Category 
-                        key={categories[index].key} 
-                        source={iconPath} 
-                        onPress={() => this.chooseCategory(categories[index])}>
-                    {name}
-                    </Category>  
-                );
+                    const name = categories[index].categoryName;
+                    const icon = categories[index].icon;
+                    const iconPath = findIcon(icon);
+                    row.push(
+                        <Category 
+                            key={categories[index].key} 
+                            source={iconPath} 
+                            onPress={() => this.chooseCategory(categories[index])}>
+                        {name}
+                        </Category>  
+                    );
+                } else if( index == categories.length) {
+                    row.push(
+                        <Category 
+                            key={index} 
+                            source={require("../assets/categories/themdanhmuc.png")} 
+                            onPress={() => this.props.navigation.navigate('AddCategoryScreen')}>
+                        {'Thêm danh mục'}
+                        </Category>
+                    )
                 }
             }
             rows.push(

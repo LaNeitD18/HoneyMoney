@@ -58,16 +58,21 @@ import { connect } from 'react-redux';
 import { categoryRef } from '../components/DataConnect';
 import * as firebase from 'firebase';
 
-export default class AddCategoryScreen extends Component {
+import { changeType, changeName } from '../actions/index';
+
+class AddCategoryScreen extends Component {
 
     createCategory = () => {
+        const name = this.props.categoryName;
+        const type = this.props.selectedType == 0 ? '001' : this.props.selectedType == 1 ? '002' : '003';
+
         categoryRef.push({
-            CategoryName: 'Temp',
+            CategoryName: name,
             Icon: '',
             ParentID: '',
-            TypeID: '002'
+            TypeID: type
         });
-        //this.getData('002');
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -108,10 +113,16 @@ export default class AddCategoryScreen extends Component {
             <Title style={{ marginLeft: sizeFactor * 1.5 }}>Tạo danh mục</Title>
             <RoundedView>
             <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
-            <TextInput style={styles.inputText} placeholder="Danh mục của tôi" />
+            <TextInput 
+                style={styles.inputText} 
+                placeholder="Danh mục của tôi" 
+                onChangeText={(text) => this.props.changeName(text)}/>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Loại chi tiêu</String>
-            <AddWalletKindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} />
+            <AddWalletKindSelect 
+                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
+                selectedIndex={this.props.selectedType} 
+                onPress={(index) => this.props.changeType(index)}/>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Danh mục con</String>
             <View>
@@ -156,16 +167,18 @@ export default class AddCategoryScreen extends Component {
     }
 }
 
-// function mapStateToProps(state) {
-//     return {
-//         allCategories: state.allCategories
-//     }
-// }
+function mapStateToProps(state) {
+    return {
+        categoryName: state.categoryName,
+        selectedType: state.selectedType,
+    }
+}
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//         reloadCategory: (categories) => {dispatch(reloadCategory(categories))}, 
-//     }
-// }
+function mapDispatchToProps(dispatch) {
+    return {
+        changeName: (text) => {dispatch(changeName(text))}, 
+        changeType: (index) => {dispatch(changeType(index))},
+    }
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(AddCategoryScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCategoryScreen);

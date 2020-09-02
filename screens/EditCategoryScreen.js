@@ -93,7 +93,7 @@ class EditCategoryScreen extends Component {
         const category = this.props.chosenCategory;
         categoryRef.child(category.key).remove();
 
-        // exit this screen
+        this.props.navigation.goBack();
     }
 
     render() {
@@ -148,8 +148,7 @@ class EditCategoryScreen extends Component {
             <String style={{ fontWeight: "bold" }}>Mục đích</String>
             <AddWalletKindSelect 
                 selectedIndex={this.getSelectedIndex()}
-                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} 
-                onPress={(index) => this.props.changeType(index)} />
+                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} />
             <Divider />
             <String style={{ fontWeight: "bold" }}>Danh mục con</String>
             <View>

@@ -22,6 +22,7 @@ import EditCategoryScreen from './screens/EditCategoryScreen';
 import AddCategoryScreen from './screens/AddCategoryScreen';
 import Calculator from './components/Calculator';
 
+import CategoryNavigator from './screens/CategoryNavigator';
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -36,11 +37,9 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
           <Tab.Screen name="Trang chủ" component={WalletContainer} options={{tittle: 'Wallet'}} />
-          <Tab.Screen name="Danh mục" component={CategoriesScreen} options={{tittle: 'Categories'}}/>
+          <Tab.Screen name="Danh mục" component={CategoryNavigator} options={{tittle: 'Categories'}}/>
           <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
-          <Tab.Screen name="AddCate" component={AddCategoryScreen} options={{tittle: 'Thêm Categories'}}/>
           <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
-          <Tab.Screen name="EditCate" component={EditCategoryScreen} options={{tittle: 'Sửa Categories'}}/>
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
