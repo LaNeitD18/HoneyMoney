@@ -82,21 +82,59 @@ class EditCategoryScreen extends Component {
 
     updateCategory = () => {
         const category = this.props.chosenCategory;
+        const type = this.props.selectedType == 0 ? '001' : this.props.selectedType == 1 ? '002' : '003';
         categoryRef.child(category.key).update({
-            CategoryName: this.props.categoryName
+            CategoryName: this.props.categoryName,
+            TypeID: type
         });
 
         // exit this screen
+        this.props.navigation.goBack();
     }
 
     deleteCategory = () => {
         const category = this.props.chosenCategory;
         categoryRef.child(category.key).remove();
 
+        // exit this screen
         this.props.navigation.goBack();
     }
 
+    renderSubCategoriesView = () => {
+        const subCategories = this.props.subCategories;
+        //console.log(subCategories);
+        return <View>
+            {subCategories.map((item, i) => (
+                <TouchableOpacity>
+                    <ListItem
+                    key={item.key}
+                    title={item.categoryName}
+                    leftAvatar={{
+                        source: findIcon(item.icon),
+                        width: sizeFactor * 2.5,
+                        height: sizeFactor * 2.5,
+                        rounded: false,
+                    }}
+                    chevron={
+                        //sorry for bad code, pls edit this
+                        item.categoryName == "Thêm mới"
+                        ? false
+                        : { size: sizeFactor * 1.5 }
+                    }
+                    contentContainerStyle={{ marginHorizontal: 0 }}
+                    rightContentContainerStyle={{ marginHorizontal: 0 }}
+                    containerStyle={{ paddingHorizontal: 0 }}
+                    titleStyle={{ fontSize: sizeFactor }}
+                    pad={sizeFactor}
+                    />
+                </TouchableOpacity>
+            ))}
+        </View>
+    }
+
     render() {
+        const subCategoriesView = this.renderSubCategoriesView();
+
         const list = [
             {
                 title: "Từ tiện",
@@ -147,37 +185,12 @@ class EditCategoryScreen extends Component {
             <Divider />
             <String style={{ fontWeight: "bold" }}>Mục đích</String>
             <AddWalletKindSelect 
-                selectedIndex={this.getSelectedIndex()}
-                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} />
+                selectedIndex={this.props.selectedType}
+                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} 
+                onPress={(index) => this.props.changeType(index)}/>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Danh mục con</String>
-            <View>
-                {list.map((item, i) => (
-                <TouchableOpacity>
-                    <ListItem
-                    key={i}
-                    title={item.title}
-                    leftAvatar={{
-                        source: item.source,
-                        width: sizeFactor * 2.5,
-                        height: sizeFactor * 2.5,
-                        rounded: false,
-                    }}
-                    chevron={
-                        //sorry for bad code, pls edit this
-                        item.title == "Thêm mới"
-                        ? false
-                        : { size: sizeFactor * 1.5 }
-                    }
-                    contentContainerStyle={{ marginHorizontal: 0 }}
-                    rightContentContainerStyle={{ marginHorizontal: 0 }}
-                    containerStyle={{ paddingHorizontal: 0 }}
-                    titleStyle={{ fontSize: sizeFactor }}
-                    pad={sizeFactor}
-                    />
-                </TouchableOpacity>
-                ))}
-            </View>
+            {subCategoriesView}
             <TouchableDeleteText onPress={this.deleteCategory}>
                 Xóa danh mục
             </TouchableDeleteText>
@@ -201,6 +214,8 @@ function mapStateToProps(state) {
     return {
         chosenCategory: state.chosenCategory,
         categoryName: state.categoryName,
+        subCategories: state.subCategories,
+        selectedType: state.selectedType,
     };
 }
 

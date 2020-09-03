@@ -84,4 +84,13 @@ export function changeName(text) {
 }
 //#endregion
 
+//#region subCategories
+export function getSubCategories(subCategories) {
+    return {
+        type: 'GET_SUB',
+        subCategories: subCategories
+    }
+}
+//#endregion
+
 //#endregion

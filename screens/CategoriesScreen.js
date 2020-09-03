@@ -35,10 +35,13 @@ import * as firebase from 'firebase';
 import { categoryRef } from '../components/DataConnect';
 import IconImage, { findIcon } from '../components/Image';
 import { connect } from 'react-redux';
-import { changeType, updateCategories, reloadCategory, changeSearchText, chooseCategory, changeName } from '../actions/index';
+import { changeType, updateCategories, reloadCategory, 
+        changeSearchText, chooseCategory, changeName, getSubCategories,
+} from '../actions/index';
 
 import EditCategoryScreen from './EditCategoryScreen';
 import { CommonActions } from '@react-navigation/native';
+import chosenCategoryReducer from "../reducers/chosenCategoryReducer";
 
 
 class CategoriesScreen extends React.Component {
@@ -72,9 +75,50 @@ class CategoriesScreen extends React.Component {
         this.props.reloadCategory(temp);
     }
 
+    createNewCategory = () => {
+        const category = [{
+            key: 0,
+            categoryName: 'Thêm mới',
+            icon: 'themdanhmuccon',
+            parentID: '',
+            typeID: ''
+        }];
+        this.props.getSubCategories(category);
+        this.props.navigation.navigate('AddCategoryScreen');
+    }
+
+    getSubCategories = (chosenCategory) => {
+        const categories = [];
+        categoryRef.orderByChild('ParentID').equalTo(chosenCategory.key).once('value', (snapshot) => {
+            snapshot.forEach(element => {
+                categories.push({
+                    key: element.key,
+                    categoryName: element.toJSON().CategoryName,
+                    icon: element.toJSON().Icon,
+                    parentID: element.toJSON().ParentID,
+                    typeID: element.toJSON().TypeID
+                });
+            });
+        });
+        categories.push({
+            key: 0,
+            categoryName: 'Thêm mới',
+            icon: 'themdanhmuccon',
+            parentID: '',
+            typeID: ''
+        });
+        console.log("ZZZ");
+        console.log(categories);
+        return categories;
+    }
+
     chooseCategory = (category) => {
         this.props.chooseCategory(category);
         this.props.changeName(category.categoryName);
+
+        const subCategories = this.getSubCategories(category);
+        this.props.getSubCategories(subCategories);
+
         this.props.navigation.navigate('EditCategoryScreen');
     }
 
@@ -104,7 +148,7 @@ class CategoriesScreen extends React.Component {
                         <Category 
                             key={index} 
                             source={require("../assets/categories/themdanhmuc.png")} 
-                            onPress={() => this.props.navigation.navigate('AddCategoryScreen')}>
+                            onPress={() => this.createNewCategory()}>
                         {'Thêm danh mục'}
                         </Category>
                     )
@@ -211,6 +255,7 @@ function mapDispatchToProps(dispatch) {
         changeSearchText: (text) => { dispatch(changeSearchText(text)) },
         chooseCategory: (category) => { dispatch(chooseCategory(category)) },
         changeName: (text) => { dispatch(changeName(text)) },
+        getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
     }
 }
 

@@ -7,6 +7,7 @@ import allCategoriesReducer from '../reducers/allCategoriesReducer';
 import searchTextReducer from '../reducers/searchTextReducer';
 import chosenCategoryReducer from '../reducers/chosenCategoryReducer';
 import categoryNameReducer from '../reducers/categoryNameReducer';
+import subCategoriesReducer from '../reducers/subCategoriesReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -20,6 +21,7 @@ const allReducers = combineReducers({
     searchText: searchTextReducer,
     chosenCategory: chosenCategoryReducer,
     categoryName: categoryNameReducer,
+    subCategories: subCategoriesReducer,
 })
 
 export default allReducers;

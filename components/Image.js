@@ -26,6 +26,10 @@ const IconImage = [
     {type: 'duocTang', iconPath: require("../assets/categories/qua.png")},
     {type: 'banDo', iconPath: require("../assets/money/010-cash-1.png")},
     {type: 'khoanThuKhac', iconPath: require("../assets/money/018-investment-1.png")},
+
+    // others
+    {type: 'themdanhmuc', iconPath: require("../assets/categories/themdanhmuc.png")},
+    {type: 'themdanhmuccon', iconPath: require("../assets/categories/themdanhmuccon.png")},
 ]
 
 

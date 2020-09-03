@@ -59,6 +59,8 @@ import { categoryRef } from '../components/DataConnect';
 import * as firebase from 'firebase';
 
 import { changeType, changeName } from '../actions/index';
+import { findIcon } from '../components/Image';
+import { sub } from "react-native-reanimated";
 
 class AddCategoryScreen extends Component {
 
@@ -75,7 +77,67 @@ class AddCategoryScreen extends Component {
         this.props.navigation.goBack();
     }
 
+    renderSubCategoriesView = () => {
+        // const subCategories = [];
+        // this.props.subCategories.forEach(element => {
+        //     subCategories.push({
+        //         key: element.key,
+        //         categoryName: element.categoryName,
+        //         icon: element.icon,
+        //         parentID: element.parentID,
+        //         typeID: element.typeID
+        //     });
+        // });
+        // subCategories.push({
+        //     key: 0,
+        //     categoryName: 'Thêm mới',
+        //     icon: 'themdanhmuccon',
+        //     parentID: '',
+        //     typeID: ''
+        // });
+        const subCategories = this.props.subCategories;
+        //console.log(subCategories);
+        return <View>
+            {subCategories.map((item, i) => (
+                <TouchableOpacity>
+                    <ListItem
+                    key={item.key}
+                    title={item.categoryName}
+                    leftAvatar={{
+                        source: findIcon(item.icon),
+                        width: sizeFactor * 2.5,
+                        height: sizeFactor * 2.5,
+                        rounded: false,
+                    }}
+                    chevron={
+                        //sorry for bad code, pls edit this
+                        item.categoryName == "Thêm mới"
+                        ? false
+                        : { size: sizeFactor * 1.5 }
+                    }
+                    contentContainerStyle={{ marginHorizontal: 0 }}
+                    rightContentContainerStyle={{ marginHorizontal: 0 }}
+                    containerStyle={{ paddingHorizontal: 0 }}
+                    titleStyle={{ fontSize: sizeFactor }}
+                    pad={sizeFactor}
+                    />
+                </TouchableOpacity>
+            ))}
+        </View>
+    }
+
     render() {
+        // const subCategories = [];
+        // this.props.subCategories.for
+        // subCategories.push({
+        //     key: 0,
+        //     categoryName: 'Thêm mới',
+        //     icon: 'themdanhmuccon',
+        //     parentID: '',
+        //     typeID: ''
+        // });
+        const subCategoriesView = this.renderSubCategoriesView();
+
         const list = [
         {
             title: "Từ tiện",
@@ -125,33 +187,7 @@ class AddCategoryScreen extends Component {
                 onPress={(index) => this.props.changeType(index)}/>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Danh mục con</String>
-            <View>
-                {list.map((item, i) => (
-                <TouchableOpacity>
-                    <ListItem
-                    key={i}
-                    title={item.title}
-                    leftAvatar={{
-                        source: item.source,
-                        width: sizeFactor * 2.5,
-                        height: sizeFactor * 2.5,
-                        rounded: false,
-                    }}
-                    chevron={
-                        //sorry for bad code, pls edit this
-                        item.title == "Thêm mới"
-                        ? false
-                        : { size: sizeFactor * 1.5 }
-                    }
-                    contentContainerStyle={{ marginHorizontal: 0 }}
-                    rightContentContainerStyle={{ marginHorizontal: 0 }}
-                    containerStyle={{ paddingHorizontal: 0 }}
-                    titleStyle={{ fontSize: sizeFactor }}
-                    pad={sizeFactor}
-                    />
-                </TouchableOpacity>
-                ))}
-            </View>
+            {subCategoriesView}
             </RoundedView>
             <Divider />
             <Button
@@ -171,6 +207,7 @@ function mapStateToProps(state) {
     return {
         categoryName: state.categoryName,
         selectedType: state.selectedType,
+        subCategories: state.subCategories,
     }
 }
 
