@@ -116,7 +116,9 @@ export class WalletScreen extends Component {
                 defaultChanged(item);
               }
             }}
-            onPressSuDung={()=>{}}
+            onPressSuDung={()=>{this.props.navigation.navigate({name: 'AddTransactionScreen', params:{
+              walletName: item.name,
+              walletColor: item.color}})}}
           >
             {item.money}
           </Wallet>)}}>

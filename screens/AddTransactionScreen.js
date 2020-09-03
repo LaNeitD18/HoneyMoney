@@ -45,11 +45,47 @@ import {
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import CategoriesScreen from "../screens/CategoriesScreen";
+import DatePicker from "react-native-datepicker";
+
+//firebase
+import * as firebase from 'firebase'
+
+//data connect
+import {rootRef,walletRef} from '../components/DataConnect'
+
+//Navigator
+import { CommonActions } from '@react-navigation/native';
+import { color } from "react-native-reanimated";
 
 export default class AddTransactionScreen extends Component {
+  _isMounted = false;
+  constructor(props)
+  {
+    super(props);
+    this.state = {
+      date: '',
+      selectedTenVi: this.props.route.params?.walletName ?? '',
+      newSoDu: '',
+      defaultColor: this.props.route.params?.walletColor ?? colors.blue,
+    };
+  }
+  componentDidMount(){
+    let tempTen = '';
+    let tempColor = '';
+    if(this.state.selectedTenVi == '')
+    {
+      walletRef.orderByChild("isDefault").equalTo('true').on('value', (snap) => {
+        snap.forEach(element => {
+          tempTen = element.toJSON().name;
+          tempColor = element.toJSON().color;
+      })
+    })
+    this.setState({selectedTenVi: tempTen, defaultColor: tempColor});
+    }
+  }
   render() {
     return (
-      <ScreenView style={{ backgroundColor: colors.indigo }}>
+      <ScreenView style={{ backgroundColor: this.state.defaultColor }}>
         <TouchableOpacity>
           <View
             style={{
@@ -71,7 +107,7 @@ export default class AddTransactionScreen extends Component {
                 marginTop: 1,
               }}
             />
-            <Heading style={{ color: "white" }}>Ví chính</Heading>
+            <Heading style={{ color: "white" }}>{this.state.selectedTenVi}</Heading>
             <Icon
               name="unfold-more-horizontal"
               type="material-community"
@@ -170,7 +206,7 @@ export default class AddTransactionScreen extends Component {
             <RowLeft style={{ flex: 9 }}>
               <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
                 <ToggleButton
-                  color={colors.indigo}
+                  color={this.state.defaultColor}
                   background="white"
                   choosed="true"
                   style={{ paddingHorizontal: sizeFactor / 4 }}
@@ -180,7 +216,7 @@ export default class AddTransactionScreen extends Component {
               </View>
               <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
                 <ToggleButton
-                  color={colors.indigo}
+                  color={this.state.defaultColor}
                   background="white"
                   choosed="false"
                   style={{ paddingHorizontal: sizeFactor / 4 }}
@@ -190,7 +226,7 @@ export default class AddTransactionScreen extends Component {
               </View>
               <View style={{ flex: 3.5 }}>
                 <ToggleButton
-                  color={colors.indigo}
+                  color={this.state.defaultColor}
                   background="white"
                   choosed="false"
                   style={{ paddingHorizontal: sizeFactor / 4 }}

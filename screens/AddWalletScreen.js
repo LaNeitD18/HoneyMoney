@@ -47,6 +47,7 @@ import {
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { walletRef } from "../components/DataConnect";
+import { BaseRouter } from "@react-navigation/native";
 
 export default class AddWalletScreen extends Component {
   constructor(props) {
@@ -58,6 +59,7 @@ export default class AddWalletScreen extends Component {
       selectedColor: colors.blue,
     };
   }
+  
   onChangeTenVi(text){
     this.setState({newTenVi: text});
   }
