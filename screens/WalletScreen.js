@@ -46,29 +46,9 @@ import {connect} from 'react-redux';
 import {rootRef,walletRef} from '../components/DataConnect'
 
 //Redux action
-// import { ChangeDefaultAction, UpdateWalletAction } from "../actions";
+import {UpdateWalletAction } from "../actions";
 
-// //redux define container
-
-// const mapStateToProps = (state) => {
-//   return{
-//       walletData: state.walletReducer,
-//   }
-// };
-
-// const mapDispatchToProps = (dispatch) =>{
-//   return {
-//       ChangeDefault: (walletItem) => {   
-//         dispatch(ChangeDefaultAction(walletItem));
-//       },
-//       Update: () => {
-//         dispatch(UpdateWalletAction());
-//       }
-//   };
-// }
-// export default WalletContainer = connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
-
-export default class WalletScreen extends Component {
+export class WalletScreen extends Component {
   constructor(props)
   {
     super(props);
@@ -166,6 +146,24 @@ defaultChanged = (walletItem)=>{
     isDefault: "true"
     });
 }
+
+//redux define container
+
+const mapStateToProps = (state) => {
+  return{
+      walletData: state.WalletReducer,
+  }
+};
+
+const mapDispatchToProps = (dispatch) =>{
+  return {
+      Update: (snap) => {
+        dispatch(UpdateWalletAction(snap));
+      }
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
+
 
 var WalletData = [
   {
