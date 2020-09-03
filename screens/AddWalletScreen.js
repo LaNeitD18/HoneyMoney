@@ -139,7 +139,7 @@ export default class AddWalletScreen extends Component {
           color="black"
           size={sizeFactor * 6}
         />
-        <Title style={{ marginLeft: sizeFactor * 1.5 }}>Thông tin ví</Title>
+        <Title style={{ marginLeft: sizeFactor * 1.5 }}>Tạo ví mới</Title>
         <RoundedView>
           <String style={{ fontWeight: "bold" }}>Tên ví</String>
           <TextInput

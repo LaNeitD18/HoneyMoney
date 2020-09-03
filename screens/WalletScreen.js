@@ -48,7 +48,11 @@ import {rootRef,walletRef} from '../components/DataConnect'
 //Redux action
 import {UpdateWalletAction } from "../actions";
 
+//Navigator
+import { CommonActions } from '@react-navigation/native';
+
 export class WalletScreen extends Component {
+  _isMounted = false;
   constructor(props)
   {
     super(props);
@@ -96,7 +100,7 @@ export class WalletScreen extends Component {
                     flexDirection: "row",
                 }}
             >
-                <AddWalletButton color={colors.blue} onPress={()=>{this.props.navigate(AddWalletScreen)}}/>
+                <AddWalletButton color={colors.blue} onPress={()=>{this.props.navigation.navigate('AddWalletScreen')}}/>
             </View>
         </Row>
         <FlatList 
