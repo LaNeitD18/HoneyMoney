@@ -455,7 +455,7 @@ export class TouchableDeleteText extends Component {
         return (
             <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
                 <String></String>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.props.onPress}>
                     <String
                         style={{
                             fontSize: sizeFactor,
@@ -472,14 +472,14 @@ export class TouchableDeleteText extends Component {
 
 export class KindSelect extends Component {
     constructor() {
-    super();
-    this.state = {
-      selectedIndex: 0,
-    };
-  }
+        super();
+        this.state = {
+        selectedIndex: 0,
+        };
+    }
   render() {
     const buttons = this.props.buttons;
-    const { selectedIndex } = this.state;
+    //const { selectedIndex } = this.state;
     return (
       <ButtonGroup
         onPress={this.props.onPress}
@@ -577,8 +577,8 @@ export class AddWalletKindSelect extends Component {
         const { selectedIndex } = this.state;
         return (
             <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
+                onPress={this.props.onPress}
+                selectedIndex={this.props.selectedIndex}
                 buttons={buttons}
                 containerStyle={{
                     borderRadius: sizeFactor,
@@ -716,7 +716,6 @@ export class CategoryTable extends Component {
     return (
       <View>
         {this.props.rows}
-        <TouchableText onPress={this.props.onPress}>Tạo danh mục mới</TouchableText>
       </View>
     );
   }

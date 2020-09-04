@@ -55,93 +55,175 @@ import {
   ListItem,
 } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
+import { connect } from 'react-redux';
 
-export default class EditCategoryScreen extends Component {
-  render() {
-    const list = [
-      {
-        title: "Từ tiện",
-        source: require("../assets/categories/tuthien.png"),
-      },
-      {
-        title: "Thêm mới",
-        source: require("../assets/categories/themdanhmuccon.png"),
-      },
-    ];
-    return (
-      <ScreenView>
-        <View
-          style={{
-            justifyContent: "center",
-            alignContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity>
-            <Avatar
-              size={sizeFactor * 6}
-              avatarStyle={{
-                width: sizeFactor * 4.5,
-                height: sizeFactor * 4.5,
-                marginLeft: sizeFactor * 0.75,
-                marginTop: sizeFactor * 0.75,
-              }}
-              source={require("../assets/categories/tuthien.png")}
-            >
-              <Accessory size={sizeFactor * 1.75} />
-            </Avatar>
-          </TouchableOpacity>
-        </View>
-        <Title style={{ marginLeft: sizeFactor * 1.5 }}>
-          Chỉnh sửa danh mục
-        </Title>
-        <RoundedView>
-          <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
-          <TextInput style={styles.inputText} placeholder="Danh mục của tôi" />
-          <Divider />
-          <String style={{ fontWeight: "bold" }}>Mục đích</String>
-          <AddWalletKindSelect buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} />
-          <Divider />
-          <String style={{ fontWeight: "bold" }}>Danh mục con</String>
-          <View>
-            {list.map((item, i) => (
-              <TouchableOpacity>
-                <ListItem
-                  key={i}
-                  title={item.title}
-                  leftAvatar={{
-                    source: item.source,
-                    width: sizeFactor * 2.5,
-                    height: sizeFactor * 2.5,
-                    rounded: false,
-                  }}
-                  chevron={
-                    //sorry for bad code, pls edit this
-                    item.title == "Thêm mới"
-                      ? false
-                      : { size: sizeFactor * 1.5 }
-                  }
-                  contentContainerStyle={{ marginHorizontal: 0 }}
-                  rightContentContainerStyle={{ marginHorizontal: 0 }}
-                  containerStyle={{ paddingHorizontal: 0 }}
-                  titleStyle={{ fontSize: sizeFactor }}
-                  pad={sizeFactor}
-                />
-              </TouchableOpacity>
+import * as firebase from 'firebase';
+import { categoryRef } from '../components/DataConnect';
+
+import { findIcon } from '../components/Image';
+import { changeType, changeName } from '../actions/index';
+
+class EditCategoryScreen extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    getSelectedIndex = () => {
+        const type = this.props.chosenCategory.typeID;
+        switch(type) {
+            case '001':
+                return 0;
+            case '002':
+                return 1;
+            case '003':
+                return 2;
+        }
+    }
+
+    updateCategory = () => {
+        const category = this.props.chosenCategory;
+        const type = this.props.selectedType == 0 ? '001' : this.props.selectedType == 1 ? '002' : '003';
+        categoryRef.child(category.key).update({
+            CategoryName: this.props.categoryName,
+            TypeID: type
+        });
+
+        // exit this screen
+        this.props.navigation.goBack();
+    }
+
+    deleteCategory = () => {
+        const category = this.props.chosenCategory;
+        categoryRef.child(category.key).remove();
+
+        // exit this screen
+        this.props.navigation.goBack();
+    }
+
+    renderSubCategoriesView = () => {
+        const subCategories = this.props.subCategories;
+        //console.log(subCategories);
+        return <View>
+            {subCategories.map((item, i) => (
+                <TouchableOpacity>
+                    <ListItem
+                    key={item.key}
+                    title={item.categoryName}
+                    leftAvatar={{
+                        source: findIcon(item.icon),
+                        width: sizeFactor * 2.5,
+                        height: sizeFactor * 2.5,
+                        rounded: false,
+                    }}
+                    chevron={
+                        //sorry for bad code, pls edit this
+                        item.categoryName == "Thêm mới"
+                        ? false
+                        : { size: sizeFactor * 1.5 }
+                    }
+                    contentContainerStyle={{ marginHorizontal: 0 }}
+                    rightContentContainerStyle={{ marginHorizontal: 0 }}
+                    containerStyle={{ paddingHorizontal: 0 }}
+                    titleStyle={{ fontSize: sizeFactor }}
+                    pad={sizeFactor}
+                    />
+                </TouchableOpacity>
             ))}
-          </View>
-          <TouchableDeleteText>Xóa danh mục</TouchableDeleteText>
-        </RoundedView>
+        </View>
+    }
 
-        <Divider />
-        <Button
-          color="white"
-          background={colors.blue}
-          style={{ marginHorizontal: sizeFactor }}
-        >
-          Lưu thay đổi
-        </Button>
-      </ScreenView>
-    );
-  }
+    render() {
+        const subCategoriesView = this.renderSubCategoriesView();
+
+        const list = [
+            {
+                title: "Từ tiện",
+                source: require("../assets/categories/tuthien.png"),
+            },
+            {
+                title: "Thêm mới",
+                source: require("../assets/categories/themdanhmuccon.png"),
+            },
+        ];
+
+        const iconPath = findIcon(this.props.chosenCategory.icon);
+
+        return (
+        <ScreenView>
+            <View
+            style={{
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+            }}
+            >
+            <TouchableOpacity>
+                <Avatar
+                size={sizeFactor * 6}
+                avatarStyle={{
+                    width: sizeFactor * 4.5,
+                    height: sizeFactor * 4.5,
+                    marginLeft: sizeFactor * 0.75,
+                    marginTop: sizeFactor * 0.75,
+                }}
+                source={iconPath}
+                >
+                <Accessory size={sizeFactor * 1.75} />
+                </Avatar>
+            </TouchableOpacity>
+            </View>
+            <Title style={{ marginLeft: sizeFactor * 1.5 }}>
+            Chỉnh sửa danh mục
+            </Title>
+            <RoundedView>
+            <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
+            <TextInput 
+                style={styles.inputText} 
+                placeholder="Danh mục của tôi" 
+                value={this.props.categoryName} 
+                onChangeText={(text) => this.props.changeName(text)}/>
+            <Divider />
+            <String style={{ fontWeight: "bold" }}>Mục đích</String>
+            <AddWalletKindSelect 
+                selectedIndex={this.props.selectedType}
+                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} 
+                onPress={(index) => this.props.changeType(index)}/>
+            <Divider />
+            <String style={{ fontWeight: "bold" }}>Danh mục con</String>
+            {subCategoriesView}
+            <TouchableDeleteText onPress={this.deleteCategory}>
+                Xóa danh mục
+            </TouchableDeleteText>
+            </RoundedView>
+
+            <Divider />
+            <Button
+                color="white"
+                background={colors.blue}
+                style={{ marginHorizontal: sizeFactor }}
+                onPress={this.updateCategory}
+            >
+            Lưu thay đổi
+            </Button>
+        </ScreenView>
+        );
+    }
 }
+
+function mapStateToProps(state) {
+    return {
+        chosenCategory: state.chosenCategory,
+        categoryName: state.categoryName,
+        subCategories: state.subCategories,
+        selectedType: state.selectedType,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        changeType: (selectedType) => { dispatch(changeType(selectedType))},
+        changeName: (text) => { dispatch(changeName(text))},
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditCategoryScreen);
