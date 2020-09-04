@@ -616,7 +616,7 @@ export class SmallCategory extends Component {
     render() {
         var choosed = this.props.choosed;
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.props.onPress}>
                 <View style={{ marginRight: sizeFactor }}>
                     <View
                         style={{

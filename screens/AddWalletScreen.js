@@ -101,8 +101,8 @@ export default class AddWalletScreen extends Component {
         selectedColor: colors.blue
       })
     }
-    else
-    {this.setState({newTenVi: "Lỗi"})}
+    //else
+    //them bao loi o day
   }
   componentDidMount() {
     var that = this;

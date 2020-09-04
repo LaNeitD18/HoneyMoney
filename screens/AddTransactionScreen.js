@@ -51,11 +51,12 @@ import DatePicker from "react-native-datepicker";
 import * as firebase from 'firebase'
 
 //data connect
-import {rootRef,walletRef} from '../components/DataConnect'
+import {rootRef,walletRef, categoryRef} from '../components/DataConnect'
 
 //Navigator
 import { CommonActions } from '@react-navigation/native';
 import { color } from "react-native-reanimated";
+import { FlatList } from "react-native-gesture-handler";
 
 export default class AddTransactionScreen extends Component {
   _isMounted = false;
@@ -63,11 +64,27 @@ export default class AddTransactionScreen extends Component {
   {
     super(props);
     this.state = {
+      categoryData: [],
       date: '',
       selectedTenVi: this.props.route.params?.walletName ?? '',
       newSoDu: '',
       defaultColor: this.props.route.params?.walletColor ?? colors.blue,
     };
+  }
+  onChangeSoDu(text){
+    this.setState({newSoDu: text});
+  }
+  getData(){
+     categoryRef.orderByChild('ParentID').equalTo('').on('value', (snap) => {
+       const categoryArray = []
+       snap.forEach(element => {
+        categoryArray.push({
+          key: element.key,
+          name: element.toJSON().CategoryName,
+          icon: element.toJSON().Icon,
+        })
+        })
+     })
   }
   componentDidMount(){
     let tempTen = '';
@@ -86,7 +103,10 @@ export default class AddTransactionScreen extends Component {
   render() {
     return (
       <ScreenView style={{ backgroundColor: this.state.defaultColor }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{
+          //this.props.navigation.goBack()
+          this.props.navigation.navigate('WalletScreen');
+          }}>
           <View
             style={{
               flexDirection: "row",
@@ -133,15 +153,18 @@ export default class AddTransactionScreen extends Component {
           >
             Số tiền
           </String>
-          <String
+          <TextInput
+            contextMenuHidden={true}
+            placeholder='0'
             style={{
               color: "white",
               fontWeight: "bold",
               fontSize: sizeFactor * 2,
+              marginBottom: sizeFactor * 0.75,
             }}
-          >
-            +500,000{" VNĐ"}
-          </String>
+            keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//
+            onChangeText={text=>{this.onChangeSoDu(text)}}
+            value={this.state.newSoDu}/>
           <String style={{ color: "white", fontWeight: "bold" }}>
             Danh mục
           </String>
@@ -240,11 +263,23 @@ export default class AddTransactionScreen extends Component {
             <TextInput
               style={styles.inputMultilineText}
               multiline={true}
-              placeholder="50k cho một ly trà sữa?"
+              placeholder="Vài điều cần ghi lại..."
             />
           </View>
         </View>
       </ScreenView>
     );
   }
+}
+class MainCategoryPicker extends Component{
+  render(){
+    return(
+      <ScrollView style={{ marginHorizontal: sizeFactor }} horizontal showsHorizontalScrollIndicator={false}>
+        <FlatList>
+
+        </FlatList>
+      </ScrollView>
+    )
+  }
+
 }
