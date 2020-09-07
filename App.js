@@ -5,13 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import HomeScreen from './screen/HomeScreen'
-import TransactionScreen from './screen/TransactionScreen'
 import { WalletScreen } from './screens/WalletScreen'
-import Categories from './screens/CategoriesScreen'
-import AddTransactionScreen from './screens/AddTransactionScreen'
-import AddCategoryScreen from './screens/AddCategoryScreen'
-
+import CategoriesScreen from './screens/CategoriesScreen'
 
 
 //Redux
@@ -19,9 +14,15 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 import allReducers from './reducers/allReducers';
-import SampleContainer from './containers/SampleContainer';
 
 import WalletContainer from './containers/WalletContainer'
+import AddTransactionScreen from './screens/AddTransactionScreen';
+import AddWalletScreen from './screens/AddWalletScreen';
+import EditCategoryScreen from './screens/EditCategoryScreen';
+import AddCategoryScreen from './screens/AddCategoryScreen';
+import Calculator from './components/Calculator';
+
+import CategoryNavigator from './screens/CategoryNavigator';
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -35,8 +36,8 @@ export default function App() {
         <Provider store={store}>
             <NavigationContainer>
                 <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-                    <Tab.Screen name="Trang chủ" component={AddCategoryScreen} options={{ tittle: 'Wallet' }} />
-                    <Tab.Screen name="Danh mục" component={Categories} options={{ tittle: 'Categories' }} />
+                    <Tab.Screen name="Working on it" component={EditCategoryScreen} options={{ tittle: 'EditCategoryScreen' }} />
+
                 </Tab.Navigator>
             </NavigationContainer>
         </Provider>

@@ -20,10 +20,68 @@ export const decreaseAction = (step) => {
         step: step, //so luong giam xuong
     }
 }
-
+//Thang
 export const UpdateWalletAction = (snap) =>{
     return {
         type: UPDATEWALLETLIST,
         snap: snap,
     }
 }
+
+//#region Tien
+
+//#region selectedType 
+export function changeType(selectedType) {
+    return {
+        type: 'CHANGE_TYPE',
+        selectedType: selectedType
+    };
+}
+//#endregion
+
+//#region renderedCategories
+export function reloadCategory(categories) {
+    return {
+        type: 'RELOAD_CATEGORY',
+        categories: categories
+    }
+}
+//#endregion
+
+//#region allCategories
+export function updateCategories(categories) {
+    return {
+        type: 'UPDATE_CATEGORIES',
+        categories: categories
+    }
+}
+//#endregion
+
+//#region searchText
+export function changeSearchText(text) {
+    return {
+        type: 'CHANGE_SEARCH_TEXT',
+        text: text
+    }
+}
+//#endregion
+
+//#region chosenCategory
+export function chooseCategory(category) {
+    return {
+        type: 'CHOOSE_CATEGORY',
+        category: category
+    }
+}
+//#endregion
+
+//#region categoryName
+export function changeName(text) {
+    return {
+        type: 'CHANGE_NAME',
+        text: text
+    }
+}
+//#endregion
+
+//#endregion

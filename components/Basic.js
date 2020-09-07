@@ -455,7 +455,7 @@ export class TouchableDeleteText extends Component {
         return (
             <Row style={{ marginHorizontal: sizeFactor * 0.5 }}>
                 <String></String>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.props.onPress}>
                     <String
                         style={{
                             fontSize: sizeFactor,
@@ -474,43 +474,38 @@ export class KindSelect extends Component {
     constructor() {
         super();
         this.state = {
-            selectedIndex: 1,
+        selectedIndex: 0,
         };
-        this.updateIndex = this.updateIndex.bind(this);
     }
-
-    updateIndex(selectedIndex) {
-        this.setState({ selectedIndex });
-    }
-    render() {
-        const buttons = this.props.buttons;
-        const { selectedIndex } = this.state;
-        return (
-            <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
-                buttons={buttons}
-                containerStyle={{
-                    borderRadius: sizeFactor * 0.75,
-                    borderWidth: 1.25,
-                    borderColor: colors.gray3,
-                    marginBottom: sizeFactor,
-                    marginHorizontal: sizeFactor,
-                    backgroundColor: colors.gray5,
-                    height: sizeFactor * 2,
-                }}
-                textStyle={{
-                    fontSize: sizeFactor * 0.75,
-                    textTransform: "uppercase",
-                    fontWeight: "bold",
-                    color: colors.gray,
-                }}
-                innerBorderStyle={{ color: colors.gray3 }}
-                selectedButtonStyle={{ backgroundColor: "white" }}
-                selectedTextStyle={{ color: colors.dark }}
-            />
-        );
-    }
+  render() {
+    const buttons = this.props.buttons;
+    //const { selectedIndex } = this.state;
+    return (
+      <ButtonGroup
+        onPress={this.props.onPress}
+        selectedIndex={this.props.selectedIndex}
+        buttons={buttons}
+        containerStyle={{
+          borderRadius: sizeFactor * 0.75,
+          borderWidth: 1.25,
+          borderColor: colors.gray3,
+          marginBottom: sizeFactor,
+          marginHorizontal: sizeFactor,
+          backgroundColor: colors.gray5,
+          height: sizeFactor * 2,
+        }}
+        textStyle={{
+          fontSize: sizeFactor * 0.75,
+          textTransform: "uppercase",
+          fontWeight: "bold",
+          color: colors.gray,
+        }}
+        innerBorderStyle={{ color: colors.gray3 }}
+        selectedButtonStyle={{ backgroundColor: "white" }}
+        selectedTextStyle={{ color: colors.dark }}
+      />
+    );
+  }
 }
 
 export class SmallKindSelect extends Component {
@@ -582,8 +577,8 @@ export class AddWalletKindSelect extends Component {
         const { selectedIndex } = this.state;
         return (
             <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
+                onPress={this.props.onPress}
+                selectedIndex={this.props.selectedIndex}
                 buttons={buttons}
                 containerStyle={{
                     borderRadius: sizeFactor,
@@ -717,29 +712,13 @@ export class Category extends Component {
 }
 
 export class CategoryTable extends Component {
-    render() {
-        return (
-            <View style={{ marginLeft: sizeFactor }}>
-                <RowLeft>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                </RowLeft>
-                <RowLeft>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                </RowLeft>
-                <RowLeft>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/tuthien.png")}>Từ thiện</Category>
-                    <Category source={require("../assets/categories/themdanhmuc.png")}>Thêm mới</Category>
-                </RowLeft>
-            </View>
-        );
-    }
+  render() {
+    return (
+      <View>
+        {this.props.rows}
+      </View>
+    );
+  }
 }
 
 export class ScrollSelect extends Component {
