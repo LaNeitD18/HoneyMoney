@@ -100,15 +100,15 @@ class CategoriesScreen extends React.Component {
                 });
             });
         });
-        categories.push({
-            key: 0,
-            categoryName: 'Thêm mới',
-            icon: 'themdanhmuccon',
-            parentID: '',
-            typeID: ''
-        });
-        console.log("ZZZ");
-        console.log(categories);
+        // categories.push({
+        //     key: 0,
+        //     categoryName: 'Thêm mới',
+        //     icon: 'themdanhmuccon',
+        //     parentID: '',
+        //     typeID: ''
+        // });
+        // console.log("ZZZ");
+        // console.log(categories);
         return categories;
     }
 

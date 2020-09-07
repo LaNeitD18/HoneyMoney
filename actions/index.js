@@ -93,4 +93,20 @@ export function getSubCategories(subCategories) {
 }
 //#endregion
 
+//#region isVisibleDialog
+export function openDialog() {
+    return {
+        type: 'OPEN_DIALOG',
+        visible: true,
+    }
+}
+
+export function closeDialog() {
+    return {
+        type: 'CLOSE_DIALOG',
+        visible: false,
+    }
+}
+//#endregion
+
 //#endregion

@@ -61,7 +61,8 @@ import * as firebase from 'firebase';
 import { categoryRef } from '../components/DataConnect';
 
 import { findIcon } from '../components/Image';
-import { changeType, changeName } from '../actions/index';
+import { changeType, changeName, openDialog } from '../actions/index';
+import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 
 class EditCategoryScreen extends Component {
     constructor(props) {
@@ -107,29 +108,34 @@ class EditCategoryScreen extends Component {
             {subCategories.map((item, i) => (
                 <TouchableOpacity>
                     <ListItem
-                    key={item.key}
-                    title={item.categoryName}
-                    leftAvatar={{
-                        source: findIcon(item.icon),
-                        width: sizeFactor * 2.5,
-                        height: sizeFactor * 2.5,
-                        rounded: false,
-                    }}
-                    chevron={
-                        //sorry for bad code, pls edit this
-                        item.categoryName == "Thêm mới"
-                        ? false
-                        : { size: sizeFactor * 1.5 }
-                    }
-                    contentContainerStyle={{ marginHorizontal: 0 }}
-                    rightContentContainerStyle={{ marginHorizontal: 0 }}
-                    containerStyle={{ paddingHorizontal: 0 }}
-                    titleStyle={{ fontSize: sizeFactor }}
-                    pad={sizeFactor}
+                        key={item.key}
+                        title={item.categoryName}
+                        leftAvatar={{
+                            source: findIcon(item.icon),
+                            width: sizeFactor * 2.5,
+                            height: sizeFactor * 2.5,
+                            rounded: false,
+                        }}
+                        chevron={
+                            //sorry for bad code, pls edit this
+                            item.categoryName == "Thêm mới" ? false : { size: sizeFactor * 1.5 }
+                        }
+                        contentContainerStyle={{ marginHorizontal: 0 }}
+                        rightContentContainerStyle={{ marginHorizontal: 0 }}
+                        containerStyle={{ paddingHorizontal: 0 }}
+                        titleStyle={{ fontSize: sizeFactor }}
+                        pad={sizeFactor}
                     />
                 </TouchableOpacity>
             ))}
+            
         </View>
+    }
+
+    renderAddSubcategoryDialog = () => {
+        console.log("Z");
+        return <AddSubcategoryDialog></AddSubcategoryDialog>
+            
     }
 
     render() {
@@ -190,12 +196,30 @@ class EditCategoryScreen extends Component {
                 onPress={(index) => this.props.changeType(index)}/>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Danh mục con</String>
+
             {subCategoriesView}
+
+            <TouchableOpacity onPress={() => this.props.openDialog()}>
+                <ListItem
+                    title="Thêm mới"
+                    leftAvatar={{
+                        source: require("../assets/categories/themdanhmuccon.png"),
+                        width: sizeFactor * 2.5,
+                        height: sizeFactor * 2.5,
+                        rounded: false,
+                    }}
+                    chevron={false}
+                    contentContainerStyle={{ marginHorizontal: 0 }}
+                    rightContentContainerStyle={{ marginHorizontal: 0 }}
+                    containerStyle={{ paddingHorizontal: 0 }}
+                    titleStyle={{ fontSize: sizeFactor }}
+                    pad={sizeFactor}>
+                </ListItem>
+            </TouchableOpacity>
             <TouchableDeleteText onPress={this.deleteCategory}>
                 Xóa danh mục
             </TouchableDeleteText>
             </RoundedView>
-
             <Divider />
             <Button
                 color="white"
@@ -205,6 +229,7 @@ class EditCategoryScreen extends Component {
             >
             Lưu thay đổi
             </Button>
+            <AddSubcategoryDialog></AddSubcategoryDialog>
         </ScreenView>
         );
     }
@@ -223,6 +248,7 @@ function mapDispatchToProps(dispatch) {
     return {
         changeType: (selectedType) => { dispatch(changeType(selectedType))},
         changeName: (text) => { dispatch(changeName(text))},
+        openDialog: () => { dispatch(openDialog())},
     };
 }
 
