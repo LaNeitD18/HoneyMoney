@@ -474,38 +474,38 @@ export class KindSelect extends Component {
     constructor() {
         super();
         this.state = {
-        selectedIndex: 0,
+            selectedIndex: 0,
         };
     }
-  render() {
-    const buttons = this.props.buttons;
-    //const { selectedIndex } = this.state;
-    return (
-      <ButtonGroup
-        onPress={this.props.onPress}
-        selectedIndex={this.props.selectedIndex}
-        buttons={buttons}
-        containerStyle={{
-          borderRadius: sizeFactor * 0.75,
-          borderWidth: 1.25,
-          borderColor: colors.gray3,
-          marginBottom: sizeFactor,
-          marginHorizontal: sizeFactor,
-          backgroundColor: colors.gray5,
-          height: sizeFactor * 2,
-        }}
-        textStyle={{
-          fontSize: sizeFactor * 0.75,
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          color: colors.gray,
-        }}
-        innerBorderStyle={{ color: colors.gray3 }}
-        selectedButtonStyle={{ backgroundColor: "white" }}
-        selectedTextStyle={{ color: colors.dark }}
-      />
-    );
-  }
+    render() {
+        const buttons = this.props.buttons;
+        //const { selectedIndex } = this.state;
+        return (
+            <ButtonGroup
+                onPress={this.props.onPress}
+                selectedIndex={this.props.selectedIndex}
+                buttons={buttons}
+                containerStyle={{
+                    borderRadius: sizeFactor * 0.75,
+                    borderWidth: 1.25,
+                    borderColor: colors.gray3,
+                    marginBottom: sizeFactor,
+                    marginHorizontal: sizeFactor,
+                    backgroundColor: colors.gray5,
+                    height: sizeFactor * 2,
+                }}
+                textStyle={{
+                    fontSize: sizeFactor * 0.75,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    color: colors.gray,
+                }}
+                innerBorderStyle={{ color: colors.gray3 }}
+                selectedButtonStyle={{ backgroundColor: "white" }}
+                selectedTextStyle={{ color: colors.dark }}
+            />
+        );
+    }
 }
 
 export class SmallKindSelect extends Component {
@@ -661,6 +661,39 @@ export class SmallCategory extends Component {
     }
 }
 
+export class IconCategory extends Component {
+    render() {
+        var choosed = this.props.choosed;
+        return (
+            <TouchableOpacity>
+                <View
+                    style={{
+                        height: sizeFactor * 3,
+                        width: sizeFactor * 3,
+                        alignContent: "center",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <Image source={require("../assets/categories/choosed.png")} style={[styles.largeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute", height: sizeFactor * 3, width: sizeFactor * 3 }]}></Image>
+                    <Image
+                        source={this.props.source}
+                        style={[
+                            styles.largeCategory,
+                            {
+                                marginTop: sizeFactor / 2,
+                                opacity: 1,
+                                width: sizeFactor * 2,
+                                height: sizeFactor * 2,
+                            },
+                        ]}
+                    ></Image>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+}
+
 export class Category extends Component {
     render() {
         var choosed = this.props.choosed;
@@ -712,13 +745,13 @@ export class Category extends Component {
 }
 
 export class CategoryTable extends Component {
-  render() {
-    return (
-      <View>
-        {this.props.rows}
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View>
+                {this.props.rows}
+            </View>
+        );
+    }
 }
 
 export class ScrollSelect extends Component {

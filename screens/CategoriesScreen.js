@@ -1,33 +1,33 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  Platform, Alert
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    SafeAreaView,
+    Image,
+    TouchableOpacity,
+    Platform, Alert
 } from "react-native";
 import {
-  String,
-  ScreenView,
-  Card,
-  Divider,
-  RowLeft,
-  Number,
-  NegativeNumber,
-  Wallet,
-  colors,
-  sizeFactor,
-  styles,
-  KindSelect,
-  Title,
-  Category,
-  TouchableText,
-  LargeScrollSelect,
-  CategoryTable
+    String,
+    ScreenView,
+    Card,
+    Divider,
+    RowLeft,
+    Number,
+    NegativeNumber,
+    Wallet,
+    colors,
+    sizeFactor,
+    styles,
+    KindSelect,
+    Title,
+    Category,
+    TouchableText,
+    LargeScrollSelect,
+    CategoryTable
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -50,7 +50,7 @@ class CategoriesScreen extends React.Component {
 
     getDataBasedOnType = (selectedType) => {
         this.props.changeType(selectedType);
-        switch(selectedType) {
+        switch (selectedType) {
             case 0:
                 this.getData('001');
                 break;
@@ -60,7 +60,7 @@ class CategoriesScreen extends React.Component {
             case 2:
                 this.getData('003');
                 break;
-            case 3: 
+            case 3:
                 this.getData('004');
                 break;
         }
@@ -83,29 +83,29 @@ class CategoriesScreen extends React.Component {
         const numberOfRows = Math.ceil((categories.length + 1) / 4);
         const rows = [];
 
-        for(let i=0; i<numberOfRows; i++) {
+        for (let i = 0; i < numberOfRows; i++) {
             const row = [];
-            for(let j=0; j<4; j++) {
-                const index = 4*i + j;
-                if(index < categories.length) {
+            for (let j = 0; j < 4; j++) {
+                const index = 4 * i + j;
+                if (index < categories.length) {
                     const name = categories[index].categoryName;
                     const icon = categories[index].icon;
                     const iconPath = findIcon(icon);
                     row.push(
-                        <Category 
-                            key={categories[index].key} 
-                            source={iconPath} 
+                        <Category
+                            key={categories[index].key}
+                            source={iconPath}
                             onPress={() => this.chooseCategory(categories[index])}>
-                        {name}
-                        </Category>  
+                            {name}
+                        </Category>
                     );
-                } else if( index == categories.length) {
+                } else if (index == categories.length) {
                     row.push(
-                        <Category 
-                            key={index} 
-                            source={require("../assets/categories/themdanhmuc.png")} 
+                        <Category
+                            key={index}
+                            source={require("../assets/categories/themdanhmuc.png")}
                             onPress={() => this.props.navigation.navigate('AddCategoryScreen')}>
-                        {'Thêm danh mục'}
+                            {'Thêm danh mục'}
                         </Category>
                     )
                 }
@@ -118,13 +118,13 @@ class CategoriesScreen extends React.Component {
     }
 
     componentDidMount() {
-        this._isMounted = true; 
-        categoryRef.on('value', (snapshot) => {this.props.updateCategories(snapshot)});
+        this._isMounted = true;
+        categoryRef.on('value', (snapshot) => { this.props.updateCategories(snapshot) });
     }
 
     componentDidUpdate(prevProps) {
         // when allCategories is updated after creating new category, renderedCategories is also updated
-        if((this.props.allCategories !== prevProps.allCategories) || (this.props.selectedType !== prevProps.selectedType)) {
+        if ((this.props.allCategories !== prevProps.allCategories) || (this.props.selectedType !== prevProps.selectedType)) {
             this.getDataBasedOnType(this.props.selectedType);
         }
     }
@@ -134,9 +134,9 @@ class CategoriesScreen extends React.Component {
     }
 
     searchFilterFunction(text) {
-        if(text !== "") {
+        if (text !== "") {
             //passing the inserted text in textinput
-            const newData = this.props.allCategories.filter(function(item) {
+            const newData = this.props.allCategories.filter(function (item) {
                 //applying filter for the inserted text in search bar
                 const itemData = item.categoryName ? item.categoryName.toUpperCase() : ''.toUpperCase();
                 const textData = text.toUpperCase();
@@ -152,14 +152,14 @@ class CategoriesScreen extends React.Component {
     }
 
     renderKindSelect = () => {
-        if(this.props.searchText === "") {
+        if (this.props.searchText === "") {
             return (
-                <KindSelect 
+                <KindSelect
                     onPress={(index) => this.getDataBasedOnType(index)}
                     selectedIndex={this.props.selectedType}
                     buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
             );
-        }   return;
+        } return;
     }
 
     render() {
@@ -167,29 +167,29 @@ class CategoriesScreen extends React.Component {
         const kindSelect = this.renderKindSelect();
 
         return (
-        <ScreenView style={{ flex: 1 }}>
-            <SearchBar
-            platform={Platform.OS}
-            placeholder="Tìm danh mục..."
-            onChangeText={text => this.searchFilterFunction(text)}
-            value={this.props.searchText}
-            lightTheme="true"
-            containerStyle={{
-                backgroundColor: "",
-                marginHorizontal:
-                Platform.OS == "ios" ? sizeFactor / 2 : sizeFactor,
-            }}
-            inputContainerStyle={{
-                backgroundColor: "white",
-                borderRadius: 99,
-                paddingHorizontal: sizeFactor / 2.5,
-            }}
-            />        
-            <Title>Danh mục</Title>
-            {kindSelect}
-            <CategoryTable rows={rows}/>
-            <Divider />
-        </ScreenView>
+            <ScreenView style={{ flex: 1 }}>
+                <SearchBar
+                    platform={Platform.OS}
+                    placeholder="Tìm danh mục..."
+                    onChangeText={text => this.searchFilterFunction(text)}
+                    value={this.props.searchText}
+                    lightTheme="true"
+                    containerStyle={{
+                        backgroundColor: "",
+                        marginHorizontal:
+                            Platform.OS == "ios" ? sizeFactor / 2 : sizeFactor,
+                    }}
+                    inputContainerStyle={{
+                        backgroundColor: "white",
+                        borderRadius: 99,
+                        paddingHorizontal: sizeFactor / 2.5,
+                    }}
+                />
+                <Title>Danh mục</Title>
+                {kindSelect}
+                <CategoryTable rows={rows} />
+                <Divider />
+            </ScreenView>
         );
     }
 }
@@ -205,8 +205,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => { dispatch(changeType(selectedType))},
-        updateCategories: (categories) => { dispatch(updateCategories(categories)) }, 
+        changeType: (selectedType) => { dispatch(changeType(selectedType)) },
+        updateCategories: (categories) => { dispatch(updateCategories(categories)) },
         reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
         changeSearchText: (text) => { dispatch(changeSearchText(text)) },
         chooseCategory: (category) => { dispatch(chooseCategory(category)) },
