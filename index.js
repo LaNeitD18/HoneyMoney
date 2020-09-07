@@ -2,7 +2,9 @@ import registerRootComponent from "expo/build/launch/registerRootComponent";
 
 import App from "./App";
 
-// import * as firebase from "firebase";
+registerRootComponent(App);
+/*
+import * as firebase from "firebase";
 
 // // Optionally import the services that you want to use
 // //import "firebase/auth";
@@ -24,7 +26,6 @@ import App from "./App";
 
 // firebase.initializeApp(firebaseConfig);
 
-registerRootComponent(App);
 
 //import * as firebase from 'firebase';
 //import FirebaseApp from '@firebase/app';
@@ -50,3 +51,4 @@ registerRootComponent(App);
 // //FirebaseApp.initializeApp();
 // firebase.initializeApp(firebaseConfig);
 
+*/

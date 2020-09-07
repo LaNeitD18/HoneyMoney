@@ -47,7 +47,7 @@ import {
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 
-export default class AddWalletScreen extends Component {
+export default class EditWalletScreen extends Component {
     render() {
         return (
             <ScreenView>
@@ -57,7 +57,7 @@ export default class AddWalletScreen extends Component {
                     color="black"
                     size={sizeFactor * 6}
                 />
-                <Title style={{ marginLeft: sizeFactor * 1.5 }}>Thêm ví</Title>
+                <Title style={{ marginLeft: sizeFactor * 1.5 }}>Sửa ví</Title>
                 <RoundedView>
                     <String style={{ fontWeight: "bold" }}>Tên ví</String>
                     <TextInput style={styles.inputText} placeholder="Ví của tôi" />
@@ -86,8 +86,16 @@ export default class AddWalletScreen extends Component {
                     color="white"
                     background={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
+                    border={colors.blue}
                 >
                     Lưu thay đổi
+        </Button>
+                <Button
+                    color={colors.redDark}
+                    style={{ marginHorizontal: sizeFactor }}
+                    border={colors.redDark}
+                >
+                    Xóa ví
         </Button>
             </ScreenView>
         );

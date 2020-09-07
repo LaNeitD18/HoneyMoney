@@ -153,13 +153,13 @@ export class PositiveNumber extends Component {
 }
 
 export class NegativeNumber extends Component {
-  render() {
-    return (
-      <String style={[styles.negativeNumber, this.props.style]}>
-        {this.props.children}
-      </String>
-    );
-  }
+    render() {
+        return (
+            <String style={[styles.negativeNumber, this.props.style]}>
+                {this.props.children}
+            </String>
+        );
+    }
 }
 export class Heading extends Component {
     render() {
@@ -168,26 +168,26 @@ export class Heading extends Component {
 }
 
 export class Card extends Component {
-  render() {
-    return (
-      <View style={[styles.container, { backgroundColor: this.props.color }]}>
-        <Row>
-          <Heading style={[styles.heading, { color: this.props.headingColor }]}>
-            {this.props.heading}
-          </Heading>
-          <TouchableOpacity onPress={this.props.onPress}>
-            <Icon
-              name={this.props.icon}
-              type="material-community"
-              color={this.props.iconColor}
-              size={sizeFactor * 1.5}
-            />
-          </TouchableOpacity>
-        </Row>
-        {this.props.children}
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={[styles.container, { backgroundColor: this.props.color }]}>
+                <Row>
+                    <Heading style={[styles.heading, { color: this.props.headingColor }]}>
+                        {this.props.heading}
+                    </Heading>
+                    <TouchableOpacity onPress={this.props.onPress}>
+                        <Icon
+                            name={this.props.icon}
+                            type="material-community"
+                            color={this.props.iconColor}
+                            size={sizeFactor * 1.5}
+                        />
+                    </TouchableOpacity>
+                </Row>
+                {this.props.children}
+            </View>
+        );
+    }
 }
 
 export class HeadlessCard extends Component {
@@ -261,36 +261,36 @@ export class RowLeft extends Component {
 }
 
 export class Button extends Component {
-  render() {
-    return (
-      <TouchableOpacity
-        onPress={this.props.onPress}
-        style={[
-          {
-            justifyContent: "center",
-            borderWidth: 1,
-            backgroundColor: this.props.background,
-            paddingHorizontal: sizeFactor,
-            borderColor: this.props.background,
-            borderRadius: 9999,
-            paddingTop: sizeFactor * 0.75,
-            flexDirection: "row",
-            marginBottom: sizeFactor,
-          },
-          this.props.style,
-        ]}
-      >
-        <String
-          style={{
-            color: this.props.color,
-            fontWeight: "bold",
-          }}
-        >
-          {this.props.children}
-        </String>
-      </TouchableOpacity>
-    );
-  }
+    render() {
+        return (
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={[
+                    {
+                        justifyContent: "center",
+                        borderWidth: 1,
+                        backgroundColor: this.props.background,
+                        paddingHorizontal: sizeFactor,
+                        borderColor: this.props.border,
+                        borderRadius: 9999,
+                        paddingTop: sizeFactor * 0.75,
+                        flexDirection: "row",
+                        marginBottom: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
+            >
+                <String
+                    style={{
+                        color: this.props.color,
+                        fontWeight: "bold",
+                    }}
+                >
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class ToggleButton extends Component {
@@ -327,37 +327,37 @@ export class ToggleButton extends Component {
 }
 
 export class OutlineToggleButton extends Component {
-  render() {
-    //change this to state instead
-    const checked = this.props.checked;
-    return (
-      <TouchableOpacity
-        style={{
-          justifyContent: "center",
-          borderWidth: 1.25,
-          paddingHorizontal: sizeFactor,
-          borderColor: this.props.color,
-          borderRadius: 9999,
-          borderStyle: checked == "false" ? "dashed" : "solid",
-          paddingTop: sizeFactor * 0.75,
-          flexDirection: "row",
-          marginBottom: sizeFactor,
-        }}
-        onPress={this.props.onPress}
-      >
-        <Icon name={checked == "false" ? this.props.uncheckIcon : this.props.checkIcon} type="material-community" color={this.props.color} size={sizeFactor * 1.25} />
-        <String
-          style={{
-            color: this.props.color,
-            fontWeight: checked == "false" ? "normal" : "bold",
-          }}
-        >
-          {this.props.uncheckIcon == "" ? "" : " "}
-          {this.props.children}
-        </String>
-      </TouchableOpacity>
-    );
-  }
+    render() {
+        //change this to state instead
+        const checked = this.props.checked;
+        return (
+            <TouchableOpacity
+                style={{
+                    justifyContent: "center",
+                    borderWidth: 1.25,
+                    paddingHorizontal: sizeFactor,
+                    borderColor: this.props.color,
+                    borderRadius: 9999,
+                    borderStyle: checked == "false" ? "dashed" : "solid",
+                    paddingTop: sizeFactor * 0.75,
+                    flexDirection: "row",
+                    marginBottom: sizeFactor,
+                }}
+                onPress={this.props.onPress}
+            >
+                <Icon name={checked == "false" ? this.props.uncheckIcon : this.props.checkIcon} type="material-community" color={this.props.color} size={sizeFactor * 1.25} />
+                <String
+                    style={{
+                        color: this.props.color,
+                        fontWeight: checked == "false" ? "normal" : "bold",
+                    }}
+                >
+                    {this.props.uncheckIcon == "" ? "" : " "}
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class OutlineButton extends Component {
@@ -391,38 +391,38 @@ export class OutlineButton extends Component {
 }
 
 export class Wallet extends Component {
-  render() {
-    const isDefault = this.props.isDefault;
-    return (
-      <Card heading={this.props.heading} headingColor="white" color={this.props.color} icon="tune" iconColor="white">
-        <Row>
-          <String style={{ color: "white", fontSize: sizeFactor * 2 }}>
-            VNĐ
+    render() {
+        const isDefault = this.props.isDefault;
+        return (
+            <Card heading={this.props.heading} headingColor="white" color={this.props.color} icon="tune" iconColor="white">
+                <Row>
+                    <String style={{ color: "white", fontSize: sizeFactor * 2 }}>
+                        VNĐ
           </String>
-          <PositiveNumber style={{ color: "white", fontSize: sizeFactor * 2 }}>
-            {this.props.children}
-          </PositiveNumber>
-        </Row>
-        <Row>
-          <String style={{ color: "white" }}>Ngày tạo</String>
-          <String style={{ color: "white", fontWeight: "bold" }}>{this.props.date}</String>
-        </Row>
-        <Divider />
-        <Row>
-          <OutlineToggleButton
-            checked={this.props.isDefault}
-            checkIcon="check-circle-outline"
-            color="white"
-            onPress={this.props.onPressDefault}
-          >
-            Ví mặc định
+                    <PositiveNumber style={{ color: "white", fontSize: sizeFactor * 2 }}>
+                        {this.props.children}
+                    </PositiveNumber>
+                </Row>
+                <Row>
+                    <String style={{ color: "white" }}>Ngày tạo</String>
+                    <String style={{ color: "white", fontWeight: "bold" }}>{this.props.date}</String>
+                </Row>
+                <Divider />
+                <Row>
+                    <OutlineToggleButton
+                        checked={this.props.isDefault}
+                        checkIcon="check-circle-outline"
+                        color="white"
+                        onPress={this.props.onPressDefault}
+                    >
+                        Ví mặc định
           </OutlineToggleButton>
-          <Button 
-            color={this.props.color}
-            background="white"
-            onPress={this.props.onPressSuDung}
-          >
-            Sử dụng
+                    <Button
+                        color={this.props.color}
+                        background="white"
+                        onPress={this.props.onPressSuDung}
+                    >
+                        Sử dụng
           </Button>
                 </Row>
             </Card>
@@ -431,23 +431,23 @@ export class Wallet extends Component {
 }
 
 export class TouchableText extends Component {
-  render() {
-    return (
-      <Row style={{ marginHorizontal: sizeFactor * 1.5 }}>
-        <String></String>
-        <TouchableOpacity onPress={this.props.onPress}>
-          <String
-            style={{
-              fontSize: sizeFactor,
-              color: colors.blue,
-            }}
-          >
-            {this.props.children}
-          </String>
-        </TouchableOpacity>
-      </Row>
-    );
-  }
+    render() {
+        return (
+            <Row style={{ marginHorizontal: sizeFactor * 1.5 }}>
+                <String></String>
+                <TouchableOpacity onPress={this.props.onPress}>
+                    <String
+                        style={{
+                            fontSize: sizeFactor,
+                            color: colors.blue,
+                        }}
+                    >
+                        {this.props.children}
+                    </String>
+                </TouchableOpacity>
+            </Row>
+        );
+    }
 }
 
 export class TouchableDeleteText extends Component {
@@ -474,38 +474,38 @@ export class KindSelect extends Component {
     constructor() {
         super();
         this.state = {
-        selectedIndex: 0,
+            selectedIndex: 0,
         };
     }
-  render() {
-    const buttons = this.props.buttons;
-    //const { selectedIndex } = this.state;
-    return (
-      <ButtonGroup
-        onPress={this.props.onPress}
-        selectedIndex={this.props.selectedIndex}
-        buttons={buttons}
-        containerStyle={{
-          borderRadius: sizeFactor * 0.75,
-          borderWidth: 1.25,
-          borderColor: colors.gray3,
-          marginBottom: sizeFactor,
-          marginHorizontal: sizeFactor,
-          backgroundColor: colors.gray5,
-          height: sizeFactor * 2,
-        }}
-        textStyle={{
-          fontSize: sizeFactor * 0.75,
-          textTransform: "uppercase",
-          fontWeight: "bold",
-          color: colors.gray,
-        }}
-        innerBorderStyle={{ color: colors.gray3 }}
-        selectedButtonStyle={{ backgroundColor: "white" }}
-        selectedTextStyle={{ color: colors.dark }}
-      />
-    );
-  }
+    render() {
+        const buttons = this.props.buttons;
+        //const { selectedIndex } = this.state;
+        return (
+            <ButtonGroup
+                onPress={this.props.onPress}
+                selectedIndex={this.props.selectedIndex}
+                buttons={buttons}
+                containerStyle={{
+                    borderRadius: sizeFactor * 0.75,
+                    borderWidth: 1.25,
+                    borderColor: colors.gray3,
+                    marginBottom: sizeFactor,
+                    marginHorizontal: sizeFactor,
+                    backgroundColor: colors.gray5,
+                    height: sizeFactor * 2,
+                }}
+                textStyle={{
+                    fontSize: sizeFactor * 0.75,
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    color: colors.gray,
+                }}
+                innerBorderStyle={{ color: colors.gray3 }}
+                selectedButtonStyle={{ backgroundColor: "white" }}
+                selectedTextStyle={{ color: colors.dark }}
+            />
+        );
+    }
 }
 
 export class SmallKindSelect extends Component {
@@ -661,64 +661,97 @@ export class SmallCategory extends Component {
     }
 }
 
-export class Category extends Component {
-  render() {
-    var choosed = this.props.choosed;
-    return (
+export class IconCategory extends Component {
+    render() {
+        var choosed = this.props.choosed;
+        return (
+            <TouchableOpacity>
+                <View
+                    style={{
+                        height: sizeFactor * 3,
+                        width: sizeFactor * 3,
+                        alignContent: "center",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <Image source={require("../assets/categories/choosed.png")} style={[styles.largeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute", height: sizeFactor * 3, width: sizeFactor * 3 }]}></Image>
+                    <Image
+                        source={this.props.source}
+                        style={[
+                            styles.largeCategory,
+                            {
+                                marginTop: sizeFactor / 2,
+                                opacity: 1,
+                                width: sizeFactor * 2,
+                                height: sizeFactor * 2,
+                            },
+                        ]}
+                    ></Image>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+}
 
-      <TouchableOpacity onPress={this.props.onPress}>
-        <View style={{ marginRight: sizeFactor }}>
-          <View
-            style={{
-              height: styles.hugeCategory.height + sizeFactor / 2,
-              alignContent: "center",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Image source={require("../assets/categories/choosed.png")} style={[styles.hugeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
-            <Image
-              source={this.props.source}
-              style={[
-                styles.hugeCategory,
-                {
-                  opacity: 1,
-                  width: styles.hugeCategory.height - sizeFactor * 1.25,
-                  height: styles.hugeCategory.height - sizeFactor * 1.25,
-                },
-              ]}
-            ></Image>
-          </View>
-          <View
-            style={{
-              width: styles.hugeCategory.width,
-              alignItems: "center",
-            }}
-          >
-            <String
-              style={{
-                fontSize: sizeFactor * 0.75,
-                fontWeight: this.props.choosed ? "bold" : "normal",
-                color: this.props.choosed ? colors.blue : "black",
-              }}
-            >
-              {this.props.children}
-            </String>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
+export class Category extends Component {
+    render() {
+        var choosed = this.props.choosed;
+        return (
+
+            <TouchableOpacity onPress={this.props.onPress}>
+                <View style={{ marginRight: sizeFactor }}>
+                    <View
+                        style={{
+                            height: styles.hugeCategory.height + sizeFactor / 2,
+                            alignContent: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Image source={require("../assets/categories/choosed.png")} style={[styles.hugeCategory, { opacity: this.props.choosed ? 1 : 0, position: "absolute" }]}></Image>
+                        <Image
+                            source={this.props.source}
+                            style={[
+                                styles.hugeCategory,
+                                {
+                                    opacity: 1,
+                                    width: styles.hugeCategory.height - sizeFactor * 1.25,
+                                    height: styles.hugeCategory.height - sizeFactor * 1.25,
+                                },
+                            ]}
+                        ></Image>
+                    </View>
+                    <View
+                        style={{
+                            width: styles.hugeCategory.width,
+                            alignItems: "center",
+                        }}
+                    >
+                        <String
+                            style={{
+                                fontSize: sizeFactor * 0.75,
+                                fontWeight: this.props.choosed ? "bold" : "normal",
+                                color: this.props.choosed ? colors.blue : "black",
+                            }}
+                        >
+                            {this.props.children}
+                        </String>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export class CategoryTable extends Component {
-  render() {
-    return (
-      <View>
-        {this.props.rows}
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View>
+                {this.props.rows}
+            </View>
+        );
+    }
 }
 
 export class ScrollSelect extends Component {

@@ -1,58 +1,58 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  Platform,
-  TextInput,
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    SafeAreaView,
+    Image,
+    TouchableOpacity,
+    Platform,
+    TextInput,
 } from "react-native";
 import {
-  String,
-  ScreenView,
-  Card,
-  Divider,
-  Heading,
-  RowLeft,
-  Number,
-  NegativeNumber,
-  Wallet,
-  colors,
-  sizeFactor,
-  styles,
-  KindSelect,
-  Title,
-  Category,
-  TouchableText,
-  ScrollSelect,
-  CategoryTable,
-  windowWidth,
-  windowHeight,
-  Heading2,
-  OutlineButton,
-  Row,
-  HeadlessCard,
-  SmallScrollSelect,
-  SmallKindSelect,
-  AddWalletKindSelect,
-  OutlineToggleButton,
-  Button,
-  ToggleButton,
-  ColorSelectButton,
-  RoundedView,
-  TouchableDeleteText,
+    String,
+    ScreenView,
+    Card,
+    Divider,
+    Heading,
+    RowLeft,
+    Number,
+    NegativeNumber,
+    Wallet,
+    colors,
+    sizeFactor,
+    styles,
+    KindSelect,
+    Title,
+    Category,
+    TouchableText,
+    ScrollSelect,
+    CategoryTable,
+    windowWidth,
+    windowHeight,
+    Heading2,
+    OutlineButton,
+    Row,
+    HeadlessCard,
+    SmallScrollSelect,
+    SmallKindSelect,
+    AddWalletKindSelect,
+    OutlineToggleButton,
+    Button,
+    ToggleButton,
+    ColorSelectButton,
+    RoundedView,
+    TouchableDeleteText,
 } from "../components/Basic";
 import {
-  Icon,
-  SearchBar,
-  Input,
-  Avatar,
-  Accessory,
-  ListItem,
+    Icon,
+    SearchBar,
+    Input,
+    Avatar,
+    Accessory,
+    ListItem,
 } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from 'react-redux';
@@ -63,6 +63,7 @@ import { categoryRef } from '../components/DataConnect';
 import { findIcon } from '../components/Image';
 import { changeType, changeName, openDialog } from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
+import ChooseIconDialog from '../components/ChooseIconDialog'
 
 class EditCategoryScreen extends Component {
     constructor(props) {
@@ -71,7 +72,7 @@ class EditCategoryScreen extends Component {
 
     getSelectedIndex = () => {
         const type = this.props.chosenCategory.typeID;
-        switch(type) {
+        switch (type) {
             case '001':
                 return 0;
             case '002':
@@ -155,31 +156,32 @@ class EditCategoryScreen extends Component {
         const iconPath = findIcon(this.props.chosenCategory.icon);
 
         return (
-        <ScreenView>
-            <View
-            style={{
-                justifyContent: "center",
-                alignContent: "center",
-                alignItems: "center",
-            }}
-            >
-            <TouchableOpacity>
-                <Avatar
-                size={sizeFactor * 6}
-                avatarStyle={{
-                    width: sizeFactor * 4.5,
-                    height: sizeFactor * 4.5,
-                    marginLeft: sizeFactor * 0.75,
-                    marginTop: sizeFactor * 0.75,
-                }}
-                source={iconPath}
+            <ScreenView>
+                <ChooseIconDialog />
+                <View
+                    style={{
+                        justifyContent: "center",
+                        alignContent: "center",
+                        alignItems: "center",
+                    }}
                 >
-                <Accessory size={sizeFactor * 1.75} />
-                </Avatar>
-            </TouchableOpacity>
-            </View>
-            <Title style={{ marginLeft: sizeFactor * 1.5 }}>
-            Chỉnh sửa danh mục
+                    <TouchableOpacity>
+                        <Avatar
+                            size={sizeFactor * 6}
+                            avatarStyle={{
+                                width: sizeFactor * 4.5,
+                                height: sizeFactor * 4.5,
+                                marginLeft: sizeFactor * 0.75,
+                                marginTop: sizeFactor * 0.75,
+                            }}
+                            source={iconPath}
+                        >
+                            <Accessory size={sizeFactor * 1.75} />
+                        </Avatar>
+                    </TouchableOpacity>
+                </View>
+                <Title style={{ marginLeft: sizeFactor * 1.5 }}>
+                    Chỉnh sửa danh mục
             </Title>
             <RoundedView>
             <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
