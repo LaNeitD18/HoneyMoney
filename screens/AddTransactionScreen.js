@@ -46,6 +46,13 @@ import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import CategoriesScreen from "../screens/CategoriesScreen";
 import DatePicker from "react-native-datepicker";
+import IconImage, { findIcon } from '../components/Image';
+
+//redux
+import {connect} from 'react-redux';
+import { changeType, updateCategories, reloadCategory, 
+  changeSearchText, chooseCategory, changeName, getSubCategories,
+} from '../actions/index';
 
 //firebase
 import * as firebase from 'firebase'
@@ -58,13 +65,13 @@ import { CommonActions } from '@react-navigation/native';
 import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 
-export default class AddTransactionScreen extends Component {
+export class AddTransactionScreen extends Component {
   _isMounted = false;
   constructor(props)
   {
     super(props);
     this.state = {
-      categoryData: [],
+      selectedCategory: '',
       date: '',
       selectedTenVi: this.props.route.params?.walletName ?? '',
       newSoDu: '',
@@ -74,18 +81,71 @@ export default class AddTransactionScreen extends Component {
   onChangeSoDu(text){
     this.setState({newSoDu: text});
   }
-  getData(){
-     categoryRef.orderByChild('ParentID').equalTo('').on('value', (snap) => {
-       const categoryArray = []
-       snap.forEach(element => {
-        categoryArray.push({
-          key: element.key,
-          name: element.toJSON().CategoryName,
-          icon: element.toJSON().Icon,
-        })
-        })
-     })
+  getDataBasedOnType = (selectedType) => {
+    this.props.changeType(selectedType);
+    switch(selectedType) {
+        case 0:
+            this.getData('001');
+            break;
+        case 1:
+            this.getData('002');
+            break;
+        case 2:
+            this.getData('003');
+            break;
+        case 3: 
+            this.getData('004');
+            break;
+    }
   }
+  getData = (typeID) => {
+      const categories = this.props.allCategories;
+      const temp = categories.filter(item => item.typeID === typeID);
+      this.props.reloadCategory(temp);
+  }
+
+  getSubCategories = (chosenCategory) => {
+    const categories = [];
+    categoryRef.orderByChild('ParentID').equalTo(chosenCategory.key).once('value', (snapshot) => {
+        snapshot.forEach(element => {
+            categories.push({
+                key: element.key,
+                categoryName: element.toJSON().CategoryName,
+                icon: element.toJSON().Icon,
+                parentID: element.toJSON().ParentID,
+                typeID: element.toJSON().TypeID
+            });
+        });
+    });
+    categories.push({
+        key: 0,
+        categoryName: 'Thêm mới',
+        icon: 'themdanhmuccon',
+        parentID: '',
+        typeID: ''
+    });
+    console.log("ZZZ");
+    console.log(categories);
+    return categories;
+  }
+  chooseCategory = (category) => {
+
+    if(this.state.selectedCategory == category.key)
+    {
+      this.setState({selectedCategory:''});
+    }
+    else
+    {
+      this.setState({selectedCategory: category.key});
+    }
+    //this.props.chooseCategory(category);
+    //this.props.changeName(category.categoryName);
+
+    //const subCategories = this.getSubCategories(category);
+    //this.props.getSubCategories(subCategories);
+
+    //this.props.navigation.navigate('EditCategoryScreen');
+}
   componentDidMount(){
     let tempTen = '';
     let tempColor = '';
@@ -100,12 +160,63 @@ export default class AddTransactionScreen extends Component {
     this.setState({selectedTenVi: tempTen, defaultColor: tempColor});
     }
   }
+
+  componentWillUpdate() {
+    this._isMounted = false;
+  }
+
+  renderCategoryHorizon = () => {
+    const categories = this.props.renderedCategories;
+    const rows = [];
+    const row = [];
+    for(let index=0; index<=categories.length; index++) {
+      if(index < categories.length) {
+          const name = categories[index].categoryName;
+          const icon = categories[index].icon;
+          const iconPath = findIcon(icon);
+          row.push(
+              <Category 
+                  choosed = {this.state.selectedCategory == categories[index].key? true : false}
+                  key={categories[index].key} 
+                  source={iconPath} 
+                  onPress={() => this.chooseCategory(categories[index])}>
+              {name}
+              </Category>
+          );
+      } else if( index == categories.length) {
+          row.push(
+              <Category 
+                  key={index} 
+                  source={require("../assets/categories/themdanhmuc.png")} 
+                  onPress={() => this.createNewCategory()}>
+              {'Thêm danh mục'}
+              </Category>
+          )
+      }
+    }
+    rows.push(
+      <RowLeft>{row}</RowLeft>
+    );
+    return rows;
+  }
+  renderKindSelect = () => {
+    if(this.props.searchText === "") {
+        return (
+            <KindSelect 
+                onPress={(index) => this.getDataBasedOnType(index)}
+                selectedIndex={this.props.selectedType}
+                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
+        );
+    }   return;
+  }
   render() {
+    let rows = this.renderCategoryHorizon();
+    const kindSelect = this.renderKindSelect();
     return (
       <ScreenView style={{ backgroundColor: this.state.defaultColor }}>
         <TouchableOpacity onPress={()=>{
           //this.props.navigation.goBack()
-          this.props.navigation.navigate('WalletScreen');
+          this.props.navigation.navigate('WalletScreen');2
           }}>
           <View
             style={{
@@ -179,10 +290,10 @@ export default class AddTransactionScreen extends Component {
             marginBottom: sizeFactor,
           }}
         >
-          <SmallKindSelect
-            buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]}
-          />
-          <ScrollSelect />
+          {kindSelect}
+          <ScrollView horizontal={true}>
+            <CategoryTable rows={rows}/>
+          </ScrollView>
           <View
             style={{
               flex: 1,
@@ -271,15 +382,26 @@ export default class AddTransactionScreen extends Component {
     );
   }
 }
-class MainCategoryPicker extends Component{
-  render(){
-    return(
-      <ScrollView style={{ marginHorizontal: sizeFactor }} horizontal showsHorizontalScrollIndicator={false}>
-        <FlatList>
 
-        </FlatList>
-      </ScrollView>
-    )
-  }
-
+function mapStateToProps(state) {
+  return {
+      selectedType: state.selectedType,
+      allCategories: state.allCategories,
+      renderedCategories: state.renderedCategories,
+      searchText: state.searchText
+  };
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+      changeType: (selectedType) => { dispatch(changeType(selectedType))},
+      updateCategories: (categories) => { dispatch(updateCategories(categories)) }, 
+      reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
+      changeSearchText: (text) => { dispatch(changeSearchText(text)) },
+      chooseCategory: (category) => { dispatch(chooseCategory(category)) },
+      changeName: (text) => { dispatch(changeName(text)) },
+      getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddTransactionScreen);
