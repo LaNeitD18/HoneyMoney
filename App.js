@@ -36,8 +36,10 @@ export default function App() {
         <Provider store={store}>
             <NavigationContainer>
                 <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-                    <Tab.Screen name="Working on it" component={EditCategoryScreen} options={{ tittle: 'EditCategoryScreen' }} />
-
+                    <Tab.Screen name="Working on it" component={Calculator} options={{ tittle: 'EditCategoryScreen' }} />
+                    <Tab.Screen name="Working on it1" component={AddTransactionScreen} options={{ tittle: 'ok' }} />
+                    <Tab.Screen name="Working on it2" component={AddWalletScreen} options={{ tittle: 'a' }} />
+                    <Tab.Screen name="Working on it3" component={AddCategoryScreen} options={{ tittle: 'b' }} />
                 </Tab.Navigator>
             </NavigationContainer>
         </Provider>
