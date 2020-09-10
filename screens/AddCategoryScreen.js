@@ -8,9 +8,10 @@ import { connect } from "react-redux";
 import { categoryRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName } from '../actions/index';
+import { changeType, changeName, openDialog } from '../actions/index';
 import { findIcon } from '../components/Image';
 import { sub } from "react-native-reanimated";
+import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 
 class AddCategoryScreen extends Component {
     createCategory = () => {
@@ -27,25 +28,7 @@ class AddCategoryScreen extends Component {
     };
 
     renderSubCategoriesView = () => {
-        // const subCategories = [];
-        // this.props.subCategories.forEach(element => {
-        //     subCategories.push({
-        //         key: element.key,
-        //         categoryName: element.categoryName,
-        //         icon: element.icon,
-        //         parentID: element.parentID,
-        //         typeID: element.typeID
-        //     });
-        // });
-        // subCategories.push({
-        //     key: 0,
-        //     categoryName: 'Thêm mới',
-        //     icon: 'themdanhmuccon',
-        //     parentID: '',
-        //     typeID: ''
-        // });
         const subCategories = this.props.subCategories;
-        //console.log(subCategories);
         return <View>
             {subCategories.map((item, i) => (
                 <TouchableOpacity>
@@ -59,10 +42,8 @@ class AddCategoryScreen extends Component {
                         rounded: false,
                     }}
                     chevron={
-                        //sorry for bad code, pls edit this
-                        item.categoryName == "Thêm mới"
-                        ? false
-                        : { size: sizeFactor * 1.5 }
+                        // if button is used to add new sub category, don't show the right arrow (set false), else set size for it
+                        item.categoryName == "Thêm mới" ? false : { size: sizeFactor * 1.5 }
                     }
                     contentContainerStyle={{ marginHorizontal: 0 }}
                     rightContentContainerStyle={{ marginHorizontal: 0 }}
@@ -76,15 +57,6 @@ class AddCategoryScreen extends Component {
     }
 
     render() {
-        // const subCategories = [];
-        // this.props.subCategories.for
-        // subCategories.push({
-        //     key: 0,
-        //     categoryName: 'Thêm mới',
-        //     icon: 'themdanhmuccon',
-        //     parentID: '',
-        //     typeID: ''
-        // });
         const subCategoriesView = this.renderSubCategoriesView();
 
         const list = [
@@ -123,20 +95,39 @@ class AddCategoryScreen extends Component {
             </View>
             <Title style={{ marginLeft: sizeFactor * 1.5 }}>Tạo danh mục</Title>
             <RoundedView>
-            <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
-            <TextInput 
-                style={styles.inputText} 
-                placeholder="Danh mục của tôi" 
-                onChangeText={(text) => this.props.changeName(text)}/>
-            <Divider />
-            <String style={{ fontWeight: "bold" }}>Loại chi tiêu</String>
-            <AddWalletKindSelect 
-                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
-                selectedIndex={this.props.selectedType} 
-                onPress={(index) => this.props.changeType(index)}/>
-            <Divider />
-            <String style={{ fontWeight: "bold" }}>Danh mục con</String>
-            {subCategoriesView}
+                <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
+                <TextInput 
+                    style={styles.inputText} 
+                    placeholder="Danh mục của tôi" 
+                    onChangeText={(text) => this.props.changeName(text)}/>
+                <Divider />
+                <String style={{ fontWeight: "bold" }}>Loại chi tiêu</String>
+                <AddWalletKindSelect 
+                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
+                    selectedIndex={this.props.selectedType} 
+                    onPress={(index) => this.props.changeType(index)}/>
+                <Divider />
+                <String style={{ fontWeight: "bold" }}>Danh mục con</String>
+
+                {subCategoriesView}
+
+                <TouchableOpacity onPress={() => this.props.openDialog()}>
+                    <ListItem
+                        title="Thêm mới"
+                        leftAvatar={{
+                            source: require("../assets/categories/themdanhmuccon.png"),
+                            width: sizeFactor * 2.5,
+                            height: sizeFactor * 2.5,
+                            rounded: false,
+                        }}
+                        chevron={false}
+                        contentContainerStyle={{ marginHorizontal: 0 }}
+                        rightContentContainerStyle={{ marginHorizontal: 0 }}
+                        containerStyle={{ paddingHorizontal: 0 }}
+                        titleStyle={{ fontSize: sizeFactor }}
+                        pad={sizeFactor}>
+                    </ListItem>
+                </TouchableOpacity>
             </RoundedView>
             <Divider />
             <Button
@@ -147,6 +138,7 @@ class AddCategoryScreen extends Component {
             >
             Lưu thay đổi
             </Button>
+            <AddSubcategoryDialog></AddSubcategoryDialog>
         </ScreenView>
         );
     }
@@ -162,13 +154,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeName: (text) => {
-            dispatch(changeName(text));
-        },
-        changeType: (index) => {
-            dispatch(changeType(index));
-        },
-    };
+        changeName: (text) => {dispatch(changeName(text))}, 
+        changeType: (index) => {dispatch(changeType(index))},
+        openDialog: () => { dispatch(openDialog())},
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddCategoryScreen);

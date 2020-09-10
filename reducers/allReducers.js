@@ -8,6 +8,7 @@ import searchTextReducer from '../reducers/searchTextReducer';
 import chosenCategoryReducer from '../reducers/chosenCategoryReducer';
 import categoryNameReducer from '../reducers/categoryNameReducer';
 import subCategoriesReducer from '../reducers/subCategoriesReducer';
+import isVisibleReducer from '../reducers/isVisibleReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -22,6 +23,7 @@ const allReducers = combineReducers({
     chosenCategory: chosenCategoryReducer,
     categoryName: categoryNameReducer,
     subCategories: subCategoriesReducer,
+    isVisible: isVisibleReducer,
 })
 
 export default allReducers;
