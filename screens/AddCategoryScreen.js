@@ -1,81 +1,30 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  Platform,
-  TextInput,
-} from "react-native";
-import {
-  String,
-  ScreenView,
-  Card,
-  Divider,
-  Heading,
-  RowLeft,
-  Number,
-  NegativeNumber,
-  Wallet,
-  colors,
-  sizeFactor,
-  styles,
-  KindSelect,
-  Title,
-  Category,
-  TouchableText,
-  ScrollSelect,
-  CategoryTable,
-  windowWidth,
-  windowHeight,
-  Heading2,
-  OutlineButton,
-  Row,
-  HeadlessCard,
-  SmallScrollSelect,
-  SmallKindSelect,
-  AddWalletKindSelect,
-  OutlineToggleButton,
-  Button,
-  ToggleButton,
-  ColorSelectButton,
-  RoundedView,
-} from "../components/Basic";
-import {
-  Icon,
-  SearchBar,
-  Input,
-  Avatar,
-  Accessory,
-  ListItem,
-} from "react-native-elements";
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, Image, TouchableOpacity, Platform, TextInput } from "react-native";
+import { String, ScreenView, Card, Divider, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, AddWalletKindSelect, OutlineToggleButton, Button, ToggleButton, ColorSelectButton, RoundedView } from "../components/Basic";
+import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
-import { connect } from 'react-redux';
-import { categoryRef } from '../components/DataConnect';
-import * as firebase from 'firebase';
+import { connect } from "react-redux";
+import { categoryRef } from "../components/DataConnect";
+import * as firebase from "firebase";
 
 import { changeType, changeName } from '../actions/index';
 import { findIcon } from '../components/Image';
 import { sub } from "react-native-reanimated";
 
 class AddCategoryScreen extends Component {
-
     createCategory = () => {
         const name = this.props.categoryName;
-        const type = this.props.selectedType == 0 ? '001' : this.props.selectedType == 1 ? '002' : '003';
+        const type = this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
 
         categoryRef.push({
             CategoryName: name,
-            Icon: '',
-            ParentID: '',
-            TypeID: type
+            Icon: "",
+            ParentID: "",
+            TypeID: type,
         });
         this.props.navigation.goBack();
-    }
+    };
 
     renderSubCategoriesView = () => {
         // const subCategories = [];
@@ -139,14 +88,14 @@ class AddCategoryScreen extends Component {
         const subCategoriesView = this.renderSubCategoriesView();
 
         const list = [
-        {
-            title: "Từ tiện",
-            source: require("../assets/categories/tuthien.png"),
-        },
-        {
-            title: "Thêm mới",
-            source: require("../assets/categories/themdanhmuccon.png"),
-        },
+            {
+                title: "Từ tiện",
+                source: require("../assets/categories/tuthien.png"),
+            },
+            {
+                title: "Thêm mới",
+                source: require("../assets/categories/themdanhmuccon.png"),
+            },
         ];
         return (
         <ScreenView>
@@ -213,9 +162,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeName: (text) => {dispatch(changeName(text))}, 
-        changeType: (index) => {dispatch(changeType(index))},
-    }
+        changeName: (text) => {
+            dispatch(changeName(text));
+        },
+        changeType: (index) => {
+            dispatch(changeType(index));
+        },
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddCategoryScreen);

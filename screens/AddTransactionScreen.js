@@ -1,47 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  Platform,
-  TextInput,
-} from "react-native";
-import {
-  String,
-  ScreenView,
-  Card,
-  Divider,
-  Heading,
-  RowLeft,
-  Number,
-  NegativeNumber,
-  Wallet,
-  colors,
-  sizeFactor,
-  styles,
-  KindSelect,
-  Title,
-  Category,
-  TouchableText,
-  ScrollSelect,
-  CategoryTable,
-  windowWidth,
-  windowHeight,
-  Heading2,
-  OutlineButton,
-  Row,
-  HeadlessCard,
-  SmallScrollSelect,
-  SmallKindSelect,
-  OutlineToggleButton,
-  Button,
-  ToggleButton,
-} from "../components/Basic";
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, Image, TouchableOpacity, Platform, TextInput } from "react-native";
+import { String, ScreenView, Card, Divider, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, OutlineToggleButton, Button, ToggleButton } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import CategoriesScreen from "../screens/CategoriesScreen";
@@ -349,70 +309,48 @@ export class AddTransactionScreen extends Component {
             </View>
           </TouchableOpacity>
         </View>
-        <OutlineButton backgroundColor="white" color="white">
-          Thực hiện giao dịch
-        </OutlineButton>
-        <Title style={{ color: "white" }}>Nâng cao</Title>
-        <View>
-          <View
+        <View
             style={{
-              position: "absolute",
-              backgroundColor: "white",
-              height: windowHeight * 2,
-              width: windowWidth,
-              marginTop: sizeFactor * 2,
+                backgroundColor: "white",
+                marginHorizontal: sizeFactor,
+                borderRadius: sizeFactor,
+                marginBottom: sizeFactor,
+                paddingHorizontal: sizeFactor,
+                paddingBottom: sizeFactor * 1.25,
             }}
-          />
-          <View
-            style={{
-              backgroundColor: "white",
-              paddingHorizontal: sizeFactor * 1.25,
-              paddingVertical: sizeFactor,
-              borderRadius: sizeFactor * 2,
-            }}
-          >
+        >
+            <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
+                <TouchableOpacity>
+                    {/*  expanded: "chevron-down", collapsed: "chevron-right*/}
+                    <Icon name="chevron-down" type="material-community" color={colors.gray} size={sizeFactor * 2} />
+                </TouchableOpacity>
+            </View>
+            <Title style={{ marginLeft: 0 }}>Nâng cao</Title>
             <String style={{ fontWeight: "bold" }}>Chọn ngày</String>
             <RowLeft style={{ flex: 9 }}>
-              <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                <ToggleButton
-                  color={this.state.defaultColor}
-                  background="white"
-                  choosed="true"
-                  style={{ paddingHorizontal: sizeFactor / 4 }}
-                >
-                  Hôm nay
-                </ToggleButton>
-              </View>
-              <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                <ToggleButton
-                  color={this.state.defaultColor}
-                  background="white"
-                  choosed="false"
-                  style={{ paddingHorizontal: sizeFactor / 4 }}
-                >
-                  Hôm qua
-                </ToggleButton>
-              </View>
-              <View style={{ flex: 3.5 }}>
-                <ToggleButton
-                  color={this.state.defaultColor}
-                  background="white"
-                  choosed="false"
-                  style={{ paddingHorizontal: sizeFactor / 4 }}
-                >
-                  12/12/2020
-                </ToggleButton>
-              </View>
+                <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
+                    <ToggleButton color={colors.indigo} background="white" choosed="true" style={{ paddingHorizontal: sizeFactor / 4 }}>
+                        Hôm nay
+                    </ToggleButton>
+                </View>
+                <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
+                    <ToggleButton color={colors.indigo} background="white" choosed="false" style={{ paddingHorizontal: sizeFactor / 4 }}>
+                        Hôm qua
+                    </ToggleButton>
+                </View>
+                <View style={{ flex: 3.5 }}>
+                    <ToggleButton color={colors.indigo} background="white" choosed="false" style={{ paddingHorizontal: sizeFactor / 4 }}>
+                        12/12/2020
+                    </ToggleButton>
+                </View>
             </RowLeft>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
-            <TextInput
-              style={styles.inputMultilineText}
-              multiline={true}
-              placeholder="Vài điều cần ghi lại..."
-            />
-          </View>
+            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="50k cho một ly trà sữa?" />
         </View>
+        <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white">
+            Thực hiện giao dịch
+        </OutlineButton>
       </ScreenView>
     );
   }

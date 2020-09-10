@@ -1,48 +1,48 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  SafeAreaView,
-  Image,
-  TouchableOpacity,
-  Platform,
-  TextInput,
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    SafeAreaView,
+    Image,
+    TouchableOpacity,
+    Platform,
+    TextInput,
 } from "react-native";
 import {
-  String,
-  ScreenView,
-  Card,
-  Divider,
-  Heading,
-  RowLeft,
-  Number,
-  NegativeNumber,
-  Wallet,
-  colors,
-  sizeFactor,
-  styles,
-  KindSelect,
-  Title,
-  Category,
-  TouchableText,
-  ScrollSelect,
-  CategoryTable,
-  windowWidth,
-  windowHeight,
-  Heading2,
-  OutlineButton,
-  Row,
-  HeadlessCard,
-  SmallScrollSelect,
-  SmallKindSelect,
-  OutlineToggleButton,
-  Button,
-  ToggleButton,
-  ColorSelectButton,
-  RoundedView,
+    String,
+    ScreenView,
+    Card,
+    Divider,
+    Heading,
+    RowLeft,
+    Number,
+    NegativeNumber,
+    Wallet,
+    colors,
+    sizeFactor,
+    styles,
+    KindSelect,
+    Title,
+    Category,
+    TouchableText,
+    ScrollSelect,
+    CategoryTable,
+    windowWidth,
+    windowHeight,
+    Heading2,
+    OutlineButton,
+    Row,
+    HeadlessCard,
+    SmallScrollSelect,
+    SmallKindSelect,
+    OutlineToggleButton,
+    Button,
+    ToggleButton,
+    ColorSelectButton,
+    RoundedView,
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -184,7 +184,7 @@ export default class AddWalletScreen extends Component {
         >
           Lưu thay đổi
         </Button>
-      </ScreenView>
-    );
-  }
+            </ScreenView>
+        );
+    }
 }
