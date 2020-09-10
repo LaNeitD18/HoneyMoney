@@ -13,8 +13,8 @@ export default class CategoryNavigator extends Component {
         return (
             <Stack.Navigator screenOptions={{headerShown: false}}>
                 <Stack.Screen name="CategoriesScreen" component={CategoriesScreen}/>
-                <Stack.Screen name="AddCategoryScreen" component={AddCategoryScreen}/>
-                <Stack.Screen name="EditCategoryScreen" component={EditCategoryScreen}/>
+                <Stack.Screen name="AddCategoryScreen" component={AddCategoryScreen} options={{headerShown: true, title: ''}}/>
+                <Stack.Screen name="EditCategoryScreen" component={EditCategoryScreen} options={{headerShown: true, title: ''}}/>
             </Stack.Navigator>
         );
     }
