@@ -299,6 +299,7 @@ export class ToggleButton extends Component {
         var choosed = this.props.choosed;
         return (
             <TouchableOpacity
+                onPress = {this.props.onPress}
                 style={[
                     {
                         justifyContent: "center",

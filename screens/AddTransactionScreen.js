@@ -7,6 +7,7 @@ import TextTicker from "react-native-text-ticker";
 import CategoriesScreen from "../screens/CategoriesScreen";
 import DatePicker from "react-native-datepicker";
 import IconImage, { findIcon } from '../components/Image';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 //redux
 import {connect} from 'react-redux';
@@ -37,6 +38,7 @@ export class AddTransactionScreen extends Component {
       newSoDu: '',
       defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       refresh: '0',
+      selectedDate: 'Today'
     };
   }
   onChangeSoDu(text){
@@ -329,24 +331,36 @@ export class AddTransactionScreen extends Component {
             <String style={{ fontWeight: "bold" }}>Chọn ngày</String>
             <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={colors.indigo} background="white" choosed="true" style={{ paddingHorizontal: sizeFactor / 4 }}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'Today'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'Today'})}}>
                         Hôm nay
                     </ToggleButton>
                 </View>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={colors.indigo} background="white" choosed="false" style={{ paddingHorizontal: sizeFactor / 4 }}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'LastDay'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'LastDay'})}}>
                         Hôm qua
                     </ToggleButton>
                 </View>
+                <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'NextDay'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'NextDay'})}}>
+                        Ngày mai
+                    </ToggleButton>
+                </View>
+            </RowLeft>
+            <String >hoặc chọn một ngày khác</String>
+            <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 3.5 }}>
-                    <ToggleButton color={colors.indigo} background="white" choosed="false" style={{ paddingHorizontal: sizeFactor / 4 }}>
-                        12/12/2020
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'Custom'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'Custom'})}}>
+                        {this.state.date}
                     </ToggleButton>
                 </View>
             </RowLeft>
             <Divider />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
-            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="50k cho một ly trà sữa?" />
+            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." />
         </View>
         <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white">
             Thực hiện giao dịch
