@@ -27,19 +27,44 @@ import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 
 export class AddTransactionScreen extends Component {
+  
   _isMounted = false;
   constructor(props)
   {
     super(props);
     this.state = {
       selectedCategory: '',
-      date: '',
+      date: new Date(),
       selectedTenVi: this.props.route.params?.walletName ?? '',
       newSoDu: '',
       defaultColor: this.props.route.params?.walletColor ?? colors.blue,
-      refresh: '0',
+      show: false,
       selectedDate: 'Today'
     };
+  }
+  toString(date) {
+    var day = date.getDate(); //Current Date
+    var month = date.getMonth() + 1; //Current Month
+    var year = date.getFullYear(); //Current Year
+    var fulldate;
+    if(day < 10)
+    {
+      fulldate = '0' + day;
+    }
+    else
+    {
+      fulldate = day;
+    }
+    if(month < 10)
+    {
+      fulldate = fulldate + '/' + '0' + month;
+    }
+    else
+    {
+      fulldate = fulldate + '/' + month;
+    }
+    fulldate = fulldate + '/' + year;
+    return fulldate;
   }
   onChangeSoDu(text){
     this.setState({newSoDu: text});
@@ -353,11 +378,21 @@ export class AddTransactionScreen extends Component {
             <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 3.5 }}>
                     <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'Custom'? "true" : "false"}
-                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'Custom'})}}>
-                        {this.state.date}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'Custom', show: true})}}>
+                        {this.toString(this.state.date)}
                     </ToggleButton>
                 </View>
             </RowLeft>
+            {this.state.show &&
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={this.state.date}
+              mode='date'
+              is24Hour={true}
+              display="default"
+              onChange={(event, selectedDate) => {this.setState({date:selectedDate, show: false})}}
+            />
+            }
             <Divider />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
             <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." />
