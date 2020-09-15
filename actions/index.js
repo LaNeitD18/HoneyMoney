@@ -91,9 +91,38 @@ export function getSubCategories(subCategories) {
         subCategories: subCategories
     }
 }
+
+export function updateSubCategories(subCategory) {
+    return {
+        type: 'UPDATE_SUB',
+        subCategory: subCategory
+    }
+}
+
+export function getSubCategoriesBeforeEditing(subCategories) {
+    return {
+        type: 'BACK_BEFORE_EDITING',
+        subCategories: subCategories
+    }
+}
 //#endregion
 
-//#region isVisibleDialog
+//#region addedSubCategories
+export function addSubCategory(subCategory) {
+    return {
+        type: 'ADD_SUB',
+        subCategory: subCategory
+    }
+}
+
+export function reloadAddedSubCategories() {
+    return {
+        type: 'RELOAD'
+    }
+}
+//#endregion
+
+//#region isVisible
 export function openDialog() {
     return {
         type: 'OPEN_DIALOG',
@@ -105,6 +134,20 @@ export function closeDialog() {
     return {
         type: 'CLOSE_DIALOG',
         visible: false,
+    }
+}
+//#endregion
+
+//#region isVisibleIconDialog
+export function openIconDialog() {
+    return {
+        type: 'OPEN_ICON_DIALOG',
+    }
+}
+
+export function closeIconDialog() {
+    return {
+        type: 'CLOSE_ICON_DIALOG',
     }
 }
 //#endregion

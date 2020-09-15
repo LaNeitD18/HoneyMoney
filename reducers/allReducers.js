@@ -9,6 +9,8 @@ import chosenCategoryReducer from '../reducers/chosenCategoryReducer';
 import categoryNameReducer from '../reducers/categoryNameReducer';
 import subCategoriesReducer from '../reducers/subCategoriesReducer';
 import isVisibleReducer from '../reducers/isVisibleReducer';
+import addedSubCategoriesReducer from '../reducers/addedSubCategoriesReducer';
+import isVisibleIconDialogReducer from '../reducers/isVisibleIconDialogReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -24,6 +26,8 @@ const allReducers = combineReducers({
     categoryName: categoryNameReducer,
     subCategories: subCategoriesReducer,
     isVisible: isVisibleReducer,
+    addedSubCategories: addedSubCategoriesReducer,
+    isVisibleIconDialog: isVisibleIconDialogReducer,
 })
 
 export default allReducers;

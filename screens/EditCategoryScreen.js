@@ -61,13 +61,18 @@ import * as firebase from 'firebase';
 import { categoryRef } from '../components/DataConnect';
 
 import { findIcon } from '../components/Image';
-import { changeType, changeName, openDialog } from '../actions/index';
+import { changeType, changeName, openDialog, openIconDialog } from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 import ChooseIconDialog from '../components/ChooseIconDialog'
 
 class EditCategoryScreen extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            addedSubCategories: []
+        }
+        // ko sd props subcate để push nữa mà tạo ra 1 state khác sẽ chỉ nhận các subcate cần thêm vào, update state này
+        // và sd nó cho vc push các cate mới
     }
 
     getSelectedIndex = () => {
@@ -90,6 +95,18 @@ class EditCategoryScreen extends Component {
             TypeID: type
         });
 
+        const subCategories = this.props.addedSubCategories;
+        //let update = {};
+        subCategories.map(item => {
+            categoryRef.child(category.key).child('SubCategories').push({
+                CategoryName: item.categoryName,
+                Icon: item.icon
+            });
+        })
+        
+
+        
+
         // exit this screen
         this.props.navigation.goBack();
     }
@@ -104,7 +121,6 @@ class EditCategoryScreen extends Component {
 
     renderSubCategoriesView = () => {
         const subCategories = this.props.subCategories;
-        //console.log(subCategories);
         return <View>
             {subCategories.map((item, i) => (
                 <TouchableOpacity>
@@ -133,25 +149,10 @@ class EditCategoryScreen extends Component {
         </View>
     }
 
-    renderAddSubcategoryDialog = () => {
-        console.log("Z");
-        return <AddSubcategoryDialog></AddSubcategoryDialog>
-            
-    }
-
     render() {
         const subCategoriesView = this.renderSubCategoriesView();
-
-        const list = [
-            {
-                title: "Từ tiện",
-                source: require("../assets/categories/tuthien.png"),
-            },
-            {
-                title: "Thêm mới",
-                source: require("../assets/categories/themdanhmuccon.png"),
-            },
-        ];
+        // console.log("a ");
+        // console.log(this.props.addedSubCategories);
 
         const iconPath = findIcon(this.props.chosenCategory.icon);
 
@@ -165,7 +166,7 @@ class EditCategoryScreen extends Component {
                         alignItems: "center",
                     }}
                 >
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.openIconDialog}>
                         <Avatar
                             size={sizeFactor * 6}
                             avatarStyle={{
@@ -232,17 +233,21 @@ class EditCategoryScreen extends Component {
             Lưu thay đổi
             </Button>
             <AddSubcategoryDialog></AddSubcategoryDialog>
+            <ChooseIconDialog></ChooseIconDialog>
         </ScreenView>
         );
     }
 }
 
 function mapStateToProps(state) {
+    // if don't have state isVisible, screen isn't rerendered although state subCategories is updated
     return {
         chosenCategory: state.chosenCategory,
         categoryName: state.categoryName,
         subCategories: state.subCategories,
         selectedType: state.selectedType,
+        isVisible: state.isVisible,
+        addedSubCategories: state.addedSubCategories,
     };
 }
 
@@ -251,6 +256,7 @@ function mapDispatchToProps(dispatch) {
         changeType: (selectedType) => { dispatch(changeType(selectedType))},
         changeName: (text) => { dispatch(changeName(text))},
         openDialog: () => { dispatch(openDialog())},
+        openIconDialog: () => { dispatch(openIconDialog())},
     };
 }
 

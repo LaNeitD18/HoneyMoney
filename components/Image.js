@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import { View, TouchableOpacity } from 'react-native';
+
 const IconImage = [
     // type: vay/tra
     {type: 'diVay', iconPath: require("../assets/categories/divay.png")},
@@ -31,6 +34,14 @@ const IconImage = [
     {type: 'themdanhmuc', iconPath: require("../assets/categories/themdanhmuc.png")},
     {type: 'themdanhmuccon', iconPath: require("../assets/categories/themdanhmuccon.png")},
 ]
+
+// export const IconView = () => {
+//     return <View>
+//         {IconImage.map((item, i) => {
+            
+//         })}
+//     </View>
+// }
 
 
 export const findIcon = (text) => {

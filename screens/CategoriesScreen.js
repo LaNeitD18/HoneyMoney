@@ -37,6 +37,7 @@ import IconImage, { findIcon } from '../components/Image';
 import { connect } from 'react-redux';
 import { changeType, updateCategories, reloadCategory, 
         changeSearchText, chooseCategory, changeName, getSubCategories,
+        reloadAddedSubCategories
 } from '../actions/index';
 
 import EditCategoryScreen from './EditCategoryScreen';
@@ -89,14 +90,12 @@ class CategoriesScreen extends React.Component {
 
     getSubCategories = (chosenCategory) => {
         const categories = [];
-        categoryRef.orderByChild('ParentID').equalTo(chosenCategory.key).once('value', (snapshot) => {
+        categoryRef.child(chosenCategory.key).child('SubCategories').once('value', (snapshot) => {
             snapshot.forEach(element => {
                 categories.push({
                     key: element.key,
                     categoryName: element.toJSON().CategoryName,
                     icon: element.toJSON().Icon,
-                    parentID: element.toJSON().ParentID,
-                    typeID: element.toJSON().TypeID
                 });
             });
         });
@@ -118,6 +117,7 @@ class CategoriesScreen extends React.Component {
 
         const subCategories = this.getSubCategories(category);
         this.props.getSubCategories(subCategories);
+        this.props.reloadAddedSubCategories();
 
         this.props.navigation.navigate('EditCategoryScreen');
     }
@@ -256,6 +256,7 @@ function mapDispatchToProps(dispatch) {
         chooseCategory: (category) => { dispatch(chooseCategory(category)) },
         changeName: (text) => { dispatch(changeName(text)) },
         getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
+        reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories()) },
     }
 }
 
