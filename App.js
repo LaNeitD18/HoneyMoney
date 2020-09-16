@@ -36,9 +36,14 @@ export default function App() {
     return (
         <Provider store={store}>
             <NavigationContainer>
-                <Tab.Navigator tabBarOptions={{ activeTintColor: "blue", keyboardHidesTabBar: true }}>
-                    <Tab.Screen name="ATS" component={AddTransactionScreen} options={{ title: "ATS" }} />
-                    <Tab.Screen name="CS" component={CategoriesScreen} options={{ title: "CS" }} />
+                <Tab.Navigator
+                    tabBarOptions={{ activeTintColor: "blue", keyboardHidesTabBar: true }}
+                >
+                    <Tab.Screen
+                        name="ACS"
+                        component={AddCategoryScreen}
+                        options={{ title: "ACS" }}
+                    />
                 </Tab.Navigator>
             </NavigationContainer>
         </Provider>

@@ -46,24 +46,18 @@ import {
     RoundedView,
     TouchableDeleteText,
 } from "../components/Basic";
-import {
-    Icon,
-    SearchBar,
-    Input,
-    Avatar,
-    Accessory,
-    ListItem,
-} from "react-native-elements";
+import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import Swipeout from "react-native-swipeout";
 
-import * as firebase from 'firebase';
-import { categoryRef } from '../components/DataConnect';
+import * as firebase from "firebase";
+import { categoryRef } from "../components/DataConnect";
 
-import { findIcon } from '../components/Image';
-import { changeType, changeName, openDialog } from '../actions/index';
-import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
-import ChooseIconDialog from '../components/ChooseIconDialog'
+import { findIcon } from "../components/Image";
+import { changeType, changeName, openDialog } from "../actions/index";
+import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
+import ChooseIconDialog from "../components/ChooseIconDialog";
 
 class EditCategoryScreen extends Component {
     constructor(props) {
@@ -73,26 +67,27 @@ class EditCategoryScreen extends Component {
     getSelectedIndex = () => {
         const type = this.props.chosenCategory.typeID;
         switch (type) {
-            case '001':
+            case "001":
                 return 0;
-            case '002':
+            case "002":
                 return 1;
-            case '003':
+            case "003":
                 return 2;
         }
-    }
+    };
 
     updateCategory = () => {
         const category = this.props.chosenCategory;
-        const type = this.props.selectedType == 0 ? '001' : this.props.selectedType == 1 ? '002' : '003';
+        const type =
+            this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
         categoryRef.child(category.key).update({
             CategoryName: this.props.categoryName,
-            TypeID: type
+            TypeID: type,
         });
 
         // exit this screen
         this.props.navigation.goBack();
-    }
+    };
 
     deleteCategory = () => {
         const category = this.props.chosenCategory;
@@ -100,46 +95,58 @@ class EditCategoryScreen extends Component {
 
         // exit this screen
         this.props.navigation.goBack();
-    }
+    };
 
     renderSubCategoriesView = () => {
         const subCategories = this.props.subCategories;
         //console.log(subCategories);
-        return <View>
-            {subCategories.map((item, i) => (
-                <TouchableOpacity>
-                    <ListItem
-                        key={item.key}
-                        title={item.categoryName}
-                        leftAvatar={{
-                            source: findIcon(item.icon),
-                            width: sizeFactor * 2.5,
-                            height: sizeFactor * 2.5,
-                            rounded: false,
-                        }}
-                        chevron={
-                            //sorry for bad code, pls edit this
-                            item.categoryName == "Thêm mới" ? false : { size: sizeFactor * 1.5 }
-                        }
-                        contentContainerStyle={{ marginHorizontal: 0 }}
-                        rightContentContainerStyle={{ marginHorizontal: 0 }}
-                        containerStyle={{ paddingHorizontal: 0 }}
-                        titleStyle={{ fontSize: sizeFactor }}
-                        pad={sizeFactor}
-                    />
-                </TouchableOpacity>
-            ))}
-            
-        </View>
-    }
+        return (
+            <View>
+                {subCategories.map((item, i) => (
+                    <TouchableOpacity>
+                        <ListItem
+                            key={item.key}
+                            title={item.categoryName}
+                            leftAvatar={{
+                                source: findIcon(item.icon),
+                                width: sizeFactor * 2.5,
+                                height: sizeFactor * 2.5,
+                                rounded: false,
+                            }}
+                            chevron={
+                                //sorry for bad code, pls edit this
+                                item.categoryName == "Thêm mới" ? false : { size: sizeFactor * 1.5 }
+                            }
+                            contentContainerStyle={{ marginHorizontal: 0 }}
+                            rightContentContainerStyle={{ marginHorizontal: 0 }}
+                            containerStyle={{ paddingHorizontal: 0 }}
+                            titleStyle={{ fontSize: sizeFactor }}
+                            pad={sizeFactor}
+                        />
+                    </TouchableOpacity>
+                ))}
+            </View>
+        );
+    };
 
     renderAddSubcategoryDialog = () => {
         console.log("Z");
-        return <AddSubcategoryDialog></AddSubcategoryDialog>
-            
-    }
+        return <AddSubcategoryDialog></AddSubcategoryDialog>;
+    };
 
     render() {
+        const swipeSettings = {
+            autoClose: true,
+            onClose: (secID, rowID, direction) => {},
+            onOpen: (secID, rowID, direction) => {},
+            right: [
+                {
+                    onPress: () => {},
+                    text: "Xóa",
+                    type: "delete",
+                },
+            ],
+        };
         const subCategoriesView = this.renderSubCategoriesView();
 
         const list = [
@@ -157,7 +164,6 @@ class EditCategoryScreen extends Component {
 
         return (
             <ScreenView>
-                
                 <View
                     style={{
                         justifyContent: "center",
@@ -180,59 +186,97 @@ class EditCategoryScreen extends Component {
                         </Avatar>
                     </TouchableOpacity>
                 </View>
-                <Title style={{ marginLeft: sizeFactor * 1.5 }}>
-                    Chỉnh sửa danh mục
-            </Title>
-            <RoundedView>
-            <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
-            <TextInput 
-                style={styles.inputText} 
-                placeholder="Danh mục của tôi" 
-                value={this.props.categoryName} 
-                onChangeText={(text) => this.props.changeName(text)}/>
-            <Divider />
-            <String style={{ fontWeight: "bold" }}>Mục đích</String>
-            <AddWalletKindSelect 
-                selectedIndex={this.props.selectedType}
-                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} 
-                onPress={(index) => this.props.changeType(index)}/>
-            <Divider />
-            <String style={{ fontWeight: "bold" }}>Danh mục con</String>
+                <Title style={{ marginLeft: sizeFactor * 1.5 }}>Chỉnh sửa danh mục</Title>
+                <RoundedView>
+                    <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
+                    <TextInput
+                        style={styles.inputText}
+                        placeholder="Danh mục của tôi"
+                        value={this.props.categoryName}
+                        onChangeText={(text) => this.props.changeName(text)}
+                    />
+                    <Divider />
+                    <String style={{ fontWeight: "bold" }}>Mục đích</String>
+                    <AddWalletKindSelect
+                        selectedIndex={this.props.selectedType}
+                        buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
+                        onPress={(index) => this.props.changeType(index)}
+                    />
+                    <Divider />
+                    <String style={{ fontWeight: "bold" }}>Danh mục con</String>
 
-            {subCategoriesView}
+                    {subCategoriesView}
 
-            <TouchableOpacity onPress={() => this.props.openDialog()}>
-                <ListItem
-                    title="Thêm mới"
-                    leftAvatar={{
-                        source: require("../assets/categories/themdanhmuccon.png"),
-                        width: sizeFactor * 2.5,
-                        height: sizeFactor * 2.5,
-                        rounded: false,
-                    }}
-                    chevron={false}
-                    contentContainerStyle={{ marginHorizontal: 0 }}
-                    rightContentContainerStyle={{ marginHorizontal: 0 }}
-                    containerStyle={{ paddingHorizontal: 0 }}
-                    titleStyle={{ fontSize: sizeFactor }}
-                    pad={sizeFactor}>
-                </ListItem>
-            </TouchableOpacity>
-            <TouchableDeleteText onPress={this.deleteCategory}>
-                Xóa danh mục
-            </TouchableDeleteText>
-            </RoundedView>
-            <Divider />
-            <Button
-                color="white"
-                background={colors.blue}
-                style={{ marginHorizontal: sizeFactor }}
-                onPress={this.updateCategory}
-            >
-            Lưu thay đổi
-            </Button>
-            <AddSubcategoryDialog></AddSubcategoryDialog>
-        </ScreenView>
+                    <Swipeout style={{ marginBottom: sizeFactor / 2 }} {...swipeSettings}>
+                        <TouchableOpacity onPress={() => this.props.openDialog()}>
+                            <View
+                                style={{
+                                    backgroundColor: "white",
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Avatar
+                                    size={sizeFactor * 3}
+                                    avatarStyle={{
+                                        width: sizeFactor * 2.5,
+                                        height: sizeFactor * 2.5,
+                                        marginTop: sizeFactor * 0.25,
+                                        marginLeft: sizeFactor * 0.25,
+                                    }}
+                                    source={require("../assets/categories/tuthien.png")}
+                                ></Avatar>
+                                <String
+                                    style={{
+                                        marginLeft: sizeFactor / 2,
+                                        marginTop: sizeFactor * 0.75,
+                                    }}
+                                >
+                                    Từ thiện
+                                </String>
+                            </View>
+                        </TouchableOpacity>
+                    </Swipeout>
+                    <TouchableOpacity onPress={() => this.props.openDialog()}>
+                        <View
+                            style={{
+                                backgroundColor: "white",
+                                flexDirection: "row",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Avatar
+                                size={sizeFactor * 3}
+                                avatarStyle={{
+                                    width: sizeFactor * 2.5,
+                                    height: sizeFactor * 2.5,
+                                    marginTop: sizeFactor * 0.25,
+                                    marginLeft: sizeFactor * 0.25,
+                                }}
+                                source={require("../assets/categories/themdanhmuccon.png")}
+                            ></Avatar>
+                            <String
+                                style={{
+                                    marginLeft: sizeFactor / 2,
+                                    marginTop: sizeFactor * 0.75,
+                                }}
+                            >
+                                Thêm danh mục con
+                            </String>
+                        </View>
+                    </TouchableOpacity>
+                </RoundedView>
+                <Divider />
+                <Button
+                    color="white"
+                    background={colors.blue}
+                    style={{ marginHorizontal: sizeFactor }}
+                    onPress={this.updateCategory}
+                >
+                    Lưu thay đổi
+                </Button>
+                <AddSubcategoryDialog></AddSubcategoryDialog>
+            </ScreenView>
         );
     }
 }
@@ -248,9 +292,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => { dispatch(changeType(selectedType))},
-        changeName: (text) => { dispatch(changeName(text))},
-        openDialog: () => { dispatch(openDialog())},
+        changeType: (selectedType) => {
+            dispatch(changeType(selectedType));
+        },
+        changeName: (text) => {
+            dispatch(changeName(text));
+        },
+        openDialog: () => {
+            dispatch(openDialog());
+        },
     };
 }
 
