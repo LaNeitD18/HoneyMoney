@@ -719,11 +719,12 @@ export class IconCategory extends Component {
             <TouchableOpacity>
                 <View
                     style={{
-                        height: sizeFactor * 3,
-                        width: sizeFactor * 3,
+                        height: (windowWidth - sizeFactor * 9) / 4,
+                        width: (windowWidth - sizeFactor * 9) / 4,
                         alignContent: "center",
                         alignItems: "center",
                         justifyContent: "center",
+                        marginRight: sizeFactor / 2,
                     }}
                 >
                     <Image
@@ -733,8 +734,8 @@ export class IconCategory extends Component {
                             {
                                 opacity: this.props.choosed ? 1 : 0,
                                 position: "absolute",
-                                height: sizeFactor * 3,
-                                width: sizeFactor * 3,
+                                height: (windowWidth - sizeFactor * 9) / 4,
+                                width: (windowWidth - sizeFactor * 9) / 4,
                             },
                         ]}
                     ></Image>
@@ -745,8 +746,8 @@ export class IconCategory extends Component {
                             {
                                 marginTop: sizeFactor / 2,
                                 opacity: 1,
-                                width: sizeFactor * 2,
-                                height: sizeFactor * 2,
+                                width: sizeFactor * 2.5,
+                                height: sizeFactor * 2.5,
                             },
                         ]}
                     ></Image>

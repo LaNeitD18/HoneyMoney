@@ -164,6 +164,7 @@ class EditCategoryScreen extends Component {
 
         return (
             <ScreenView>
+                <ChooseIconDialog />
                 <View
                     style={{
                         justifyContent: "center",

@@ -39,7 +39,11 @@ export default function App() {
                 <Tab.Navigator
                     tabBarOptions={{ activeTintColor: "blue", keyboardHidesTabBar: true }}
                 >
-                    <Tab.Screen name="CN" component={CategoryNavigator} options={{ title: "CN" }} />
+                    <Tab.Screen
+                        name="ECS"
+                        component={EditCategoryScreen}
+                        options={{ title: "ECS" }}
+                    />
                 </Tab.Navigator>
             </NavigationContainer>
         </Provider>
