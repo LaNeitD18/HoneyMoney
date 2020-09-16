@@ -137,6 +137,9 @@ class AddCategoryScreen extends Component {
                         alignItems: "center",
                     }}
                 >
+                    <Divider />
+                    <Divider />
+                    <Divider />
                     <TouchableOpacity>
                         <Avatar
                             size={sizeFactor * 6}
@@ -152,7 +155,7 @@ class AddCategoryScreen extends Component {
                         </Avatar>
                     </TouchableOpacity>
                 </View>
-                <Title style={{ marginLeft: sizeFactor * 1.5 }}>Tạo danh mục</Title>
+                <Title style={{ marginLeft: sizeFactor * 1.5 }}>Chi tiết danh mục</Title>
                 <RoundedView>
                     <String style={{ fontWeight: "bold" }}>Tên danh mục</String>
                     <TextInput
