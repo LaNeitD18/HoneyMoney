@@ -46,29 +46,13 @@ import {connect} from 'react-redux';
 import {rootRef,walletRef} from '../components/DataConnect'
 
 //Redux action
-// import { ChangeDefaultAction, UpdateWalletAction } from "../actions";
+import {UpdateWalletAction } from "../actions";
 
-// //redux define container
+//Navigator
+import { CommonActions } from '@react-navigation/native';
 
-// const mapStateToProps = (state) => {
-//   return{
-//       walletData: state.walletReducer,
-//   }
-// };
-
-// const mapDispatchToProps = (dispatch) =>{
-//   return {
-//       ChangeDefault: (walletItem) => {   
-//         dispatch(ChangeDefaultAction(walletItem));
-//       },
-//       Update: () => {
-//         dispatch(UpdateWalletAction());
-//       }
-//   };
-// }
-// export default WalletContainer = connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
-
-export default class WalletScreen extends Component {
+export class WalletScreen extends Component {
+  _isMounted = false;
   constructor(props)
   {
     super(props);
@@ -116,7 +100,7 @@ export default class WalletScreen extends Component {
                     flexDirection: "row",
                 }}
             >
-                <AddWalletButton color={colors.blue} />
+                <AddWalletButton color={colors.blue} onPress={()=>{this.props.navigation.navigate('AddWalletScreen')}}/>
             </View>
         </Row>
         <FlatList 
@@ -132,7 +116,9 @@ export default class WalletScreen extends Component {
                 defaultChanged(item);
               }
             }}
-            onPressSuDung={()=>{}}
+            onPressSuDung={()=>{this.props.navigation.navigate({name: 'AddTransactionScreen', params:{
+              walletName: item.name,
+              walletColor: item.color}})}}
           >
             {item.money}
           </Wallet>)}}>
@@ -166,6 +152,24 @@ defaultChanged = (walletItem)=>{
     isDefault: "true"
     });
 }
+
+//redux define container
+
+const mapStateToProps = (state) => {
+  return{
+      walletData: state.WalletReducer,
+  }
+};
+
+const mapDispatchToProps = (dispatch) =>{
+  return {
+      Update: (snap) => {
+        dispatch(UpdateWalletAction(snap));
+      }
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(WalletScreen);
+
 
 var WalletData = [
   {

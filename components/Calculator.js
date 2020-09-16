@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Vibration, Animated } from 'react-native';
+import { sizeFactor, colors, String } from './Basic';
+import { Icon } from 'react-native-elements';
 
 export default class Calculator extends Component {
     constructor() {
@@ -13,7 +15,7 @@ export default class Calculator extends Component {
         this.operations = ['+', '-', '*', '/'];
         this.functions = ['⌫', 'C', '='];
     }
-    
+
     calculateResult() {
         const text = this.state.calculationText;
 
@@ -26,7 +28,7 @@ export default class Calculator extends Component {
     // check if a tring is valid (the last char is a number)
     isValid() {
         const text = this.state.calculationText;
-        switch(text.slice(-1)) {
+        switch (text.slice(-1)) {
             case '+':
             case '-':
             case '*':
@@ -37,36 +39,36 @@ export default class Calculator extends Component {
     }
 
     isZero() {
-        if(this.state.calculationText == "0")   return true;
+        if (this.state.calculationText == "0") return true;
         return false;
     }
 
     isDecimal() {
         const text = this.state.calculationText;
-        if(text.indexOf(".") > 0)   return true;
+        if (text.indexOf(".") > 0) return true;
         return false;
     }
 
     // include all number buttons and "." (12 buttons)
     numberPressed(text) {
         // press ".", check if a text includes "." or the last char is a symbol -> do nothing
-        if(text == ".") {
+        if (text == ".") {
             const lastChar = this.state.calculationText.split('').pop();
-            if(this.isDecimal() || this.operations.indexOf(lastChar) >= 0) {
+            if (this.isDecimal() || this.operations.indexOf(lastChar) >= 0) {
                 return;
             }
         }
         // check if a text is being "0"
-        if(this.isZero()) {
+        if (this.isZero()) {
             // press "0" or "000" -> do nothing
-            if(text == "0" || text == "000") {
+            if (text == "0" || text == "000") {
                 return;
-            // "." -> add
-            } else if(text == ".") {
+                // "." -> add
+            } else if (text == ".") {
                 this.setState({
                     calculationText: this.state.calculationText + text
                 });
-            // number -> replace
+                // number -> replace
             } else {
                 this.setState({
                     calculationText: text
@@ -80,24 +82,24 @@ export default class Calculator extends Component {
     }
 
     operate(operation) {
-        switch(operation) {
+        switch (operation) {
             case '+':
             case '-':
             case '*':
             case '/':
                 const lastChar = this.state.calculationText.split('').pop();
-                if(this.operations.indexOf(lastChar) >= 0) {
+                if (this.operations.indexOf(lastChar) >= 0) {
                     let text = this.state.calculationText.split('');
                     text.pop();
                     text.push(operation);
 
                     this.setState({
-                    calculationText: text.join('')
+                        calculationText: text.join('')
                     });
                     return;
                 }
- 
-                if(this.state.calculationText == "") return;
+
+                if (this.state.calculationText == "") return;
                 this.setState({
                     calculationText: this.state.calculationText + operation
                 })
@@ -105,7 +107,7 @@ export default class Calculator extends Component {
     }
 
     backspaceFunction() {
-        if(this.state.calculationText.length == 1) {
+        if (this.state.calculationText.length == 1) {
             this.setState({
                 calculationText: "0"
             });
@@ -120,8 +122,8 @@ export default class Calculator extends Component {
     }
     // include clear all, backspace, calculate result (=)
     basicFunctions(text) {
-        switch(text) {
-            case '⌫': 
+        switch (text) {
+            case '⌫':
                 this.backspaceFunction();
                 break;
             case 'C':
@@ -130,9 +132,9 @@ export default class Calculator extends Component {
                 });
                 break;
             case '=':
-                if(this.isValid() && this.state.calculationText != "0") {
+                if (this.isValid() && this.state.calculationText != "0") {
                     this.calculateResult();
-                } else if(!this.isValid()) {
+                } else if (!this.isValid()) {
                     Vibration.vibrate(200);
                     //this.startShake();
                 }
@@ -142,9 +144,9 @@ export default class Calculator extends Component {
     renderNumberView() {
         let rows = [];
         let nums = [['7', '8', '9'], ['4', '5', '6'], ['1', '2', '3'], ['000', '0', '.']];
-        for(let i=0; i<4; i++) {
+        for (let i = 0; i < 4; i++) {
             let row = [];
-            for(let j=0; j<3; j++) {
+            for (let j = 0; j < 3; j++) {
                 row.push(
                     <TouchableOpacity key={nums[i][j]} style={styles.button} onPress={() => this.numberPressed(nums[i][j])} >
                         <Text style={styles.buttonText}>{nums[i][j]}</Text>
@@ -153,7 +155,7 @@ export default class Calculator extends Component {
             }
             rows.push(
                 <View key={i} style={styles.row}>
-                    {row}     
+                    {row}
                 </View>
             );
         }
@@ -162,8 +164,8 @@ export default class Calculator extends Component {
     renderOperationView() {
         let rows = [];
         const icon = ['+', '-', '×', '÷']
-        
-        for(let i=0; i<4; i++) {
+
+        for (let i = 0; i < 4; i++) {
             rows.push(
                 <TouchableOpacity key={this.operations[i]} style={styles.button} onPress={() => this.operate(this.operations[i])} >
                     <Text style={styles.buttonText}>{icon[i]}</Text>
@@ -181,6 +183,17 @@ export default class Calculator extends Component {
             <View style={styles.container}>
                 <View style={styles.calculation}>
                     <Text style={styles.calculationText}>{this.state.calculationText}</Text>
+                </View>
+                <View style={{
+                    backgroundColor: colors.gray3, borderColor: colors.gray2,
+                    borderWidth: StyleSheet.hairlineWidth
+                }}>
+                    <Icon
+                        name="chevron-down"
+                        type="material-community"
+                        color="white"
+                        size={sizeFactor * 2.5}
+                    />
                 </View>
                 <View style={styles.buttons}>
                     <View style={styles.numbers}>
@@ -227,13 +240,13 @@ const styles = StyleSheet.create({
     },
     numbers: {
         flex: 3,
-        backgroundColor: '#434343',
+        backgroundColor: colors.dark,
         borderBottomColor: 'white',
         borderBottomWidth: StyleSheet.hairlineWidth
     },
     operations: {
         flex: 1,
-        backgroundColor: '#5B5969'
+        backgroundColor: colors.gray
     },
     row: {
         flex: 1,
@@ -242,24 +255,24 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     button: {
-        flex:1,
+        flex: 1,
         alignItems: 'center',
         alignSelf: 'stretch',
         justifyContent: 'center',
-        borderColor: '#55575C',
+        borderColor: colors.gray2,
         borderWidth: StyleSheet.hairlineWidth
     },
     equalButton: {
-        flex:2,
+        flex: 2,
         alignItems: 'center',
         alignSelf: 'stretch',
         justifyContent: 'center',
-        borderColor: '#55575C',
+        borderColor: colors.gray2,
         borderWidth: StyleSheet.hairlineWidth,
-        backgroundColor: '#00A97F'
+        backgroundColor: colors.greenDark
     },
     buttonText: {
-        fontSize: 24,
+        fontSize: sizeFactor * 1.5,
         color: 'white'
     }
 
