@@ -1,14 +1,50 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ScrollView, SafeAreaView, Image, TouchableOpacity, Platform, Alert } from "react-native";
-import { String, ScreenView, Card, Divider, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, LargeScrollSelect, CategoryTable } from "../components/Basic";
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    SafeAreaView,
+    Image,
+    TouchableOpacity,
+    Platform,
+    Alert,
+} from "react-native";
+import {
+    String,
+    ScreenView,
+    Card,
+    Divider,
+    RowLeft,
+    Number,
+    NegativeNumber,
+    Wallet,
+    colors,
+    sizeFactor,
+    styles,
+    KindSelect,
+    Title,
+    Category,
+    TouchableText,
+    LargeScrollSelect,
+    CategoryTable,
+} from "../components/Basic";
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from "firebase";
 import { categoryRef } from "../components/DataConnect";
 import IconImage, { findIcon } from "../components/Image";
 import { connect } from "react-redux";
-import { changeType, updateCategories, reloadCategory, changeSearchText, chooseCategory, changeName, getSubCategories } from "../actions/index";
+import {
+    changeType,
+    updateCategories,
+    reloadCategory,
+    changeSearchText,
+    chooseCategory,
+    changeName,
+    getSubCategories,
+} from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
 import { CommonActions } from "@react-navigation/native";
@@ -111,13 +147,21 @@ class CategoriesScreen extends React.Component {
                     const icon = categories[index].icon;
                     const iconPath = findIcon(icon);
                     row.push(
-                        <Category key={categories[index].key} source={iconPath} onPress={() => this.chooseCategory(categories[index])}>
+                        <Category
+                            key={categories[index].key}
+                            source={iconPath}
+                            onPress={() => this.chooseCategory(categories[index])}
+                        >
                             {name}
                         </Category>
                     );
                 } else if (index == categories.length) {
                     row.push(
-                        <Category key={index} source={require("../assets/categories/themdanhmuc.png")} onPress={() => this.createNewCategory()}>
+                        <Category
+                            key={index}
+                            source={require("../assets/categories/themdanhmuc.png")}
+                            onPress={() => this.createNewCategory()}
+                        >
                             {"Thêm danh mục"}
                         </Category>
                     );
@@ -137,7 +181,10 @@ class CategoriesScreen extends React.Component {
 
     componentDidUpdate(prevProps) {
         // when allCategories is updated after creating new category, renderedCategories is also updated
-        if (this.props.allCategories !== prevProps.allCategories || this.props.selectedType !== prevProps.selectedType) {
+        if (
+            this.props.allCategories !== prevProps.allCategories ||
+            this.props.selectedType !== prevProps.selectedType
+        ) {
             this.getDataBasedOnType(this.props.selectedType);
         }
     }
@@ -151,7 +198,9 @@ class CategoriesScreen extends React.Component {
             //passing the inserted text in textinput
             const newData = this.props.allCategories.filter(function (item) {
                 //applying filter for the inserted text in search bar
-                const itemData = item.categoryName ? item.categoryName.toUpperCase() : "".toUpperCase();
+                const itemData = item.categoryName
+                    ? item.categoryName.toUpperCase()
+                    : "".toUpperCase();
                 const textData = text.toUpperCase();
                 return itemData.indexOf(textData) > -1;
             });
@@ -166,7 +215,13 @@ class CategoriesScreen extends React.Component {
 
     renderKindSelect = () => {
         if (this.props.searchText === "") {
-            return <KindSelect onPress={(index) => this.getDataBasedOnType(index)} selectedIndex={this.props.selectedType} buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />;
+            return (
+                <KindSelect
+                    onPress={(index) => this.getDataBasedOnType(index)}
+                    selectedIndex={this.props.selectedType}
+                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]}
+                />
+            );
         }
         return;
     };
@@ -177,6 +232,9 @@ class CategoriesScreen extends React.Component {
 
         return (
             <View style={{ flex: 1 }}>
+                <Divider />
+                <Divider />
+                <Divider />
                 <SearchBar
                     platform={Platform.OS}
                     placeholder="Tìm danh mục..."
@@ -195,7 +253,7 @@ class CategoriesScreen extends React.Component {
                     }}
                 />
                 <ScrollView style={{ flex: 0.9 }}>
-                    <Title>Danh mục</Title>
+                    <Title style={{ marginTop: 0 }}>Danh mục</Title>
                     {kindSelect}
                     <CategoryTable rows={rows} />
                     <Divider />
