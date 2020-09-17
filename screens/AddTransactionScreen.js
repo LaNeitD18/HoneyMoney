@@ -34,12 +34,15 @@ export class AddTransactionScreen extends Component {
     super(props);
     this.state = {
       selectedCategory: '',
+      selectedSub: '',
       date: new Date(),
       selectedTenVi: this.props.route.params?.walletName ?? '',
       newSoDu: '',
       defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       show: false,
-      selectedDate: 'Today'
+      selectedDate: 'Today',
+      subCategory: [],
+      fulllist: false
     };
   }
   toString(date) {
@@ -92,46 +95,39 @@ export class AddTransactionScreen extends Component {
       this.props.reloadCategory(temp);
   }
 
-  // getSubCategories = () => {
-  //   const categories = [];
-  //   subcategoryRef.orderByChild('ParentID').equalTo(selectedCategory.key).once('value', (snapshot) => {
-  //       snapshot.forEach(element => {
-  //           categories.push({
-  //               key: element.key,
-  //               categoryName: element.toJSON().CategoryName,
-  //               icon: element.toJSON().Icon,
-  //               parentID: element.toJSON().ParentID,
-  //               typeID: element.toJSON().TypeID
-  //           });
-  //       });
-  //   });
-  //   categories.push({
-  //       key: 0,
-  //       categoryName: 'Thêm mới',
-  //       icon: 'themdanhmuccon',
-  //       parentID: '',
-  //       typeID: ''
-  //   });
-  //   return categories;
-  // }
-
+  getSubCategories = (category) => {
+    const subcategories = [];
+    categoryRef.child(category.key + "/SubCategories/").on('value',(snap) => {
+      snap.forEach(element => {
+        subcategories.push({
+          key: element.key,
+          categoryName: element.toJSON().CategoryName,
+          icon: element.toJSON().Icon,
+        })
+      })
+    });
+    return subcategories;
+  }
   chooseCategory = (category) => {
-
     if(this.state.selectedCategory == category.key)
     {
-      this.setState({selectedCategory:''});
+      this.setState({selectedCategory:'', selectedSub: ''});
     }
     else
     {
-      this.setState({selectedCategory: category.key});
+      this.setState({selectedCategory: category.key, selectedSub: ''});
+      this.setState({subCategory: this.getSubCategories(category)});
     }
-    //this.props.chooseCategory(category);
-    //this.props.changeName(category.categoryName);
-
-    //const subCategories = this.getSubCategories(category);
-    //this.props.getSubCategories(subCategories);
-
-    //this.props.navigation.navigate('EditCategoryScreen');
+  }
+  chooseSub = (sub) => {
+    if(this.state.selectedSub == sub.key)
+    {
+      this.setState({selectedSub:''});
+    }
+    else
+    {
+      this.setState({selectedSub: sub.key});
+    }
   }
   componentDidMount(){
     let tempTen = '';
@@ -146,10 +142,6 @@ export class AddTransactionScreen extends Component {
     })
     this.setState({selectedTenVi: tempTen, defaultColor: tempColor});
     }
-  }
-
-  componentWillUpdate() {
-    this._isMounted = false;
   }
 
   renderCategoryHorizon = () => {
@@ -186,54 +178,149 @@ export class AddTransactionScreen extends Component {
     );
     return rows;
   }
-  // renderSubCategoryHorizon = () => {
-  //   const categories = this.getSubCategories();
-  //   const rows = [];
-  //   const row = [];
-  //   for(let index=0; index<=categories.length; index++) {
-  //     if(index < categories.length) {
-  //         const name = categories[index].categoryName;
-  //         const icon = categories[index].icon;
-  //         const iconPath = findIcon(icon);
-  //         row.push(
-  //             <Category 
-  //                 choosed = {this.state.selectedCategory == categories[index].key? true : false}
-  //                 key={categories[index].key} 
-  //                 source={iconPath} 
-  //                 onPress={() => this.chooseCategory(categories[index])}>
-  //             {name}
-  //             </Category>
-  //         );
-  //     } else if( index == categories.length) {
-  //         row.push(
-  //             <Category 
-  //                 key={index} 
-  //                 source={require("../assets/categories/themdanhmuc.png")} 
-  //                 onPress={() => {/*cho nay de them addSubCategoryScreen navigate*/}}>
-  //             {'Thêm danh mục'}
-  //             </Category>
-  //         )
-  //     }
-  //   }
-  //   rows.push(
-  //     <RowLeft>{row}</RowLeft>
-  //   );
-  //   return rows;
-  // }
+
+  renderCategoryTable = () => {
+    const categories = this.props.renderedCategories;
+    const numberOfRows = Math.ceil((categories.length + 1) / 4);
+    const rows = [];
+
+    for (let i = 0; i < numberOfRows; i++) {
+        const row = [];
+        for (let j = 0; j < 4; j++) {
+            const index = 4 * i + j;
+            if (index < categories.length) {
+                const name = categories[index].categoryName;
+                const icon = categories[index].icon;
+                const iconPath = findIcon(icon);
+                row.push(
+                    <Category
+                        choosed = {this.state.selectedCategory == categories[index].key? true : false}
+                        key={categories[index].key}
+                        source={iconPath}
+                        onPress={() => this.chooseCategory(categories[index])}>
+                        {name}
+                    </Category>
+                );
+            } else if (index == categories.length) {
+                row.push(
+                    <Category 
+                        key={index} 
+                        source={require("../assets/categories/themdanhmuc.png")} 
+                        onPress={() => this.createNewCategory()}>
+                    {'Thêm danh mục'}
+                    </Category>
+                )
+            }
+        }
+        rows.push(
+            <RowLeft key={i}>{row}</RowLeft>
+        );
+    }
+    return rows;
+  }
+
+  renderSubCategoryTable = () => {
+    const categories = this.state.subCategory;
+    const numberOfRows = Math.ceil((categories.length + 1) / 4);
+    const rows = [];
+
+    for (let i = 0; i < numberOfRows; i++) {
+        const row = [];
+        for (let j = 0; j < 4; j++) {
+            const index = 4 * i + j;
+            if (index < categories.length) {
+                const name = categories[index].categoryName;
+                const icon = categories[index].icon;
+                const iconPath = findIcon(icon);
+                row.push(
+                    <Category
+                        choosed = {this.state.selectedSub == categories[index].key? true : false}
+                        key={categories[index].key}
+                        source={iconPath}
+                        onPress={() => this.chooseCategory(categories[index])}>
+                        {name}
+                    </Category>
+                );
+            } else if (index == categories.length) {
+                row.push(
+                    <Category 
+                        key={index} 
+                        source={require("../assets/categories/themdanhmuc.png")} 
+                        onPress={() => {}}>
+                    {'Thêm danh mục'}
+                    </Category>
+                )
+            }
+        }
+        rows.push(
+            <RowLeft key={i}>{row}</RowLeft>
+        );
+    }
+    return rows;
+  }
+
+  renderSubCategoryHorizon = () => {
+    const categories = this.state.subCategory;
+    const rows = [];
+    const row = [];
+    for(let index=0; index<=categories.length; index++) {
+      if(index < categories.length) {
+          const name = categories[index].categoryName;
+          const icon = categories[index].icon;
+          const iconPath = findIcon(icon);
+          row.push(
+              <Category 
+                  choosed = {this.state.selectedSub == categories[index].key? true : false}
+                  key={categories[index].key} 
+                  source={iconPath} 
+                  onPress={() => {this.chooseSub(categories[index])}}>
+              {name}
+              </Category>
+          );
+      } else if( index == categories.length) {
+          row.push(
+              <Category 
+                  key={index} 
+                  source={require("../assets/categories/themdanhmuc.png")} 
+                  onPress={() => {/*cho nay de them addSubCategoryScreen navigate*/}}>
+              {'Thêm danh mục'}
+              </Category>
+          )
+      }
+    }
+    rows.push(
+      <RowLeft>{row}</RowLeft>
+    );
+    
+    return rows;
+  }
   renderKindSelect = () => {
     if(this.props.searchText === "") {
         return (
             <KindSelect 
-                onPress={(index) => this.getDataBasedOnType(index)}
+                onPress={(index) => {this.getDataBasedOnType(index); this.setState({selectedCategory:'', selectedSub:''});}}
                 selectedIndex={this.props.selectedType}
                 buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
         );
     }   return;
   }
   render() {
-    let rows = this.renderCategoryHorizon();
+    let rows = this.state.fulllist? this.renderCategoryTable(): this.renderCategoryHorizon();
     const kindSelect = this.renderKindSelect();
-    // const subCategoryShow = this.state.selectedCategory == ''? <View></View>: this.renderSubCategoryHorizon() ;
+    const subCategoryShow = this.state.selectedCategory == ''? <View></View>: 
+    <View>
+      <View
+        style={{
+          flex: 1,
+          paddingLeft: sizeFactor,
+        }}
+      >
+        <String style={{ fontWeight: "bold" }}>Danh mục con</String>
+      </View>
+      <ScrollView horizontal={true}>
+        <CategoryTable rows={this.state.fulllist? this.renderSubCategoryTable() : this.renderSubCategoryHorizon()}/>
+      </ScrollView>
+    </View>;
     return (
       <ScreenView style={{ backgroundColor: this.state.defaultColor }}>
         <TouchableOpacity onPress={()=>{
@@ -316,19 +403,11 @@ export class AddTransactionScreen extends Component {
           <ScrollView horizontal={true}>
             <CategoryTable rows={rows}/>
           </ScrollView>
-          <View
-            style={{
-              flex: 1,
-              paddingLeft: sizeFactor,
-            }}
-          >
-            <String style={{ fontWeight: "bold" }}>Danh mục con</String>
-          </View>
-          {/*subCategoryShow*/}
-          <TouchableOpacity>
+          {subCategoryShow}
+          <TouchableOpacity onPress={()=>{this.setState({fulllist: !this.state.fulllist})}}>
             <View style={{ justifyContent: "center" }}>
               <Icon
-                name="chevron-down"
+                name={this.state.fulllist? "chevron-up" : "chevron-down"}
                 type="material-community"
                 color="black"
                 size={sizeFactor * 2}
@@ -390,7 +469,7 @@ export class AddTransactionScreen extends Component {
               mode='date'
               is24Hour={true}
               display="default"
-              onChange={(event, selectedDate) => {this.setState({date:selectedDate, show: false})}}
+              onChange={(event, selectedDate) => {this.setState({date:selectedDate?selectedDate:this.state.date, show: false})}}
             />
             }
             <Divider />
