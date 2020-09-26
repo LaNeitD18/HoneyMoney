@@ -7,10 +7,13 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Animated,
+  Easing
 } from "react-native";
 import {
   String,
   ScreenView,
+  UnScrollScreenView,
   Card,
   Divider,
   Row,
@@ -27,7 +30,7 @@ import {
   Heading2,
   HeadlessCard,
   windowWidth,
-  AddWalletButton,
+  AddWalletButton, windowHeight
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import SignedNumber from '../components/SignedNumber'
@@ -49,7 +52,8 @@ import {rootRef,walletRef} from '../components/DataConnect'
 import {UpdateWalletAction } from "../actions";
 
 //Navigator
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useScrollToTop } from '@react-navigation/native';
+import { Extrapolate } from "react-native-reanimated";
 
 export class WalletScreen extends Component {
   _isMounted = false;
@@ -57,74 +61,62 @@ export class WalletScreen extends Component {
   {
     super(props);
   }
+  walletScroll(){
+    
+  }
   componentDidMount(){
     walletRef.on('value',(snap)=>{this.props.Update(snap)});
   }
   render() {
+    const y = new Animated.Value(0);
+    const onScroll = Animated.event([{nativeEvent:{contentOffset: {y}}}],{useNativeDriver: true})
     return (
-      <ScreenView>
-        <Title>Tổng quan</Title>
-            <View style={{ paddingHorizontal: sizeFactor }}>
-                <Row>
-                    <HeadlessCard
-                        color="white"
-                        icon="wallet"
-                        width={(windowWidth - sizeFactor * 3) / 2}
-                        iconColor={colors.blue}
-                    >
-                        <View>
-                            <Heading2>Số dư</Heading2>
-                            <SignedNumber>5,000,000</SignedNumber>
-                        </View>
-                    </HeadlessCard>
-                    <HeadlessCard
-                        color="white"
-                        width={(windowWidth - sizeFactor * 3) / 2}
-                        icon="wallet"
-                        iconColor={colors.blue}
-                    >
-                        <View>
-                            <Heading2>Tháng này</Heading2>
-                            <SignedNumber>-250,000</SignedNumber>
-                        </View>
-                    </HeadlessCard>
-                </Row>
-            </View>
-        <Row>
-            <Title>Quản lí ví</Title>
-            <View
-                style={{
-                    alignSelf: "flex-end",
-                    marginBottom: sizeFactor,
-                    marginRight: sizeFactor,
-                    flexDirection: "row",
-                }}
-            >
-                <AddWalletButton color={colors.blue} onPress={()=>{this.props.navigation.navigate('AddWalletScreen')}}/>
-            </View>
-        </Row>
-        <FlatList 
+      <UnScrollScreenView>
+        <Animated.FlatList 
+          scrollEventThrottle = {16}
+          bounces={false}
+          onScroll = {()=> this.walletScroll()}
           data = {this.props.walletData}
-          renderItem={({item})=>{return (<Wallet
-            heading={item.name}
-            color={item.color}
-            date={item.date}
-            isDefault={item.isDefault}
-            onPressDefault={()=>{
-              if(item.isDefault == "false")
-              {
-                defaultChanged(item);
-              }
-            }}
-            onPressSuDung={()=>{this.props.navigation.navigate({name: 'AddTransactionScreen', params:{
-              walletName: item.name,
-              walletColor: item.color}})}}
+          renderItem={({index, item})=>{
+            const position = Animated.subtract(index * sizeFactor*14.7,y)
+            const translateY = Animated.add(y,y.interpolate({
+              inputRange: [0, (index) * sizeFactor*14.7],
+              outputRange: [0, -(index) * sizeFactor*14.7],
+              extrapolateRight: "clamp"
+            }));
+            const scale = position.interpolate({
+              inputRange: [-sizeFactor*14.7, 0, windowHeight - sizeFactor*14.7, windowHeight],
+              outputRange: [0.5,1,1,0.5]
+            })
+            const opacity = position.interpolate({
+              inputRange: [-sizeFactor*14.7, 0, windowHeight - sizeFactor*14.7, windowHeight],
+              outputRange: [0.5,1,1,0.5]
+            })
+            return (
+            <Animated.View style={[{opacity, transform: [{translateY},{scale}]}]}>
+              <Wallet 
+                heading={item.name}
+                color={item.color}
+                date={item.date}
+                isDefault={item.isDefault}
+                onPressDefault={()=>{
+                  if(item.isDefault == "false")
+                  {
+                    defaultChanged(item);
+                  }
+                }}
+                onPressSuDung={()=>{this.props.navigation.navigate({name: 'AddTransactionScreen', params:{
+                  walletName: item.name,
+                  walletColor: item.color}})}}
+              >
+                {item.money}
+              </Wallet>
+            </Animated.View>)}}
+          {...{onScroll}}
           >
-            {item.money}
-          </Wallet>)}}>
-        </FlatList>
-        <Divider/>
-      </ScreenView>
+            
+        </Animated.FlatList>
+      </UnScrollScreenView>
     );
   }
 }

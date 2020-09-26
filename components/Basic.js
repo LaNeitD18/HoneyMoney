@@ -243,6 +243,18 @@ export class ScreenView extends Component {
     }
 }
 
+export class UnScrollScreenView extends Component {
+    render() {
+        return (
+            <SafeAreaView style={[styles.background, this.props.style]}>
+                <KeyboardAvoidingView behavior="position" enabled={Platform.OS === "android" ? false : true}>
+                    {this.props.children}
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+        );
+    }
+}
+
 export class Divider extends Component {
     render() {
         return <View style={styles.divider} />;
