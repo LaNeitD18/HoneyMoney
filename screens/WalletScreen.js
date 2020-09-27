@@ -73,6 +73,7 @@ export class WalletScreen extends Component {
     return (
       <UnScrollScreenView>
         <Animated.FlatList 
+          ref={(ref) => { this.flatListRef = ref; }}
           scrollEventThrottle = {16}
           bounces={false}
           onScroll = {()=> this.walletScroll()}
@@ -103,6 +104,7 @@ export class WalletScreen extends Component {
                   if(item.isDefault == "false")
                   {
                     defaultChanged(item);
+                    this.flatListRef.scrollToOffset({ offset: 0, animated: true });
                   }
                 }}
                 onPressSuDung={()=>{this.props.navigation.navigate({name: 'AddTransactionScreen', params:{
