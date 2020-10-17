@@ -3,7 +3,14 @@
 import {
     INCREMENT,
     DECREMENT,
-    UPDATEWALLETLIST
+    UPDATEWALLETLIST,
+    DESELECTCATEGORY,
+    SELECTSUB,
+    DESELECTSUB,
+    UPDATESUBCATEGORY,
+    SETSHOWDATEPICKER,
+    CHANGESODU_TRANS,
+    CHANGEDATEMODE_TRANS,
 } from './actionType'
 
 //bat dau khai bao cac thanh phan cua action ben duoi
@@ -28,6 +35,52 @@ export const UpdateWalletAction = (snap) =>{
     }
 }
 
+export const DeselectCategoryAction = () =>{
+    return {
+        type: DESELECTCATEGORY,
+    }
+}
+
+export const SelectSubAction = (category)=> {
+    return {
+        type: SELECTSUB,
+        category: category
+    }
+}
+
+export const DeselectSubAction = () => {
+    return {
+        type: DESELECTSUB,
+    }
+}
+
+export const UpdateSubAction = (category) => {
+    return {
+        type: UPDATESUBCATEGORY,
+        category: category,
+    }
+}
+
+export const SetShowDatePicker = (bool) => {
+    return {
+        type: SETSHOWDATEPICKER,
+        bool: bool,
+    }
+}
+
+export const ChangeSoDuTransAction = (sodu) => {
+    return {
+        type: CHANGESODU_TRANS,
+        sodu: sodu,
+    }
+}
+
+export const ChangeDateModeaTransAction = (datemode) => {
+    return {
+        type: CHANGEDATEMODE_TRANS,
+        datemode: datemode,
+    }
+}
 //#region Tien
 
 //#region selectedType 

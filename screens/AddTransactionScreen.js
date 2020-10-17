@@ -12,7 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 //redux
 import {connect} from 'react-redux';
 import { changeType, updateCategories, reloadCategory, 
-  changeSearchText, chooseCategory, changeName, getSubCategories,
+  changeSearchText, chooseCategory, changeName, getSubCategories, DeselectCategoryAction, SelectSubAction, DeselectSubAction, UpdateSubAction, SetShowDatePicker, ChangeSoDuTransAction, ChangeDateModeaTransAction
 } from '../actions/index';
 
 //firebase
@@ -33,15 +33,9 @@ export class AddTransactionScreen extends Component {
   {
     super(props);
     this.state = {
-      selectedCategory: '',
-      selectedSub: '',
       date: new Date(),
       selectedTenVi: this.props.route.params?.walletName ?? '',
-      newSoDu: '',
       defaultColor: this.props.route.params?.walletColor ?? colors.blue,
-      show: false,
-      selectedDate: 'Today',
-      subCategory: [],
       fulllist: false
     };
   }
@@ -69,9 +63,6 @@ export class AddTransactionScreen extends Component {
     fulldate = fulldate + '/' + year;
     return fulldate;
   }
-  onChangeSoDu(text){
-    this.setState({newSoDu: text});
-  }
   getDataBasedOnType = (selectedType) => {
     this.props.changeType(selectedType);
     switch(selectedType) {
@@ -94,39 +85,27 @@ export class AddTransactionScreen extends Component {
       const temp = categories.filter(item => item.typeID === typeID);
       this.props.reloadCategory(temp);
   }
-
-  getSubCategories = (category) => {
-    const subcategories = [];
-    categoryRef.child(category.key + "/SubCategories/").on('value',(snap) => {
-      snap.forEach(element => {
-        subcategories.push({
-          key: element.key,
-          categoryName: element.toJSON().CategoryName,
-          icon: element.toJSON().Icon,
-        })
-      })
-    });
-    return subcategories;
-  }
   chooseCategory = (category) => {
-    if(this.state.selectedCategory == category.key)
+    if(this.props.selectedCategory.key == category.key)
     {
-      this.setState({selectedCategory:'', selectedSub: ''});
+      this.props.deselectCategory();
+      this.props.deselectSub();
     }
     else
     {
-      this.setState({selectedCategory: category.key, selectedSub: ''});
-      this.setState({subCategory: this.getSubCategories(category)});
+      this.props.deselectSub();
+      this.props.chooseCategory(category);
+      this.props.updateSub(category);
     }
   }
   chooseSub = (sub) => {
-    if(this.state.selectedSub == sub.key)
+    if(this.props.selectedSub.key == sub.key)
     {
-      this.setState({selectedSub:''});
+      this.props.deselectSub();
     }
     else
     {
-      this.setState({selectedSub: sub.key});
+      this.props.selectSub(sub);
     }
   }
   componentDidMount(){
@@ -155,7 +134,7 @@ export class AddTransactionScreen extends Component {
           const iconPath = findIcon(icon);
           row.push(
               <Category 
-                  choosed = {this.state.selectedCategory == categories[index].key? true : false}
+                  choosed = {this.props.selectedCategory.key == categories[index].key? true : false}
                   key={categories[index].key} 
                   source={iconPath} 
                   onPress={() => this.chooseCategory(categories[index])}>
@@ -194,7 +173,7 @@ export class AddTransactionScreen extends Component {
                 const iconPath = findIcon(icon);
                 row.push(
                     <Category
-                        choosed = {this.state.selectedCategory == categories[index].key? true : false}
+                        choosed = {this.props.selectedCategory.key == categories[index].key? true : false}
                         key={categories[index].key}
                         source={iconPath}
                         onPress={() => this.chooseCategory(categories[index])}>
@@ -220,7 +199,7 @@ export class AddTransactionScreen extends Component {
   }
 
   renderSubCategoryTable = () => {
-    const categories = this.state.subCategory;
+    const categories = this.props.subCategory;
     const numberOfRows = Math.ceil((categories.length + 1) / 4);
     const rows = [];
 
@@ -234,10 +213,10 @@ export class AddTransactionScreen extends Component {
                 const iconPath = findIcon(icon);
                 row.push(
                     <Category
-                        choosed = {this.state.selectedSub == categories[index].key? true : false}
+                        choosed = {this.props.selectedSub.key == categories[index].key? true : false}
                         key={categories[index].key}
                         source={iconPath}
-                        onPress={() => this.chooseCategory(categories[index])}>
+                        onPress={() => this.chooseSub(categories[index])}>
                         {name}
                     </Category>
                 );
@@ -260,7 +239,7 @@ export class AddTransactionScreen extends Component {
   }
 
   renderSubCategoryHorizon = () => {
-    const categories = this.state.subCategory;
+    const categories = this.props.subCategory;
     const rows = [];
     const row = [];
     for(let index=0; index<=categories.length; index++) {
@@ -270,7 +249,7 @@ export class AddTransactionScreen extends Component {
           const iconPath = findIcon(icon);
           row.push(
               <Category 
-                  choosed = {this.state.selectedSub == categories[index].key? true : false}
+                  choosed = {this.props.selectedSub.key == categories[index].key? true : false}
                   key={categories[index].key} 
                   source={iconPath} 
                   onPress={() => {this.chooseSub(categories[index])}}>
@@ -298,7 +277,7 @@ export class AddTransactionScreen extends Component {
     if(this.props.searchText === "") {
         return (
             <KindSelect 
-                onPress={(index) => {this.getDataBasedOnType(index); this.setState({selectedCategory:'', selectedSub:''});}}
+                onPress={(index) => {this.getDataBasedOnType(index); this.props.deselectSub(); this.props.deselectCategory();}}
                 selectedIndex={this.props.selectedType}
                 buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
         );
@@ -307,7 +286,7 @@ export class AddTransactionScreen extends Component {
   render() {
     let rows = this.state.fulllist? this.renderCategoryTable(): this.renderCategoryHorizon();
     const kindSelect = this.renderKindSelect();
-    const subCategoryShow = this.state.selectedCategory == ''? <View></View>: 
+    const subCategoryShow = this.props.selectedCategory.key == ''? <View></View>: 
     <View>
       <View
         style={{
@@ -383,8 +362,8 @@ export class AddTransactionScreen extends Component {
               marginBottom: sizeFactor * 0.75,
             }}
             keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//
-            onChangeText={text=>{this.onChangeSoDu(text)}}
-            value={this.state.newSoDu}/>
+            onChangeText={text=>{this.props.changeSoDu(text)}}
+            value={this.props.newSoDu}/>
           <String style={{ color: "white", fontWeight: "bold" }}>
             Danh mục
           </String>
@@ -435,20 +414,20 @@ export class AddTransactionScreen extends Component {
             <String style={{ fontWeight: "bold" }}>Chọn ngày</String>
             <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'Today'? "true" : "false"}
-                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'Today'})}}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'Today'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('Today')}}>
                         Hôm nay
                     </ToggleButton>
                 </View>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'LastDay'? "true" : "false"}
-                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'LastDay'})}}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'LastDay'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('LastDay')}}>
                         Hôm qua
                     </ToggleButton>
                 </View>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'NextDay'? "true" : "false"}
-                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'NextDay'})}}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'NextDay'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('NextDay')}}>
                         Ngày mai
                     </ToggleButton>
                 </View>
@@ -456,20 +435,20 @@ export class AddTransactionScreen extends Component {
             <String >hoặc chọn một ngày khác</String>
             <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 3.5 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.state.selectedDate == 'Custom'? "true" : "false"}
-                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.setState({selectedDate: 'Custom', show: true})}}>
+                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'Custom'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('Custom'); this.props.setShow(true);}}>
                         {this.toString(this.state.date)}
                     </ToggleButton>
                 </View>
             </RowLeft>
-            {this.state.show &&
+            {this.props.show &&
             <DateTimePicker
               testID="dateTimePicker"
               value={this.state.date}
               mode='date'
               is24Hour={true}
               display="default"
-              onChange={(event, selectedDate) => {this.setState({date:selectedDate?selectedDate:this.state.date, show: false})}}
+              onChange={(event, selectedDate) => {this.props.setShow(false); this.setState({date:selectedDate?selectedDate:this.state.date});}}
             />
             }
             <Divider />
@@ -489,7 +468,14 @@ function mapStateToProps(state) {
       selectedType: state.selectedType,
       allCategories: state.allCategories,
       renderedCategories: state.renderedCategories,
-      searchText: state.searchText
+      searchText: state.searchText,
+      //Thang
+      selectedCategory: state.chosenCategory,
+      selectedSub: state.selectedSubReducer,
+      subCategory: state.allSubReducer,
+      show: state.showDatePickerReducer,
+      newSoDu: state.sodu_transReducer,
+      selectedDateMode: state.datemode_transReducer,
   };
 }
 
@@ -502,6 +488,14 @@ function mapDispatchToProps(dispatch) {
       chooseCategory: (category) => { dispatch(chooseCategory(category)) },
       changeName: (text) => { dispatch(changeName(text)) },
       getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
+      //Thang
+      deselectCategory: () => {dispatch(DeselectCategoryAction())},
+      selectSub: (category) => {dispatch(SelectSubAction(category))},
+      deselectSub: () =>{dispatch(DeselectSubAction())},
+      updateSub: (category) => {dispatch(UpdateSubAction(category))},
+      setShow: (bool) => {dispatch(SetShowDatePicker(bool))},
+      changeSoDu: (sodu) => {dispatch(ChangeSoDuTransAction(sodu))},
+      changeDateMode: (datemode) => {dispatch(ChangeDateModeaTransAction(datemode))},
   }
 }
 
