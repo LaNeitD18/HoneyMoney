@@ -93,8 +93,16 @@ export class WalletScreen extends Component {
               inputRange: [-sizeFactor*14.7, 0, windowHeight - sizeFactor*14.7, windowHeight],
               outputRange: [0.5,1,1,0.5]
             })
+            const translateX = new Animated.Value(-400);
+            Animated.timing(translateX,{
+              toValue: 0,
+              delay: 1000*index,
+              duration: 1000,
+              useNativeDriver: true,
+            }).start()
             return (
-            <Animated.View style={[{opacity, transform: [{translateY},{scale}]}]}>
+            <Animated.View style={[{opacity, transform: [{translateX},{translateY},{scale}]}]}>
+              
               <Wallet 
                 heading={item.name}
                 color={item.color}
