@@ -11,6 +11,7 @@ import {
     SETSHOWDATEPICKER,
     CHANGESODU_TRANS,
     CHANGEDATEMODE_TRANS,
+    CHANGEDATE_TRANS,
 } from './actionType'
 
 //bat dau khai bao cac thanh phan cua action ben duoi
@@ -79,6 +80,13 @@ export const ChangeDateModeaTransAction = (datemode) => {
     return {
         type: CHANGEDATEMODE_TRANS,
         datemode: datemode,
+    }
+}
+
+export const ChangeDateTransAction = (date) => {
+    return {
+        type: CHANGEDATE_TRANS,
+        date: date,
     }
 }
 //#region Tien

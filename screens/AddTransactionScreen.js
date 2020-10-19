@@ -12,7 +12,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 //redux
 import {connect} from 'react-redux';
 import { changeType, updateCategories, reloadCategory, 
-  changeSearchText, chooseCategory, changeName, getSubCategories, DeselectCategoryAction, SelectSubAction, DeselectSubAction, UpdateSubAction, SetShowDatePicker, ChangeSoDuTransAction, ChangeDateModeaTransAction
+  changeSearchText, chooseCategory, changeName, getSubCategories, DeselectCategoryAction, SelectSubAction, DeselectSubAction, UpdateSubAction, SetShowDatePicker, ChangeSoDuTransAction, ChangeDateModeaTransAction, ChangeDateTransAction
 } from '../actions/index';
 
 //firebase
@@ -33,7 +33,6 @@ export class AddTransactionScreen extends Component {
   {
     super(props);
     this.state = {
-      date: new Date(),
       selectedTenVi: this.props.route.params?.walletName ?? '',
       defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       fulllist: false
@@ -362,8 +361,7 @@ export class AddTransactionScreen extends Component {
               marginBottom: sizeFactor * 0.75,
             }}
             keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//
-            onChangeText={text=>{this.props.changeSoDu(text)}}
-            value={this.props.newSoDu}/>
+            onChangeText={text=>{this.props.changeSoDu(text)}}/>
           <String style={{ color: "white", fontWeight: "bold" }}>
             Danh mục
           </String>
@@ -437,18 +435,18 @@ export class AddTransactionScreen extends Component {
                 <View style={{ flex: 3.5 }}>
                     <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'Custom'? "true" : "false"}
                                   style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('Custom'); this.props.setShow(true);}}>
-                        {this.toString(this.state.date)}
+                        {this.toString(this.props.date)}
                     </ToggleButton>
                 </View>
             </RowLeft>
             {this.props.show &&
             <DateTimePicker
               testID="dateTimePicker"
-              value={this.state.date}
+              value={this.props.date}
               mode='date'
               is24Hour={true}
               display="default"
-              onChange={(event, selectedDate) => {this.props.setShow(false); this.setState({date:selectedDate?selectedDate:this.state.date});}}
+              onChange={(event, selectedDate) => {this.props.setShow(false); selectedDate? this.props.changeDate(selectedDate):{}}}
             />
             }
             <Divider />
@@ -476,6 +474,7 @@ function mapStateToProps(state) {
       show: state.showDatePickerReducer,
       newSoDu: state.sodu_transReducer,
       selectedDateMode: state.datemode_transReducer,
+      date: state.date_transReducer,
   };
 }
 
@@ -496,6 +495,7 @@ function mapDispatchToProps(dispatch) {
       setShow: (bool) => {dispatch(SetShowDatePicker(bool))},
       changeSoDu: (sodu) => {dispatch(ChangeSoDuTransAction(sodu))},
       changeDateMode: (datemode) => {dispatch(ChangeDateModeaTransAction(datemode))},
+      changeDate: (date) => {dispatch(ChangeDateTransAction(date))},
   }
 }
 
