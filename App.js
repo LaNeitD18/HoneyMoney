@@ -24,7 +24,7 @@ import Calculator from "./components/Calculator";
 import WalletNavigator from "./screens/WalletNavigator";
 
 import CategoryNavigator from "./screens/CategoryNavigator";
-import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -41,9 +41,9 @@ export default function App() {
                     tabBarOptions={{ activeTintColor: "blue", keyboardHidesTabBar: true }}
                 >
                     <Tab.Screen
-                        name="LoginScreen"
-                        component={LoginScreen}
-                        options={{ title: "Login" }}
+                        name="RegisterScreen"
+                        component={RegisterScreen}
+                        options={{ title: "RegisterScreen" }}
                     />
                 </Tab.Navigator>
             </NavigationContainer>

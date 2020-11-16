@@ -61,7 +61,7 @@ import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 
-export default class LoginScreen extends Component {
+export default class RegisterScreen extends Component {
     render() {
         return (
             <View
@@ -89,8 +89,15 @@ export default class LoginScreen extends Component {
                             marginBottom: sizeFactor,
                         }}
                     >
-                        Đăng nhập
+                        Đăng ký tài khoản
                     </Text>
+                    <HomoTextInput
+                        label="Họ và tên"
+                        placeholder="Tên Của Bạn"
+                        leftIcon={{ name: "person", color: colors.gray }}
+                        secureTextEntry={true}
+                        errorMessage="Thông báo lỗi"
+                    />
                     <HomoTextInput
                         leftIcon={{ name: "email", color: colors.gray }}
                         errorMessage=""
@@ -102,6 +109,7 @@ export default class LoginScreen extends Component {
                         secureTextEntry={true}
                         errorMessage=""
                     />
+
                     <View
                         style={{
                             width: windowWidth - sizeFactor * 8,
@@ -109,10 +117,9 @@ export default class LoginScreen extends Component {
                             justifyContent: "space-between",
                         }}
                     >
-                        <Button2 style={{ width: sizeFactor * 8.5 }}>Đăng ký</Button2>
-                        <Button1 style={{ width: sizeFactor * 8.5 }}>Đăng nhập</Button1>
+                        <Button2 style={{ width: sizeFactor * 8.5 }}>Hủy bỏ</Button2>
+                        <Button1 style={{ width: sizeFactor * 8.5 }}>Xác nhận</Button1>
                     </View>
-                    <Button3>Quên mật khẩu</Button3>
                 </View>
             </View>
         );

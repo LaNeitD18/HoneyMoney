@@ -971,6 +971,7 @@ export class ColorSelectButton extends Component {
     }
 }
 
+//onChangeText works
 export class HomoTextInput extends Component {
     render() {
         return (
@@ -983,7 +984,6 @@ export class HomoTextInput extends Component {
                 containerStyle={{
                     width: windowWidth - sizeFactor * 6,
                     padding: 0,
-                    marginBottom: 5,
                 }}
                 inputContainerStyle={{
                     margin: 0,
