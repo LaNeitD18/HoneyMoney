@@ -25,6 +25,7 @@ import WalletNavigator from "./screens/WalletNavigator";
 
 import CategoryNavigator from "./screens/CategoryNavigator";
 import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -36,17 +37,7 @@ let store = createStore(allReducers);
 export default function App() {
     return (
         <Provider store={store}>
-            <NavigationContainer>
-                <Tab.Navigator
-                    tabBarOptions={{ activeTintColor: "blue", keyboardHidesTabBar: true }}
-                >
-                    <Tab.Screen
-                        name="RegisterScreen"
-                        component={RegisterScreen}
-                        options={{ title: "RegisterScreen" }}
-                    />
-                </Tab.Navigator>
-            </NavigationContainer>
+            <RegisterScreen />
         </Provider>
     );
 }

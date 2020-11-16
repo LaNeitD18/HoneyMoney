@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Platform,
     TextInput,
+    ImageBackground,
 } from "react-native";
 import {
     String,
@@ -67,53 +68,75 @@ export default class LoginScreen extends Component {
             <View
                 style={{
                     flex: 1,
-                    alignContent: "center",
-                    alignItems: "center",
-                    justifyContent: "center",
                 }}
             >
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        padding: sizeFactor,
-                        alignItems: "center",
-                        borderWidth: 0,
-                        borderRadius: sizeFactor,
-                    }}
+                <ImageBackground
+                    source={require("../assets/background.png")}
+                    style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
                 >
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontSize: sizeFactor * 1.25,
-                            fontWeight: "bold",
-                            marginBottom: sizeFactor,
-                        }}
-                    >
-                        Đăng nhập
-                    </Text>
-                    <HomoTextInput
-                        leftIcon={{ name: "email", color: colors.gray }}
-                        errorMessage=""
-                    />
-                    <HomoTextInput
-                        label="Mật khẩu"
-                        placeholder="••••••••••••••••••••••"
-                        leftIcon={{ name: "lock", color: colors.gray }}
-                        secureTextEntry={true}
-                        errorMessage=""
-                    />
                     <View
                         style={{
-                            width: windowWidth - sizeFactor * 8,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
+                            flex: 1,
+                            alignContent: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
                         }}
                     >
-                        <Button2 style={{ width: sizeFactor * 8.5 }}>Đăng ký</Button2>
-                        <Button1 style={{ width: sizeFactor * 8.5 }}>Đăng nhập</Button1>
+                        <Image
+                            source={require("../assets/logo.png")}
+                            style={{
+                                height: sizeFactor * 8,
+                                width: sizeFactor * 8 * 1.42489270386,
+                                marginBottom: sizeFactor * 2,
+                            }}
+                        />
+                        <View
+                            style={{
+                                backgroundColor: "white",
+                                padding: sizeFactor,
+                                alignItems: "center",
+                                borderWidth: 0,
+                                borderRadius: sizeFactor,
+                                marginBottom: sizeFactor * 4,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    alignSelf: "center",
+                                    fontSize: sizeFactor * 1.25,
+                                    fontWeight: "bold",
+                                    marginBottom: sizeFactor,
+                                    marginTop: sizeFactor / 2,
+                                }}
+                            >
+                                Đăng nhập
+                            </Text>
+                            <HomoTextInput
+                                leftIcon={{ name: "email", color: colors.gray }}
+                                errorMessage=""
+                            />
+                            <HomoTextInput
+                                label="Mật khẩu"
+                                placeholder="••••••••••••••••••••••"
+                                leftIcon={{ name: "lock", color: colors.gray }}
+                                secureTextEntry={true}
+                                errorMessage=""
+                            />
+                            <View
+                                style={{
+                                    width: windowWidth - sizeFactor * 8,
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginTop: sizeFactor / 2,
+                                }}
+                            >
+                                <Button2 style={{ width: sizeFactor * 8.5 }}>Đăng ký</Button2>
+                                <Button1 style={{ width: sizeFactor * 8.5 }}>Đăng nhập</Button1>
+                            </View>
+                            <Button3>Quên mật khẩu</Button3>
+                        </View>
                     </View>
-                    <Button3>Quên mật khẩu</Button3>
-                </View>
+                </ImageBackground>
             </View>
         );
     }

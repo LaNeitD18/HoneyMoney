@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Platform,
     TextInput,
+    ImageBackground,
 } from "react-native";
 import {
     String,
@@ -67,60 +68,81 @@ export default class RegisterScreen extends Component {
             <View
                 style={{
                     flex: 1,
-                    alignContent: "center",
-                    alignItems: "center",
-                    justifyContent: "center",
                 }}
             >
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        padding: sizeFactor,
-                        alignItems: "center",
-                        borderWidth: 0,
-                        borderRadius: sizeFactor,
-                    }}
+                <ImageBackground
+                    source={require("../assets/background.png")}
+                    style={{ flex: 1, resizeMode: "cover", justifyContent: "center" }}
                 >
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontSize: sizeFactor * 1.25,
-                            fontWeight: "bold",
-                            marginBottom: sizeFactor,
-                        }}
-                    >
-                        Đăng ký tài khoản
-                    </Text>
-                    <HomoTextInput
-                        label="Họ và tên"
-                        placeholder="Tên Của Bạn"
-                        leftIcon={{ name: "person", color: colors.gray }}
-                        secureTextEntry={true}
-                        errorMessage="Thông báo lỗi"
-                    />
-                    <HomoTextInput
-                        leftIcon={{ name: "email", color: colors.gray }}
-                        errorMessage=""
-                    />
-                    <HomoTextInput
-                        label="Mật khẩu"
-                        placeholder="••••••••••••••••••••••"
-                        leftIcon={{ name: "lock", color: colors.gray }}
-                        secureTextEntry={true}
-                        errorMessage=""
-                    />
-
                     <View
                         style={{
-                            width: windowWidth - sizeFactor * 8,
-                            flexDirection: "row",
-                            justifyContent: "space-between",
+                            flex: 1,
+                            alignContent: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
                         }}
                     >
-                        <Button2 style={{ width: sizeFactor * 8.5 }}>Hủy bỏ</Button2>
-                        <Button1 style={{ width: sizeFactor * 8.5 }}>Xác nhận</Button1>
+                        <View
+                            style={{
+                                backgroundColor: "white",
+                                padding: sizeFactor,
+                                alignItems: "center",
+                                borderWidth: 0,
+                                borderRadius: sizeFactor,
+                                marginBottom: sizeFactor,
+                                marginTop: sizeFactor / 2,
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    alignSelf: "center",
+                                    fontSize: sizeFactor * 1.25,
+                                    fontWeight: "bold",
+                                    marginBottom: sizeFactor,
+                                    marginTop: sizeFactor / 2,
+                                }}
+                            >
+                                Đăng ký tài khoản
+                            </Text>
+                            <HomoTextInput
+                                label="Họ và tên"
+                                placeholder="Tên Của Bạn"
+                                leftIcon={{ name: "person", color: colors.gray }}
+                                secureTextEntry={true}
+                                errorMessage="Thông báo lỗi"
+                            />
+                            <HomoTextInput
+                                leftIcon={{ name: "email", color: colors.gray }}
+                                errorMessage=""
+                            />
+                            <HomoTextInput
+                                label="Mật khẩu"
+                                placeholder="••••••••••••••••••••••"
+                                leftIcon={{ name: "lock", color: colors.gray }}
+                                secureTextEntry={true}
+                                errorMessage=""
+                            />
+
+                            <View
+                                style={{
+                                    width: windowWidth - sizeFactor * 8,
+                                    flexDirection: "row",
+                                    justifyContent: "space-between",
+                                    marginTop: sizeFactor / 2,
+                                }}
+                            >
+                                <Button2 style={{ width: sizeFactor * 8.5 }}>Hủy bỏ</Button2>
+                                <Button1 style={{ width: sizeFactor * 8.5 }}>Xác nhận</Button1>
+                            </View>
+                        </View>
+                        <Text style={{ color: colors.white }}>
+                            Bằng việc tạo tài khoản, bạn đã chấp nhận
+                        </Text>
+                        <Text style={{ color: colors.white }}>
+                            các Điều khoản và Điều kiện của chúng tôi.
+                        </Text>
                     </View>
-                </View>
+                </ImageBackground>
             </View>
         );
     }
