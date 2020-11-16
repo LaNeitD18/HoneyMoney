@@ -109,16 +109,20 @@ export default class RegisterScreen extends Component {
                                 placeholder="Tên Của Bạn"
                                 leftIcon={{ name: "person", color: colors.gray }}
                                 secureTextEntry={true}
+                                textContentType="name"
                                 errorMessage="Thông báo lỗi"
                             />
                             <HomoTextInput
                                 leftIcon={{ name: "email", color: colors.gray }}
+                                textContentType="emailAddress"
+                                keyboardType="email-address"
                                 errorMessage=""
                             />
                             <HomoTextInput
                                 label="Mật khẩu"
                                 placeholder="••••••••••••••••••••••"
                                 leftIcon={{ name: "lock", color: colors.gray }}
+                                textContentType="password"
                                 secureTextEntry={true}
                                 errorMessage=""
                             />

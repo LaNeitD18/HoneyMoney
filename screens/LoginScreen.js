@@ -113,6 +113,8 @@ export default class LoginScreen extends Component {
                             </Text>
                             <HomoTextInput
                                 leftIcon={{ name: "email", color: colors.gray }}
+                                textContentType="email"
+                                keyboardType="email-address"
                                 errorMessage=""
                             />
                             <HomoTextInput
@@ -120,6 +122,7 @@ export default class LoginScreen extends Component {
                                 placeholder="••••••••••••••••••••••"
                                 leftIcon={{ name: "lock", color: colors.gray }}
                                 secureTextEntry={true}
+                                textContentType="password"
                                 errorMessage=""
                             />
                             <View
