@@ -98,11 +98,7 @@ class EditCategoryScreen extends Component {
                 Icon: item.icon
             });
         })
-        
-
-        
-
-        // exit this screen
+       // exit this screen
         this.props.navigation.goBack();
     };
 
@@ -151,7 +147,7 @@ class EditCategoryScreen extends Component {
             onOpen: (secID, rowID, direction) => {},
             right: [
                 {
-                    onPress: () => {},
+                    onPress: () => {this.deleteCategory},
                     text: "Xóa",
                     type: "delete",
                 },
@@ -199,10 +195,12 @@ class EditCategoryScreen extends Component {
                         placeholder="Danh mục của tôi"
                         value={this.props.categoryName}
                         onChangeText={(text) => this.props.changeName(text)}
+                        editable={false}
                     />
                     <Divider />
                     <String style={{ fontWeight: "bold" }}>Mục đích</String>
                     <AddWalletKindSelect
+                        disabled={this.props.editableButtonGroup}
                         selectedIndex={this.props.selectedType}
                         buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
                         onPress={(index) => this.props.changeType(index)}
@@ -295,6 +293,7 @@ function mapStateToProps(state) {
         selectedType: state.selectedType,
         isVisible: state.isVisible,
         addedSubCategories: state.addedSubCategories,
+        editableButtonGroup: state.editableButtonGroup,
     };
 }
 

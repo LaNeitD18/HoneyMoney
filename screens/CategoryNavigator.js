@@ -7,9 +7,22 @@ import EditCategoryScreen from "./EditCategoryScreen";
 import AddCategoryScreen from "./AddCategoryScreen";
 import { sizeFactor, String, colors } from "../components/Basic";
 import { StyleSheet, Text, View } from "react-native";
+
+import { connect } from 'react-redux';
+import { categoryRef } from '../components/DataConnect';
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 const Stack = createStackNavigator();
 
-export default class CategoryNavigator extends Component {
+class CategoryNavigator extends Component {
+    deleteCategory = () => {
+        const category = this.props.chosenCategory;
+        categoryRef.child(category.key).remove();
+
+        // exit this screen
+        this.props.navigation.goBack();
+    }
+
     render() {
         const isEditing = 0;
         return (
@@ -28,13 +41,14 @@ export default class CategoryNavigator extends Component {
                         title: isEditing ? "Sửa danh mục" : "Xem danh mục",
                         headerRight: () => (
                             <View style={{ flexDirection: "row", marginRight: sizeFactor }}>
-                                <Icon
+                                <TouchableOpacity onPress={this.deleteCategory}>
+                                    <Icon
                                     name="delete-outline"
                                     type="material-community"
                                     color={colors.red}
                                     size={sizeFactor * 1.75}
-                                    style={{ marginRight: sizeFactor }}
-                                />
+                                    style={{ marginRight: sizeFactor }}/>
+                                </TouchableOpacity>
                                 <Icon
                                     name={isEditing ? "eye-outline" : "pencil-outline"}
                                     type="material-community"
@@ -49,3 +63,11 @@ export default class CategoryNavigator extends Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        chosenCategory: state.chosenCategory,
+    };
+}
+
+export default connect(mapStateToProps)(CategoryNavigator);

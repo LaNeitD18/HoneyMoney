@@ -74,7 +74,7 @@ class ChooseIconDialog extends Component {
                 isVisible={this.props.isVisibleIconDialog}
             >
                 <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.closeIconDialog}>
                         <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
                     </TouchableOpacity>
                 </View>

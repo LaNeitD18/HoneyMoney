@@ -45,6 +45,7 @@ import {
     changeName,
     getSubCategories,
     reloadAddedSubCategories,
+    showType,
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -83,15 +84,7 @@ class CategoriesScreen extends React.Component {
     };
 
     createNewCategory = () => {
-        const category = [
-            {
-                key: 0,
-                categoryName: "Thêm mới",
-                icon: "themdanhmuccon",
-                parentID: "",
-                typeID: "",
-            },
-        ];
+        const category = [];
         this.props.getSubCategories(category);
         this.props.navigation.navigate("AddCategoryScreen");
     };
@@ -122,6 +115,7 @@ class CategoriesScreen extends React.Component {
     chooseCategory = (category) => {
         this.props.chooseCategory(category);
         this.props.changeName(category.categoryName);
+        this.props.showType(this.props.selectedType);
 
         const subCategories = this.getSubCategories(category);
         this.props.getSubCategories(subCategories);
@@ -279,6 +273,7 @@ function mapDispatchToProps(dispatch) {
         changeName: (text) => { dispatch(changeName(text)) },
         getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
         reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories()) },
+        showType: (selectedType) => { dispatch(showType(selectedType)) },
     }
 }
 

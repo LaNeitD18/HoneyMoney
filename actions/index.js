@@ -152,4 +152,19 @@ export function closeIconDialog() {
 }
 //#endregion
 
+//#region editableButtonGroup
+export function showType(selectedType) {
+    return {
+        type: 'SHOW_TYPE',
+        selectedType: selectedType,
+    }
+}
+
+export function editType() {
+    return {
+        type: 'EDIT_TYPE'
+    }
+}
+//#endregion
+
 //#endregion

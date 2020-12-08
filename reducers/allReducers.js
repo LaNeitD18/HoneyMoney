@@ -11,6 +11,8 @@ import subCategoriesReducer from '../reducers/subCategoriesReducer';
 import isVisibleReducer from '../reducers/isVisibleReducer';
 import addedSubCategoriesReducer from '../reducers/addedSubCategoriesReducer';
 import isVisibleIconDialogReducer from '../reducers/isVisibleIconDialogReducer';
+import editableButtonGroupReducer from '../reducers/editableButtonGroupReducer';
+
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -28,6 +30,7 @@ const allReducers = combineReducers({
     isVisible: isVisibleReducer,
     addedSubCategories: addedSubCategoriesReducer,
     isVisibleIconDialog: isVisibleIconDialogReducer,
+    editableButtonGroup: editableButtonGroupReducer,
 })
 
 export default allReducers;
