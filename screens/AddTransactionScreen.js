@@ -16,13 +16,13 @@ import { changeType, updateCategories, reloadCategory,
 } from '../actions/index';
 
 //firebase
-import * as firebase from 'firebase'
+import * as firebase from "firebase";
 
 //data connect
-import {rootRef,walletRef, categoryRef, subcategoryRef} from '../components/DataConnect'
+import { rootRef, walletRef, categoryRef, subcategoryRef } from "../components/DataConnect";
 
 //Navigator
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions } from "@react-navigation/native";
 import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 

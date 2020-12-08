@@ -8,7 +8,8 @@ import {
     SafeAreaView,
     Image,
     TouchableOpacity,
-    Platform, Alert
+    Platform,
+    Alert,
 } from "react-native";
 import {
     String,
@@ -27,22 +28,27 @@ import {
     Category,
     TouchableText,
     LargeScrollSelect,
-    CategoryTable
+    CategoryTable,
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
-import * as firebase from 'firebase';
-import { categoryRef } from '../components/DataConnect';
-import IconImage, { findIcon } from '../components/Image';
-import { connect } from 'react-redux';
-import { changeType, updateCategories, reloadCategory, 
-        changeSearchText, chooseCategory, changeName, getSubCategories,
-} from '../actions/index';
+import * as firebase from "firebase";
+import { categoryRef } from "../components/DataConnect";
+import IconImage, { findIcon } from "../components/Image";
+import { connect } from "react-redux";
+import {
+    changeType,
+    updateCategories,
+    reloadCategory,
+    changeSearchText,
+    chooseCategory,
+    changeName,
+    getSubCategories,
+} from "../actions/index";
 
-import EditCategoryScreen from './EditCategoryScreen';
-import { CommonActions } from '@react-navigation/native';
+import EditCategoryScreen from "./EditCategoryScreen";
+import { CommonActions } from "@react-navigation/native";
 import chosenCategoryReducer from "../reducers/chosenCategoryReducer";
-
 
 class CategoriesScreen extends React.Component {
     _isMounted = false;
@@ -55,51 +61,56 @@ class CategoriesScreen extends React.Component {
         this.props.changeType(selectedType);
         switch (selectedType) {
             case 0:
-                this.getData('001');
+                this.getData("001");
                 break;
             case 1:
-                this.getData('002');
+                this.getData("002");
                 break;
             case 2:
-                this.getData('003');
+                this.getData("003");
                 break;
             case 3:
-                this.getData('004');
+                this.getData("004");
                 break;
         }
-    }
+    };
 
     getData = (typeID) => {
         const categories = this.props.allCategories;
-        const temp = categories.filter(item => item.typeID === typeID);
+        const temp = categories.filter((item) => item.typeID === typeID);
         this.props.reloadCategory(temp);
-    }
+    };
 
     createNewCategory = () => {
-        const category = [{
-            key: 0,
-            categoryName: 'Thêm mới',
-            icon: 'themdanhmuccon',
-            parentID: '',
-            typeID: ''
-        }];
+        const category = [
+            {
+                key: 0,
+                categoryName: "Thêm mới",
+                icon: "themdanhmuccon",
+                parentID: "",
+                typeID: "",
+            },
+        ];
         this.props.getSubCategories(category);
-        this.props.navigation.navigate('AddCategoryScreen');
-    }
+        this.props.navigation.navigate("AddCategoryScreen");
+    };
 
     getSubCategories = (chosenCategory) => {
         const categories = [];
-        categoryRef.orderByChild('ParentID').equalTo(chosenCategory.key).once('value', (snapshot) => {
-            snapshot.forEach(element => {
-                categories.push({
-                    key: element.key,
-                    categoryName: element.toJSON().CategoryName,
-                    icon: element.toJSON().Icon,
-                    parentID: element.toJSON().ParentID,
-                    typeID: element.toJSON().TypeID
+        categoryRef
+            .orderByChild("ParentID")
+            .equalTo(chosenCategory.key)
+            .once("value", (snapshot) => {
+                snapshot.forEach((element) => {
+                    categories.push({
+                        key: element.key,
+                        categoryName: element.toJSON().CategoryName,
+                        icon: element.toJSON().Icon,
+                        parentID: element.toJSON().ParentID,
+                        typeID: element.toJSON().TypeID,
+                    });
                 });
             });
-        });
         // categories.push({
         //     key: 0,
         //     categoryName: 'Thêm mới',
@@ -110,7 +121,7 @@ class CategoriesScreen extends React.Component {
         // console.log("ZZZ");
         // console.log(categories);
         return categories;
-    }
+    };
 
     chooseCategory = (category) => {
         this.props.chooseCategory(category);
@@ -119,8 +130,8 @@ class CategoriesScreen extends React.Component {
         const subCategories = this.getSubCategories(category);
         this.props.getSubCategories(subCategories);
 
-        this.props.navigation.navigate('EditCategoryScreen');
-    }
+        this.props.navigation.navigate("EditCategoryScreen");
+    };
 
     renderCategoryTable = () => {
         const categories = this.props.renderedCategories;
@@ -139,36 +150,41 @@ class CategoriesScreen extends React.Component {
                         <Category
                             key={categories[index].key}
                             source={iconPath}
-                            onPress={() => this.chooseCategory(categories[index])}>
+                            onPress={() => this.chooseCategory(categories[index])}
+                        >
                             {name}
                         </Category>
                     );
                 } else if (index == categories.length) {
                     row.push(
-                        <Category 
-                            key={index} 
-                            source={require("../assets/categories/themdanhmuc.png")} 
-                            onPress={() => this.createNewCategory()}>
-                        {'Thêm danh mục'}
+                        <Category
+                            key={index}
+                            source={require("../assets/categories/themdanhmuc.png")}
+                            onPress={() => this.createNewCategory()}
+                        >
+                            {"Thêm danh mục"}
                         </Category>
-                    )
+                    );
                 }
             }
-            rows.push(
-                <RowLeft key={i}>{row}</RowLeft>
-            );
+            rows.push(<RowLeft key={i}>{row}</RowLeft>);
         }
         return rows;
-    }
+    };
 
     componentDidMount() {
         this._isMounted = true;
-        categoryRef.on('value', (snapshot) => { this.props.updateCategories(snapshot) });
+        categoryRef.on("value", (snapshot) => {
+            this.props.updateCategories(snapshot);
+        });
     }
 
     componentDidUpdate(prevProps) {
         // when allCategories is updated after creating new category, renderedCategories is also updated
-        if ((this.props.allCategories !== prevProps.allCategories) || (this.props.selectedType !== prevProps.selectedType)) {
+        if (
+            this.props.allCategories !== prevProps.allCategories ||
+            this.props.selectedType !== prevProps.selectedType
+        ) {
             this.getDataBasedOnType(this.props.selectedType);
         }
     }
@@ -182,7 +198,9 @@ class CategoriesScreen extends React.Component {
             //passing the inserted text in textinput
             const newData = this.props.allCategories.filter(function (item) {
                 //applying filter for the inserted text in search bar
-                const itemData = item.categoryName ? item.categoryName.toUpperCase() : ''.toUpperCase();
+                const itemData = item.categoryName
+                    ? item.categoryName.toUpperCase()
+                    : "".toUpperCase();
                 const textData = text.toUpperCase();
                 return itemData.indexOf(textData) > -1;
             });
@@ -201,27 +219,32 @@ class CategoriesScreen extends React.Component {
                 <KindSelect
                     onPress={(index) => this.getDataBasedOnType(index)}
                     selectedIndex={this.props.selectedType}
-                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
+                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]}
+                />
             );
-        } return;
-    }
+        }
+        return;
+    };
 
     render() {
         let rows = this.renderCategoryTable();
         const kindSelect = this.renderKindSelect();
 
         return (
-            <ScreenView style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
+                <Divider />
+                <Divider />
+                <Divider />
                 <SearchBar
                     platform={Platform.OS}
                     placeholder="Tìm danh mục..."
-                    onChangeText={text => this.searchFilterFunction(text)}
+                    onChangeText={(text) => this.searchFilterFunction(text)}
                     value={this.props.searchText}
                     lightTheme="true"
                     containerStyle={{
                         backgroundColor: "",
-                        marginHorizontal:
-                            Platform.OS == "ios" ? sizeFactor / 2 : sizeFactor,
+                        marginHorizontal: Platform.OS == "ios" ? sizeFactor / 2 : sizeFactor,
+                        flex: 0.1,
                     }}
                     inputContainerStyle={{
                         backgroundColor: "white",
@@ -229,11 +252,13 @@ class CategoriesScreen extends React.Component {
                         paddingHorizontal: sizeFactor / 2.5,
                     }}
                 />
-                <Title>Danh mục</Title>
-                {kindSelect}
-                <CategoryTable rows={rows} />
-                <Divider />
-            </ScreenView>
+                <ScrollView style={{ flex: 0.9 }}>
+                    <Title style={{ marginTop: 0 }}>Danh mục</Title>
+                    {kindSelect}
+                    <CategoryTable rows={rows} />
+                    <Divider />
+                </ScrollView>
+            </View>
         );
     }
 }
@@ -243,20 +268,34 @@ function mapStateToProps(state) {
         selectedType: state.selectedType,
         allCategories: state.allCategories,
         renderedCategories: state.renderedCategories,
-        searchText: state.searchText
+        searchText: state.searchText,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => { dispatch(changeType(selectedType)) },
-        updateCategories: (categories) => { dispatch(updateCategories(categories)) },
-        reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
-        changeSearchText: (text) => { dispatch(changeSearchText(text)) },
-        chooseCategory: (category) => { dispatch(chooseCategory(category)) },
-        changeName: (text) => { dispatch(changeName(text)) },
-        getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
-    }
+        changeType: (selectedType) => {
+            dispatch(changeType(selectedType));
+        },
+        updateCategories: (categories) => {
+            dispatch(updateCategories(categories));
+        },
+        reloadCategory: (categories) => {
+            dispatch(reloadCategory(categories));
+        },
+        changeSearchText: (text) => {
+            dispatch(changeSearchText(text));
+        },
+        chooseCategory: (category) => {
+            dispatch(chooseCategory(category));
+        },
+        changeName: (text) => {
+            dispatch(changeName(text));
+        },
+        getSubCategories: (categories) => {
+            dispatch(getSubCategories(categories));
+        },
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen);
