@@ -24,6 +24,8 @@ import Calculator from "./components/Calculator";
 import WalletNavigator from "./screens/WalletNavigator";
 
 import CategoryNavigator from "./screens/CategoryNavigator";
+import RegisterScreen from "./screens/RegisterScreen";
+import LoginScreen from "./screens/LoginScreen";
 
 //Navigator
 const Tab = createBottomTabNavigator();

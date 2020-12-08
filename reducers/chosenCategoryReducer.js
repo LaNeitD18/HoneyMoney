@@ -1,4 +1,6 @@
-const chosenCategoryReducer = (state = "", action) => {
+const {DESELECTCATEGORY } = require("../actions/actionType");
+
+const chosenCategoryReducer = (state = {key: ""}, action) => {
     if(action.type === 'CHOOSE_CATEGORY') {
         state = "";
         state = {
@@ -7,6 +9,13 @@ const chosenCategoryReducer = (state = "", action) => {
             icon: action.category.icon,
             parentID: action.category.parentID,
             typeID: action.category.typeID
+        };
+        return state;
+    }
+    if(action.type === DESELECTCATEGORY) {
+        state = "";
+        state = {
+            key: ""
         };
         return state;
     }

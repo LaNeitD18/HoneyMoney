@@ -13,11 +13,24 @@ import addedSubCategoriesReducer from '../reducers/addedSubCategoriesReducer';
 import isVisibleIconDialogReducer from '../reducers/isVisibleIconDialogReducer';
 import editableButtonGroupReducer from '../reducers/editableButtonGroupReducer';
 
+import selectedSubReducer from './selectedSubReducer';
+import allSubReducer from './allSubReducer';
+import showDatePickerReducer from './showDatePickerReducer';
+import sodu_transReducer from './sodu_transReducer';
+import datemode_transReducer from './datemode_transReducer';
+import date_transReducer from './date_transReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
     WalletReducer,
     //them cac reducer khac vao day sau khi khai bao
+    //Thang
+    selectedSubReducer,
+    allSubReducer,
+    showDatePickerReducer,
+    sodu_transReducer,
+    datemode_transReducer,
+    date_transReducer,
 
     //Tien
     selectedType: selectedTypeReducer,

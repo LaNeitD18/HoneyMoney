@@ -12,7 +12,8 @@ import {
     Dimensions,
     KeyboardAvoidingView,
 } from "react-native";
-import { Icon, SearchBar, ButtonGroup, Overlay } from "react-native-elements";
+import { Icon, SearchBar, ButtonGroup, Overlay, Input } from "react-native-elements";
+import { TextInput } from "react-native-gesture-handler";
 import TextTicker from "react-native-text-ticker";
 
 export const windowWidth = Dimensions.get("window").width;
@@ -306,7 +307,7 @@ export class Button extends Component {
                         paddingHorizontal: sizeFactor,
                         borderColor: this.props.border,
                         borderRadius: 9999,
-                        paddingTop: sizeFactor * 0.75,
+                        paddingTop: sizeFactor * 0.6,
                         flexDirection: "row",
                         marginBottom: sizeFactor,
                     },
@@ -326,11 +327,104 @@ export class Button extends Component {
     }
 }
 
+export class Button1 extends Component {
+    render() {
+        return (
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={[
+                    {
+                        justifyContent: "center",
+                        borderWidth: 0,
+                        backgroundColor: colors.blue,
+                        paddingHorizontal: sizeFactor,
+                        borderRadius: 9999,
+                        paddingTop: sizeFactor * 0.6,
+                        flexDirection: "row",
+                        marginBottom: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
+            >
+                <String
+                    style={{
+                        color: "white",
+                        fontWeight: "bold",
+                    }}
+                >
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
+}
+
+export class Button2 extends Component {
+    render() {
+        return (
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={[
+                    {
+                        justifyContent: "center",
+                        borderWidth: 0,
+                        backgroundColor: colors.gray6,
+                        paddingHorizontal: sizeFactor,
+                        borderRadius: 9999,
+                        paddingTop: sizeFactor * 0.6,
+                        flexDirection: "row",
+                        marginBottom: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
+            >
+                <String
+                    style={{
+                        color: "black",
+                        fontWeight: "bold",
+                    }}
+                >
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
+}
+
+export class Button3 extends Component {
+    render() {
+        return (
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={[
+                    {
+                        justifyContent: "center",
+
+                        paddingHorizontal: sizeFactor,
+                        flexDirection: "row",
+                    },
+                    this.props.style,
+                ]}
+            >
+                <String
+                    style={{
+                        color: colors.blue,
+                        fontWeight: "bold",
+                    }}
+                >
+                    {this.props.children}
+                </String>
+            </TouchableOpacity>
+        );
+    }
+}
+
 export class ToggleButton extends Component {
     render() {
         var choosed = this.props.choosed;
         return (
             <TouchableOpacity
+                onPress = {this.props.onPress}
                 style={[
                     {
                         justifyContent: "center",
@@ -875,6 +969,32 @@ export class ColorSelectButton extends Component {
             <TouchableOpacity onPress={this.props.onPress}>
                 <View style={styles.colorSelect(this.props.color, this.props.selected)} />
             </TouchableOpacity>
+        );
+    }
+}
+
+//onChangeText works
+export class HomoTextInput extends Component {
+    render() {
+        return (
+            <Input
+                labelStyle={{ color: colors.gray }}
+                label="Email"
+                placeholder="example@email.com"
+                leftIconContainerStyle={{ marginRight: sizeFactor / 2 }}
+                leftIcon={{ name: "person", color: colors.gray }}
+                containerStyle={{
+                    width: windowWidth - sizeFactor * 6,
+                    padding: 0,
+                }}
+                inputContainerStyle={{
+                    margin: 0,
+                    padding: 0,
+                    borderWidth: 0,
+                }}
+                errorStyle={{ color: colors.red, alignSelf: "flex-end" }}
+                {...this.props}
+            />
         );
     }
 }
