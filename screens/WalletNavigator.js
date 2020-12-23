@@ -8,7 +8,7 @@ import AddTransactionScreen from './AddTransactionScreen';
 
 const WalletStack = createStackNavigator();
 
-export default class CategoryNavigator extends Component {
+export default class WalletNavigator extends Component {
     render() {
         return (
             <WalletStack.Navigator>

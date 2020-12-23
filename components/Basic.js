@@ -510,6 +510,7 @@ export class OutlineButton extends Component {
                     },
                     this.props.style,
                 ]}
+                onPress={this.props.onPress}
             >
                 <String
                     style={{

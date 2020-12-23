@@ -46,7 +46,7 @@ import {connect} from 'react-redux';
 import {rootRef,walletRef} from '../components/DataConnect'
 
 //Redux action
-import {UpdateWalletAction } from "../actions";
+import {UpdateWalletAction, SelectWallet } from "../actions";
 
 //Navigator
 import { CommonActions } from '@react-navigation/native';
@@ -116,9 +116,7 @@ export class WalletScreen extends Component {
                 defaultChanged(item);
               }
             }}
-            onPressSuDung={()=>{this.props.navigation.navigate({name: 'AddTransactionScreen', params:{
-              walletName: item.name,
-              walletColor: item.color}})}}
+            onPressSuDung={()=>{this.props.SelectWallet(item); this.props.navigation.navigate({name: 'AddTransactionScreen'})}}
           >
             {item.money}
           </Wallet>)}}>
@@ -158,6 +156,7 @@ defaultChanged = (walletItem)=>{
 const mapStateToProps = (state) => {
   return{
       walletData: state.WalletReducer,
+      //selectedWallet: state.selectedWalletReducer,
   }
 };
 
@@ -165,6 +164,9 @@ const mapDispatchToProps = (dispatch) =>{
   return {
       Update: (snap) => {
         dispatch(UpdateWalletAction(snap));
+      },
+      SelectWallet: (value) => {
+        dispatch(SelectWallet(value));
       }
   };
 }

@@ -37,7 +37,10 @@ let store = createStore(allReducers);
 export default function App() {
     return (
         <Provider store={store}>
-            <RegisterScreen />
+            <NavigationContainer>
+                <WalletNavigator/>
+            </NavigationContainer>
+            
         </Provider>
     );
 }

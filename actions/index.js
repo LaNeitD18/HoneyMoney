@@ -12,6 +12,7 @@ import {
     CHANGESODU_TRANS,
     CHANGEDATEMODE_TRANS,
     CHANGEDATE_TRANS,
+    SELECTWALLET,
 } from './actionType'
 
 //bat dau khai bao cac thanh phan cua action ben duoi
@@ -87,6 +88,13 @@ export const ChangeDateTransAction = (date) => {
     return {
         type: CHANGEDATE_TRANS,
         date: date,
+    }
+}
+
+export const SelectWallet = (value) =>{
+    return {
+        type: SELECTWALLET,
+        value: value
     }
 }
 //#region Tien
