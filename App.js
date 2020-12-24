@@ -26,6 +26,7 @@ import WalletNavigator from "./screens/WalletNavigator";
 import CategoryNavigator from "./screens/CategoryNavigator";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
+import ReportScreen from "./screens/ReportScreen";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -37,7 +38,7 @@ let store = createStore(allReducers);
 export default function App() {
     return (
         <Provider store={store}>
-            <RegisterScreen />
+            <ReportScreen />
         </Provider>
     );
 }
