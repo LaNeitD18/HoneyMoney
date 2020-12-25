@@ -48,6 +48,8 @@ import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import {connect} from 'react-redux';
 import { walletRef } from "../components/DataConnect";
+//Navigator
+import { CommonActions } from '@react-navigation/native';
 
 export class EditWalletScreen extends Component {
     constructor(props) {
@@ -98,6 +100,7 @@ export class EditWalletScreen extends Component {
             newSoDu: '',
             selectedColor: colors.blue
           })
+          this.props.navigation.goBack();
         }
         //else
         //them bao loi o day
@@ -106,6 +109,7 @@ export class EditWalletScreen extends Component {
         walletRef.child(this.props.selectedWallet.key).update({
             isDeleted: true,
         });
+        this.props.navigation.goBack();
       }
       componentDidMount() {
         this.setState({

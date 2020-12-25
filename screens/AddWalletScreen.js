@@ -100,6 +100,7 @@ export default class AddWalletScreen extends Component {
         newSoDu: '',
         selectedColor: colors.blue
       })
+      this.props.navigation.goBack();
     }
     //else
     //them bao loi o day
