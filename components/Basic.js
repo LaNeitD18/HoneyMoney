@@ -534,6 +534,7 @@ export class Wallet extends Component {
                 color={this.props.color}
                 icon="tune"
                 iconColor="white"
+                onPress={this.props.onPressEdit}
             >
                 <Row>
                     <String style={{ color: "white", fontSize: sizeFactor * 2 }}>VNĐ</String>
