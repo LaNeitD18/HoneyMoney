@@ -379,6 +379,7 @@ export class AddTransactionScreen extends Component {
             Số tiền
           </String>
           <TextInput
+            maxLength={15}
             text = {this.props.newSoDu}
             contextMenuHidden={true}
             placeholder='0'
@@ -387,6 +388,8 @@ export class AddTransactionScreen extends Component {
               fontWeight: "bold",
               fontSize: sizeFactor * 2,
               marginBottom: sizeFactor * 0.75,
+              width: sizeFactor*30,
+              textAlign: "right"
             }}
             ref={input => { this.textInput2 = input }}
             keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//

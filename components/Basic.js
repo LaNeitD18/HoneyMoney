@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Modal } from "react-native";
 import {
     Text,
     StyleSheet,
@@ -997,5 +998,40 @@ export class HomoTextInput extends Component {
                 {...this.props}
             />
         );
+    }
+}
+
+//new class
+export class DialogModal extends Component{
+    render(){
+        return(
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.props.visible}>
+                <View style={{
+                        flex: 1,
+                        backgroundColor: "gray",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        opacity: 0.8
+                        }}>
+                    <View
+                        style={{
+                            margin: 20,
+                            backgroundColor: "white",
+                            borderRadius: 20,
+                            padding: 35,
+                            alignItems: "center",
+                            width: this.props.width,
+                            height: this.props.height
+                            }}
+                    
+                        >
+                        {this.props.children}
+                    </View>
+                </View>
+            </Modal>
+        )
     }
 }

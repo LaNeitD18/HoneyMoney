@@ -27,6 +27,7 @@ import CategoryNavigator from "./screens/CategoryNavigator";
 import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ReportScreen from "./screens/ReportScreen";
+import { SafeAreaView } from "react-native";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -38,10 +39,15 @@ let store = createStore(allReducers);
 export default function App() {
     return (
         <Provider store={store}>
-            <NavigationContainer>
-                <WalletNavigator/>
-            </NavigationContainer>
-            
+          <ReportScreen>
+
+            </ReportScreen>
         </Provider>
     );
 }
+
+/*
+                <NavigationContainer>
+                    <WalletNavigator/>
+                </NavigationContainer>
+*/ 

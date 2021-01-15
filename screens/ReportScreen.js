@@ -50,6 +50,7 @@ import {
     Button1,
     Button2,
     Button3,
+    DialogModal,
 } from "../components/Basic";
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -175,186 +176,192 @@ export default class ReportScreen extends Component {
         const xAxisHeight = 30;
 
         return (
-            <ScrollView style={{ backgroundColor: "whitesmoke" }}>
-                <View
-                    style={{
-                        padding: sizeFactor,
-                        paddingBottom: 0,
-                        flex: 2,
-                        flexDirection: "row",
-                    }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
-                            Chọn năm
-                        </Text>
-                        <Picker>
-                            <Picker.Item label="2020" value="2020" />
-                            <Picker.Item label="2019" value="2019" />
-                        </Picker>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
-                            Chọn tháng
-                        </Text>
-                        <Picker style={{ flex: 1 }}>
-                            <Picker.Item label="Tháng 1" value="1" />
-                            <Picker.Item label="Tháng 2" value="2" />
-                        </Picker>
-                    </View>
-                </View>
-                <View style={{ paddingHorizontal: sizeFactor }}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
-                            Chọn tuần
-                        </Text>
-                        <Picker>
-                            <Picker.Item label="14/12/2020 - 20/12/2020" value="1412" />
-                            <Picker.Item label="21/12/2020 - 27/12/2020" value="2112" />
-                        </Picker>
-                    </View>
-                </View>
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        borderRadius: sizeFactor,
-                        margin: sizeFactor,
-                        marginBottom: 0,
-                        paddingHorizontal: sizeFactor,
-                        paddingTop: sizeFactor * 1.5,
-                    }}
-                >
-                    <Text
+            <SafeAreaView>
+                <DialogModal visible = {true} width = {sizeFactor*15} height={sizeFactor*10}>
+                    <String>Thành công</String>
+                    <Button1 style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{}}>OK</Button1>
+                </DialogModal>
+                <ScrollView style={{ backgroundColor: "whitesmoke" }}>
+                    <View
                         style={{
-                            alignSelf: "center",
-                            fontWeight: "normal",
-                            fontSize: sizeFactor * 1.25,
+                            padding: sizeFactor,
+                            paddingBottom: 0,
+                            flex: 2,
+                            flexDirection: "row",
                         }}
                     >
-                        Thay đổi trong tuần
-                    </Text>
-                    <Text
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
+                                Chọn năm
+                            </Text>
+                            <Picker>
+                                <Picker.Item label="2020" value="2020" />
+                                <Picker.Item label="2019" value="2019" />
+                            </Picker>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
+                                Chọn tháng
+                            </Text>
+                            <Picker style={{ flex: 1 }}>
+                                <Picker.Item label="Tháng 1" value="1" />
+                                <Picker.Item label="Tháng 2" value="2" />
+                            </Picker>
+                        </View>
+                    </View>
+                    <View style={{ paddingHorizontal: sizeFactor }}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
+                                Chọn tuần
+                            </Text>
+                            <Picker>
+                                <Picker.Item label="14/12/2020 - 20/12/2020" value="1412" />
+                                <Picker.Item label="21/12/2020 - 27/12/2020" value="2112" />
+                            </Picker>
+                        </View>
+                    </View>
+                    <View
                         style={{
-                            alignSelf: "center",
-                            fontWeight: "bold",
-                            fontSize: sizeFactor * 2,
-                            color: colors.greenDark,
-                            marginBottom: sizeFactor / 2,
+                            backgroundColor: "white",
+                            borderRadius: sizeFactor,
+                            margin: sizeFactor,
+                            marginBottom: 0,
+                            paddingHorizontal: sizeFactor,
+                            paddingTop: sizeFactor * 1.5,
                         }}
                     >
-                        +50.000
-                    </Text>
-                    <View style={{ backgroundColor: "white", height: 330 }}>
-                        <View style={{ alignSelf: "center", height: 340, flexDirection: "row" }}>
-                            <YAxis
-                                data={lineData1}
-                                style={{ marginBottom: xAxisHeight, marginRight: 10 }}
-                                contentInset={{ top: 20, bottom: 20 }}
-                                svg={axesSvg}
-                                formatLabel={(value, index) => value / 1000}
-                            />
-                            <View>
-                                <LineChart
-                                    style={{
-                                        height: 300,
-                                        width: windowWidth - sizeFactor * 4 - 30,
-                                    }}
-                                    data={lineData}
-                                    contentInset={{ top: 20, bottom: 10, left: 10, right: 10 }}
-                                >
-                                    <Grid />
-                                    <Gradient />
-                                </LineChart>
-                                <XAxis
-                                    style={{ marginHorizontal: -10, height: xAxisHeight }}
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "normal",
+                                fontSize: sizeFactor * 1.25,
+                            }}
+                        >
+                            Thay đổi trong tuần
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "bold",
+                                fontSize: sizeFactor * 2,
+                                color: colors.greenDark,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            +50.000
+                        </Text>
+                        <View style={{ backgroundColor: "white", height: 330 }}>
+                            <View style={{ alignSelf: "center", height: 340, flexDirection: "row" }}>
+                                <YAxis
                                     data={lineData1}
-                                    formatLabel={(value, index) => "T" + (index + 1)}
-                                    contentInset={{ left: 20, right: 20 }}
+                                    style={{ marginBottom: xAxisHeight, marginRight: 10 }}
+                                    contentInset={{ top: 20, bottom: 20 }}
                                     svg={axesSvg}
+                                    formatLabel={(value, index) => value / 1000}
                                 />
+                                <View>
+                                    <LineChart
+                                        style={{
+                                            height: 300,
+                                            width: windowWidth - sizeFactor * 4 - 30,
+                                        }}
+                                        data={lineData}
+                                        contentInset={{ top: 20, bottom: 10, left: 10, right: 10 }}
+                                    >
+                                        <Grid />
+                                        <Gradient />
+                                    </LineChart>
+                                    <XAxis
+                                        style={{ marginHorizontal: -10, height: xAxisHeight }}
+                                        data={lineData1}
+                                        formatLabel={(value, index) => "T" + (index + 1)}
+                                        contentInset={{ left: 20, right: 20 }}
+                                        svg={axesSvg}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        borderRadius: sizeFactor,
-                        margin: sizeFactor,
-                        marginBottom: 0,
-                        paddingTop: sizeFactor * 1.5,
-                    }}
-                >
-                    <Text
+                    <View
                         style={{
-                            alignSelf: "center",
-                            fontWeight: "normal",
-                            fontSize: sizeFactor * 1.25,
+                            backgroundColor: "white",
+                            borderRadius: sizeFactor,
+                            margin: sizeFactor,
+                            marginBottom: 0,
+                            paddingTop: sizeFactor * 1.5,
                         }}
                     >
-                        Thu nhập
-                    </Text>
-                    <Text
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "normal",
+                                fontSize: sizeFactor * 1.25,
+                            }}
+                        >
+                            Thu nhập
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "bold",
+                                fontSize: sizeFactor * 2,
+                                color: colors.greenDark,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            70.000
+                        </Text>
+                        <PieChart
+                            style={{ height: 300 }}
+                            data={pieData}
+                            innerRadius={30}
+                            outerRadius={82}
+                            labelRadius={120}
+                        >
+                            <Labels />
+                        </PieChart>
+                    </View>
+                    <View
                         style={{
-                            alignSelf: "center",
-                            fontWeight: "bold",
-                            fontSize: sizeFactor * 2,
-                            color: colors.greenDark,
-                            marginBottom: sizeFactor / 2,
+                            backgroundColor: "white",
+                            borderRadius: sizeFactor,
+                            margin: sizeFactor,
+                            marginBottom: 0,
+                            paddingTop: sizeFactor * 1.5,
                         }}
                     >
-                        70.000
-                    </Text>
-                    <PieChart
-                        style={{ height: 300 }}
-                        data={pieData}
-                        innerRadius={30}
-                        outerRadius={82}
-                        labelRadius={120}
-                    >
-                        <Labels />
-                    </PieChart>
-                </View>
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        borderRadius: sizeFactor,
-                        margin: sizeFactor,
-                        marginBottom: 0,
-                        paddingTop: sizeFactor * 1.5,
-                    }}
-                >
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontWeight: "normal",
-                            fontSize: sizeFactor * 1.25,
-                        }}
-                    >
-                        Chi tiêu
-                    </Text>
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontWeight: "bold",
-                            fontSize: sizeFactor * 2,
-                            color: colors.redDark,
-                            marginBottom: sizeFactor / 2,
-                        }}
-                    >
-                        20.000
-                    </Text>
-                    <PieChart
-                        style={{ height: 300 }}
-                        data={pieData2}
-                        innerRadius={30}
-                        outerRadius={82}
-                        labelRadius={120}
-                    >
-                        <Labels />
-                    </PieChart>
-                </View>
-            </ScrollView>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "normal",
+                                fontSize: sizeFactor * 1.25,
+                            }}
+                        >
+                            Chi tiêu
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "bold",
+                                fontSize: sizeFactor * 2,
+                                color: colors.redDark,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            20.000
+                        </Text>
+                        <PieChart
+                            style={{ height: 300 }}
+                            data={pieData2}
+                            innerRadius={30}
+                            outerRadius={82}
+                            labelRadius={120}
+                        >
+                            <Labels />
+                        </PieChart>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
         );
     }
 }

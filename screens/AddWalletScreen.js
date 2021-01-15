@@ -146,6 +146,7 @@ export default class AddWalletScreen extends Component {
         <RoundedView>
           <String style={{ fontWeight: "bold" }}>Tên ví</String>
           <TextInput
+            maxLength={50}
             style={styles.inputText}
             placeholder="Ví của tôi"
             onChangeText={text=>{this.onChangeTenVi(text)}}
@@ -153,6 +154,7 @@ export default class AddWalletScreen extends Component {
           <Divider />
           <String style={{ fontWeight: "bold" }}>Số dư</String>
           <TextInput
+            maxLength={15}
             contextMenuHidden={true}
             style={styles.inputText}
             placeholder="000,000,000"
