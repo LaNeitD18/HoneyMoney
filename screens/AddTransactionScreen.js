@@ -33,8 +33,9 @@ export class AddTransactionScreen extends Component {
   {
     super(props);
     this.state = {
-      selectedTenVi: this.props.route.params?.walletName ?? '',
-      defaultColor: this.props.route.params?.walletColor ?? colors.blue,
+      note: "",
+      //selectedTenVi: this.props.route.params?.walletName ?? '',
+      //defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       fulllist: false
     };
   }
@@ -108,18 +109,18 @@ export class AddTransactionScreen extends Component {
     }
   }
   componentDidMount(){
-    let tempTen = '';
-    let tempColor = '';
-    if(this.state.selectedTenVi == '')
-    {
-      walletRef.orderByChild("isDefault").equalTo('true').on('value', (snap) => {
-        snap.forEach(element => {
-          tempTen = element.toJSON().name;
-          tempColor = element.toJSON().color;
-      })
-    })
-    this.setState({selectedTenVi: tempTen, defaultColor: tempColor});
-    }
+    // let tempTen = '';
+    // let tempColor = '';
+    // if(this.state.selectedTenVi == '')
+    // {
+    //   walletRef.orderByChild("isDefault").equalTo('true').on('value', (snap) => {
+    //     snap.forEach(element => {
+    //       tempTen = element.toJSON().name;
+    //       tempColor = element.toJSON().color;
+    //   })
+    // })
+    // this.setState({selectedTenVi: tempTen, defaultColor: tempColor});
+    // }
   }
 
   renderCategoryHorizon = () => {
@@ -282,6 +283,32 @@ export class AddTransactionScreen extends Component {
         );
     }   return;
   }
+
+  addNewTransaction = () =>{
+    if(!this.props.selectedCategory || !this.props.newSoDu)
+    {
+      return;
+    }
+    var wallet = this.props.selectedWallet;
+    walletRef.child(wallet.key).child("transactionList").push().set({
+      category: this.props.selectedCategory,
+      subCategory: this.props.selectedSub,
+      money: this.props.newSoDu,
+      date: this.toString(this.props.date),
+      note: this.state.note,
+    });
+    this.resetAll();
+  }
+
+  resetAll = () =>{
+    this.props.changeSoDu("");
+    this.props.changeDateMode('Today');
+    this.setState({note: ""});
+    this.props.deselectCategory();
+    this.textInput.clear();
+    this.textInput2.clear();
+  }
+
   render() {
     let rows = this.state.fulllist? this.renderCategoryTable(): this.renderCategoryHorizon();
     const kindSelect = this.renderKindSelect();
@@ -300,7 +327,7 @@ export class AddTransactionScreen extends Component {
       </ScrollView>
     </View>;
     return (
-      <ScreenView style={{ backgroundColor: this.state.defaultColor }}>
+      <ScreenView style={{ backgroundColor: this.props.selectedWallet?.color }}>
         <TouchableOpacity onPress={()=>{
           //this.props.navigation.goBack()
           this.props.navigation.navigate('WalletScreen');2
@@ -325,7 +352,7 @@ export class AddTransactionScreen extends Component {
                 marginTop: 1,
               }}
             />
-            <Heading style={{ color: "white" }}>{this.state.selectedTenVi}</Heading>
+            <Heading style={{ color: "white" }}>{this.props.selectedWallet?.name}</Heading>
             <Icon
               name="unfold-more-horizontal"
               type="material-community"
@@ -352,6 +379,8 @@ export class AddTransactionScreen extends Component {
             Số tiền
           </String>
           <TextInput
+            maxLength={15}
+            text = {this.props.newSoDu}
             contextMenuHidden={true}
             placeholder='0'
             style={{
@@ -359,7 +388,10 @@ export class AddTransactionScreen extends Component {
               fontWeight: "bold",
               fontSize: sizeFactor * 2,
               marginBottom: sizeFactor * 0.75,
+              width: sizeFactor*30,
+              textAlign: "right"
             }}
+            ref={input => { this.textInput2 = input }}
             keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//
             onChangeText={text=>{this.props.changeSoDu(text)}}/>
           <String style={{ color: "white", fontWeight: "bold" }}>
@@ -412,19 +444,19 @@ export class AddTransactionScreen extends Component {
             <String style={{ fontWeight: "bold" }}>Chọn ngày</String>
             <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'Today'? "true" : "false"}
-                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('Today')}}>
-                        Hôm nay
-                    </ToggleButton>
-                </View>
-                <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'LastDay'? "true" : "false"}
+                    <ToggleButton color={this.props.selectedWallet?.color} background="white" choosed={this.props.selectedDateMode == 'LastDay'? "true" : "false"}
                                   style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('LastDay')}}>
                         Hôm qua
                     </ToggleButton>
                 </View>
                 <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'NextDay'? "true" : "false"}
+                    <ToggleButton color={this.props.selectedWallet?.color} background="white" choosed={this.props.selectedDateMode == 'Today'? "true" : "false"}
+                                  style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('Today')}}>
+                        Hôm nay
+                    </ToggleButton>
+                </View>
+                <View style={{ flex: 2.75, marginRight: sizeFactor / 2 }}>
+                    <ToggleButton color={this.props.selectedWallet?.color} background="white" choosed={this.props.selectedDateMode == 'NextDay'? "true" : "false"}
                                   style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('NextDay')}}>
                         Ngày mai
                     </ToggleButton>
@@ -433,7 +465,7 @@ export class AddTransactionScreen extends Component {
             <String >hoặc chọn một ngày khác</String>
             <RowLeft style={{ flex: 9 }}>
                 <View style={{ flex: 3.5 }}>
-                    <ToggleButton color={this.state.defaultColor} background="white" choosed={this.props.selectedDateMode == 'Custom'? "true" : "false"}
+                    <ToggleButton color={this.props.selectedWallet?.color} background="white" choosed={this.props.selectedDateMode == 'Custom'? "true" : "false"}
                                   style={{ paddingHorizontal: sizeFactor / 4 }} onPress={()=>{this.props.changeDateMode('Custom'); this.props.setShow(true);}}>
                         {this.toString(this.props.date)}
                     </ToggleButton>
@@ -451,9 +483,10 @@ export class AddTransactionScreen extends Component {
             }
             <Divider />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
-            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." />
+            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." Input={this.state.note} onChangeText={text=>{this.setState({note: text})}}
+                        ref={input => { this.textInput = input }}/>
         </View>
-        <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white">
+        <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.addNewTransaction()}}>
             Thực hiện giao dịch
         </OutlineButton>
       </ScreenView>
@@ -475,6 +508,8 @@ function mapStateToProps(state) {
       newSoDu: state.sodu_transReducer,
       selectedDateMode: state.datemode_transReducer,
       date: state.date_transReducer,
+      
+      selectedWallet: state.selectedWalletReducer,
   };
 }
 
@@ -494,7 +529,22 @@ function mapDispatchToProps(dispatch) {
       updateSub: (category) => {dispatch(UpdateSubAction(category))},
       setShow: (bool) => {dispatch(SetShowDatePicker(bool))},
       changeSoDu: (sodu) => {dispatch(ChangeSoDuTransAction(sodu))},
-      changeDateMode: (datemode) => {dispatch(ChangeDateModeaTransAction(datemode))},
+      changeDateMode: (datemode) => {
+        dispatch(ChangeDateModeaTransAction(datemode));
+        var temp = new Date();
+        if(datemode == 'Today')
+          dispatch(ChangeDateTransAction(temp));
+        if(datemode == 'LastDay')
+        {
+          temp.setDate(temp.getDate() - 1)
+          dispatch(ChangeDateTransAction(temp));
+        }
+        if(datemode == 'NextDay')
+        {
+          temp.setDate(temp.getDate() + 1)
+          dispatch(ChangeDateTransAction(temp));
+        }
+      },
       changeDate: (date) => {dispatch(ChangeDateTransAction(date))},
   }
 }

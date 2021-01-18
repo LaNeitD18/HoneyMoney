@@ -19,6 +19,7 @@ import showDatePickerReducer from './showDatePickerReducer';
 import sodu_transReducer from './sodu_transReducer';
 import datemode_transReducer from './datemode_transReducer';
 import date_transReducer from './date_transReducer';
+import selectedWalletReducer from './selectedWalletReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -31,6 +32,7 @@ const allReducers = combineReducers({
     sodu_transReducer,
     datemode_transReducer,
     date_transReducer,
+    selectedWalletReducer,
 
     //Tien
     selectedType: selectedTypeReducer,
