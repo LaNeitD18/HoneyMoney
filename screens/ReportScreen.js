@@ -176,6 +176,7 @@ export default class ReportScreen extends Component {
 
         return (
             <ScrollView style={{ backgroundColor: "whitesmoke" }}>
+                <Title>Báo cáo</Title>
                 <View
                     style={{
                         padding: sizeFactor,

@@ -302,14 +302,13 @@ export class Button extends Component {
                 style={[
                     {
                         justifyContent: "center",
-                        borderWidth: 1,
-                        backgroundColor: this.props.background,
+                        borderWidth: 0,
                         paddingHorizontal: sizeFactor,
-                        borderColor: this.props.border,
                         borderRadius: 9999,
                         paddingTop: sizeFactor * 0.6,
                         flexDirection: "row",
                         marginBottom: sizeFactor,
+                        backgroundColor: this.props.backgroundColor,
                     },
                     this.props.style,
                 ]}
@@ -424,7 +423,7 @@ export class ToggleButton extends Component {
         var choosed = this.props.choosed;
         return (
             <TouchableOpacity
-                onPress = {this.props.onPress}
+                onPress={this.props.onPress}
                 style={[
                     {
                         justifyContent: "center",
@@ -558,7 +557,7 @@ export class Wallet extends Component {
                     </OutlineToggleButton>
                     <Button
                         color={this.props.color}
-                        background="white"
+                        backgroundColor="white"
                         onPress={this.props.onPressSuDung}
                     >
                         Sử dụng

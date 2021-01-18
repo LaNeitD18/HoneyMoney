@@ -273,7 +273,7 @@ class EditCategoryScreen extends Component {
                 <Divider />
                 <Button
                     color="white"
-                    background={colors.blue}
+                    backgroundColor={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
                     onPress={this.updateCategory}
                 >
