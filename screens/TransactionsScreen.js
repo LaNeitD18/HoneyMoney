@@ -16,7 +16,6 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
     Heading,
     RowLeft,
     Number,
@@ -49,6 +48,12 @@ import {
     Button1,
     Button2,
     Button3,
+    TransactionMonthSummary,
+    NormalCard,
+    LooseDivider,
+    TransactionRow,
+    TransactionDate,
+    SimpleCarousel,
 } from "../components/Basic";
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -67,52 +72,28 @@ export default class TransactionsScreen extends Component {
         return (
             <ScreenView>
                 <Title>Lịch sử giao dịch</Title>
-                <View>
-                    <ScrollView
-                        horizontal
-                        snapToInterval={windowWidth}
-                        decelerationRate="fast"
-                        showsHorizontalScrollIndicator={false}
-                        bounces={false}
-                        style={{
-                            backgroundColor: "white",
-                            borderRadius: sizeFactor,
-                            margin: sizeFactor,
-                            marginBottom: 0,
-                        }}
-                    >
-                        <View
-                            style={{
-                                width: windowWidth - sizeFactor * 2,
-                                paddingHorizontal: sizeFactor,
-                                paddingTop: sizeFactor,
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    alignSelf: "center",
-                                    fontWeight: "bold",
-                                    fontSize: sizeFactor * 1.5,
-                                    marginBottom: sizeFactor * 0.75,
-                                }}
-                            >
-                                Tháng 2/2021
-                            </Text>
-                            <Row>
-                                <String style={{ color: colors.gray }}>Số dư đầu kỳ</String>
-                                <String>+500.000 VNĐ</String>
-                            </Row>
-                            <Row>
-                                <String style={{ color: colors.gray }}>Số dư cuối kỳ</String>
-                                <String>+1.250.000 VNĐ</String>
-                            </Row>
-                            <Row>
-                                <String style={{ fontWeight: "bold" }}>Thay đổi</String>
-                                <String>+750.000 VNĐ</String>
-                            </Row>
-                        </View>
-                    </ScrollView>
-                </View>
+                <SimpleCarousel>
+                    <TransactionMonthSummary
+                        month="Tháng 1/2021"
+                        openBalance="+200.000 VNĐ"
+                        endBalance="+300.000 VNĐ"
+                        change="+100.000 VNĐ"
+                        changeColor={colors.greenDark}
+                    />
+                    <TransactionMonthSummary
+                        month="Tháng 2/2021"
+                        openBalance="+200.000 VNĐ"
+                        endBalance="+50.000 VNĐ"
+                        change="-150.000 VNĐ"
+                        changeColor={colors.redDark}
+                    />
+                </SimpleCarousel>
+                <TransactionDate
+                    date="18"
+                    dayOfWeek="Hôm nay"
+                    month="Tháng 1/2021"
+                    change="+15.000 VNĐ"
+                />
             </ScreenView>
         );
     }

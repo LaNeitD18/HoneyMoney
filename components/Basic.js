@@ -12,7 +12,7 @@ import {
     Dimensions,
     KeyboardAvoidingView,
 } from "react-native";
-import { Icon, SearchBar, ButtonGroup, Overlay, Input } from "react-native-elements";
+import { Icon, SearchBar, ButtonGroup, Overlay, Input, Divider } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
 import TextTicker from "react-native-text-ticker";
 
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: sizeFactor,
         borderRadius: sizeFactor,
     },
-    divider: {
+    space: {
         height: 0,
         marginBottom: sizeFactor / 2,
     },
@@ -243,6 +243,70 @@ export class HeadlessCard extends Component {
     }
 }
 
+export class LooseDivider extends Component {
+    render() {
+        return <Divider style={{ marginBottom: sizeFactor }} />;
+    }
+}
+
+export class NormalCard extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    backgroundColor: "white",
+                    borderRadius: sizeFactor,
+                    margin: sizeFactor,
+                    marginBottom: 0,
+                    paddingHorizontal: sizeFactor,
+                    paddingTop: sizeFactor,
+                }}
+            >
+                {this.props.children}
+            </View>
+        );
+    }
+}
+
+export class TransactionMonthSummary extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    width: windowWidth - sizeFactor * 2,
+                    paddingHorizontal: sizeFactor,
+                    paddingTop: sizeFactor,
+                }}
+            >
+                <Text
+                    style={{
+                        alignSelf: "center",
+                        fontWeight: "bold",
+                        fontSize: sizeFactor * 1.5,
+                        marginBottom: sizeFactor * 0.75,
+                    }}
+                >
+                    {this.props.month}
+                </Text>
+                <Row>
+                    <String style={{ color: colors.gray }}>Số dư đầu kỳ</String>
+                    <String>{this.props.openBalance}</String>
+                </Row>
+                <Row>
+                    <String style={{ color: colors.gray }}>Số dư cuối kỳ</String>
+                    <String>{this.props.endBalance}</String>
+                </Row>
+                <Divider style={{ marginBottom: sizeFactor }} />
+                <Row style={{ marginBottom: sizeFactor * 0.5 }}>
+                    <String style={{ fontWeight: "bold" }}>Thay đổi</String>
+                    <String style={{ fontWeight: "bold", color: this.props.changeColor }}>
+                        {this.props.change}
+                    </String>
+                </Row>
+            </View>
+        );
+    }
+}
 export class AddWalletButton extends Component {
     render() {
         return (
@@ -276,9 +340,9 @@ export class ScreenView extends Component {
     }
 }
 
-export class Divider extends Component {
+export class Space extends Component {
     render() {
-        return <View style={styles.divider} />;
+        return <View style={styles.space} />;
     }
 }
 
@@ -545,7 +609,7 @@ export class Wallet extends Component {
                         {this.props.date}
                     </String>
                 </Row>
-                <Divider />
+                <Space />
                 <Row>
                     <OutlineToggleButton
                         checked={this.props.isDefault}
@@ -901,6 +965,133 @@ export class Category extends Component {
                     </View>
                 </View>
             </TouchableOpacity>
+        );
+    }
+}
+
+export class TransactionRow extends Component {
+    render() {
+        return (
+            <TouchableOpacity onPress={this.props.onPress}>
+                <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                marginRight: sizeFactor,
+                            }}
+                        >
+                            <Image
+                                source={this.props.source}
+                                style={{
+                                    width: sizeFactor * 2.25,
+                                    height: sizeFactor * 2.25,
+                                }}
+                            ></Image>
+                        </View>
+                        <String style={{ marginBottom: 0 }}>{this.props.subcategory}</String>
+                    </View>
+                    <String style={{ marginBottom: 0, color: this.props.color }}>
+                        {this.props.amount}
+                    </String>
+                </Row>
+            </TouchableOpacity>
+        );
+    }
+}
+
+export class TransactionDate extends Component {
+    render() {
+        return (
+            <NormalCard>
+                <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <String
+                            style={{
+                                marginBottom: 0,
+                                fontSize: sizeFactor * 2,
+                                marginRight: sizeFactor,
+                                marginTop: 0,
+                            }}
+                        >
+                            {this.props.date}
+                        </String>
+                        <View>
+                            <String
+                                style={{
+                                    fontSize: sizeFactor * 0.75,
+                                    marginBottom: 0,
+                                    fontWeight: "bold",
+                                    color: colors.gray,
+                                }}
+                            >
+                                {this.props.dayOfWeek}
+                            </String>
+                            <String
+                                style={{
+                                    fontSize: sizeFactor * 0.75,
+                                    marginBottom: 0,
+                                    color: colors.gray,
+                                }}
+                            >
+                                {this.props.month}
+                            </String>
+                        </View>
+                    </View>
+                    <String style={{ marginBottom: 0, fontWeight: "bold" }}>
+                        {this.props.change}
+                    </String>
+                </Row>
+                <LooseDivider />
+                <View style={{ marginBottom: sizeFactor / 2 }}>
+                    <TransactionRow
+                        onPress={{}}
+                        source={require("../assets/categories/baotri.png")}
+                        subcategory="Bảo trì phần mềm"
+                        time="13:59"
+                        amount="-10.000 VNĐ"
+                        color={colors.redDark}
+                    />
+                    <TransactionRow
+                        onPress={{}}
+                        source={require("../assets/categories/qua.png")}
+                        subcategory="Nhận quà"
+                        amount="+25.000 VNĐ"
+                        color={colors.greenDark}
+                    />
+                </View>
+            </NormalCard>
+        );
+    }
+}
+
+export class SimpleCarousel extends Component {
+    render() {
+        return (
+            <ScrollView
+                horizontal
+                snapToInterval={windowWidth}
+                decelerationRate="fast"
+                showsHorizontalScrollIndicator={false}
+                bounces={false}
+                style={{
+                    backgroundColor: "white",
+                    borderRadius: sizeFactor,
+                    margin: sizeFactor,
+                    marginBottom: 0,
+                }}
+            >
+                {this.props.children}
+            </ScrollView>
         );
     }
 }

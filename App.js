@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, LogBox } from "react-native";
 import WalletScreen from "./screens/WalletScreen";
 import CategoriesScreen from "./screens/CategoriesScreen";
 
@@ -95,7 +95,7 @@ export default function App() {
                         },
                     })}
                     tabBarOptions={{
-                        activeTintColor: colors.green,
+                        activeTintColor: colors.greenDark,
                         inactiveTintColor: colors.dark,
                         keyboardHidesTabBar: true,
                         showIcon: true,
@@ -126,25 +126,54 @@ export default function App() {
                                 <View
                                     style={{
                                         width: 60,
-                                        alignItems: "center",
                                     }}
-                                    pointerEvents="box-none"
                                 >
-                                    <TouchableOpacity
-                                        style={{
-                                            top: -28,
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            width: 60,
-                                            height: 60,
-                                            borderRadius: 999,
-                                            backgroundColor: colors.yellow,
-                                            borderWidth: 3,
-                                            borderColor: "whitesmoke",
-                                        }}
+                                    <ActionButton
+                                        buttonColor={colors.yellow}
+                                        size={60}
+                                        degrees={320}
+                                        icon={
+                                            <Icon
+                                                name="plus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        }
+                                        radius={70}
                                     >
-                                        <Icon name="plus" type="material-community" color="white" />
-                                    </TouchableOpacity>
+                                        <ActionButton.Item buttonColor="#transparent">
+                                            <View></View>
+                                        </ActionButton.Item>
+                                        <ActionButton.Item
+                                            buttonColor="#1abc9c"
+                                            size={45}
+                                            title="To do"
+                                            onPress={() => {}}
+                                        >
+                                            <Icon
+                                                name="plus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </ActionButton.Item>
+
+                                        <ActionButton.Item
+                                            buttonColor="#F55555"
+                                            size={45}
+                                            title="My Challenge"
+                                            onPress={() => {}}
+                                        >
+                                            <Icon
+                                                name="plus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </ActionButton.Item>
+
+                                        <ActionButton.Item buttonColor="#transparent">
+                                            <View></View>
+                                        </ActionButton.Item>
+                                    </ActionButton>
                                 </View>
                             ),
                         }}
