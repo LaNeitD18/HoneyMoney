@@ -94,6 +94,12 @@ export default class TransactionsScreen extends Component {
                     month="Tháng 1/2021"
                     change="+15.000 VNĐ"
                 />
+                <TransactionDate
+                    date="02"
+                    dayOfWeek="Thứ 7"
+                    month="Tháng 1/2021"
+                    change="+15.000 VNĐ"
+                />
             </ScreenView>
         );
     }

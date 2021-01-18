@@ -23,7 +23,7 @@ export const windowHeight = Dimensions.get("window").height;
 export const sizeFactor = windowWidth / 25.7;
 
 export const colors = {
-    red: "#ff3b30",
+    red: "#F55555",
     orange: "#ff9500",
     yellow: "#ffcc00",
     green: "#34c759",
@@ -33,7 +33,7 @@ export const colors = {
     pink: "#ff2d55",
     gray: "#8e8e93",
     dark: "#48484a",
-    redDark: "#d70015",
+    redDark: "#F55555",
     greenDark: "#32a852",
     gray2: "#aeaeb2",
     gray3: "#c7c7cc",

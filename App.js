@@ -91,7 +91,14 @@ export default function App() {
                             }
 
                             // You can return any component that you like here!
-                            return <Icon name={iconName} type="material-community" color={color} />;
+                            return (
+                                <Icon
+                                    name={iconName}
+                                    type="material-community"
+                                    color={color}
+                                    size={25}
+                                />
+                            );
                         },
                     })}
                     tabBarOptions={{
@@ -104,6 +111,11 @@ export default function App() {
                             bottom: 0,
                             left: 0,
                             right: 0,
+                            height: 55,
+                        },
+                        labelStyle: {
+                            marginBottom: 4,
+                            fontSize: 11,
                         },
                     }}
                 >
@@ -131,12 +143,13 @@ export default function App() {
                                     <ActionButton
                                         buttonColor={colors.yellow}
                                         size={60}
-                                        degrees={320}
+                                        degrees={315}
                                         icon={
                                             <Icon
                                                 name="plus"
                                                 type="material-community"
                                                 color="white"
+                                                size={35}
                                             />
                                         }
                                         radius={70}
@@ -145,26 +158,26 @@ export default function App() {
                                             <View></View>
                                         </ActionButton.Item>
                                         <ActionButton.Item
-                                            buttonColor="#1abc9c"
-                                            size={45}
-                                            title="To do"
-                                            onPress={() => {}}
-                                        >
-                                            <Icon
-                                                name="plus"
-                                                type="material-community"
-                                                color="white"
-                                            />
-                                        </ActionButton.Item>
-
-                                        <ActionButton.Item
                                             buttonColor="#F55555"
                                             size={45}
                                             title="My Challenge"
                                             onPress={() => {}}
                                         >
                                             <Icon
-                                                name="plus"
+                                                name="database-minus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </ActionButton.Item>
+
+                                        <ActionButton.Item
+                                            buttonColor={colors.greenDark}
+                                            size={45}
+                                            title="To do"
+                                            onPress={() => {}}
+                                        >
+                                            <Icon
+                                                name="database-plus"
                                                 type="material-community"
                                                 color="white"
                                             />
