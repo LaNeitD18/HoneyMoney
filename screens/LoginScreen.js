@@ -116,6 +116,7 @@ export default class LoginScreen extends Component {
                                 textContentType="email"
                                 keyboardType="email-address"
                                 errorMessage=""
+                                
                             />
                             <HomoTextInput
                                 label="Mật khẩu"

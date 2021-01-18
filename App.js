@@ -40,11 +40,13 @@ export default function App() {
     return (
         <Provider store={store}>
             <NavigationContainer>
-                <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
+                {/* <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
                 <Tab.Screen name="Danh mục" component={CategoryNavigator} options={{tittle: 'Categories'}}/>
                 <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
                 <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
-                </Tab.Navigator>
+                </Tab.Navigator> */}
+                <LoginScreen/>
+                
             </NavigationContainer>
         </Provider>
     );
