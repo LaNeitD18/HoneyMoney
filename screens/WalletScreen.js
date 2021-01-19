@@ -12,7 +12,6 @@ import {
   String,
   ScreenView,
   Card,
-  Divider,
   Row,
   PositiveNumber,
   NegativeNumber,
@@ -28,6 +27,7 @@ import {
   HeadlessCard,
   windowWidth,
   AddWalletButton,
+  Space,
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import SignedNumber from '../components/SignedNumber'
@@ -122,7 +122,7 @@ export class WalletScreen extends Component {
             {item.money}
           </Wallet>)}}>
         </FlatList>
-        <Divider/>
+        <Space/>
       </ScreenView>
     );
   }
