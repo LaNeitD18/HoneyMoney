@@ -13,8 +13,8 @@ import {
     Dimensions,
     KeyboardAvoidingView,
 } from "react-native";
-import { Icon, SearchBar, ButtonGroup, Overlay, Input } from "react-native-elements";
-import { TextInput } from "react-native-gesture-handler";
+import { Icon, SearchBar, ButtonGroup, Overlay, Input, Divider } from "react-native-elements";
+import { FlatList, TextInput } from "react-native-gesture-handler";
 import TextTicker from "react-native-text-ticker";
 
 export const windowWidth = Dimensions.get("window").width;
@@ -24,7 +24,7 @@ export const windowHeight = Dimensions.get("window").height;
 export const sizeFactor = windowWidth / 25.7;
 
 export const colors = {
-    red: "#ff3b30",
+    red: "#F55555",
     orange: "#ff9500",
     yellow: "#ffcc00",
     green: "#34c759",
@@ -34,7 +34,7 @@ export const colors = {
     pink: "#ff2d55",
     gray: "#8e8e93",
     dark: "#48484a",
-    redDark: "#d70015",
+    redDark: "#F55555",
     greenDark: "#32a852",
     gray2: "#aeaeb2",
     gray3: "#c7c7cc",
@@ -84,6 +84,7 @@ export const styles = StyleSheet.create({
     background: {
         flex: 1,
         backgroundColor: colors.gray6,
+        paddingTop: 20,
     },
     container: {
         marginHorizontal: sizeFactor,
@@ -93,7 +94,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: sizeFactor,
         borderRadius: sizeFactor,
     },
-    divider: {
+    space: {
         height: 0,
         marginBottom: sizeFactor / 2,
     },
@@ -244,6 +245,73 @@ export class HeadlessCard extends Component {
     }
 }
 
+export class LooseDivider extends Component {
+    render() {
+        return <Divider style={{ marginBottom: sizeFactor }} />;
+    }
+}
+
+export class NormalCard extends Component {
+    render() {
+        return (
+            <View
+                style={[
+                    {
+                        backgroundColor: "white",
+                        borderRadius: sizeFactor,
+                        margin: sizeFactor,
+                        marginBottom: 0,
+                        paddingHorizontal: sizeFactor,
+                        paddingTop: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
+            >
+                {this.props.children}
+            </View>
+        );
+    }
+}
+
+export class TransactionMonthSummary extends Component {
+    render() {
+        return (
+            <View
+                style={{
+                    width: windowWidth - sizeFactor * 2,
+                    paddingHorizontal: sizeFactor,
+                    paddingTop: sizeFactor,
+                }}
+            >
+                <Text
+                    style={{
+                        alignSelf: "center",
+                        fontWeight: "bold",
+                        fontSize: sizeFactor * 1.5,
+                        marginBottom: sizeFactor * 0.75,
+                    }}
+                >
+                    {this.props.month}
+                </Text>
+                <Row>
+                    <String style={{ color: colors.gray }}>Số dư đầu kỳ</String>
+                    <String>{this.props.openBalance}</String>
+                </Row>
+                <Row>
+                    <String style={{ color: colors.gray }}>Số dư cuối kỳ</String>
+                    <String>{this.props.endBalance}</String>
+                </Row>
+                <Divider style={{ marginBottom: sizeFactor }} />
+                <Row style={{ marginBottom: sizeFactor * 0.5 }}>
+                    <String style={{ fontWeight: "bold" }}>Thay đổi</String>
+                    <String style={{ fontWeight: "bold", color: this.props.changeColor }}>
+                        {this.props.change}
+                    </String>
+                </Row>
+            </View>
+        );
+    }
+}
 export class AddWalletButton extends Component {
     render() {
         return (
@@ -269,7 +337,7 @@ export class ScreenView extends Component {
                     enabled={Platform.OS === "android" ? false : true}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        {this.props.children}
+                        <View style={{ paddingBottom: 40 }}>{this.props.children}</View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>
@@ -277,9 +345,9 @@ export class ScreenView extends Component {
     }
 }
 
-export class Divider extends Component {
+export class Space extends Component {
     render() {
-        return <View style={styles.divider} />;
+        return <View style={styles.space} />;
     }
 }
 
@@ -303,14 +371,13 @@ export class Button extends Component {
                 style={[
                     {
                         justifyContent: "center",
-                        borderWidth: 1,
-                        backgroundColor: this.props.background,
+                        borderWidth: 0,
                         paddingHorizontal: sizeFactor,
-                        borderColor: this.props.border,
                         borderRadius: 9999,
                         paddingTop: sizeFactor * 0.6,
                         flexDirection: "row",
                         marginBottom: sizeFactor,
+                        backgroundColor: this.props.backgroundColor,
                     },
                     this.props.style,
                 ]}
@@ -425,7 +492,7 @@ export class ToggleButton extends Component {
         var choosed = this.props.choosed;
         return (
             <TouchableOpacity
-                onPress = {this.props.onPress}
+                onPress={this.props.onPress}
                 style={[
                     {
                         justifyContent: "center",
@@ -549,7 +616,7 @@ export class Wallet extends Component {
                         {this.props.date}
                     </String>
                 </Row>
-                <Divider />
+                <Space />
                 <Row>
                     <OutlineToggleButton
                         checked={this.props.isDefault}
@@ -561,7 +628,7 @@ export class Wallet extends Component {
                     </OutlineToggleButton>
                     <Button
                         color={this.props.color}
-                        background="white"
+                        backgroundColor="white"
                         onPress={this.props.onPressSuDung}
                     >
                         Sử dụng
@@ -909,6 +976,150 @@ export class Category extends Component {
     }
 }
 
+export class TransactionsList extends Component {
+    render() {
+        const Item = ({ subcategory, onPress, source, amount, color }) => (
+            <TouchableOpacity onPress={onPress}>
+                <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <View
+                            style={{
+                                marginRight: sizeFactor,
+                            }}
+                        >
+                            <Image
+                                source={source}
+                                style={{
+                                    width: sizeFactor * 2.25,
+                                    height: sizeFactor * 2.25,
+                                }}
+                            ></Image>
+                        </View>
+                        <String style={{ marginBottom: 0 }}>{subcategory}</String>
+                    </View>
+                    <String style={{ marginBottom: 0, color: color }}>{amount}</String>
+                </Row>
+            </TouchableOpacity>
+        );
+        const renderItem = ({ item }) => (
+            <Item
+                subcategory={item.subcategory}
+                onPress={item.onPress}
+                source={item.source}
+                amount={item.amount}
+                color={item.color}
+            />
+        );
+        return <FlatList data={this.props.data} renderItem={renderItem} />;
+    }
+}
+
+export class TransactionsFullList extends Component {
+    render() {
+        const DATA = [
+            {
+                subcategory: "Bảo trì phần mềm",
+                onPress: {},
+                source: require("../assets/categories/baotri.png"),
+                amount: "-10.000 VNĐ",
+                color: colors.redDark,
+            },
+            {
+                subcategory: "Nhận quà",
+                onPress: {},
+                source: require("../assets/categories/qua.png"),
+                amount: "+25.000 VNĐ",
+                color: colors.greenDark,
+            },
+        ];
+        const Item = ({ date, dayOfWeek, month, change }) => (
+            <NormalCard>
+                <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                        }}
+                    >
+                        <String
+                            style={{
+                                marginBottom: 0,
+                                fontSize: sizeFactor * 2,
+                                marginRight: sizeFactor,
+                                marginTop: 0,
+                            }}
+                        >
+                            {date}
+                        </String>
+                        <View>
+                            <String
+                                style={{
+                                    fontSize: sizeFactor * 0.75,
+                                    marginBottom: 0,
+                                    fontWeight: "bold",
+                                    color: colors.gray,
+                                }}
+                            >
+                                {dayOfWeek}
+                            </String>
+                            <String
+                                style={{
+                                    fontSize: sizeFactor * 0.75,
+                                    marginBottom: 0,
+                                    color: colors.gray,
+                                }}
+                            >
+                                {month}
+                            </String>
+                        </View>
+                    </View>
+                    <String style={{ marginBottom: 0, fontWeight: "bold" }}>{change}</String>
+                </Row>
+                <LooseDivider />
+                <View style={{ marginBottom: sizeFactor / 2 }}>
+                    <TransactionsList data={DATA} />
+                </View>
+            </NormalCard>
+        );
+        const renderItem = ({ item }) => (
+            <Item
+                date={item.date}
+                dayOfWeek={item.dayOfWeek}
+                month={item.month}
+                change={item.change}
+            />
+        );
+        return <FlatList data={this.props.data} renderItem={renderItem} />;
+    }
+}
+
+export class SimpleCarousel extends Component {
+    render() {
+        return (
+            <ScrollView
+                horizontal
+                snapToInterval={windowWidth}
+                decelerationRate="fast"
+                showsHorizontalScrollIndicator={false}
+                bounces={false}
+                style={{
+                    backgroundColor: "white",
+                    borderRadius: sizeFactor,
+                    margin: sizeFactor,
+                    marginBottom: 0,
+                }}
+            >
+                {this.props.children}
+            </ScrollView>
+        );
+    }
+}
+
 export class CategoryTable extends Component {
     render() {
         return <View>{this.props.rows}</View>;
@@ -1033,5 +1244,38 @@ export class DialogModal extends Component{
                 </View>
             </Modal>
         )
+    }
+}
+export class SettingRow extends Component {
+    render() {
+        return (
+            <View>
+                <TouchableOpacity onPress={this.props.onPress}>
+                    <Row style={{ marginBottom: sizeFactor / 4, paddingHorizontal: sizeFactor }}>
+                        <View
+                            style={{
+                                alignContent: "center",
+                                alignItems: "center",
+                                flexDirection: "row",
+                                marginBottom: sizeFactor * 0.75,
+                            }}
+                        >
+                            <Icon
+                                style={{ marginRight: sizeFactor }}
+                                name={this.props.iconName}
+                                size={sizeFactor * 1.5}
+                                type="material-community"
+                                color={this.props.color}
+                            />
+                            <String style={{ marginBottom: 0 }}>{this.props.text}</String>
+                        </View>
+                        <Icon name="chevron-right" type="material-community" color={colors.gray} />
+                    </Row>
+                    <View style={{ paddingLeft: sizeFactor * 3.5 }}>
+                        <LooseDivider />
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
     }
 }

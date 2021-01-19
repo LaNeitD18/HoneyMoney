@@ -249,61 +249,57 @@ export class ReportScreen extends Component {
         const xAxisHeight = 30;
 
         return (
-            <SafeAreaView>
-                { false && <DialogModal visible = {true} width = {sizeFactor*15} height={sizeFactor*10}>
-                    <String>Thành công</String>
-                    <Button1 style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{}}>OK</Button1>
-                </DialogModal>}
-                <ScrollView style={{ backgroundColor: "whitesmoke" }}>
-                    <View
-                        style={{
-                            padding: sizeFactor,
-                            paddingBottom: 0,
-                            flex: 2,
-                            flexDirection: "row",
-                        }}
-                    >
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
-                                Chọn năm
-                            </Text>
-                            <Picker>
-                                <Picker.Item label="2020" value="2020" />
-                                <Picker.Item label="2019" value="2019" />
-                            </Picker>
-                        </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
-                                Chọn tháng
-                            </Text>
-                            <Picker style={{ flex: 1 }}>
-                                <Picker.Item label="Tháng 1" value="1" />
-                                <Picker.Item label="Tháng 2" value="2" />
-                            </Picker>
-                        </View>
+            <ScreenView>
+                <Title>Báo cáo</Title>
+                <View
+                    style={{
+                        padding: sizeFactor,
+                        paddingBottom: 0,
+                        flex: 2,
+                        flexDirection: "row",
+                    }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
+                            Chọn năm
+                        </Text>
+                        <Picker>
+                            <Picker.Item label="2020" value="2020" />
+                            <Picker.Item label="2019" value="2019" />
+                        </Picker>
                     </View>
-                    <View style={{ paddingHorizontal: sizeFactor }}>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
-                                Chọn tuần
-                            </Text>
-                            <Picker>
-                                <Picker.Item label="14/12/2020 - 20/12/2020" value="1412" />
-                                <Picker.Item label="21/12/2020 - 27/12/2020" value="2112" />
-                            </Picker>
-                        </View>
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
+                            Chọn tháng
+                        </Text>
+                        <Picker style={{ flex: 1 }}>
+                            <Picker.Item label="Tháng 1" value="1" />
+                            <Picker.Item label="Tháng 2" value="2" />
+                        </Picker>
                     </View>
-                    <View
-                        style={{
-                            backgroundColor: "white",
-                            borderRadius: sizeFactor,
-                            margin: sizeFactor,
-                            marginBottom: 0,
-                            paddingHorizontal: sizeFactor,
-                            paddingTop: sizeFactor * 1.5,
-                        }}
-                    >
-                        <Text
+                </View>
+                <View style={{ paddingHorizontal: sizeFactor }}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
+                            Chọn tuần
+                        </Text>
+                        <Picker>
+                            <Picker.Item label="14/12/2020 - 20/12/2020" value="1412" />
+                            <Picker.Item label="21/12/2020 - 27/12/2020" value="2112" />
+                        </Picker>
+                    </View>
+                </View>
+                <View
+                    style={{
+                        backgroundColor: "white",
+                        borderRadius: sizeFactor,
+                        margin: sizeFactor,
+                        marginBottom: 0,
+                        paddingHorizontal: sizeFactor,
+                        paddingTop: sizeFactor * 1.5,
+                    }}
+                >
+                    <Text
                             style={{
                                 alignSelf: "center",
                                 fontWeight: "normal",
@@ -421,20 +417,19 @@ export class ReportScreen extends Component {
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                            20.000
-                        </Text>
-                        <PieChart
-                            style={{ height: 300 }}
-                            data={pieData2}
-                            innerRadius={30}
-                            outerRadius={82}
-                            labelRadius={120}
-                        >
-                            <Labels />
-                        </PieChart>
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+                        20.000
+                    </Text>
+                    <PieChart
+                        style={{ height: 300 }}
+                        data={pieData2}
+                        innerRadius={30}
+                        outerRadius={82}
+                        labelRadius={120}
+                    >
+                        <Labels />
+                    </PieChart>
+                </View>
+            </ScreenView>
         );
     }
 }
