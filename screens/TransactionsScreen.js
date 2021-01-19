@@ -84,23 +84,27 @@ export default class TransactionsScreen extends Component {
         ];
         return (
             <ScreenView>
-                <Title>Lịch sử giao dịch</Title>
-                <SimpleCarousel>
-                    <TransactionMonthSummary
-                        month="Tháng 1/2021"
-                        openBalance="+200.000 VNĐ"
-                        endBalance="+300.000 VNĐ"
-                        change="+100.000 VNĐ"
-                        changeColor={colors.greenDark}
-                    />
-                    <TransactionMonthSummary
-                        month="Tháng 2/2021"
-                        openBalance="+200.000 VNĐ"
-                        endBalance="+50.000 VNĐ"
-                        change="-150.000 VNĐ"
-                        changeColor={colors.redDark}
-                    />
-                </SimpleCarousel>
+                <View>
+                    <View>
+                        <Title>Lịch sử giao dịch</Title>
+                        <SimpleCarousel>
+                            <TransactionMonthSummary
+                                month="Tháng 1/2021"
+                                openBalance="+200.000 VNĐ"
+                                endBalance="+300.000 VNĐ"
+                                change="+100.000 VNĐ"
+                                changeColor={colors.greenDark}
+                            />
+                            <TransactionMonthSummary
+                                month="Tháng 2/2021"
+                                openBalance="+200.000 VNĐ"
+                                endBalance="+50.000 VNĐ"
+                                change="-150.000 VNĐ"
+                                changeColor={colors.redDark}
+                            />
+                        </SimpleCarousel>
+                    </View>
+                </View>
                 <TransactionsFullList data={DATA} />
             </ScreenView>
         );

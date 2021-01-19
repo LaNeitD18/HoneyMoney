@@ -56,15 +56,7 @@ import {
     SimpleCarousel,
     SettingRow,
 } from "../components/Basic";
-import {
-    Icon,
-    SearchBar,
-    Input,
-    Avatar,
-    Accessory,
-    ListItem,
-    Space,
-} from "react-native-elements";
+import { Icon, SearchBar, Input, Avatar, Accessory, ListItem, Space } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
 import { categoryRef } from "../components/DataConnect";
@@ -108,27 +100,55 @@ export default class SettingScreen extends Component {
                 <NormalCard style={{ paddingHorizontal: 0 }}>
                     <SettingRow
                         color={colors.yellow}
+                        iconName="account-circle"
+                        text="Đổi tên người dùng"
+                        onPress={{}}
+                    />
+                    <SettingRow
+                        color={colors.yellow}
                         iconName="key"
                         text="Thay đổi mật khẩu"
                         onPress={{}}
                     />
                     <SettingRow
-                        color={colors.blue}
+                        color={colors.green}
                         iconName="package-variant"
                         text="Quản lý danh mục"
                         onPress={{}}
                     />
+                    <SettingRow
+                        color={colors.blue}
+                        iconName="bell-ring"
+                        text="Thông báo"
+                        onPress={{}}
+                    />
                     <View style={{ marginBottom: sizeFactor / 4, paddingHorizontal: sizeFactor }}>
-                        <Text
+                        <View
                             style={{
-                                alignSelf: "center",
-                                color: colors.red,
-                                fontSize: sizeFactor,
+                                flexDirection: "row",
+                                alignContent: "center",
+                                alignItems: "center",
                                 marginBottom: sizeFactor * 0.75,
+                                alignSelf: "center",
                             }}
                         >
-                            Đăng xuất tài khoản
-                        </Text>
+                            <Icon
+                                style={{ marginRight: sizeFactor / 2 }}
+                                name="logout"
+                                size={sizeFactor * 1.5}
+                                type="material-community"
+                                color={colors.red}
+                            />
+                            <Text
+                                style={{
+                                    alignSelf: "center",
+                                    color: colors.red,
+                                    fontSize: sizeFactor,
+                                }}
+                            >
+                                Đăng xuất tài khoản
+                            </Text>
+                        </View>
                     </View>
                 </NormalCard>
                 <View

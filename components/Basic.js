@@ -84,7 +84,6 @@ export const styles = StyleSheet.create({
     background: {
         flex: 1,
         backgroundColor: colors.gray6,
-        paddingTop: 20,
     },
     container: {
         marginHorizontal: sizeFactor,
@@ -283,16 +282,38 @@ export class TransactionMonthSummary extends Component {
                     paddingTop: sizeFactor,
                 }}
             >
-                <Text
+                <View
                     style={{
+                        flexDirection: "row",
                         alignSelf: "center",
-                        fontWeight: "bold",
-                        fontSize: sizeFactor * 1.5,
                         marginBottom: sizeFactor * 0.75,
+                        alignItems: "center",
                     }}
                 >
-                    {this.props.month}
-                </Text>
+                    <Icon
+                        name="chevron-left"
+                        type="material-community"
+                        color={colors.gray}
+                        size={sizeFactor * 2}
+                        style={{ marginTop: 2 }}
+                    />
+                    <Text
+                        style={{
+                            fontWeight: "bold",
+                            fontSize: sizeFactor * 1.5,
+                            marginHorizontal: sizeFactor / 2,
+                        }}
+                    >
+                        {this.props.month}
+                    </Text>
+                    <Icon
+                        name="chevron-right"
+                        type="material-community"
+                        color={colors.gray}
+                        size={sizeFactor * 2}
+                        style={{ marginTop: 2 }}
+                    />
+                </View>
                 <Row>
                     <String style={{ color: colors.gray }}>Số dư đầu kỳ</String>
                     <String>{this.props.openBalance}</String>
@@ -337,7 +358,9 @@ export class ScreenView extends Component {
                     enabled={Platform.OS === "android" ? false : true}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={{ paddingBottom: 40 }}>{this.props.children}</View>
+                        <View style={{ paddingBottom: 40, paddingTop: 20 }}>
+                            {this.props.children}
+                        </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>
@@ -1213,20 +1236,19 @@ export class HomoTextInput extends Component {
 }
 
 //new class
-export class DialogModal extends Component{
-    render(){
-        return(
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={this.props.visible}>
-                <View style={{
+export class DialogModal extends Component {
+    render() {
+        return (
+            <Modal animationType="slide" transparent={true} visible={this.props.visible}>
+                <View
+                    style={{
                         flex: 1,
                         backgroundColor: "gray",
                         justifyContent: "center",
                         alignItems: "center",
-                        opacity: 0.8
-                        }}>
+                        opacity: 0.8,
+                    }}
+                >
                     <View
                         style={{
                             margin: 20,
@@ -1235,15 +1257,14 @@ export class DialogModal extends Component{
                             padding: 35,
                             alignItems: "center",
                             width: this.props.width,
-                            height: this.props.height
-                            }}
-                    
-                        >
+                            height: this.props.height,
+                        }}
+                    >
                         {this.props.children}
                     </View>
                 </View>
             </Modal>
-        )
+        );
     }
 }
 export class SettingRow extends Component {
