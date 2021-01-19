@@ -293,9 +293,9 @@ export class TransactionMonthSummary extends Component {
                     <Icon
                         name="chevron-left"
                         type="material-community"
-                        color={colors.gray}
+                        color={colors.gray3}
                         size={sizeFactor * 2}
-                        style={{ marginTop: 2 }}
+                        style={{ marginTop: 2, opacity: this.props.leftChevronOpacity }}
                     />
                     <Text
                         style={{
@@ -309,9 +309,9 @@ export class TransactionMonthSummary extends Component {
                     <Icon
                         name="chevron-right"
                         type="material-community"
-                        color={colors.gray}
+                        color={colors.gray3}
                         size={sizeFactor * 2}
-                        style={{ marginTop: 2 }}
+                        style={{ marginTop: 2, opacity: this.props.rightChevronOpacity }}
                     />
                 </View>
                 <Row>
@@ -1126,7 +1126,7 @@ export class SimpleCarousel extends Component {
         return (
             <ScrollView
                 horizontal
-                snapToInterval={windowWidth}
+                snapToInterval={windowWidth - sizeFactor * 2}
                 decelerationRate="fast"
                 showsHorizontalScrollIndicator={false}
                 bounces={false}

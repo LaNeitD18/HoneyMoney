@@ -216,6 +216,8 @@ export class TransactionsScreen extends Component {
                                     endBalance="+300.000 VNĐ"
                                     change="+100.000 VNĐ"
                                     changeColor={colors.greenDark}
+                                    leftChevronOpacity={0}
+                                    rightChevronOpacity={1}
                                 />
                             );
                         }}
