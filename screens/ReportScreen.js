@@ -175,7 +175,7 @@ export default class ReportScreen extends Component {
         const xAxisHeight = 30;
 
         return (
-            <ScrollView style={{ backgroundColor: "whitesmoke" }}>
+            <ScreenView>
                 <Title>Báo cáo</Title>
                 <View
                     style={{
@@ -355,7 +355,7 @@ export default class ReportScreen extends Component {
                         <Labels />
                     </PieChart>
                 </View>
-            </ScrollView>
+            </ScreenView>
         );
     }
 }

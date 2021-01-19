@@ -51,9 +51,8 @@ import {
     TransactionMonthSummary,
     NormalCard,
     LooseDivider,
-    TransactionRow,
-    TransactionDate,
     SimpleCarousel,
+    TransactionsFullList,
 } from "../components/Basic";
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -69,6 +68,20 @@ import Swipeout from "react-native-swipeout";
 
 export default class TransactionsScreen extends Component {
     render() {
+        const DATA = [
+            {
+                date: "18",
+                dayOfWeek: "Hôm nay",
+                month: "Tháng 1/2021",
+                change: "+15.000 VNĐ",
+            },
+            {
+                date: "02",
+                dayOfWeek: "Thứ 7",
+                month: "Tháng 1/2021",
+                change: "+15.000 VNĐ",
+            },
+        ];
         return (
             <ScreenView>
                 <Title>Lịch sử giao dịch</Title>
@@ -88,18 +101,7 @@ export default class TransactionsScreen extends Component {
                         changeColor={colors.redDark}
                     />
                 </SimpleCarousel>
-                <TransactionDate
-                    date="18"
-                    dayOfWeek="Hôm nay"
-                    month="Tháng 1/2021"
-                    change="+15.000 VNĐ"
-                />
-                <TransactionDate
-                    date="02"
-                    dayOfWeek="Thứ 7"
-                    month="Tháng 1/2021"
-                    change="+15.000 VNĐ"
-                />
+                <TransactionsFullList data={DATA} />
             </ScreenView>
         );
     }

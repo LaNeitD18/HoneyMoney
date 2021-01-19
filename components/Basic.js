@@ -13,7 +13,7 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import { Icon, SearchBar, ButtonGroup, Overlay, Input, Divider } from "react-native-elements";
-import { TextInput } from "react-native-gesture-handler";
+import { FlatList, TextInput } from "react-native-gesture-handler";
 import TextTicker from "react-native-text-ticker";
 
 export const windowWidth = Dimensions.get("window").width;
@@ -83,6 +83,7 @@ export const styles = StyleSheet.create({
     background: {
         flex: 1,
         backgroundColor: colors.gray6,
+        paddingTop: 20,
     },
     container: {
         marginHorizontal: sizeFactor,
@@ -253,14 +254,17 @@ export class NormalCard extends Component {
     render() {
         return (
             <View
-                style={{
-                    backgroundColor: "white",
-                    borderRadius: sizeFactor,
-                    margin: sizeFactor,
-                    marginBottom: 0,
-                    paddingHorizontal: sizeFactor,
-                    paddingTop: sizeFactor,
-                }}
+                style={[
+                    {
+                        backgroundColor: "white",
+                        borderRadius: sizeFactor,
+                        margin: sizeFactor,
+                        marginBottom: 0,
+                        paddingHorizontal: sizeFactor,
+                        paddingTop: sizeFactor,
+                    },
+                    this.props.style,
+                ]}
             >
                 {this.props.children}
             </View>
@@ -332,7 +336,7 @@ export class ScreenView extends Component {
                     enabled={Platform.OS === "android" ? false : true}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}>
-                        {this.props.children}
+                        <View style={{ paddingBottom: 40 }}>{this.props.children}</View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>
@@ -969,10 +973,10 @@ export class Category extends Component {
     }
 }
 
-export class TransactionRow extends Component {
+export class TransactionsList extends Component {
     render() {
-        return (
-            <TouchableOpacity onPress={this.props.onPress}>
+        const Item = ({ subcategory, onPress, source, amount, color }) => (
+            <TouchableOpacity onPress={onPress}>
                 <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
                     <View
                         style={{
@@ -986,27 +990,51 @@ export class TransactionRow extends Component {
                             }}
                         >
                             <Image
-                                source={this.props.source}
+                                source={source}
                                 style={{
                                     width: sizeFactor * 2.25,
                                     height: sizeFactor * 2.25,
                                 }}
                             ></Image>
                         </View>
-                        <String style={{ marginBottom: 0 }}>{this.props.subcategory}</String>
+                        <String style={{ marginBottom: 0 }}>{subcategory}</String>
                     </View>
-                    <String style={{ marginBottom: 0, color: this.props.color }}>
-                        {this.props.amount}
-                    </String>
+                    <String style={{ marginBottom: 0, color: color }}>{amount}</String>
                 </Row>
             </TouchableOpacity>
         );
+        const renderItem = ({ item }) => (
+            <Item
+                subcategory={item.subcategory}
+                onPress={item.onPress}
+                source={item.source}
+                amount={item.amount}
+                color={item.color}
+            />
+        );
+        return <FlatList data={this.props.data} renderItem={renderItem} />;
     }
 }
 
-export class TransactionDate extends Component {
+export class TransactionsFullList extends Component {
     render() {
-        return (
+        const DATA = [
+            {
+                subcategory: "Bảo trì phần mềm",
+                onPress: {},
+                source: require("../assets/categories/baotri.png"),
+                amount: "-10.000 VNĐ",
+                color: colors.redDark,
+            },
+            {
+                subcategory: "Nhận quà",
+                onPress: {},
+                source: require("../assets/categories/qua.png"),
+                amount: "+25.000 VNĐ",
+                color: colors.greenDark,
+            },
+        ];
+        const Item = ({ date, dayOfWeek, month, change }) => (
             <NormalCard>
                 <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
                     <View
@@ -1023,7 +1051,7 @@ export class TransactionDate extends Component {
                                 marginTop: 0,
                             }}
                         >
-                            {this.props.date}
+                            {date}
                         </String>
                         <View>
                             <String
@@ -1034,7 +1062,7 @@ export class TransactionDate extends Component {
                                     color: colors.gray,
                                 }}
                             >
-                                {this.props.dayOfWeek}
+                                {dayOfWeek}
                             </String>
                             <String
                                 style={{
@@ -1043,34 +1071,27 @@ export class TransactionDate extends Component {
                                     color: colors.gray,
                                 }}
                             >
-                                {this.props.month}
+                                {month}
                             </String>
                         </View>
                     </View>
-                    <String style={{ marginBottom: 0, fontWeight: "bold" }}>
-                        {this.props.change}
-                    </String>
+                    <String style={{ marginBottom: 0, fontWeight: "bold" }}>{change}</String>
                 </Row>
                 <LooseDivider />
                 <View style={{ marginBottom: sizeFactor / 2 }}>
-                    <TransactionRow
-                        onPress={{}}
-                        source={require("../assets/categories/baotri.png")}
-                        subcategory="Bảo trì phần mềm"
-                        time="13:59"
-                        amount="-10.000 VNĐ"
-                        color={colors.redDark}
-                    />
-                    <TransactionRow
-                        onPress={{}}
-                        source={require("../assets/categories/qua.png")}
-                        subcategory="Nhận quà"
-                        amount="+25.000 VNĐ"
-                        color={colors.greenDark}
-                    />
+                    <TransactionsList data={DATA} />
                 </View>
             </NormalCard>
         );
+        const renderItem = ({ item }) => (
+            <Item
+                date={item.date}
+                dayOfWeek={item.dayOfWeek}
+                month={item.month}
+                change={item.change}
+            />
+        );
+        return <FlatList data={this.props.data} renderItem={renderItem} />;
     }
 }
 
@@ -1184,6 +1205,40 @@ export class HomoTextInput extends Component {
                 errorStyle={{ color: colors.red, alignSelf: "flex-end" }}
                 {...this.props}
             />
+        );
+    }
+}
+
+export class SettingRow extends Component {
+    render() {
+        return (
+            <View>
+                <TouchableOpacity onPress={this.props.onPress}>
+                    <Row style={{ marginBottom: sizeFactor / 4, paddingHorizontal: sizeFactor }}>
+                        <View
+                            style={{
+                                alignContent: "center",
+                                alignItems: "center",
+                                flexDirection: "row",
+                                marginBottom: sizeFactor * 0.75,
+                            }}
+                        >
+                            <Icon
+                                style={{ marginRight: sizeFactor }}
+                                name={this.props.iconName}
+                                size={sizeFactor * 1.5}
+                                type="material-community"
+                                color={this.props.color}
+                            />
+                            <String style={{ marginBottom: 0 }}>{this.props.text}</String>
+                        </View>
+                        <Icon name="chevron-right" type="material-community" color={colors.gray} />
+                    </Row>
+                    <View style={{ paddingLeft: sizeFactor * 3.5 }}>
+                        <LooseDivider />
+                    </View>
+                </TouchableOpacity>
+            </View>
         );
     }
 }

@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import "react-native-gesture-handler";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, LogBox } from "react-native";
+import { StyleSheet, Text, View, LogBox, YellowBox } from "react-native";
 import WalletScreen from "./screens/WalletScreen";
 import CategoriesScreen from "./screens/CategoriesScreen";
 
@@ -25,8 +25,9 @@ import WalletNavigator from "./screens/WalletNavigator";
 
 import CategoryNavigator from "./screens/CategoryNavigator";
 import TransactionsScreen from "./screens/TransactionsScreen";
-import SettingScreen from "./screens/SettingScreens";
+import SettingScreen from "./screens/SettingScreen";
 import ReportScreen from "./screens/ReportScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import {
     String,
@@ -72,6 +73,7 @@ const Stack = createStackNavigator();
 let store = createStore(allReducers);
 
 export default function App() {
+    YellowBox.ignoreWarnings(["Animated: `useNativeDriver`"]);
     return (
         <Provider store={store}>
             <NavigationContainer>
@@ -159,8 +161,8 @@ export default function App() {
                                         </ActionButton.Item>
                                         <ActionButton.Item
                                             buttonColor="#F55555"
-                                            size={45}
-                                            title="My Challenge"
+                                            size={50}
+                                            title="Chi"
                                             onPress={() => {}}
                                         >
                                             <Icon
@@ -172,8 +174,8 @@ export default function App() {
 
                                         <ActionButton.Item
                                             buttonColor={colors.greenDark}
-                                            size={45}
-                                            title="To do"
+                                            size={50}
+                                            title="Thu"
                                             onPress={() => {}}
                                         >
                                             <Icon
