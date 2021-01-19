@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Modal } from "react-native";
 import {
     Text,
     StyleSheet,
@@ -577,6 +578,7 @@ export class OutlineButton extends Component {
                     },
                     this.props.style,
                 ]}
+                onPress={this.props.onPress}
             >
                 <String
                     style={{
@@ -600,6 +602,7 @@ export class Wallet extends Component {
                 color={this.props.color}
                 icon="tune"
                 iconColor="white"
+                onPress={this.props.onPressEdit}
             >
                 <Row>
                     <String style={{ color: "white", fontSize: sizeFactor * 2 }}>VNĐ</String>
@@ -1209,6 +1212,40 @@ export class HomoTextInput extends Component {
     }
 }
 
+//new class
+export class DialogModal extends Component{
+    render(){
+        return(
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.props.visible}>
+                <View style={{
+                        flex: 1,
+                        backgroundColor: "gray",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        opacity: 0.8
+                        }}>
+                    <View
+                        style={{
+                            margin: 20,
+                            backgroundColor: "white",
+                            borderRadius: 20,
+                            padding: 35,
+                            alignItems: "center",
+                            width: this.props.width,
+                            height: this.props.height
+                            }}
+                    
+                        >
+                        {this.props.children}
+                    </View>
+                </View>
+            </Modal>
+        )
+    }
+}
 export class SettingRow extends Component {
     render() {
         return (

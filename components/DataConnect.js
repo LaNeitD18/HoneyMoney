@@ -21,6 +21,8 @@ const firebaseConfig = {
 //FirebaseApp.initializeApp();
 firebase.initializeApp(firebaseConfig);
 
+//console.log(firebase);
+
 export const rootRef = firebase.database().ref();
 export const walletRef = rootRef.child('Wallet');
 export const categoryRef = rootRef.child('Category');

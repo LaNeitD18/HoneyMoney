@@ -50,6 +50,7 @@ import {
     Button1,
     Button2,
     Button3,
+    DialogModal,
 } from "../components/Basic";
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -62,13 +63,86 @@ import { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
+import {rootRef,walletRef} from '../components/DataConnect'
+
+import {UpdateWalletAction, SelectWallet } from "../actions";
 
 import { VictoryBar } from "victory-native";
 import { PieChart, LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-charts";
 import { Circle, G, Line, Image, Defs, LinearGradient, Stop } from "react-native-svg";
 
-export default class ReportScreen extends Component {
+export class ReportScreen extends Component {
+    componentDidMount(){
+        walletRef.on('value',(snap)=>{this.props.Update(snap)});
+    }
+    toDate(datestring)
+    {
+        var parts = datestring.split("/");
+        return new Date(parseInt(parts[2], 10),
+        parseInt(parts[1], 10) - 1,
+        parseInt(parts[0], 10));
+    }
+    getDataInTimeRange(start, end)
+    {
+        var startDate = this.toDate(start);
+        var endDate = this.toDate(end);
+        var temp = [];
+        this.props.walletData.forEach(element =>
+            {
+                if(element.transactionList != undefined && element.isDefault == "true")
+                {
+                    Object.keys(element.transactionList).forEach(transaction =>
+                        {
+                            //console.log(transaction)
+                            var tempInfo = {
+                                date: element.transactionList[transaction].date,
+                                money: element.transactionList[transaction].money,
+                                category: element.transactionList[transaction].category,
+                            }
+                            if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
+                            {
+                                temp.push(tempInfo);
+                            }
+                        })
+                }
+            });
+        return temp.sort((a,b)=>
+        {
+            return this.toDate(a.date)-this.toDate(b.date);
+        });;
+    }
+
+    getDataInTimeRangeDate(startDate, endDate)
+    {
+        var temp = [];
+        this.props.walletData.forEach(element =>
+            {
+                if(element.transactionList != undefined && element.isDefault == "true")
+                {
+                    Object.keys(element.transactionList).forEach(transaction =>
+                        {
+                            //console.log(transaction)
+                            var tempInfo = {
+                                date: element.transactionList[transaction].date,
+                                money: element.transactionList[transaction].money,
+                                category: element.transactionList[transaction].category,
+                            }
+                            if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
+                            {
+                                temp.push(tempInfo);
+                            }
+                        })
+                }
+            });
+        return temp.sort((a,b)=>
+        {
+            return this.toDate(a.date)-this.toDate(b.date);
+        });;
+    }
+
     render() {
+        console.log(this.getDataInTimeRange("23/12/2020","24/12/2020"));
+        //console.log(this.getDataInTimeRangeDate(new Date({date: 23, month: 12, year: 2020}),new Date({date: 24, month: 12, year: 2020})));
         const data = [50, 25, 40, 95, 85, 91];
 
         //shade of color by hau :v
@@ -226,123 +300,123 @@ export default class ReportScreen extends Component {
                     }}
                 >
                     <Text
-                        style={{
-                            alignSelf: "center",
-                            fontWeight: "normal",
-                            fontSize: sizeFactor * 1.25,
-                        }}
-                    >
-                        Thay đổi trong tuần
-                    </Text>
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontWeight: "bold",
-                            fontSize: sizeFactor * 2,
-                            color: colors.greenDark,
-                            marginBottom: sizeFactor / 2,
-                        }}
-                    >
-                        +50.000
-                    </Text>
-                    <View style={{ backgroundColor: "white", height: 330 }}>
-                        <View style={{ alignSelf: "center", height: 340, flexDirection: "row" }}>
-                            <YAxis
-                                data={lineData1}
-                                style={{ marginBottom: xAxisHeight, marginRight: 10 }}
-                                contentInset={{ top: 20, bottom: 20 }}
-                                svg={axesSvg}
-                                formatLabel={(value, index) => value / 1000}
-                            />
-                            <View>
-                                <LineChart
-                                    style={{
-                                        height: 300,
-                                        width: windowWidth - sizeFactor * 4 - 30,
-                                    }}
-                                    data={lineData}
-                                    contentInset={{ top: 20, bottom: 10, left: 10, right: 10 }}
-                                >
-                                    <Grid />
-                                    <Gradient />
-                                </LineChart>
-                                <XAxis
-                                    style={{ marginHorizontal: -10, height: xAxisHeight }}
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "normal",
+                                fontSize: sizeFactor * 1.25,
+                            }}
+                        >
+                            Thay đổi trong tuần
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "bold",
+                                fontSize: sizeFactor * 2,
+                                color: colors.greenDark,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            +50.000
+                        </Text>
+                        <View style={{ backgroundColor: "white", height: 330 }}>
+                            <View style={{ alignSelf: "center", height: 340, flexDirection: "row" }}>
+                                <YAxis
                                     data={lineData1}
-                                    formatLabel={(value, index) => "T" + (index + 1)}
-                                    contentInset={{ left: 20, right: 20 }}
+                                    style={{ marginBottom: xAxisHeight, marginRight: 10 }}
+                                    contentInset={{ top: 20, bottom: 20 }}
                                     svg={axesSvg}
+                                    formatLabel={(value, index) => value / 1000}
                                 />
+                                <View>
+                                    <LineChart
+                                        style={{
+                                            height: 300,
+                                            width: windowWidth - sizeFactor * 4 - 30,
+                                        }}
+                                        data={lineData}
+                                        contentInset={{ top: 20, bottom: 10, left: 10, right: 10 }}
+                                    >
+                                        <Grid />
+                                        <Gradient />
+                                    </LineChart>
+                                    <XAxis
+                                        style={{ marginHorizontal: -10, height: xAxisHeight }}
+                                        data={lineData1}
+                                        formatLabel={(value, index) => "T" + (index + 1)}
+                                        contentInset={{ left: 20, right: 20 }}
+                                        svg={axesSvg}
+                                    />
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        borderRadius: sizeFactor,
-                        margin: sizeFactor,
-                        marginBottom: 0,
-                        paddingTop: sizeFactor * 1.5,
-                    }}
-                >
-                    <Text
+                    <View
                         style={{
-                            alignSelf: "center",
-                            fontWeight: "normal",
-                            fontSize: sizeFactor * 1.25,
+                            backgroundColor: "white",
+                            borderRadius: sizeFactor,
+                            margin: sizeFactor,
+                            marginBottom: 0,
+                            paddingTop: sizeFactor * 1.5,
                         }}
                     >
-                        Thu nhập
-                    </Text>
-                    <Text
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "normal",
+                                fontSize: sizeFactor * 1.25,
+                            }}
+                        >
+                            Thu nhập
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "bold",
+                                fontSize: sizeFactor * 2,
+                                color: colors.greenDark,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            70.000
+                        </Text>
+                        <PieChart
+                            style={{ height: 300 }}
+                            data={pieData}
+                            innerRadius={30}
+                            outerRadius={82}
+                            labelRadius={120}
+                        >
+                            <Labels />
+                        </PieChart>
+                    </View>
+                    <View
                         style={{
-                            alignSelf: "center",
-                            fontWeight: "bold",
-                            fontSize: sizeFactor * 2,
-                            color: colors.greenDark,
-                            marginBottom: sizeFactor / 2,
+                            backgroundColor: "white",
+                            borderRadius: sizeFactor,
+                            margin: sizeFactor,
+                            marginBottom: 0,
+                            paddingTop: sizeFactor * 1.5,
                         }}
                     >
-                        70.000
-                    </Text>
-                    <PieChart
-                        style={{ height: 300 }}
-                        data={pieData}
-                        innerRadius={30}
-                        outerRadius={82}
-                        labelRadius={120}
-                    >
-                        <Labels />
-                    </PieChart>
-                </View>
-                <View
-                    style={{
-                        backgroundColor: "white",
-                        borderRadius: sizeFactor,
-                        margin: sizeFactor,
-                        marginBottom: 0,
-                        paddingTop: sizeFactor * 1.5,
-                    }}
-                >
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontWeight: "normal",
-                            fontSize: sizeFactor * 1.25,
-                        }}
-                    >
-                        Chi tiêu
-                    </Text>
-                    <Text
-                        style={{
-                            alignSelf: "center",
-                            fontWeight: "bold",
-                            fontSize: sizeFactor * 2,
-                            color: colors.redDark,
-                            marginBottom: sizeFactor / 2,
-                        }}
-                    >
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "normal",
+                                fontSize: sizeFactor * 1.25,
+                            }}
+                        >
+                            Chi tiêu
+                        </Text>
+                        <Text
+                            style={{
+                                alignSelf: "center",
+                                fontWeight: "bold",
+                                fontSize: sizeFactor * 2,
+                                color: colors.redDark,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
                         20.000
                     </Text>
                     <PieChart
@@ -359,3 +433,24 @@ export default class ReportScreen extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return{
+        walletData: state.WalletReducer,
+        //selectedWallet: state.selectedWalletReducer,
+    }
+  };
+  
+  const mapDispatchToProps = (dispatch) =>{
+    return {
+        Update: (snap) => {
+          dispatch(UpdateWalletAction(snap));
+        },
+        SelectWallet: (value) => {
+          dispatch(SelectWallet(value));
+        }
+    };
+  }
+
+  export default connect(mapStateToProps, mapDispatchToProps)(ReportScreen);
+
