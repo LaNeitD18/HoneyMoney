@@ -141,7 +141,7 @@ export class ReportScreen extends Component {
     }
 
     render() {
-        console.log(this.getDataInTimeRange("23/12/2020","24/12/2020"));
+        //console.log(this.getDataInTimeRange("23/12/2020","24/12/2020"));
         //console.log(this.getDataInTimeRangeDate(new Date({date: 23, month: 12, year: 2020}),new Date({date: 24, month: 12, year: 2020})));
         const data = [50, 25, 40, 95, 85, 91];
 
