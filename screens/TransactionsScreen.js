@@ -129,7 +129,7 @@ export class TransactionsScreen extends Component {
         var endmonth = this.toDate(data[data.length-1].date).getMonth()+1;
         var endyear = this.toDate(data[data.length-1].date).getFullYear();
 
-        while (startyear <= endyear || startmonth < endmonth)
+        while (startyear*12 + startmonth <= endyear*12 + endmonth)
         {
             var item = {
                 month: "Tháng " + startmonth + "/" + startyear,
