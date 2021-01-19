@@ -74,6 +74,8 @@ let store = createStore(allReducers);
 
 export default function App() {
     YellowBox.ignoreWarnings(["Animated: `useNativeDriver`"]);
+    //ignore all warning
+    console.disableYellowBox = true;
     return (
         <Provider store={store}>
             <NavigationContainer>
