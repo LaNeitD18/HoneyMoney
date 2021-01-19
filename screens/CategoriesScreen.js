@@ -15,7 +15,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     RowLeft,
     Number,
     NegativeNumber,
@@ -232,9 +232,9 @@ class CategoriesScreen extends React.Component {
 
         return (
             <View style={{ flex: 1 }}>
-                <Divider />
-                <Divider />
-                <Divider />
+                <Space />
+                <Space />
+                <Space />
                 <SearchBar
                     platform={Platform.OS}
                     placeholder="Tìm danh mục..."
@@ -256,7 +256,7 @@ class CategoriesScreen extends React.Component {
                     <Title style={{ marginTop: 0 }}>Danh mục</Title>
                     {kindSelect}
                     <CategoryTable rows={rows} />
-                    <Divider />
+                    <Space />
                 </ScrollView>
 
                 <Animated.Text style={{ opacity: opacityValue }}>

@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, Image, TouchableOpacity, Platform, TextInput } from "react-native";
-import { String, ScreenView, Card, Divider, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, OutlineToggleButton, Button, ToggleButton } from "../components/Basic";
+import { String, ScreenView, Card, Space, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, OutlineToggleButton, Button, ToggleButton } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import CategoriesScreen from "../screens/CategoriesScreen";
@@ -481,7 +481,7 @@ export class AddTransactionScreen extends Component {
               onChange={(event, selectedDate) => {this.props.setShow(false); selectedDate? this.props.changeDate(selectedDate):{}}}
             />
             }
-            <Divider />
+            <Space />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
             <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." Input={this.state.note} onChangeText={text=>{this.setState({note: text})}}
                         ref={input => { this.textInput = input }}/>
