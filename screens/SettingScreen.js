@@ -63,7 +63,7 @@ import {
     Avatar,
     Accessory,
     ListItem,
-    Divider,
+    Space,
 } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";

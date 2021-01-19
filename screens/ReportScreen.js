@@ -17,7 +17,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     Heading,
     RowLeft,
     Number,
