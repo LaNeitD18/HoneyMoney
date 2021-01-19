@@ -28,6 +28,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import LoginScreen from "./screens/LoginScreen";
 import ReportScreen from "./screens/ReportScreen";
 import { SafeAreaView } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -39,15 +40,20 @@ let store = createStore(allReducers);
 export default function App() {
     return (
         <Provider store={store}>
-          <ReportScreen>
+            <SafeAreaProvider>
+                <ReportScreen>
 
-            </ReportScreen>
+                </ReportScreen>
+            </SafeAreaProvider>  
+            
+            
         </Provider>
     );
 }
 
 /*
-                <NavigationContainer>
-                    <WalletNavigator/>
-                </NavigationContainer>
+  <NavigationContainer>
+        <WalletNavigator/>
+    </NavigationContainer>  
+              
 */ 

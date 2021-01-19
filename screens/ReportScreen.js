@@ -63,13 +63,86 @@ import { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
+import {rootRef,walletRef} from '../components/DataConnect'
+
+import {UpdateWalletAction, SelectWallet } from "../actions";
 
 import { VictoryBar } from "victory-native";
 import { PieChart, LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-charts";
 import { Circle, G, Line, Image, Defs, LinearGradient, Stop } from "react-native-svg";
 
-export default class ReportScreen extends Component {
+export class ReportScreen extends Component {
+    componentDidMount(){
+        walletRef.on('value',(snap)=>{this.props.Update(snap)});
+    }
+    toDate(datestring)
+    {
+        var parts = datestring.split("/");
+        return new Date(parseInt(parts[2], 10),
+        parseInt(parts[1], 10) - 1,
+        parseInt(parts[0], 10));
+    }
+    getDataInTimeRange(start, end)
+    {
+        var startDate = this.toDate(start);
+        var endDate = this.toDate(end);
+        var temp = [];
+        this.props.walletData.forEach(element =>
+            {
+                if(element.transactionList != undefined && element.isDefault == "true")
+                {
+                    Object.keys(element.transactionList).forEach(transaction =>
+                        {
+                            //console.log(transaction)
+                            var tempInfo = {
+                                date: element.transactionList[transaction].date,
+                                money: element.transactionList[transaction].money,
+                                category: element.transactionList[transaction].category,
+                            }
+                            if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
+                            {
+                                temp.push(tempInfo);
+                            }
+                        })
+                }
+            });
+        return temp.sort((a,b)=>
+        {
+            return this.toDate(a.date)-this.toDate(b.date);
+        });;
+    }
+
+    getDataInTimeRangeDate(startDate, endDate)
+    {
+        var temp = [];
+        this.props.walletData.forEach(element =>
+            {
+                if(element.transactionList != undefined && element.isDefault == "true")
+                {
+                    Object.keys(element.transactionList).forEach(transaction =>
+                        {
+                            //console.log(transaction)
+                            var tempInfo = {
+                                date: element.transactionList[transaction].date,
+                                money: element.transactionList[transaction].money,
+                                category: element.transactionList[transaction].category,
+                            }
+                            if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
+                            {
+                                temp.push(tempInfo);
+                            }
+                        })
+                }
+            });
+        return temp.sort((a,b)=>
+        {
+            return this.toDate(a.date)-this.toDate(b.date);
+        });;
+    }
+
     render() {
+        console.log(this.getDataInTimeRange("23/12/2020","24/12/2020"));
+        //console.log(this.getDataInTimeRangeDate(new Date({date: 23, month: 12, year: 2020}),new Date({date: 24, month: 12, year: 2020})));
         const data = [50, 25, 40, 95, 85, 91];
 
         //shade of color by hau :v
@@ -177,10 +250,10 @@ export default class ReportScreen extends Component {
 
         return (
             <SafeAreaView>
-                <DialogModal visible = {true} width = {sizeFactor*15} height={sizeFactor*10}>
+                { false && <DialogModal visible = {true} width = {sizeFactor*15} height={sizeFactor*10}>
                     <String>Thành công</String>
                     <Button1 style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{}}>OK</Button1>
-                </DialogModal>
+                </DialogModal>}
                 <ScrollView style={{ backgroundColor: "whitesmoke" }}>
                     <View
                         style={{
@@ -365,3 +438,24 @@ export default class ReportScreen extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return{
+        walletData: state.WalletReducer,
+        //selectedWallet: state.selectedWalletReducer,
+    }
+  };
+  
+  const mapDispatchToProps = (dispatch) =>{
+    return {
+        Update: (snap) => {
+          dispatch(UpdateWalletAction(snap));
+        },
+        SelectWallet: (value) => {
+          dispatch(SelectWallet(value));
+        }
+    };
+  }
+
+  export default connect(mapStateToProps, mapDispatchToProps)(ReportScreen);
+
