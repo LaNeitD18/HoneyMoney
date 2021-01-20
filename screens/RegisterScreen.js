@@ -11,6 +11,7 @@ import {
     Platform,
     TextInput,
     ImageBackground,
+    ActivityIndicator,
 } from "react-native";
 import {
     String,
@@ -63,7 +64,58 @@ import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 
 export default class RegisterScreen extends Component {
+    constructor() {
+        super();
+        this.state = { 
+            displayName: '',
+            email: '', 
+            password: '',
+            isLoading: false
+        }
+    }
+
+    updateInputVal = (val, prop) => {
+        const state = this.state;
+        state[prop] = val;
+        this.setState(state);
+    }
+
+    registerUser = () => {
+        if(this.state.email === '' && this.state.password === '') {
+          Alert.alert('Enter details to signup!')
+        } else {
+          this.setState({
+            isLoading: true,
+          })
+          firebase
+          .auth()
+          .createUserWithEmailAndPassword(this.state.email, this.state.password)
+          .then((res) => {
+            res.user.updateProfile({
+              displayName: this.state.displayName
+            })
+            console.log('User registered successfully!')
+            this.setState({
+              isLoading: false,
+              displayName: '',
+              email: '', 
+              password: ''
+            })
+            this.props.navigation.navigate('Login')
+          })
+          .catch(error => this.setState({ errorMessage: error.message }))      
+        }
+      }
+
     render() {
+        if(this.state.isLoading){
+            return(
+              <View style={styles.preloader}>
+                <ActivityIndicator size="large" color="#9E9E9E"/>
+              </View>
+            )
+          } 
+
         return (
             <View
                 style={{
@@ -108,15 +160,18 @@ export default class RegisterScreen extends Component {
                                 label="Họ và tên"
                                 placeholder="Tên Của Bạn"
                                 leftIcon={{ name: "person", color: colors.gray }}
-                                secureTextEntry={true}
                                 textContentType="name"
                                 errorMessage="Thông báo lỗi"
+                                value={this.state.displayName}
+                                onChangeText={(val) => this.updateInputVal(val, 'displayName')}
                             />
                             <HomoTextInput
                                 leftIcon={{ name: "email", color: colors.gray }}
                                 textContentType="emailAddress"
                                 keyboardType="email-address"
                                 errorMessage=""
+                                value={this.state.email}
+                                onChangeText={(val) => this.updateInputVal(val, 'email')}
                             />
                             <HomoTextInput
                                 label="Mật khẩu"
@@ -125,6 +180,8 @@ export default class RegisterScreen extends Component {
                                 textContentType="password"
                                 secureTextEntry={true}
                                 errorMessage=""
+                                value={this.state.password}
+                                onChangeText={(val) => this.updateInputVal(val, 'password')}
                             />
 
                             <View
@@ -135,8 +192,14 @@ export default class RegisterScreen extends Component {
                                     marginTop: sizeFactor / 2,
                                 }}
                             >
-                                <Button2 style={{ width: sizeFactor * 8.5 }}>Hủy bỏ</Button2>
-                                <Button1 style={{ width: sizeFactor * 8.5 }}>Xác nhận</Button1>
+                                <Button2 
+                                    style={{ width: sizeFactor * 8.5 }}
+
+                                >Hủy bỏ</Button2>
+                                <Button1 
+                                    style={{ width: sizeFactor * 8.5 }}
+                                    onPress={() => this.registerUser()}
+                                >Xác nhận</Button1>
                             </View>
                         </View>
                         <Text style={{ color: colors.white }}>

@@ -45,8 +45,11 @@ export default function App() {
                 <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
                 <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
                 </Tab.Navigator> */}
-                <LoginScreen/>
-                
+                {/* <LoginScreen/> */}
+                <Stack.Navigator>
+                    <Stack.Screen name="SignUp" component={RegisterScreen}/>
+                    <Stack.Screen name="SignIn" component={LoginScreen}/>
+                </Stack.Navigator>
             </NavigationContainer>
         </Provider>
     );

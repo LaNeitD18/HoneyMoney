@@ -63,6 +63,22 @@ import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 
 export default class LoginScreen extends Component {
+    constructor() {
+        super();
+        this.state = { 
+          email: '', 
+          password: '',
+          isLoading: false
+        }
+    }
+
+    updateInputVal = (val, prop) => {
+        const state = this.state;
+        state[prop] = val;
+        this.setState(state);
+    }
+
+
     render() {
         return (
             <View

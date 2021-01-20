@@ -981,7 +981,6 @@ export class HomoTextInput extends Component {
     render() {
         return (
             <Input
-                onChangeText={this.props.onChangeText}
                 labelStyle={{ color: colors.gray }}
                 label="Email"
                 placeholder="example@email.com"
@@ -998,6 +997,8 @@ export class HomoTextInput extends Component {
                 }}
                 errorStyle={{ color: colors.red, alignSelf: "flex-end" }}
                 {...this.props}
+                value={this.props.value}
+                onChangeText={this.props.onChangeText}
             />
         );
     }
