@@ -74,92 +74,291 @@ export default class BudgetScreen extends Component {
         return (
             <ScreenView>
                 <Title>Quản lý tiết kiệm</Title>
-                <NormalCard>
-                    <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
+                <TouchableOpacity>
+                    <NormalCard>
+                        <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
                             <View
                                 style={{
-                                    marginRight: sizeFactor,
+                                    flexDirection: "row",
+                                    alignItems: "center",
                                 }}
                             >
-                                <Image
-                                    source={require("../assets/categories/tiennha.png")}
+                                <View
                                     style={{
-                                        width: sizeFactor * 2.25,
-                                        height: sizeFactor * 2.25,
+                                        marginRight: sizeFactor,
                                     }}
-                                ></Image>
+                                >
+                                    <Image
+                                        source={require("../assets/categories/tiennha.png")}
+                                        style={{
+                                            width: sizeFactor * 2.25,
+                                            height: sizeFactor * 2.25,
+                                        }}
+                                    ></Image>
+                                </View>
+                                <View>
+                                    <String style={{ marginBottom: 0 }}>Tiền nhà</String>
+                                    <String
+                                        style={{
+                                            marginBottom: 0,
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        145.000 VNĐ
+                                    </String>
+                                </View>
                             </View>
-                            <View>
-                                <String style={{ marginBottom: 0 }}>Tiền nhà</String>
-                                <String style={{ marginBottom: 0, fontWeight: "bold" }}>
-                                    145.000 VNĐ
+                            <View style={{ alignItems: "flex-end" }}>
+                                <String
+                                    style={{
+                                        fontSize: sizeFactor * 0.85,
+                                        marginBottom: 0,
+                                        color: colors.gray,
+                                    }}
+                                >
+                                    Tháng 1/2021
+                                </String>
+                                <String
+                                    style={{
+                                        marginBottom: 0,
+                                        fontWeight: "bold",
+                                        color: colors.gray,
+                                    }}
+                                >
+                                    Còn 11 ngày
                                 </String>
                             </View>
-                        </View>
+                        </Row>
+                        <LooseDivider />
+                        <Row>
+                            <String
+                                style={{
+                                    color: colors.blue,
+                                    fontSize: sizeFactor * 0.9,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                45.000 VNĐ
+                            </String>
+                            <String
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: sizeFactor * 0.9,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                Còn lại 100.000 VNĐ
+                            </String>
+                        </Row>
+                        <ProgressBar
+                            style={{
+                                height: sizeFactor * 0.5,
+                                borderRadius: 999,
+                                marginTop: sizeFactor / 2,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                            progress={0.4}
+                            color={colors.blue}
+                        />
                         <View style={{ alignItems: "flex-end" }}>
                             <String
+                                style={{ marginBottom: sizeFactor, fontSize: sizeFactor * 0.9 }}
+                            >
+                                Trung bình mỗi ngày 10.000 VNĐ
+                            </String>
+                        </View>
+                    </NormalCard>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <NormalCard>
+                        <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
+                            <View
                                 style={{
-                                    fontSize: sizeFactor * 0.85,
-                                    marginBottom: 0,
-                                    color: colors.gray,
+                                    flexDirection: "row",
+                                    alignItems: "center",
                                 }}
                             >
-                                Tháng 1/2021
+                                <View
+                                    style={{
+                                        marginRight: sizeFactor,
+                                    }}
+                                >
+                                    <Image
+                                        source={require("../assets/categories/tiennha.png")}
+                                        style={{
+                                            width: sizeFactor * 2.25,
+                                            height: sizeFactor * 2.25,
+                                        }}
+                                    ></Image>
+                                </View>
+                                <View>
+                                    <String style={{ marginBottom: 0 }}>Tiền nhà</String>
+                                    <String
+                                        style={{
+                                            marginBottom: 0,
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        145.000 VNĐ
+                                    </String>
+                                </View>
+                            </View>
+                            <View style={{ alignItems: "flex-end" }}>
+                                <String
+                                    style={{
+                                        fontSize: sizeFactor * 0.85,
+                                        marginBottom: 0,
+                                        color: colors.gray,
+                                    }}
+                                >
+                                    Tháng 1/2021
+                                </String>
+                                <String
+                                    style={{
+                                        marginBottom: 0,
+                                        fontWeight: "bold",
+                                        color: colors.gray,
+                                    }}
+                                >
+                                    Còn 11 ngày
+                                </String>
+                            </View>
+                        </Row>
+                        <LooseDivider />
+                        <Row>
+                            <String
+                                style={{
+                                    color: colors.red,
+                                    fontSize: sizeFactor * 0.9,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                170.000 VNĐ
                             </String>
                             <String
                                 style={{
-                                    marginBottom: 0,
                                     fontWeight: "bold",
-                                    color: colors.gray,
+                                    fontSize: sizeFactor * 0.9,
+                                    marginBottom: 0,
                                 }}
                             >
-                                Còn 11 ngày
+                                Vượt hơn 25.000 VNĐ
+                            </String>
+                        </Row>
+                        <ProgressBar
+                            style={{
+                                height: sizeFactor * 0.5,
+                                borderRadius: 999,
+                                marginTop: sizeFactor / 2,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                            progress={1.25}
+                            color={colors.red}
+                        />
+                        <View style={{ alignItems: "flex-end" }}>
+                            <String
+                                style={{ marginBottom: sizeFactor, fontSize: sizeFactor * 0.9 }}
+                            >
+                                Trung bình mỗi ngày -2.500 VNĐ
                             </String>
                         </View>
-                    </Row>
-                    <LooseDivider />
-                    <Row>
-                        <String
+                    </NormalCard>
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <NormalCard style={{ backgroundColor: colors.gray5 }}>
+                        <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        marginRight: sizeFactor,
+                                    }}
+                                >
+                                    <Image
+                                        source={require("../assets/categories/tiennha.png")}
+                                        style={{
+                                            width: sizeFactor * 2.25,
+                                            height: sizeFactor * 2.25,
+                                        }}
+                                    ></Image>
+                                </View>
+                                <View>
+                                    <String style={{ marginBottom: 0 }}>Tiền nhà</String>
+                                    <String
+                                        style={{
+                                            marginBottom: 0,
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        145.000 VNĐ
+                                    </String>
+                                </View>
+                            </View>
+                            <View style={{ alignItems: "flex-end" }}>
+                                <String
+                                    style={{
+                                        fontSize: sizeFactor * 0.85,
+                                        marginBottom: 0,
+                                        color: colors.gray,
+                                    }}
+                                >
+                                    Tháng 12/2020
+                                </String>
+                                <String
+                                    style={{
+                                        marginBottom: 0,
+                                        fontWeight: "bold",
+                                        color: colors.gray,
+                                    }}
+                                >
+                                    Đã kết thúc
+                                </String>
+                            </View>
+                        </Row>
+                        <LooseDivider />
+                        <Row>
+                            <String
+                                style={{
+                                    color: colors.gray,
+                                    fontSize: sizeFactor * 0.9,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                170.000 VNĐ
+                            </String>
+                            <String
+                                style={{
+                                    fontWeight: "bold",
+                                    fontSize: sizeFactor * 0.9,
+                                    marginBottom: 0,
+                                }}
+                            >
+                                Vượt hơn 25.000 VNĐ
+                            </String>
+                        </Row>
+                        <ProgressBar
                             style={{
-                                color: colors.greenDark,
-                                fontSize: sizeFactor * 0.9,
-                                marginBottom: 0,
+                                height: sizeFactor * 0.5,
+                                borderRadius: 999,
+                                marginTop: sizeFactor / 2,
+                                marginBottom: sizeFactor / 2,
                             }}
-                        >
-                            45.000 VNĐ
-                        </String>
-                        <String
-                            style={{
-                                fontWeight: "bold",
-                                fontSize: sizeFactor * 0.9,
-                                marginBottom: 0,
-                            }}
-                        >
-                            Còn lại 100.000 VNĐ
-                        </String>
-                    </Row>
-                    <ProgressBar
-                        style={{
-                            height: sizeFactor * 0.5,
-                            borderRadius: 999,
-                            marginTop: sizeFactor / 2,
-                            marginBottom: sizeFactor,
-                        }}
-                        progress={0.75}
-                        color={colors.blue}
-                    />
-                    <View style={{ alignItems: "center" }}>
-                        <String style={{ marginBottom: sizeFactor, fontSize: sizeFactor * 0.9 }}>
-                            Trung bình mỗi ngày 7.500 VNĐ
-                        </String>
-                    </View>
-                </NormalCard>
+                            progress={1.25}
+                            color={colors.gray2}
+                        />
+                        <View style={{ alignItems: "flex-end" }}>
+                            <String
+                                style={{ marginBottom: sizeFactor, fontSize: sizeFactor * 0.9 }}
+                            >
+                                Tiết kiệm thất bại
+                            </String>
+                        </View>
+                    </NormalCard>
+                </TouchableOpacity>
             </ScreenView>
         );
     }

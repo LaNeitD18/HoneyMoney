@@ -66,6 +66,11 @@ import { Circle, G, Line, Image, Defs, LinearGradient, Stop, Svg, Path } from "r
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ActionButton from "react-native-circular-action-menu";
 import BudgetScreen from "./screens/BudgetScreen";
+import EditBudgetScreen from "./screens/EditBudgetScreen";
+import AddBudgetScreen from "./screens/AddBudgetScreen";
+import SettingNameScreen from "./screens/SettingNameScreen";
+import SettingPasswordScreen from "./screens/SettingPasswordScreen";
+import SettingAlertScreen from "./screens/SettingAlertScreen";
 //Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -211,7 +216,7 @@ export default function App() {
                     />
                     <Tab.Screen
                         name="Budget"
-                        component={BudgetScreen}
+                        component={SettingAlertScreen}
                         options={{ title: "Tiết kiệm" }}
                     />
                     <Tab.Screen
