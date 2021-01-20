@@ -11,6 +11,7 @@ import {
     Platform,
     TextInput,
     ImageBackground,
+    Alert
 } from "react-native";
 import {
     String,
@@ -78,6 +79,29 @@ export default class LoginScreen extends Component {
         this.setState(state);
     }
 
+    userLogin = () => {
+        if(this.state.email === '' || this.state.password === '') {
+          Alert.alert('Enter details to signin!')
+        } else {
+          this.setState({
+            isLoading: true,
+          })
+          firebase
+          .auth()
+          .signInWithEmailAndPassword(this.state.email, this.state.password)
+          .then((res) => {
+            console.log(res)
+            console.log('User logged-in successfully!')
+            this.setState({
+              isLoading: false,
+              email: '', 
+              password: ''
+            })
+            this.props.navigation.navigate('Main')
+          })
+          .catch(error => this.setState({ errorMessage: error.message }))
+        }
+      }
 
     render() {
         return (
@@ -132,7 +156,8 @@ export default class LoginScreen extends Component {
                                 textContentType="email"
                                 keyboardType="email-address"
                                 errorMessage=""
-                                
+                                value={this.state.email}
+                                onChangeText={(val) => this.updateInputVal(val, 'email')}
                             />
                             <HomoTextInput
                                 label="Mật khẩu"
@@ -141,6 +166,8 @@ export default class LoginScreen extends Component {
                                 secureTextEntry={true}
                                 textContentType="password"
                                 errorMessage=""
+                                value={this.state.password}
+                                onChangeText={(val) => this.updateInputVal(val, 'password')}
                             />
                             <View
                                 style={{
@@ -150,8 +177,14 @@ export default class LoginScreen extends Component {
                                     marginTop: sizeFactor / 2,
                                 }}
                             >
-                                <Button2 style={{ width: sizeFactor * 8.5 }}>Đăng ký</Button2>
-                                <Button1 style={{ width: sizeFactor * 8.5 }}>Đăng nhập</Button1>
+                                <Button2 
+                                    style={{ width: sizeFactor * 8.5 }}
+                                    onPress={() => this.props.navigation.navigate('SignUp')}
+                                >Đăng ký</Button2>
+                                <Button1 
+                                    style={{ width: sizeFactor * 8.5 }}
+                                    onPress={() => this.userLogin()}
+                                >Đăng nhập</Button1>
                             </View>
                             <Button3>Quên mật khẩu</Button3>
                         </View>

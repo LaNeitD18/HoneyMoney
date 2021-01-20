@@ -12,6 +12,7 @@ import {
     TextInput,
     ImageBackground,
     ActivityIndicator,
+    Alert,
 } from "react-native";
 import {
     String,
@@ -81,7 +82,7 @@ export default class RegisterScreen extends Component {
     }
 
     registerUser = () => {
-        if(this.state.email === '' && this.state.password === '') {
+        if(this.state.email === '' || this.state.password === '') {
           Alert.alert('Enter details to signup!')
         } else {
           this.setState({
@@ -93,6 +94,8 @@ export default class RegisterScreen extends Component {
           .then((res) => {
             res.user.updateProfile({
               displayName: this.state.displayName
+            }).then(()=>{
+                firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
             })
             console.log('User registered successfully!')
             this.setState({
@@ -101,7 +104,7 @@ export default class RegisterScreen extends Component {
               email: '', 
               password: ''
             })
-            this.props.navigation.navigate('Login')
+            this.props.navigation.navigate('SignIn')
           })
           .catch(error => this.setState({ errorMessage: error.message }))      
         }
@@ -161,7 +164,7 @@ export default class RegisterScreen extends Component {
                                 placeholder="Tên Của Bạn"
                                 leftIcon={{ name: "person", color: colors.gray }}
                                 textContentType="name"
-                                errorMessage="Thông báo lỗi"
+                                errorMessage=""
                                 value={this.state.displayName}
                                 onChangeText={(val) => this.updateInputVal(val, 'displayName')}
                             />
@@ -194,7 +197,7 @@ export default class RegisterScreen extends Component {
                             >
                                 <Button2 
                                     style={{ width: sizeFactor * 8.5 }}
-
+                                    onPress={() => this.props.navigation.navigate('SignIn')}
                                 >Hủy bỏ</Button2>
                                 <Button1 
                                     style={{ width: sizeFactor * 8.5 }}

@@ -36,6 +36,16 @@ const Stack = createStackNavigator();
 //Redux
 let store = createStore(allReducers);
 
+function Main() {
+    return (
+        <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
+            <Tab.Screen name="Danh mục" component={CategoryNavigator} options={{tittle: 'Categories'}}/>
+            <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
+            <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
+        </Tab.Navigator>
+    );
+}
+
 export default function App() {
     return (
         <Provider store={store}>
@@ -46,9 +56,10 @@ export default function App() {
                 <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
                 </Tab.Navigator> */}
                 {/* <LoginScreen/> */}
-                <Stack.Navigator>
-                    <Stack.Screen name="SignUp" component={RegisterScreen}/>
+                <Stack.Navigator screenOptions={{headerShown: false}}>
                     <Stack.Screen name="SignIn" component={LoginScreen}/>
+                    <Stack.Screen name="SignUp" component={RegisterScreen}/>
+                    <Stack.Screen name="Main" component={Main}/>
                 </Stack.Navigator>
             </NavigationContainer>
         </Provider>
