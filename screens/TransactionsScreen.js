@@ -58,9 +58,9 @@ import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-nativ
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
 import { categoryRef } from "../components/DataConnect";
-import {rootRef,walletRef} from '../components/DataConnect'
+import { rootRef, walletRef } from "../components/DataConnect";
 
-import {UpdateWalletAction, SelectWallet } from "../actions";
+import { UpdateWalletAction, SelectWallet } from "../actions";
 import * as firebase from "firebase";
 
 import { changeType, changeName, openDialog } from "../actions/index";
@@ -71,136 +71,120 @@ import Swipeout from "react-native-swipeout";
 import { FlatList } from "react-native-gesture-handler";
 
 export class TransactionsScreen extends Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
         this.state = {
-            monthlist: []
-          }
+            monthlist: [],
+        };
     }
-    componentDidMount(){
-        walletRef.on('value',(snap)=>{this.props.Update(snap)});
+    componentDidMount() {
+        walletRef.on("value", (snap) => {
+            this.props.Update(snap);
+        });
         this.getMonthList();
     }
-    toDate(datestring)
-    {
+    toDate(datestring) {
         var parts = datestring.split("/");
-        return new Date(parseInt(parts[2], 10),
-        parseInt(parts[1], 10) - 1,
-        parseInt(parts[0], 10));
+        return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
     }
-    getDataAll()
-    {
+    getDataAll() {
         var temp = [];
-        this.props.walletData.forEach(element =>
-            {
-                if(element.transactionList != undefined && element.isDefault == "true")
-                {
-                    Object.keys(element.transactionList).forEach(transaction =>
-                        {
-                            //console.log(transaction)
-                            var tempInfo = {
-                                date: element.transactionList[transaction].date,
-                                money: element.transactionList[transaction].money,
-                                category: element.transactionList[transaction].category,
-                            }
-                            temp.push(tempInfo);
-                        })
-                }
-            });
-        return temp.sort((a,b)=>
-        {
-            return this.toDate(a.date)-this.toDate(b.date);
-        });;
+        this.props.walletData.forEach((element) => {
+            if (element.transactionList != undefined && element.isDefault == "true") {
+                Object.keys(element.transactionList).forEach((transaction) => {
+                    //console.log(transaction)
+                    var tempInfo = {
+                        date: element.transactionList[transaction].date,
+                        money: element.transactionList[transaction].money,
+                        category: element.transactionList[transaction].category,
+                    };
+                    temp.push(tempInfo);
+                });
+            }
+        });
+        return temp.sort((a, b) => {
+            return this.toDate(a.date) - this.toDate(b.date);
+        });
     }
 
-    getMonthList()
-    {
-        var monthlist=[];
+    getMonthList() {
+        var monthlist = [];
         var data = this.getDataAll();
-        if(data[0] == undefined)
-        {
+        if (data[0] == undefined) {
             return [];
         }
-        
-        var startmonth = this.toDate(data[0].date).getMonth()+1;
+
+        var startmonth = this.toDate(data[0].date).getMonth() + 1;
         var startyear = this.toDate(data[0].date).getFullYear();
 
-        var endmonth = this.toDate(data[data.length-1].date).getMonth()+1;
-        var endyear = this.toDate(data[data.length-1].date).getFullYear();
+        var endmonth = this.toDate(data[data.length - 1].date).getMonth() + 1;
+        var endyear = this.toDate(data[data.length - 1].date).getFullYear();
 
         while (startyear*12 + startmonth <= endyear*12 + endmonth)
         {
             var item = {
                 month: "Tháng " + startmonth + "/" + startyear,
-            }
+            };
             monthlist.push(item);
-            startmonth+=1;
-            if(startmonth == 13)
-            {
+            startmonth += 1;
+            if (startmonth == 13) {
                 startmonth = 1;
                 startyear += 1;
             }
         }
-        this.setState({monthlist});
+        this.setState({ monthlist });
     }
 
-    getDataInTimeRange(start, end)
-    {
+    getDataInTimeRange(start, end) {
         var startDate = this.toDate(start);
         var endDate = this.toDate(end);
         var temp = [];
-        this.props.walletData.forEach(element =>
-            {
-                if(element.transactionList != undefined && element.isDefault == "true")
-                {
-                    Object.keys(element.transactionList).forEach(transaction =>
-                        {
-                            //console.log(transaction)
-                            var tempInfo = {
-                                date: element.transactionList[transaction].date,
-                                money: element.transactionList[transaction].money,
-                                category: element.transactionList[transaction].category,
-                            }
-                            if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
-                            {
-                                temp.push(tempInfo);
-                            }
-                        })
-                }
-            });
-        return temp.sort((a,b)=>
-        {
-            return this.toDate(a.date)-this.toDate(b.date);
-        });;
+        this.props.walletData.forEach((element) => {
+            if (element.transactionList != undefined && element.isDefault == "true") {
+                Object.keys(element.transactionList).forEach((transaction) => {
+                    //console.log(transaction)
+                    var tempInfo = {
+                        date: element.transactionList[transaction].date,
+                        money: element.transactionList[transaction].money,
+                        category: element.transactionList[transaction].category,
+                    };
+                    if (
+                        this.toDate(tempInfo.date) >= startDate &&
+                        this.toDate(tempInfo.date) <= endDate
+                    ) {
+                        temp.push(tempInfo);
+                    }
+                });
+            }
+        });
+        return temp.sort((a, b) => {
+            return this.toDate(a.date) - this.toDate(b.date);
+        });
     }
 
-    getDataInTimeRangeDate(startDate, endDate)
-    {
+    getDataInTimeRangeDate(startDate, endDate) {
         var temp = [];
-        this.props.walletData.forEach(element =>
-            {
-                if(element.transactionList != undefined && element.isDefault == "true")
-                {
-                    Object.keys(element.transactionList).forEach(transaction =>
-                        {
-                            //console.log(transaction)
-                            var tempInfo = {
-                                date: element.transactionList[transaction].date,
-                                money: element.transactionList[transaction].money,
-                                category: element.transactionList[transaction].category,
-                            }
-                            if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
-                            {
-                                temp.push(tempInfo);
-                            }
-                        })
-                }
-            });
-        return temp.sort((a,b)=>
-        {
-            return this.toDate(a.date)-this.toDate(b.date);
-        });;
+        this.props.walletData.forEach((element) => {
+            if (element.transactionList != undefined && element.isDefault == "true") {
+                Object.keys(element.transactionList).forEach((transaction) => {
+                    //console.log(transaction)
+                    var tempInfo = {
+                        date: element.transactionList[transaction].date,
+                        money: element.transactionList[transaction].money,
+                        category: element.transactionList[transaction].category,
+                    };
+                    if (
+                        this.toDate(tempInfo.date) >= startDate &&
+                        this.toDate(tempInfo.date) <= endDate
+                    ) {
+                        temp.push(tempInfo);
+                    }
+                });
+            }
+        });
+        return temp.sort((a, b) => {
+            return this.toDate(a.date) - this.toDate(b.date);
+        });
     }
     render() {
         const DATA = [
@@ -222,21 +206,23 @@ export class TransactionsScreen extends Component {
                 <Title>Lịch sử giao dịch</Title>
                 <SimpleCarousel>
                     <FlatList
-                    scrollEnabled={false}
-                    horizontal={true}
-                    data = {this.state.monthlist}
-                    renderItem={({item})=>{
-                        return (<TransactionMonthSummary
-                            
-                            month={item.month}
-                            openBalance="+200.000 VNĐ"
-                            endBalance="+300.000 VNĐ"
-                            change="+100.000 VNĐ"
-                            changeColor={colors.greenDark}/>)
-                    }}>
-                        
-                        
-                    </FlatList>
+                        scrollEnabled={false}
+                        horizontal={true}
+                        data={this.state.monthlist}
+                        renderItem={({ item }) => {
+                            return (
+                                <TransactionMonthSummary
+                                    month={item.month}
+                                    openBalance="+200.000 VNĐ"
+                                    endBalance="+300.000 VNĐ"
+                                    change="+100.000 VNĐ"
+                                    changeColor={colors.greenDark}
+                                    leftChevronOpacity={0}
+                                    rightChevronOpacity={1}
+                                />
+                            );
+                        }}
+                    ></FlatList>
                 </SimpleCarousel>
                 <TransactionsFullList data={DATA} />
             </ScreenView>
@@ -245,23 +231,21 @@ export class TransactionsScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return{
+    return {
         walletData: state.WalletReducer,
         //selectedWallet: state.selectedWalletReducer,
-    }
-  };
-  
-  const mapDispatchToProps = (dispatch) =>{
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
     return {
         Update: (snap) => {
-          dispatch(UpdateWalletAction(snap));
+            dispatch(UpdateWalletAction(snap));
         },
         SelectWallet: (value) => {
-          dispatch(SelectWallet(value));
-        }
+            dispatch(SelectWallet(value));
+        },
     };
-  }
+};
 
-  export default connect(mapStateToProps, mapDispatchToProps)(TransactionsScreen);
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsScreen);

@@ -258,10 +258,6 @@ class CategoriesScreen extends React.Component {
                     <CategoryTable rows={rows} />
                     <Space />
                 </ScrollView>
-
-                <Animated.Text style={{ opacity: opacityValue }}>
-                    I fade in when you scroll down
-                </Animated.Text>
             </View>
         );
     }

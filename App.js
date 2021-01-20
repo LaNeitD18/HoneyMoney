@@ -65,6 +65,7 @@ import {
 import { Circle, G, Line, Image, Defs, LinearGradient, Stop, Svg, Path } from "react-native-svg";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ActionButton from "react-native-circular-action-menu";
+import BudgetScreen from "./screens/BudgetScreen";
 //Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -90,8 +91,8 @@ export default function App() {
                                 iconName = "settings";
                             } else if (route.name === "Report") {
                                 iconName = "chart-timeline-variant";
-                            } else if (route.name === "Wallet") {
-                                iconName = "wallet";
+                            } else if (route.name === "Budget") {
+                                iconName = "savings";
                             }
 
                             // You can return any component that you like here!
@@ -156,22 +157,10 @@ export default function App() {
                                                 size={35}
                                             />
                                         }
-                                        radius={70}
+                                        radius={80}
                                     >
                                         <ActionButton.Item buttonColor="#transparent">
                                             <View></View>
-                                        </ActionButton.Item>
-                                        <ActionButton.Item
-                                            buttonColor="#F55555"
-                                            size={50}
-                                            title="Chi"
-                                            onPress={() => {}}
-                                        >
-                                            <Icon
-                                                name="database-minus"
-                                                type="material-community"
-                                                color="white"
-                                            />
                                         </ActionButton.Item>
 
                                         <ActionButton.Item
@@ -187,6 +176,31 @@ export default function App() {
                                             />
                                         </ActionButton.Item>
 
+                                        <ActionButton.Item
+                                            buttonColor={colors.indigo}
+                                            size={50}
+                                            title="Chuyển ví"
+                                            onPress={() => {}}
+                                        >
+                                            <Icon
+                                                name="wallet"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </ActionButton.Item>
+                                        <ActionButton.Item
+                                            buttonColor="#F55555"
+                                            size={50}
+                                            title="Chi"
+                                            onPress={() => {}}
+                                        >
+                                            <Icon
+                                                name="database-minus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </ActionButton.Item>
+
                                         <ActionButton.Item buttonColor="#transparent">
                                             <View></View>
                                         </ActionButton.Item>
@@ -196,9 +210,9 @@ export default function App() {
                         }}
                     />
                     <Tab.Screen
-                        name="Wallet"
-                        component={WalletNavigator}
-                        options={{ title: "Quản lý ví" }}
+                        name="Budget"
+                        component={BudgetScreen}
+                        options={{ title: "Tiết kiệm" }}
                     />
                     <Tab.Screen
                         name="Settings"
