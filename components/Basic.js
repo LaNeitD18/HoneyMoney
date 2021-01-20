@@ -1044,23 +1044,8 @@ export class TransactionsList extends Component {
 
 export class TransactionsFullList extends Component {
     render() {
-        const DATA = [
-            {
-                subcategory: "Bảo trì phần mềm",
-                onPress: {},
-                source: require("../assets/categories/baotri.png"),
-                amount: "-10.000 VNĐ",
-                color: colors.redDark,
-            },
-            {
-                subcategory: "Nhận quà",
-                onPress: {},
-                source: require("../assets/categories/qua.png"),
-                amount: "+25.000 VNĐ",
-                color: colors.greenDark,
-            },
-        ];
-        const Item = ({ date, dayOfWeek, month, change }) => (
+
+        const Item = ({ date, dayOfWeek, month, change, list }) => (
             <NormalCard>
                 <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
                     <View
@@ -1105,7 +1090,7 @@ export class TransactionsFullList extends Component {
                 </Row>
                 <LooseDivider />
                 <View style={{ marginBottom: sizeFactor / 2 }}>
-                    <TransactionsList data={DATA} />
+                    <TransactionsList data={list} />
                 </View>
             </NormalCard>
         );
@@ -1115,6 +1100,7 @@ export class TransactionsFullList extends Component {
                 dayOfWeek={item.dayOfWeek}
                 month={item.month}
                 change={item.change}
+                list={item.list}
             />
         );
         return <FlatList data={this.props.data} renderItem={renderItem} />;
@@ -1136,6 +1122,7 @@ export class SimpleCarousel extends Component {
                     margin: sizeFactor,
                     marginBottom: 0,
                 }}
+                onScroll={this.props.onScroll}
             >
                 {this.props.children}
             </ScrollView>
