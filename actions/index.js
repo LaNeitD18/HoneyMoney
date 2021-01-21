@@ -236,4 +236,18 @@ export function editType() {
 }
 //#endregion
 
+//#region isSignedIn
+export function signIn() {
+    return {
+        type: 'SIGNIN'
+    }
+}
+
+export function signOut() {
+    return {
+        type: 'SIGNOUT'
+    }
+}
+//#endregion
+
 //#endregion

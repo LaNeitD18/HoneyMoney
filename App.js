@@ -73,6 +73,10 @@ import SettingNameScreen from "./screens/SettingNameScreen";
 import SettingPasswordScreen from "./screens/SettingPasswordScreen";
 import SettingAlertScreen from "./screens/SettingAlertScreen";
 import WalletTransferScreen from "./screens/WalletTransferScreen";
+import SettingScreensNavigator from "./screens/SettingScreensNavigator";
+import * as firebase from "firebase";
+import { connect } from "react-redux";
+
 //Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -218,33 +222,68 @@ function Main() {
             />
             <Tab.Screen
                 name="Settings"
-                component={SettingScreen}
+                component={SettingScreensNavigator}
                 options={{ title: "Cài đặt" }}
             />
         </Tab.Navigator>
     );
 }
 
+class RootContainer extends Component {
+    constructor() {
+        super();
+    }
+
+    render() {
+        return (
+            <NavigationContainer>
+                    {/* <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
+                    <Tab.Screen name="Danh mục" component={CategoryNavigator} options={{tittle: 'Categories'}}/>
+                    <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
+                    <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
+                    </Tab.Navigator> */}
+                    <Stack.Navigator screenOptions={{headerShown: false}}>
+                        {/* <Stack.Screen name="SignIn" component={LoginScreen}/>
+                        <Stack.Screen name="SignUp" component={RegisterScreen}/> */}
+                        
+                        {this.props.isSignedIn === false ? (
+                            <>
+                                <Stack.Screen name="SignIn" component={LoginScreen}/>
+                                <Stack.Screen name="SignUp" component={RegisterScreen}/>
+                            </>
+                        ) : (
+                        // User is signed in
+                            <Stack.Screen name="Main" component={Main}/>
+                        )}
+                    </Stack.Navigator>
+                    
+                </NavigationContainer>
+        );
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        isSignedIn: state.isSignedIn,
+    };
+}
+
+// function mapDispatchToProps(dispatch) {
+//     return {
+//         signIn: () => { dispatch(signIn())},
+//     };
+// }
+
+const ConnectedRoot = connect(mapStateToProps)(RootContainer);
+
 export default function App() {
     YellowBox.ignoreWarnings(["Animated: `useNativeDriver`"]);
     //ignore all warning
     console.disableYellowBox = true;
+
     return (
         <Provider store={store}>
-            <NavigationContainer>
-                {/* <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-                <Tab.Screen name="Danh mục" component={CategoryNavigator} options={{tittle: 'Categories'}}/>
-                <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
-                <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
-                </Tab.Navigator> */}
-                {/* <LoginScreen/> */}
-                <Stack.Navigator screenOptions={{headerShown: false}}>
-                    <Stack.Screen name="SignIn" component={LoginScreen}/>
-                    <Stack.Screen name="SignUp" component={RegisterScreen}/>
-                    <Stack.Screen name="Main" component={Main}/>
-                </Stack.Navigator>
-                
-            </NavigationContainer>
+            <ConnectedRoot/>
         </Provider>
     );
 }
