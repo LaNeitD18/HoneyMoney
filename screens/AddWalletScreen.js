@@ -15,7 +15,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     Heading,
     RowLeft,
     Number,
@@ -151,7 +151,7 @@ export default class AddWalletScreen extends Component {
             placeholder="Ví của tôi"
             onChangeText={text=>{this.onChangeTenVi(text)}}
             value={this.state.newTenVi}/>
-          <Divider />
+          <Space />
           <String style={{ fontWeight: "bold" }}>Số dư</String>
           <TextInput
             maxLength={15}
@@ -161,7 +161,7 @@ export default class AddWalletScreen extends Component {
             keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//
             onChangeText={text=>{this.onChangeSoDu(text)}}
             value={this.state.newSoDu}/>
-          <Divider />
+          <Space />
           <String style={{ fontWeight: "bold" }}>Màu sắc</String>
           <Row>
             <ColorSelectButton color={colors.yellow} selected={this.state.selectedColor} onPress={()=>{this.setState({selectedColor: colors.yellow})}}/>
@@ -174,11 +174,11 @@ export default class AddWalletScreen extends Component {
             <ColorSelectButton color={colors.indigo} selected={this.state.selectedColor} onPress={()=>{this.setState({selectedColor: colors.indigo})}}/>
             <ColorSelectButton color={colors.pink} selected={this.state.selectedColor} onPress={()=>{this.setState({selectedColor: colors.pink})}}/>
           </Row>
-          <Divider />
+          <Space />
           <String style={{ fontWeight: "bold" }}>Ngày tạo</String>
           <String style={styles.inputText}>{this.state.date}</String>
         </RoundedView>
-        <Divider />
+        <Space />
         <Button
           color="white"
           background={colors.blue}

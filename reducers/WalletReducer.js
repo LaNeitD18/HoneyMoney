@@ -1,4 +1,5 @@
 const {UPDATEWALLETLIST } = require("../actions/actionType");
+import { DebugInstructions } from "react-native/Libraries/NewAppScreen";
 import {walletRef} from "../components/DataConnect"
 
 const WalletReducer = (wallet = [], action) => {
@@ -14,7 +15,8 @@ const WalletReducer = (wallet = [], action) => {
                   color: element.toJSON().color,
                   date: element.toJSON().date,
                   isDefault:element.toJSON().isDefault,
-                  money: element.toJSON().money
+                  money: element.toJSON().money,
+                  transactionList: element.toJSON().transactionList,
                 });
             });
             return wallet.sort((a,b) => {if(a.isDefault == "true") return false; else return true;});

@@ -15,7 +15,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     Heading,
     RowLeft,
     Number,
@@ -127,9 +127,9 @@ class AddCategoryScreen extends Component {
                         alignItems: "center",
                     }}
                 >
-                    <Divider />
-                    <Divider />
-                    <Divider />
+                    <Space />
+                    <Space />
+                    <Space />
                     <TouchableOpacity>
                         <Avatar
                             size={sizeFactor * 6}
@@ -153,14 +153,14 @@ class AddCategoryScreen extends Component {
                         placeholder="Danh mục của tôi"
                         onChangeText={(text) => this.props.changeName(text)}
                     />
-                    <Divider />
+                    <Space />
                     <String style={{ fontWeight: "bold" }}>Loại chi tiêu</String>
                     <AddWalletKindSelect
                         buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
                         selectedIndex={this.props.selectedType}
                         onPress={(index) => this.props.changeType(index)}
                     />
-                    <Divider />
+                    <Space />
                     <String style={{ fontWeight: "bold" }}>Danh mục con</String>
 
                     {subCategoriesView}
@@ -224,7 +224,7 @@ class AddCategoryScreen extends Component {
                         </View>
                     </TouchableOpacity>
                 </RoundedView>
-                <Divider />
+                <Space />
                 <Button
                     color="white"
                     background={colors.blue}

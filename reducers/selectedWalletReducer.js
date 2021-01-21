@@ -11,7 +11,8 @@ const selectedWalletReducer = (wallet = "", action) => {
                 color: element.color,
                 date: element.date,
                 isDefault:element.isDefault,
-                money: element.money
+                money: element.money,
+                transactionList: element.transactionList,
             }
             return wallet;
         default:

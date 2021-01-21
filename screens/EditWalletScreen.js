@@ -15,7 +15,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     Heading,
     RowLeft,
     Number,
@@ -161,7 +161,7 @@ export class EditWalletScreen extends Component {
                         placeholder="Ví của tôi"
                         onChangeText={text=>{this.onChangeTenVi(text)}}
                         value={this.state.newTenVi}/>
-                    <Divider />
+                    <Space />
                     <String style={{ fontWeight: "bold" }}>Số dư</String>
                     <TextInput
                         contextMenuHidden={true}
@@ -170,7 +170,7 @@ export class EditWalletScreen extends Component {
                         keyboardType='number-pad' //dung tam cai nay cho den khi co ban phim so hoc//
                         onChangeText={text=>{this.onChangeSoDu(text)}}
                         value={this.state.newSoDu}/>
-                    <Divider />
+                    <Space />
                     <String style={{ fontWeight: "bold" }}>Màu sắc</String>
                     <Row>
                         <ColorSelectButton color={colors.yellow} selected={this.state.selectedColor} onPress={()=>{this.setState({selectedColor: colors.yellow})}}/>
@@ -185,7 +185,7 @@ export class EditWalletScreen extends Component {
                     </Row>
 
                     </RoundedView>
-                    <Divider />
+                    <Space />
                 <Button
                     color="white"
                     background={colors.blue}
