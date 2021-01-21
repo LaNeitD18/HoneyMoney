@@ -1,7 +1,54 @@
 import React, { Component, useState } from "react";
-import { Text, TextInput, StyleSheet, Platform, StatusBar, View, SafeAreaView, ScrollView, TouchableOpacity, Image, Dimensions, KeyboardAvoidingView } from "react-native";
+import {
+    Text,
+    TextInput,
+    StyleSheet,
+    Platform,
+    StatusBar,
+    View,
+    SafeAreaView,
+    ScrollView,
+    TouchableOpacity,
+    Image,
+    Dimensions,
+    KeyboardAvoidingView,
+} from "react-native";
 import { Icon, SearchBar, ButtonGroup, Overlay, Avatar, Accessory } from "react-native-elements";
-import { String, ScreenView, Card, Divider, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, AddWalletKindSelect, OutlineToggleButton, Button, ToggleButton, ColorSelectButton, RoundedView, TouchableDeleteText } from "./Basic";
+import {
+    String,
+    ScreenView,
+    Card,
+    Space,
+    Heading,
+    RowLeft,
+    Number,
+    NegativeNumber,
+    Wallet,
+    colors,
+    sizeFactor,
+    styles,
+    KindSelect,
+    Title,
+    Category,
+    TouchableText,
+    ScrollSelect,
+    CategoryTable,
+    windowWidth,
+    windowHeight,
+    Heading2,
+    OutlineButton,
+    Row,
+    HeadlessCard,
+    SmallScrollSelect,
+    SmallKindSelect,
+    AddWalletKindSelect,
+    OutlineToggleButton,
+    Button,
+    ToggleButton,
+    ColorSelectButton,
+    RoundedView,
+    TouchableDeleteText,
+} from "./Basic";
 import { connect } from "react-redux";
 
 import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog } from '../actions/index';
@@ -66,7 +113,7 @@ class AddSubcategoryDialog extends Component {
                         <Accessory size={sizeFactor * 1.25} />
                     </Avatar>
                 </TouchableOpacity>
-                <Divider />
+                <Space />
                 <String
                     style={{
                         fontSize: sizeFactor,
@@ -77,11 +124,17 @@ class AddSubcategoryDialog extends Component {
                 </String>
     
                 <TextInput 
-                    multiline style={{ fontSize: sizeFactor * 1.5, marginBottom: sizeFactor * 0.75, textAlign: "center" }} 
+                    multiline 
+                    style={{ fontSize: sizeFactor * 1.5, marginBottom: sizeFactor * 0.75, textAlign: "center" }} 
                     placeholder="Tên danh mục" 
                     onChangeText={text => this.getName(text)}/>
-                <Divider />
-                <View style={{ width: windowWidth - sizeFactor * 8, flexDirection: "row-reverse", justifyContent: "space-between", marginBottom: 0 }}>
+                <Space />
+                <View 
+                    style={{ 
+                        width: windowWidth - sizeFactor * 8, 
+                        flexDirection: "row-reverse", 
+                        justifyContent: "space-between", 
+                        marginBottom: 0 }}>
                     <TouchableOpacity onPress={this.getSubCategory}>
                         <String style={{ color: colors.blue }}>Đồng ý</String>
                     </TouchableOpacity>
@@ -90,8 +143,7 @@ class AddSubcategoryDialog extends Component {
             </Overlay>
         );
     }
-    
-};
+}
 
 function mapStateToProps(state) {
     return {

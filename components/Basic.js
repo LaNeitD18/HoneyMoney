@@ -498,10 +498,13 @@ export class Button3 extends Component {
                 ]}
             >
                 <String
-                    style={{
-                        color: colors.blue,
-                        fontWeight: "bold",
-                    }}
+                    style={[
+                        {
+                            color: colors.blue,
+                            fontWeight: "bold",
+                        },
+                        this.props.style,
+                    ]}
                 >
                     {this.props.children}
                 </String>
@@ -1217,10 +1220,13 @@ export class HomoTextInput extends Component {
                 placeholder="example@email.com"
                 leftIconContainerStyle={{ marginRight: sizeFactor / 2 }}
                 leftIcon={{ name: "person", color: colors.gray }}
-                containerStyle={{
-                    width: windowWidth - sizeFactor * 6,
-                    padding: 0,
-                }}
+                containerStyle={[
+                    {
+                        width: windowWidth - sizeFactor * 6,
+                        padding: 0,
+                    },
+                    this.props.style,
+                ]}
                 inputContainerStyle={{
                     margin: 0,
                     padding: 0,

@@ -19,7 +19,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     Heading,
     RowLeft,
     Number,
@@ -86,7 +86,7 @@ class ChooseIconDialog extends Component {
                 >
                     Biểu tượng danh mục
                 </String>
-                <Divider />
+                <Space />
                 <ScrollView
                     style={{ width: windowWidth - sizeFactor * 7 }}
                     vertical
@@ -137,8 +137,8 @@ class ChooseIconDialog extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <Divider />
-                <Divider />
+                <Space />
+                <Space />
                 <TouchableOpacity>
                     <String style={{ color: colors.blue }}>Đồng ý</String>
                 </TouchableOpacity>
