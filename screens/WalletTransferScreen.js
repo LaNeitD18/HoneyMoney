@@ -49,8 +49,17 @@ import {
     NormalCard,
     Button1,
     Button3,
+    LooseDivider,
 } from "../components/Basic";
-import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
+import {
+    Icon,
+    SearchBar,
+    Input,
+    Avatar,
+    Accessory,
+    ListItem,
+    Overlay,
+} from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
 import Swipeout from "react-native-swipeout";
@@ -62,11 +71,85 @@ import { findIcon } from "../components/Image";
 import { changeType, changeName, openDialog } from "../actions/index";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
+import ConfirmDialog from "../components/ConfirmDialog";
+import ChooseWalletDialog from "../components/ChooseWalletDialog";
 
 export default class WalletTransferScreen extends Component {
     render() {
         return (
             <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 9 }}>
+                <Overlay
+                    overlayStyle={{
+                        borderRadius: sizeFactor,
+                        width: windowWidth - sizeFactor * 4,
+                        height: windowHeight - sizeFactor * 20,
+                        paddingHorizontal: sizeFactor * 1.5,
+                        paddingVertical: sizeFactor * 1,
+                        alignContent: "center",
+                        alignItems: "stretch",
+                    }}
+                    isVisible={true}
+                >
+                    <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
+                        <TouchableOpacity>
+                            <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <String
+                        style={{
+                            fontSize: sizeFactor * 1.5,
+                            fontWeight: "bold",
+                            marginBottom: sizeFactor * 1.5,
+                        }}
+                    >
+                        Chọn ví
+                    </String>
+                    <ScrollView
+                        style={{ paddingHorizontal: sizeFactor / 2, marginBottom: sizeFactor }}
+                    >
+                        <Row style={{ marginBottom: sizeFactor / 2 }}>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Icon
+                                    style={{ marginRight: sizeFactor }}
+                                    name="wallet"
+                                    size={sizeFactor * 1.5}
+                                    type="material-community"
+                                    color={this.props.color}
+                                />
+                                <String style={{ marginBottom: 0 }}>Ví 1</String>
+                            </View>
+                        </Row>
+                        <LooseDivider />
+                        <Row style={{ marginBottom: sizeFactor / 2 }}>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    alignContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Icon
+                                    style={{ marginRight: sizeFactor }}
+                                    name="wallet"
+                                    size={sizeFactor * 1.5}
+                                    type="material-community"
+                                    color={this.props.color}
+                                />
+                                <String style={{ marginBottom: 0 }}>Ví 2</String>
+                            </View>
+                        </Row>
+
+                        <LooseDivider />
+                    </ScrollView>
+                </Overlay>
+
                 <View style={{ margin: sizeFactor, alignItems: "center" }}>
                     <Image
                         source={require("../assets/transfer.png")}
