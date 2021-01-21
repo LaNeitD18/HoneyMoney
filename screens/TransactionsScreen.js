@@ -75,16 +75,13 @@ export class TransactionsScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            transactionData: [],
         };
     }
     componentDidMount() {
         walletRef.on("value", (snap) => {
             this.props.Update(snap);
         });
-    }
-    componentDidUpdate()
-    {
-        this.scrollToItem(1,2021)
     }
     toDate(datestring) {
         var parts = datestring.split("/");
@@ -131,12 +128,18 @@ export class TransactionsScreen extends Component {
             endyear = today.getFullYear();
         }
 
+        var transactionList = this.getDataInMonth(startmonth, startyear)
+        var cal = this.caculateChange(transactionList)
+        //dau tien
         var item = {
             index: startmonth + startyear*12,
             month: "Tháng " + startmonth + "/" + startyear,
             left: 0,
             right: 1,
-            transactionList: this.getDataInMonth(startmonth, startyear)
+            transactionList: transactionList,
+            change: cal.change,
+            openBalance: cal.gain,
+            endBalance: cal.lose,
         };
         monthlist.push(item);
         startmonth += 1;
@@ -144,15 +147,20 @@ export class TransactionsScreen extends Component {
             startmonth = 1;
             startyear += 1;
         }
-
+        //doan giua
         while (startyear*12 + startmonth < endyear*12 + endmonth)
         {
+            transactionList = this.getDataInMonth(startmonth, startyear)
+            cal = this.caculateChange(transactionList)
             var item = {
                 index: startmonth + startyear*12,
                 month: "Tháng " + startmonth + "/" + startyear,
                 left: 1,
                 right: 1,
-                transactionList: this.getDataInMonth(startmonth, startyear)
+                transactionList: transactionList,
+                change: cal.change,
+                openBalance: cal.gain,
+                endBalance: cal.lose,
             };
             monthlist.push(item);
             startmonth += 1;
@@ -161,12 +169,18 @@ export class TransactionsScreen extends Component {
                 startyear += 1;
             }
         }
+        transactionList = this.getDataInMonth(startmonth, startyear)
+        cal = this.caculateChange(transactionList)
+        //phan tu cuoi cung
         var item = {
             index: startmonth + startyear*12,
             month: "Tháng " + startmonth + "/" + startyear,
             left: 1,
             right: 0,
-            transactionList: this.getDataInMonth(startmonth, startyear)
+            transactionList: transactionList,
+            change: cal.change,
+            openBalance: cal.gain,
+            endBalance: cal.lose,
         };
         monthlist.push(item);
 
@@ -195,6 +209,70 @@ export class TransactionsScreen extends Component {
         }
     }
 
+    caculateChange(data)
+    {
+        var change = 0
+        var gain = 0;
+        var lose = 0;
+        data.forEach(item => 
+            {
+                var category
+
+                categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                    snapshot.forEach(element => {
+                        category = {
+                            key: element.key,
+                            categoryName: element.toJSON().CategoryName,
+                            icon: element.toJSON().Icon,
+                            parentID: element.toJSON().ParentID,
+                            typeID: element.toJSON().TypeID
+                        }
+                    });
+                });
+
+                var b;
+
+                if(category.typeID == "002")
+                {
+                    b = false;
+                }
+                else
+                {
+                    if(category.typeID == "003")
+                    {
+                        b = true;
+                    }
+                    else
+                    {
+                        if(category.categoryName == "Đi vay" ||category.categoryName == "Thu nợ")
+                        {
+                            b = true;
+                        }
+                        else
+                        {
+                            b = false;
+                        }
+                    }
+                }
+                if(b)
+                {
+                    gain += parseInt(item.money);
+                    change += parseInt(item.money)
+                }
+                else
+                {
+                    lose -= parseInt(item.money);
+                    change -= parseInt(item.money);
+                }
+            })
+
+        return {
+            change: change > 0 ? "+" + change : change,
+            gain: gain > 0 ? "+" + gain : gain,
+            lose: lose
+        }
+    }
+
     getDataInMonth(month, year)
     {
         var start = new Date(year, month - 1, 1);
@@ -202,11 +280,11 @@ export class TransactionsScreen extends Component {
         return this.getDataInTimeRangeDate(start, end);
     }
 
-    scrollToItem(month, year)
-    {
-        if(this.flatListRef.props.data.length > 0)
-            this.flatListRef.scrollToIndex({animated: false, index: 1})
-    }
+    // scrollToItem(month, year)
+    // {
+    //     if(this.flatListRef.props.data.length > 0)
+    //         this.flatListRef.scrollToIndex({animated: false, index: 1})
+    // }
 
     getDataInTimeRange(start, end) {
         var startDate = this.toDate(start);
@@ -341,16 +419,13 @@ export class TransactionsScreen extends Component {
                         subcategory: category.categoryName,
                         onPress: {},
                         source: findIcon(category.icon),
-                        amount: item.money,
+                        amount: b? "+" + item.money : "-" + item.money,
                         color: b? colors.greenDark : colors.redDark,
                     }
 
                     info.list.push(itemdata);
                     info.change = 0;
-                    if(b)
-                        info.change += parseInt(itemdata.amount);
-                    else
-                        info.change -= parseInt(itemdata.amount);
+                    info.change += parseInt(itemdata.amount);
 
                     clone.push(info);
                 }
@@ -399,13 +474,10 @@ export class TransactionsScreen extends Component {
                         subcategory: category.categoryName,
                         onPress: {},
                         source: findIcon(category.icon),
-                        amount: item.money,
+                        amount: b? "+" + item.money : "-" + item.moeny,
                         color: b? colors.greenDark : colors.redDark,
                     }
-                    if(b)
-                        clone.find(i => i.date == d).change += parseInt(itemdata.amount)
-                    else
-                        clone.find(i => i.date == d).change -= parseInt(itemdata.amount)
+                    clone.find(i => i.date == d).change += parseInt(itemdata.amount)
 
                     
                     clone.find(i => i.date == d).list.push(itemdata)
@@ -413,45 +485,36 @@ export class TransactionsScreen extends Component {
             })
             return clone;
     }
+    getTransactionFullListData(offsetIndex)
+    {
+        var x = Math.ceil(offsetIndex) / Math.ceil(windowWidth - 2 * sizeFactor);
+        if(Math.ceil(offsetIndex) % Math.ceil(windowWidth - 2 * sizeFactor) == 0)
+        {
+            var monthcode = this.getMonthList()[x].index
+            var m = monthcode % 12
+            var y = monthcode / 12
+            if(m == 0)
+            {
+                m = 12;
+                y = y-1;
+            }
+            this.setState({
+                transactionData: this.mergeDataByDate(this.getDataInMonth(m, y))
+            })
+        }
+    }
 
     render() {
-        const DATA = [
-            {
-                date: "18",
-                dayOfWeek: "Hôm nay",
-                month: "Tháng 1/2021",
-                change: "+15.000 VNĐ",
-            },
-            {
-                date: "02",
-                dayOfWeek: "Thứ 7",
-                month: "Tháng 1/2021",
-                change: "+15.000 VNĐ",
-            },
-        ];
-        const ItemDATA = [
-            {
-                subcategory: "Bảo trì phần mềm",
-                onPress: {},
-                source: require("../assets/categories/baotri.png"),
-                amount: "-10.000 VNĐ",
-                color: colors.redDark,
-            },
-            {
-                subcategory: "Nhận quà",
-                onPress: {},
-                source: require("../assets/categories/qua.png"),
-                amount: "+25.000 VNĐ",
-                color: colors.greenDark,
-            },
-        ];
         const month = this.getMonthList();
         return (
             <ScreenView>
                 <Title>Lịch sử giao dịch </Title>
                 <SimpleCarousel
+                    //scrollref={(ref)=>this.Carousel = ref}
                     ref={(ref) => {this.Carousel = ref}}
-                    onScroll = {(event)=>{console.log(event.nativeEvent.contentOffset.x)}}
+                    onScroll = {(event)=>{
+                        this.getTransactionFullListData(event.nativeEvent.contentOffset.x)
+                    }}
                 >
                     <FlatList
                         ref={(ref) => { this.flatListRef = ref; }}
@@ -463,10 +526,10 @@ export class TransactionsScreen extends Component {
                             return (
                                 <TransactionMonthSummary
                                     month={item.month}
-                                    openBalance="+200.000 VNĐ"
-                                    endBalance="+300.000 VNĐ"
-                                    change="+100.000 VNĐ"
-                                    changeColor={colors.greenDark}
+                                    openBalance={item.openBalance}
+                                    endBalance={item.endBalance}
+                                    change={item.change}
+                                    changeColor={item.change > 0?  colors.greenDark : colors.redDark}
                                     leftChevronOpacity={item.left}
                                     rightChevronOpacity={item.right}
                                 />
@@ -474,7 +537,7 @@ export class TransactionsScreen extends Component {
                         }}
                         ></FlatList>
                 </SimpleCarousel>
-                <TransactionsFullList data={this.mergeDataByDate(this.getDataInMonth(12,2020))} ItemData={ItemDATA}/>
+                <TransactionsFullList data={this.state.transactionData}/>
             </ScreenView>
         );
     }

@@ -315,11 +315,11 @@ export class TransactionMonthSummary extends Component {
                     />
                 </View>
                 <Row>
-                    <String style={{ color: colors.gray }}>Số dư đầu kỳ</String>
+                    <String style={{ color: colors.gray }}>Tổng thu</String>
                     <String>{this.props.openBalance}</String>
                 </Row>
                 <Row>
-                    <String style={{ color: colors.gray }}>Số dư cuối kỳ</String>
+                    <String style={{ color: colors.gray }}>Tổng chi</String>
                     <String>{this.props.endBalance}</String>
                 </Row>
                 <Divider style={{ marginBottom: sizeFactor }} />
@@ -1108,9 +1108,18 @@ export class TransactionsFullList extends Component {
 }
 
 export class SimpleCarousel extends Component {
+    // componentDidUpdate()
+    // {
+    //     if(this.props.scrollstate == 1)
+    //     {
+    //         this.scrollref.scrollToEnd({animated: true})
+    //         this.props.scrollstate = 0;
+    //     }
+    // }
     render() {
         return (
             <ScrollView
+                ref={(ref) => {this.scrollref = ref}}
                 horizontal
                 snapToInterval={windowWidth - sizeFactor * 2}
                 decelerationRate="fast"
@@ -1126,6 +1135,7 @@ export class SimpleCarousel extends Component {
             >
                 {this.props.children}
             </ScrollView>
+            
         );
     }
 }
