@@ -88,7 +88,7 @@ export default class WalletTransferScreen extends Component {
                         alignContent: "center",
                         alignItems: "stretch",
                     }}
-                    isVisible={true}
+                    isVisible={false}
                 >
                     <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
                         <TouchableOpacity>

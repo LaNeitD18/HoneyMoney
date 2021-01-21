@@ -98,7 +98,7 @@ export default function App() {
                             } else if (route.name === "Report") {
                                 iconName = "chart-timeline-variant";
                             } else if (route.name === "Budget") {
-                                iconName = "savings";
+                                iconName = "bank";
                             }
 
                             // You can return any component that you like here!
