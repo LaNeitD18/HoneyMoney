@@ -137,7 +137,7 @@ export default function App() {
                     />
                     <Tab.Screen
                         name="Add"
-                        component={AddTransactionScreen}
+                        component={WalletNavigator}
                         options={{
                             tabBarButton: (props) => (
                                 <View
@@ -149,6 +149,8 @@ export default function App() {
                                         buttonColor={colors.yellow}
                                         size={60}
                                         degrees={315}
+                                        onPress={()=>{}}
+                                        //onOverlayPress={()=>{console.log("a")}}
                                         icon={
                                             <Icon
                                                 name="plus"
@@ -167,38 +169,41 @@ export default function App() {
                                             buttonColor={colors.greenDark}
                                             size={50}
                                             title="Thu"
-                                            onPress={() => {}}
                                         >
-                                            <Icon
-                                                name="database-plus"
-                                                type="material-community"
-                                                color="white"
-                                            />
+                                            <TouchableOpacity onPress={()=>{console.log("x")}}>
+                                                <Icon
+                                                    name="database-plus"
+                                                    type="material-community"
+                                                    color="white"
+                                                />
+                                            </TouchableOpacity>
                                         </ActionButton.Item>
 
                                         <ActionButton.Item
                                             buttonColor={colors.indigo}
                                             size={50}
                                             title="Chuyển ví"
-                                            onPress={() => {}}
                                         >
-                                            <Icon
-                                                name="wallet"
-                                                type="material-community"
-                                                color="white"
-                                            />
+                                            <TouchableOpacity onPress={()=>{}}>
+                                                <Icon
+                                                    name="wallet"
+                                                    type="material-community"
+                                                    color="white"
+                                                />
+                                            </TouchableOpacity>
                                         </ActionButton.Item>
                                         <ActionButton.Item
                                             buttonColor="#F55555"
                                             size={50}
                                             title="Chi"
-                                            onPress={() => {}}
                                         >
-                                            <Icon
-                                                name="database-minus"
-                                                type="material-community"
-                                                color="white"
-                                            />
+                                            <TouchableOpacity onPress={()=>{}}>
+                                                <Icon
+                                                    name="database-minus"
+                                                    type="material-community"
+                                                    color="white"
+                                                />
+                                            </TouchableOpacity>
                                         </ActionButton.Item>
 
                                         <ActionButton.Item buttonColor="#transparent">
