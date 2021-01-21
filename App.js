@@ -71,6 +71,7 @@ import AddBudgetScreen from "./screens/AddBudgetScreen";
 import SettingNameScreen from "./screens/SettingNameScreen";
 import SettingPasswordScreen from "./screens/SettingPasswordScreen";
 import SettingAlertScreen from "./screens/SettingAlertScreen";
+import WalletTransferScreen from "./screens/WalletTransferScreen";
 //Navigator
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -216,7 +217,7 @@ export default function App() {
                     />
                     <Tab.Screen
                         name="Budget"
-                        component={SettingAlertScreen}
+                        component={WalletTransferScreen}
                         options={{ title: "Tiết kiệm" }}
                     />
                     <Tab.Screen
