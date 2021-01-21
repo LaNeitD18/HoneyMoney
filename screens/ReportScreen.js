@@ -72,9 +72,20 @@ import { PieChart, LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-
 import { Circle, G, Line, Image, Defs, LinearGradient, Stop } from "react-native-svg";
 
 export class ReportScreen extends Component {
+    constructor(props)
+    {
+        super(props)
+        this.state = {
+            selectedMonth: (new Date().getMonth() + 1),
+            selectedYear: new Date().getFullYear(),
+            selectedWeek: "",
+            yearlist: [],
+        }
+    }
     componentDidMount(){
         walletRef.on('value',(snap)=>{this.props.Update(snap)});
     }
+    
     toDate(datestring)
     {
         var parts = datestring.split("/");
@@ -82,6 +93,119 @@ export class ReportScreen extends Component {
         parseInt(parts[1], 10) - 1,
         parseInt(parts[0], 10));
     }
+
+    getDataAll() {
+        var temp = [];
+        this.props.walletData.forEach((element) => {
+            if (element.transactionList != undefined && element.isDefault == "true") {
+                Object.keys(element.transactionList).forEach((transaction) => {
+                    //console.log(transaction)
+                    var tempInfo = {
+                        date: element.transactionList[transaction].date,
+                        money: element.transactionList[transaction].money,
+                        category: element.transactionList[transaction].category,
+                    };
+                    temp.push(tempInfo);
+                });
+            }
+        });
+        return temp.sort((a, b) => {
+            return this.toDate(a.date) - this.toDate(b.date);
+        });
+    }
+
+    getYearList()
+    {
+        var yearlist = [];
+        var data = this.getDataAll();
+        if (data[0] === undefined) {
+            return [];
+        }   
+        var startyear = this.toDate(data[0].date).getFullYear();
+        var endyear = this.toDate(data[data.length - 1].date).getFullYear();
+
+        var today = new Date();
+
+        if(endyear <  today.getFullYear)
+        {
+            endyear = today.getFullYear();
+        }
+        while (startyear <= endyear)
+        {
+            var item = {
+                index: startyear,
+                monthdata: []
+            };
+            yearlist.push(item);
+            startyear +=1
+        }
+        return yearlist;
+    }
+
+    renderPickerYearItem(data)
+    {
+        var yearlistresult = []
+        data.forEach(item=>
+            {
+                yearlistresult.push(
+                    <Picker.Item label={item.index.toString()} value={item.index} />
+                )
+            })
+        return yearlistresult;
+    }
+
+    toString(date) {
+        var day = date.getDate(); //Current Date
+        var month = date.getMonth() + 1; //Current Month
+        var year = date.getFullYear(); //Current Year
+        var fulldate;
+        if(day < 10)
+        {
+          fulldate = '0' + day;
+        }
+        else
+        {
+          fulldate = day;
+        }
+        if(month < 10)
+        {
+          fulldate = fulldate + '/' + '0' + month;
+        }
+        else
+        {
+          fulldate = fulldate + '/' + month;
+        }
+        fulldate = fulldate + '/' + year;
+        return fulldate;
+      }
+
+    renderPickerWeekItem()
+    {
+        var week =[]
+        var month = this.state.selectedMonth;
+        var year = this.state.selectedYear;
+        var firstDate = new Date(year, month-1, 1);
+        firstDate = new Date(year, month-1, 1 - firstDate.getDay());
+        if(this.toDate(this.state.selectedWeek).getDay() != 0)
+        {
+            this.setState({selectedWeek: this.toString(firstDate)})
+        }
+        while(firstDate.getMonth() + firstDate.getFullYear()*12 < month + year*12)
+        {
+            
+            var infoweek =
+            {
+                start: firstDate,
+                end: new Date(firstDate.getFullYear(), firstDate.getMonth(), firstDate.getDate() + 6),
+            }
+            week.push(
+                <Picker.Item label={this.toString(infoweek.start) + " - " + this.toString(infoweek.end)} value={this.toString(infoweek.start)} />
+            )
+            firstDate = new Date(firstDate.getFullYear(), firstDate.getMonth(), firstDate.getDate() + 7)
+        }
+        return week
+    }
+
     getDataInTimeRange(start, end)
     {
         var startDate = this.toDate(start);
@@ -125,7 +249,7 @@ export class ReportScreen extends Component {
                             var tempInfo = {
                                 date: element.transactionList[transaction].date,
                                 money: element.transactionList[transaction].money,
-                                category: element.transactionList[transaction].category,
+                                category: element.transactionList[transaction].category.key,
                             }
                             if(this.toDate(tempInfo.date) >= startDate && this.toDate(tempInfo.date) <= endDate)
                             {
@@ -140,10 +264,99 @@ export class ReportScreen extends Component {
         });;
     }
 
+    mergeDataByCategory()
+    {
+        var gain = 0;
+        var lose = 0;
+    }
+
+    mergeDataByDateInWeek()
+    {
+        var gain = []
+        var lose = []
+        var change = 0
+        var start = this.toDate(this.state.selectedWeek);
+        var end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6)
+        var data = this.getDataInTimeRangeDate(start, end)
+        for(let i = 0; i < 7; i++)
+        {
+            gain[i] = 0;
+            lose[i] = 0;
+            data.forEach(item =>
+                {
+                    if(this.toDate(item.date).valueOf() == start.valueOf() )
+                    {
+                        var category
+
+                        categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                            snapshot.forEach(element => {
+                                category = {
+                                    key: element.key,
+                                    categoryName: element.toJSON().CategoryName,
+                                    icon: element.toJSON().Icon,
+                                    parentID: element.toJSON().ParentID,
+                                    typeID: element.toJSON().TypeID
+                                }
+                            });
+                        });
+
+                        var b;
+
+                        if(category.typeID == "002")
+                        {
+                            b = false;
+                        }
+                        else
+                        {
+                            if(category.typeID == "003")
+                            {
+                                b = true;
+                            }
+                            else
+                            {
+                                if(category.categoryName == "Đi vay" || category.categoryName == "Thu nợ")
+                                {
+                                    b = true;
+                                }
+                                else
+                                {
+                                    b = false;
+                                }
+                            }
+                        }
+                        if(b)
+                        {
+                            gain[i] += parseInt(item.money);
+                            change += parseInt(item.money);
+                        }
+                        else
+                        {
+                            lose[i] += parseInt(item.money);
+                            change -= parseInt(item.money);
+                        }
+                    }
+                })
+                start= new Date(start.getFullYear(), start.getMonth(), start.getDate()+1)
+        }
+
+        return {
+            gain: gain,
+            lose: lose,
+            change: change
+        };
+    }
+
     render() {
-        //console.log(this.getDataInTimeRange("23/12/2020","24/12/2020"));
+        const weeklist = this.renderPickerWeekItem();
+        //this.getYearList();
+        const yearlist = this.renderPickerYearItem(this.getYearList())
+        const clonedata = this.mergeDataByDateInWeek();
+        const lineData1 = clonedata.gain;
+        const lineData2 = clonedata.lose; 
+        //console.log(this.getDataInTimeRange("23/12/2020","25/12/2020"));
         //console.log(this.getDataInTimeRangeDate(new Date({date: 23, month: 12, year: 2020}),new Date({date: 24, month: 12, year: 2020})));
         const data = [50, 25, 40, 95, 85, 91];
+        this.mergeDataByDateInWeek()
 
         //shade of color by hau :v
         const shadesOfGreen = () =>
@@ -213,9 +426,6 @@ export class ReportScreen extends Component {
             });
         };
 
-        const lineData1 = [50000, 10000, 40000, 95000, 85000, 91000, 35000];
-        const lineData2 = [87000, 66000, 69000, 92000, 40000, 61000, 16000];
-
         //Array of datasets, following this syntax:
         const lineData = [
             {
@@ -263,18 +473,32 @@ export class ReportScreen extends Component {
                         <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
                             Chọn năm
                         </Text>
-                        <Picker>
-                            <Picker.Item label="2020" value="2020" />
-                            <Picker.Item label="2019" value="2019" />
+                        <Picker selectedValue={this.state.selectedYear}
+                            onValueChange={(itemValue, itemIndex) =>
+                                this.setState({selectedYear: itemValue})}>
+                            {yearlist}
                         </Picker>
                     </View>
                     <View style={{ flex: 1 }}>
                         <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
                             Chọn tháng
                         </Text>
-                        <Picker style={{ flex: 1 }}>
-                            <Picker.Item label="Tháng 1" value="1" />
-                            <Picker.Item label="Tháng 2" value="2" />
+                        <Picker style={{ flex: 1 }} selectedValue={this.state.selectedMonth}
+                            onValueChange={(itemValue, itemIndex) =>
+                                this.setState({selectedMonth: itemValue})
+                            }>
+                            <Picker.Item label="Tháng 1" value={1} />
+                            <Picker.Item label="Tháng 2" value={2} />
+                            <Picker.Item label="Tháng 3" value={3} />
+                            <Picker.Item label="Tháng 4" value={4} />
+                            <Picker.Item label="Tháng 5" value={5} />
+                            <Picker.Item label="Tháng 6" value={6} />
+                            <Picker.Item label="Tháng 7" value={7} />
+                            <Picker.Item label="Tháng 8" value={8} />
+                            <Picker.Item label="Tháng 9" value={9} />
+                            <Picker.Item label="Tháng 10" value={10} />
+                            <Picker.Item label="Tháng 11" value={11} />
+                            <Picker.Item label="Tháng 12" value={12} />
                         </Picker>
                     </View>
                 </View>
@@ -283,9 +507,12 @@ export class ReportScreen extends Component {
                         <Text style={{ marginLeft: 8, fontWeight: "bold", marginBottom: -8 }}>
                             Chọn tuần
                         </Text>
-                        <Picker>
-                            <Picker.Item label="14/12/2020 - 20/12/2020" value="1412" />
-                            <Picker.Item label="21/12/2020 - 27/12/2020" value="2112" />
+                        <Picker selectedValue={this.state.selectedWeek}
+                            onValueChange={(itemValue, itemIndex) =>{
+                                this.setState({selectedWeek: itemValue})
+                            }
+                            }>
+                            {weeklist}
                         </Picker>
                     </View>
                 </View>
@@ -313,11 +540,11 @@ export class ReportScreen extends Component {
                                 alignSelf: "center",
                                 fontWeight: "bold",
                                 fontSize: sizeFactor * 2,
-                                color: colors.greenDark,
+                                color: clonedata.change < 0 ? colors.redDark:colors.greenDark,
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                            +50.000
+                            {clonedata.change}
                         </Text>
                         <View style={{ backgroundColor: "white", height: 330 }}>
                             <View style={{ alignSelf: "center", height: 340, flexDirection: "row" }}>
@@ -343,7 +570,7 @@ export class ReportScreen extends Component {
                                     <XAxis
                                         style={{ marginHorizontal: -10, height: xAxisHeight }}
                                         data={lineData1}
-                                        formatLabel={(value, index) => "T" + (index + 1)}
+                                        formatLabel={(value, index) => index? "T" + (index + 1) : "CN" }
                                         contentInset={{ left: 20, right: 20 }}
                                         svg={axesSvg}
                                     />
