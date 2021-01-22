@@ -55,7 +55,7 @@ import {
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
-import { categoryRef } from "../components/DataConnect";
+import { categoryRef, userRef, walletRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
 import { changeType, changeName, openDialog } from "../actions/index";
@@ -81,34 +81,80 @@ export default class RegisterScreen extends Component {
         this.setState(state);
     }
 
+    addDefaultCategories = () => {
+        //const userCategoryRef = userRef.ref('Category/');
+        categoryRef.on('value', (snapshot) => {
+            snapshot.forEach(element => {
+                userRef.child('Category/').push({
+                    CategoryName: element.toJSON().CategoryName,
+                    Icon: element.toJSON().Icon,
+                    ParentID: element.toJSON().ParentID,
+                    TypeID: element.toJSON().TypeID,
+                })
+                //userRef.child('Category').push(element);
+                console.log(element);
+            });
+        });
+        //console.log(userCategoryRef);
+    }
+
+    addDefaultWallet = () => {
+        walletRef.on('value', (snapshot) => {
+            snapshot.forEach(element => {
+                userRef.child('Wallet/').push({
+                    color: element.toJSON().color,
+                    date: element.toJSON().date,
+                    isDefault: element.toJSON().isDefault,
+                    money: element.toJSON().money,
+                    name: element.toJSON().name,
+                })
+                //userRef.child('Category').push(element);
+                //console.log(element);
+            });
+        });
+    }
+
+    addDefaultDatabase = () => {
+        this.addDefaultCategories();
+        this.addDefaultWallet();
+    }
+
     registerUser = () => {
-        if(this.state.email === '' || this.state.password === '') {
-          Alert.alert('Enter details to signup!')
-        } else {
-          this.setState({
-            isLoading: true,
-          })
-          firebase
-          .auth()
-          .createUserWithEmailAndPassword(this.state.email, this.state.password)
-          .then((res) => {
-            res.user.updateProfile({
-              displayName: this.state.displayName
-            }).then(()=>{
-                firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
-            })
-            console.log('User registered successfully!')
-            this.setState({
-              isLoading: false,
-              displayName: '',
-              email: '', 
-              password: ''
-            })
-            this.props.navigation.navigate('SignIn')
-          })
-          .catch(error => this.setState({ errorMessage: error.message }))      
-        }
-      }
+        // if(this.state.email === '' || this.state.password === '') {
+        //     Alert.alert('Enter details to signup!')
+        // } else {
+        //     this.setState({
+        //         isLoading: true,
+        //     })
+        //     firebase
+        //     .auth()
+        //     .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        //     .then((res) => {
+        //         res.user.updateProfile({
+        //         displayName: this.state.displayName
+        //         }).then(()=>{
+        //             firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
+        //         })
+        //         console.log('User registered successfully!')
+        //         this.setState({
+        //         isLoading: false,
+        //         displayName: '',
+        //         email: '', 
+        //         password: ''
+        //         })
+        //         this.props.navigation.navigate('SignIn')
+        //     })
+        //     .catch(error => this.setState({ errorMessage: error.message }))      
+        // }
+        //this.addDefaultDatabase();
+        console.log(firebase.auth().currentUser.uid);
+
+        // userRef.on('value', (snapshot) => {
+        //     snapshot.forEach(element => {
+        //         console.log(element.key);
+        //     })
+        // })
+    }
 
     render() {
         if(this.state.isLoading){
