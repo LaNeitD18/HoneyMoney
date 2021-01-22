@@ -813,6 +813,7 @@ export class AddWalletKindSelect extends Component {
         const { selectedIndex } = this.state;
         return (
             <ButtonGroup
+                disabled={this.props.disabled}
                 onPress={this.props.onPress}
                 selectedIndex={this.props.selectedIndex}
                 buttons={buttons}
@@ -1234,6 +1235,8 @@ export class HomoTextInput extends Component {
                 }}
                 errorStyle={{ color: colors.red, alignSelf: "flex-end" }}
                 {...this.props}
+                value={this.props.value}
+                onChangeText={this.props.onChangeText}
             />
         );
     }

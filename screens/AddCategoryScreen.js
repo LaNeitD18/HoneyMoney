@@ -118,16 +118,6 @@ class AddCategoryScreen extends Component {
         };
         const subCategoriesView = this.renderSubCategoriesView();
 
-        const list = [
-            {
-                title: "Từ tiện",
-                source: require("../assets/categories/tuthien.png"),
-            },
-            {
-                title: "Thêm mới",
-                source: require("../assets/categories/themdanhmuccon.png"),
-            },
-        ];
         return (
             <ScreenView>
                 <View

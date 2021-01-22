@@ -13,6 +13,8 @@ import {
     KeyboardAvoidingView,
 } from "react-native";
 import { Icon, SearchBar, ButtonGroup, Overlay } from "react-native-elements";
+import { connect } from "react-redux";
+
 import {
     String,
     ScreenView,
@@ -50,94 +52,111 @@ import {
     IconCategory,
 } from "./Basic";
 
-const ChooseIconDialog = () => {
-    const [visible, setVisible] = useState(false);
+import { closeIconDialog } from '../actions/index';
 
-    return (
-        <Overlay
-            overlayStyle={{
-                borderRadius: sizeFactor,
-                width: windowWidth - sizeFactor * 4,
-                height: windowHeight - sizeFactor * 12,
-                paddingHorizontal: sizeFactor * 1.5,
-                paddingVertical: sizeFactor * 1.5,
-                alignContent: "center",
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-            isVisible={true}
-        >
-            <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
-                <TouchableOpacity>
-                    <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
-                </TouchableOpacity>
-            </View>
-            <String
-                style={{
-                    fontSize: sizeFactor,
-                    fontWeight: "bold",
+class ChooseIconDialog extends Component {
+    constructor() {
+        super();
+    }
+
+    render() {
+        return (
+            <Overlay
+                overlayStyle={{
+                    borderRadius: sizeFactor,
+                    width: windowWidth - sizeFactor * 4,
+                    paddingHorizontal: sizeFactor * 1.5,
+                    paddingVertical: sizeFactor * 1.5,
+                    alignContent: "center",
+                    alignItems: "center",
+                    justifyContent: "center",
                 }}
+                isVisible={this.props.isVisibleIconDialog}
             >
-                Biểu tượng danh mục
-            </String>
-            <Space />
-            <ScrollView
-                style={{ width: windowWidth - sizeFactor * 7 }}
-                vertical
-                showsVerticalScrollIndicator={false}
-            >
-                <View
+                <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
+                    <TouchableOpacity onPress={this.props.closeIconDialog}>
+                        <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
+                    </TouchableOpacity>
+                </View>
+                <String
                     style={{
-                        alignContent: "flex-start",
-                        justifyContent: "flex-start",
-                        paddingLeft: sizeFactor / 4,
+                        fontSize: sizeFactor,
+                        fontWeight: "bold",
                     }}
+                >
+                    Biểu tượng danh mục
+                </String>
+                <Space />
+                <ScrollView
+                    style={{ width: windowWidth - sizeFactor * 7 }}
+                    vertical
+                    showsVerticalScrollIndicator={false}
                 >
                     <View
                         style={{
-                            flexDirection: "row",
-                            marginRight: -sizeFactor / 2,
-                            marginBottom: sizeFactor / 2,
+                            alignContent: "flex-start",
+                            justifyContent: "flex-start",
+                            paddingLeft: sizeFactor / 4,
                         }}
                     >
-                        <IconCategory
-                            choosed={true}
-                            source={require("../assets/categories/general.png")}
-                        />
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                marginRight: -sizeFactor / 2,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            <IconCategory
+                                choosed={true}
+                                source={require("../assets/categories/general.png")}
+                            />
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                marginRight: -sizeFactor / 2,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                marginRight: -sizeFactor / 2,
+                                marginBottom: sizeFactor / 2,
+                            }}
+                        >
+                            <IconCategory source={require("../assets/categories/tuthien.png")} />
+                        </View>
                     </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginRight: -sizeFactor / 2,
-                            marginBottom: sizeFactor / 2,
-                        }}
-                    >
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                            marginRight: -sizeFactor / 2,
-                            marginBottom: sizeFactor / 2,
-                        }}
-                    >
-                        <IconCategory source={require("../assets/categories/tuthien.png")} />
-                    </View>
-                </View>
-            </ScrollView>
-            <Space />
-            <Space />
-            <TouchableOpacity>
-                <String style={{ color: colors.blue }}>Đồng ý</String>
-            </TouchableOpacity>
-        </Overlay>
-    );
+                </ScrollView>
+                <Space />
+                <Space />
+                <TouchableOpacity>
+                    <String style={{ color: colors.blue }}>Đồng ý</String>
+                </TouchableOpacity>
+            </Overlay>
+        );
+    }
 };
 
-export default ChooseIconDialog;
+function mapStateToProps(state) {
+    return {
+        isVisibleIconDialog: state.isVisibleIconDialog,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        closeIconDialog: () => { dispatch(closeIconDialog())},
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChooseIconDialog);

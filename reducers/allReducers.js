@@ -9,6 +9,11 @@ import chosenCategoryReducer from '../reducers/chosenCategoryReducer';
 import categoryNameReducer from '../reducers/categoryNameReducer';
 import subCategoriesReducer from '../reducers/subCategoriesReducer';
 import isVisibleReducer from '../reducers/isVisibleReducer';
+import addedSubCategoriesReducer from '../reducers/addedSubCategoriesReducer';
+import isVisibleIconDialogReducer from '../reducers/isVisibleIconDialogReducer';
+import editableButtonGroupReducer from '../reducers/editableButtonGroupReducer';
+import isSignedInReducer from '../reducers/isSignedInReducer';
+
 import selectedSubReducer from './selectedSubReducer';
 import allSubReducer from './allSubReducer';
 import showDatePickerReducer from './showDatePickerReducer';
@@ -39,6 +44,10 @@ const allReducers = combineReducers({
     categoryName: categoryNameReducer,
     subCategories: subCategoriesReducer,
     isVisible: isVisibleReducer,
+    addedSubCategories: addedSubCategoriesReducer,
+    isVisibleIconDialog: isVisibleIconDialogReducer,
+    editableButtonGroup: editableButtonGroupReducer,
+    isSignedIn: isSignedInReducer,
 })
 
 export default allReducers;

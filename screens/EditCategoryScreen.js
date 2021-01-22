@@ -54,14 +54,19 @@ import Swipeout from "react-native-swipeout";
 import * as firebase from "firebase";
 import { categoryRef } from "../components/DataConnect";
 
-import { findIcon } from "../components/Image";
-import { changeType, changeName, openDialog } from "../actions/index";
-import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
-import ChooseIconDialog from "../components/ChooseIconDialog";
+import { findIcon } from '../components/Image';
+import { changeType, changeName, openDialog, openIconDialog } from '../actions/index';
+import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
+import ChooseIconDialog from '../components/ChooseIconDialog'
 
 class EditCategoryScreen extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            addedSubCategories: []
+        }
+        // ko sd props subcate để push nữa mà tạo ra 1 state khác sẽ chỉ nhận các subcate cần thêm vào, update state này
+        // và sd nó cho vc push các cate mới
     }
 
     getSelectedIndex = () => {
@@ -85,7 +90,15 @@ class EditCategoryScreen extends Component {
             TypeID: type,
         });
 
-        // exit this screen
+        const subCategories = this.props.addedSubCategories;
+        //let update = {};
+        subCategories.map(item => {
+            categoryRef.child(category.key).child('SubCategories').push({
+                CategoryName: item.categoryName,
+                Icon: item.icon
+            });
+        })
+       // exit this screen
         this.props.navigation.goBack();
     };
 
@@ -99,40 +112,33 @@ class EditCategoryScreen extends Component {
 
     renderSubCategoriesView = () => {
         const subCategories = this.props.subCategories;
-        //console.log(subCategories);
-        return (
-            <View>
-                {subCategories.map((item, i) => (
-                    <TouchableOpacity>
-                        <ListItem
-                            key={item.key}
-                            title={item.categoryName}
-                            leftAvatar={{
-                                source: findIcon(item.icon),
-                                width: sizeFactor * 2.5,
-                                height: sizeFactor * 2.5,
-                                rounded: false,
-                            }}
-                            chevron={
-                                //sorry for bad code, pls edit this
-                                item.categoryName == "Thêm mới" ? false : { size: sizeFactor * 1.5 }
-                            }
-                            contentContainerStyle={{ marginHorizontal: 0 }}
-                            rightContentContainerStyle={{ marginHorizontal: 0 }}
-                            containerStyle={{ paddingHorizontal: 0 }}
-                            titleStyle={{ fontSize: sizeFactor }}
-                            pad={sizeFactor}
-                        />
-                    </TouchableOpacity>
-                ))}
-            </View>
-        );
-    };
-
-    renderAddSubcategoryDialog = () => {
-        console.log("Z");
-        return <AddSubcategoryDialog></AddSubcategoryDialog>;
-    };
+        return <View>
+            {subCategories.map((item, i) => (
+                <TouchableOpacity>
+                    <ListItem
+                        key={item.key}
+                        title={item.categoryName}
+                        leftAvatar={{
+                            source: findIcon(item.icon),
+                            width: sizeFactor * 2.5,
+                            height: sizeFactor * 2.5,
+                            rounded: false,
+                        }}
+                        chevron={
+                            //sorry for bad code, pls edit this
+                            item.categoryName == "Thêm mới" ? false : { size: sizeFactor * 1.5 }
+                        }
+                        contentContainerStyle={{ marginHorizontal: 0 }}
+                        rightContentContainerStyle={{ marginHorizontal: 0 }}
+                        containerStyle={{ paddingHorizontal: 0 }}
+                        titleStyle={{ fontSize: sizeFactor }}
+                        pad={sizeFactor}
+                    />
+                </TouchableOpacity>
+            ))}
+            
+        </View>
+    }
 
     render() {
         const swipeSettings = {
@@ -141,24 +147,15 @@ class EditCategoryScreen extends Component {
             onOpen: (secID, rowID, direction) => {},
             right: [
                 {
-                    onPress: () => {},
+                    onPress: () => {this.deleteCategory},
                     text: "Xóa",
                     type: "delete",
                 },
             ],
         };
         const subCategoriesView = this.renderSubCategoriesView();
-
-        const list = [
-            {
-                title: "Từ tiện",
-                source: require("../assets/categories/tuthien.png"),
-            },
-            {
-                title: "Thêm mới",
-                source: require("../assets/categories/themdanhmuccon.png"),
-            },
-        ];
+        // console.log("a ");
+        // console.log(this.props.addedSubCategories);
 
         const iconPath = findIcon(this.props.chosenCategory.icon);
 
@@ -175,7 +172,7 @@ class EditCategoryScreen extends Component {
                     <Space />
                     <Space />
                     <Space />
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={this.props.openIconDialog}>
                         <Avatar
                             size={sizeFactor * 6}
                             avatarStyle={{
@@ -198,10 +195,12 @@ class EditCategoryScreen extends Component {
                         placeholder="Danh mục của tôi"
                         value={this.props.categoryName}
                         onChangeText={(text) => this.props.changeName(text)}
+                        editable={false}
                     />
                     <Space />
                     <String style={{ fontWeight: "bold" }}>Mục đích</String>
                     <AddWalletKindSelect
+                        disabled={this.props.editableButtonGroup}
                         selectedIndex={this.props.selectedType}
                         buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
                         onPress={(index) => this.props.changeType(index)}
@@ -286,25 +285,24 @@ class EditCategoryScreen extends Component {
 }
 
 function mapStateToProps(state) {
+    // if don't have state isVisible, screen isn't rerendered although state subCategories is updated
     return {
         chosenCategory: state.chosenCategory,
         categoryName: state.categoryName,
         subCategories: state.subCategories,
         selectedType: state.selectedType,
+        isVisible: state.isVisible,
+        addedSubCategories: state.addedSubCategories,
+        editableButtonGroup: state.editableButtonGroup,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => {
-            dispatch(changeType(selectedType));
-        },
-        changeName: (text) => {
-            dispatch(changeName(text));
-        },
-        openDialog: () => {
-            dispatch(openDialog());
-        },
+        changeType: (selectedType) => { dispatch(changeType(selectedType))},
+        changeName: (text) => { dispatch(changeName(text))},
+        openDialog: () => { dispatch(openDialog())},
+        openIconDialog: () => { dispatch(openIconDialog())},
     };
 }
 

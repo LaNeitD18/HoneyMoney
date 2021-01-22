@@ -44,6 +44,8 @@ import {
     chooseCategory,
     changeName,
     getSubCategories,
+    reloadAddedSubCategories,
+    showType,
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -82,35 +84,22 @@ class CategoriesScreen extends React.Component {
     };
 
     createNewCategory = () => {
-        const category = [
-            {
-                key: 0,
-                categoryName: "Thêm mới",
-                icon: "themdanhmuccon",
-                parentID: "",
-                typeID: "",
-            },
-        ];
+        const category = [];
         this.props.getSubCategories(category);
         this.props.navigation.navigate("AddCategoryScreen");
     };
 
     getSubCategories = (chosenCategory) => {
         const categories = [];
-        categoryRef
-            .orderByChild("ParentID")
-            .equalTo(chosenCategory.key)
-            .once("value", (snapshot) => {
-                snapshot.forEach((element) => {
-                    categories.push({
-                        key: element.key,
-                        categoryName: element.toJSON().CategoryName,
-                        icon: element.toJSON().Icon,
-                        parentID: element.toJSON().ParentID,
-                        typeID: element.toJSON().TypeID,
-                    });
+        categoryRef.child(chosenCategory.key).child('SubCategories').once('value', (snapshot) => {
+            snapshot.forEach(element => {
+                categories.push({
+                    key: element.key,
+                    categoryName: element.toJSON().CategoryName,
+                    icon: element.toJSON().Icon,
                 });
             });
+        });
         // categories.push({
         //     key: 0,
         //     categoryName: 'Thêm mới',
@@ -121,17 +110,19 @@ class CategoriesScreen extends React.Component {
         // console.log("ZZZ");
         // console.log(categories);
         return categories;
-    };
+    }
 
     chooseCategory = (category) => {
         this.props.chooseCategory(category);
         this.props.changeName(category.categoryName);
+        this.props.showType(this.props.selectedType);
 
         const subCategories = this.getSubCategories(category);
         this.props.getSubCategories(subCategories);
+        this.props.reloadAddedSubCategories();
 
         this.props.navigation.navigate("EditCategoryScreen");
-    };
+    }
 
     renderCategoryTable = () => {
         const categories = this.props.renderedCategories;
@@ -274,28 +265,16 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => {
-            dispatch(changeType(selectedType));
-        },
-        updateCategories: (categories) => {
-            dispatch(updateCategories(categories));
-        },
-        reloadCategory: (categories) => {
-            dispatch(reloadCategory(categories));
-        },
-        changeSearchText: (text) => {
-            dispatch(changeSearchText(text));
-        },
-        chooseCategory: (category) => {
-            dispatch(chooseCategory(category));
-        },
-        changeName: (text) => {
-            dispatch(changeName(text));
-        },
-        getSubCategories: (categories) => {
-            dispatch(getSubCategories(categories));
-        },
-    };
+        changeType: (selectedType) => { dispatch(changeType(selectedType)) },
+        updateCategories: (categories) => { dispatch(updateCategories(categories)) },
+        reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
+        changeSearchText: (text) => { dispatch(changeSearchText(text)) },
+        chooseCategory: (category) => { dispatch(chooseCategory(category)) },
+        changeName: (text) => { dispatch(changeName(text)) },
+        getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
+        reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories()) },
+        showType: (selectedType) => { dispatch(showType(selectedType)) },
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen);

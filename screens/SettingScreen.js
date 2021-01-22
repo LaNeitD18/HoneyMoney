@@ -62,13 +62,30 @@ import { connect } from "react-redux";
 import { categoryRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog } from "../actions/index";
+import { changeType, changeName, openDialog, signOut } from "../actions/index";
 import { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 
-export default class SettingScreen extends Component {
+class SettingScreen extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            displayName: '',
+            email: ''
+        }
+    }
+
+    signOut = () => {
+        this.props.signOut();
+        firebase.auth().signOut().then(() => {
+            
+        })
+        .catch(error => this.setState({ errorMessage: error.message }))
+    } 
+
     render() {
         return (
             <ScreenView>
@@ -89,11 +106,11 @@ export default class SettingScreen extends Component {
                             fontSize: sizeFactor * 1.5,
                             marginBottom: sizeFactor * 0.25,
                         }}
-                    >
-                        Phan Huy Tiến
+                    > {firebase.auth().currentUser.displayName}
                     </Text>
-                    <Text style={{ alignSelf: "center", fontSize: sizeFactor, color: colors.gray }}>
-                        btsvodich@gmail.com
+                    <Text 
+                        style={{ alignSelf: "center", fontSize: sizeFactor, color: colors.gray }}
+                    > {firebase.auth().currentUser.email}
                     </Text>
                 </View>
                 <Title style={{ marginBottom: sizeFactor / 4 }}>Cài đặt</Title>
@@ -102,25 +119,25 @@ export default class SettingScreen extends Component {
                         color={colors.yellow}
                         iconName="account-circle"
                         text="Thông tin người dùng"
-                        onPress={{}}
+                        onPress={() => this.props.navigation.navigate('SettingNameScreen')}
                     />
                     <SettingRow
                         color={colors.yellow}
                         iconName="key"
                         text="Thay đổi mật khẩu"
-                        onPress={{}}
+                        onPress={() => this.props.navigation.navigate('SettingPasswordScreen')}
                     />
                     <SettingRow
                         color={colors.green}
                         iconName="package-variant"
                         text="Quản lý danh mục"
-                        onPress={{}}
+                        onPress={() => this.props.navigation.navigate('CategoryNavigator')}
                     />
                     <SettingRow
                         color={colors.blue}
                         iconName="bell-ring"
                         text="Thông báo"
-                        onPress={{}}
+                        onPress={() => this.props.navigation.navigate('SettingAlertScreen')}
                     />
                     <View style={{ marginBottom: sizeFactor / 4, paddingHorizontal: sizeFactor }}>
                         <View
@@ -139,15 +156,16 @@ export default class SettingScreen extends Component {
                                 type="material-community"
                                 color={colors.red}
                             />
-                            <Text
+                            <TouchableOpacity
                                 style={{
                                     alignSelf: "center",
                                     color: colors.red,
                                     fontSize: sizeFactor,
                                 }}
+                                onPress={() => {this.signOut()}}
                             >
-                                Đăng xuất tài khoản
-                            </Text>
+                                <Text>Đăng xuất tài khoản</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </NormalCard>
@@ -233,3 +251,18 @@ export default class SettingScreen extends Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        isSignedIn: state.isSignedIn,
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        
+        signOut: () => { dispatch(signOut())},
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingScreen);

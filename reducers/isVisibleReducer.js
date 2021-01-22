@@ -1,9 +1,9 @@
 const isVisibleReducer = (state=false, action) => {
     switch(action.type){
         case 'OPEN_DIALOG':
-            return action.visible;
+            return !state;
         case 'CLOSE_DIALOG':
-            return action.visible
+            return !state;
         default:
             return state;
     }
