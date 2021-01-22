@@ -28,6 +28,7 @@ import { rootRef, walletRef, categoryRef, subcategoryRef } from "../components/D
 import { CommonActions } from "@react-navigation/native";
 import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
+import { StackRouter } from "react-navigation";
 
 export class AddTransactionScreen extends Component {
   
@@ -40,6 +41,7 @@ export class AddTransactionScreen extends Component {
       //selectedTenVi: this.props.route.params?.walletName ?? '',
       //defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       fulllist: false,
+      add: this.props.route.params?.add
     };
   }
   toString(date) {
@@ -112,6 +114,14 @@ export class AddTransactionScreen extends Component {
     }
   }
   componentDidMount(){
+    // if(this.state.add)
+    // {
+    //   this.props.changeType('003')
+    // }
+    // else
+    // {
+    //   this.props.changeType('002')
+    // }
     walletRef.on('value',(snap)=>{this.props.Update(snap)});
     this.props.walletData.forEach((element) => {
       if (element.isDefault == "true") {

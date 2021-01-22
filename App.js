@@ -84,149 +84,158 @@ const Stack = createStackNavigator();
 //Redux
 let store = createStore(allReducers);
 
-function Main() {
-    return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
+class Main extends Component {
+    render()
+    {
+        return (
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
 
-                    if (route.name === "Transactions") {
-                        iconName = "swap-horizontal";
-                    } else if (route.name === "Settings") {
-                        iconName = "settings";
-                    } else if (route.name === "Report") {
-                        iconName = "chart-timeline-variant";
-                    } else if (route.name === "Budget") {
-                        iconName = "savings";
-                    }
+                        if (route.name === "Transactions") {
+                            iconName = "swap-horizontal";
+                        } else if (route.name === "Settings") {
+                            iconName = "settings";
+                        } else if (route.name === "Report") {
+                            iconName = "chart-timeline-variant";
+                        } else if (route.name === "Budget") {
+                            iconName = "bank";
+                        }
 
-                    // You can return any component that you like here!
-                    return (
-                        <Icon
-                            name={iconName}
-                            type="material-community"
-                            color={color}
-                            size={25}
-                        />
-                    );
-                },
-            })}
-            tabBarOptions={{
-                activeTintColor: colors.greenDark,
-                inactiveTintColor: colors.dark,
-                keyboardHidesTabBar: true,
-                showIcon: true,
-                style: {
-                    backgroundColor: "white",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 55,
-                },
-                labelStyle: {
-                    marginBottom: 4,
-                    fontSize: 11,
-                },
-            }}
-        >
-            <Tab.Screen
-                name="Transactions"
-                component={TransactionsScreen}
-                options={{ title: "Giao dịch" }}
-            />
-
-            <Tab.Screen
-                name="Report"
-                component={ReportScreen}
-                options={{ title: "Báo cáo" }}
-            />
-            <Tab.Screen
-                name="Add"
-                component={AddTransactionScreen}
-                options={{
-                    tabBarButton: (props) => (
-                        <View
-                            style={{
-                                width: 60,
-                            }}
-                        >
-                            <ActionButton
-                                buttonColor={colors.yellow}
-                                size={60}
-                                degrees={315}
-                                icon={
-                                    <Icon
-                                        name="plus"
-                                        type="material-community"
-                                        color="white"
-                                        size={35}
-                                    />
-                                }
-                                radius={80}
-                            >
-                                <ActionButton.Item buttonColor="#transparent">
-                                    <View></View>
-                                </ActionButton.Item>
-
-                                <ActionButton.Item
-                                    buttonColor={colors.greenDark}
-                                    size={50}
-                                    title="Thu"
-                                    onPress={() => {}}
-                                >
-                                    <Icon
-                                        name="database-plus"
-                                        type="material-community"
-                                        color="white"
-                                    />
-                                </ActionButton.Item>
-
-                                <ActionButton.Item
-                                    buttonColor={colors.indigo}
-                                    size={50}
-                                    title="Chuyển ví"
-                                    onPress={() => {}}
-                                >
-                                    <Icon
-                                        name="wallet"
-                                        type="material-community"
-                                        color="white"
-                                    />
-                                </ActionButton.Item>
-                                <ActionButton.Item
-                                    buttonColor="#F55555"
-                                    size={50}
-                                    title="Chi"
-                                    onPress={() => {}}
-                                >
-                                    <Icon
-                                        name="database-minus"
-                                        type="material-community"
-                                        color="white"
-                                    />
-                                </ActionButton.Item>
-
-                                <ActionButton.Item buttonColor="#transparent">
-                                    <View></View>
-                                </ActionButton.Item>
-                            </ActionButton>
-                        </View>
-                    ),
+                        // You can return any component that you like here!
+                        return (
+                            <Icon
+                                name={iconName}
+                                type="material-community"
+                                color={color}
+                                size={25}
+                            />
+                        );
+                    },
+                })}
+                tabBarOptions={{
+                    activeTintColor: colors.greenDark,
+                    inactiveTintColor: colors.dark,
+                    keyboardHidesTabBar: true,
+                    showIcon: true,
+                    style: {
+                        backgroundColor: "white",
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 55,
+                    },
+                    labelStyle: {
+                        marginBottom: 4,
+                        fontSize: 11,
+                    },
                 }}
-            />
-            <Tab.Screen
-                name="Budget"
-                component={BudgetScreen}
-                options={{ title: "Tiết kiệm" }}
-            />
-            <Tab.Screen
-                name="Settings"
-                component={SettingScreensNavigator}
-                options={{ title: "Cài đặt" }}
-            />
-        </Tab.Navigator>
-    );
+            >
+                <Tab.Screen
+                    name="Transactions"
+                    component={TransactionsScreen}
+                    options={{ title: "Giao dịch" }}
+                />
+
+                <Tab.Screen
+                    name="Report"
+                    component={ReportScreen}
+                    options={{ title: "Báo cáo" }}
+                />
+                <Tab.Screen
+                    name="Add"
+                    component={ActionButton}
+                    options={{
+                        tabBarButton: (props) => (
+                            <View
+                                style={{
+                                    width: 60,
+                                }}
+                            >
+                                <ActionButton
+                                    buttonColor={colors.yellow}
+                                    size={60}
+                                    degrees={315}
+                                    onPress={()=>{}}
+                                    //onOverlayPress={()=>{console.log("a")}}
+                                    icon={
+                                        <Icon
+                                            name="plus"
+                                            type="material-community"
+                                            color="white"
+                                            size={35}
+                                        />
+                                    }
+                                    radius={80}
+                                >
+                                    <ActionButton.Item buttonColor="#transparent">
+                                        <View></View>
+                                    </ActionButton.Item>
+
+                                    <ActionButton.Item
+                                        buttonColor={colors.greenDark}
+                                        size={50}
+                                        title="Thu"
+                                    >
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {add: true}})}}>
+                                            <Icon
+                                                name="database-plus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </TouchableOpacity>
+                                    </ActionButton.Item>
+
+                                    <ActionButton.Item
+                                        buttonColor={colors.indigo}
+                                        size={50}
+                                        title="Chuyển ví"
+                                    >
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletScreen"})}}>
+                                            <Icon
+                                                name="wallet"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </TouchableOpacity>
+                                    </ActionButton.Item>
+                                    <ActionButton.Item
+                                        buttonColor="#F55555"
+                                        size={50}
+                                        title="Chi"
+                                    >
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {add: false}})}}>
+                                            <Icon
+                                                name="database-minus"
+                                                type="material-community"
+                                                color="white"
+                                            />
+                                        </TouchableOpacity>
+                                    </ActionButton.Item>
+
+                                    <ActionButton.Item buttonColor="#transparent">
+                                        <View></View>
+                                    </ActionButton.Item>
+                                </ActionButton>
+                            </View>
+                        ),
+                    }}>
+                    </Tab.Screen>
+                <Tab.Screen
+                    name="Budget"
+                    //component={BudgetScreen}
+                    component={WalletNavigator}
+                    options={{ title: "Tiết kiệm" }}
+                />
+                <Tab.Screen
+                    name="Settings"
+                    component={SettingScreensNavigator}
+                    options={{ title: "Cài đặt" }}
+                />
+            </Tab.Navigator>
+        );
+    }
 }
 
 class RootContainer extends Component {
@@ -253,7 +262,10 @@ class RootContainer extends Component {
                             </>
                         ) : (
                         // User is signed in
+                        <>
                             <Stack.Screen name="Main" component={Main}/>
+                            <Stack.Screen name="Action" component={WalletNavigator}/>
+                        </>
                         )}
                     </Stack.Navigator>
                     
