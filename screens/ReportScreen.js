@@ -70,6 +70,7 @@ import {UpdateWalletAction, SelectWallet } from "../actions";
 import { VictoryBar } from "victory-native";
 import { PieChart, LineChart, Path, Grid, XAxis, YAxis } from "react-native-svg-charts";
 import { Circle, G, Line, Image, Defs, LinearGradient, Stop } from "react-native-svg";
+import toMoneyString from "../components/toMoneyString";
 
 export class ReportScreen extends Component {
     constructor(props)
@@ -630,7 +631,7 @@ export class ReportScreen extends Component {
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                            {clonedata.change}
+                            {toMoneyString(clonedata.change)}
                         </Text>
                         <View style={{ backgroundColor: "white", height: 330 }}>
                             <View style={{ alignSelf: "center", height: 340, flexDirection: "row" }}>
@@ -691,7 +692,7 @@ export class ReportScreen extends Component {
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                            {pie.gain}
+                            {toMoneyString(pie.gain)}
                         </Text>
                         <PieChart
                             style={{ height: 300 }}
@@ -730,7 +731,7 @@ export class ReportScreen extends Component {
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                        {pie.lose}
+                        {toMoneyString(pie.lose)}
                     </Text>
                     <PieChart
                         style={{ height: 300 }}

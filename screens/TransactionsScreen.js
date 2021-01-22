@@ -70,6 +70,7 @@ import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 import { FlatList } from "react-native-gesture-handler";
+import toMoneyString from '../components/toMoneyString'
 
 export class TransactionsScreen extends Component {
     constructor(props) {
@@ -526,9 +527,9 @@ export class TransactionsScreen extends Component {
                             return (
                                 <TransactionMonthSummary
                                     month={item.month}
-                                    openBalance={item.openBalance}
-                                    endBalance={item.endBalance}
-                                    change={item.change}
+                                    openBalance={toMoneyString(item.openBalance)}
+                                    endBalance={toMoneyString(item.endBalance)}
+                                    change={toMoneyString(item.change)}
                                     changeColor={item.change > 0?  colors.greenDark : colors.redDark}
                                     leftChevronOpacity={item.left}
                                     rightChevronOpacity={item.right}

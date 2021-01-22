@@ -38,10 +38,10 @@ const ConfirmDialog = () => {
             <View style={{ flexDirection: "row-reverse", justifyContent: "space-between", width: windowWidth - sizeFactor * 8 }}>
                 <Button color="white" background={colors.blue} style={{ height: sizeFactor * 3, flex: 1 / 2, marginLeft: sizeFactor / 2 }}>
                     Được
-        </Button>
+                </Button>
                 <OutlineButton color={colors.redDark} style={{ height: sizeFactor * 3, flex: 1 / 2 }}>
                     Xàm
-        </OutlineButton>
+                </OutlineButton>
             </View>
         </Overlay>
     );

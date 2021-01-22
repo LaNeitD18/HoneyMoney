@@ -36,7 +36,7 @@ export class AddTransactionScreen extends Component {
       note: "",
       //selectedTenVi: this.props.route.params?.walletName ?? '',
       //defaultColor: this.props.route.params?.walletColor ?? colors.blue,
-      fulllist: false
+      fulllist: false,
     };
   }
   toString(date) {

@@ -16,6 +16,7 @@ import {
 import { Icon, SearchBar, ButtonGroup, Overlay, Input, Divider } from "react-native-elements";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import TextTicker from "react-native-text-ticker";
+import toMoneyString from "./toMoneyString";
 
 export const windowWidth = Dimensions.get("window").width;
 export const windowHeight = Dimensions.get("window").height;
@@ -1034,7 +1035,7 @@ export class TransactionsList extends Component {
                 subcategory={item.subcategory}
                 onPress={item.onPress}
                 source={item.source}
-                amount={item.amount}
+                amount={toMoneyString(item.amount)}
                 color={item.color}
             />
         );
@@ -1099,7 +1100,7 @@ export class TransactionsFullList extends Component {
                 date={item.date}
                 dayOfWeek={item.dayOfWeek}
                 month={item.month}
-                change={item.change}
+                change={toMoneyString(item.change)}
                 list={item.list}
             />
         );
