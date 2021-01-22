@@ -55,7 +55,7 @@ import {
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
-import { categoryRef } from "../components/DataConnect";
+import { categoryRef, userRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
 import { changeType, changeName, openDialog, updateCategories } from "../actions/index";
@@ -84,8 +84,15 @@ export class ReportScreen extends Component {
         }
     }
     componentDidMount(){
-        walletRef.on('value',(snap)=>{this.props.Update(snap)});
-        categoryRef.on("value", (snapshot) => {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userWalletRef = userRef.child(uid).child('Wallet')
+        userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
+
+        const userCategoryRef = userRef.child(uid).child('Category')
+        userCategoryRef.on("value", (snapshot) => {
             this.props.updateCategories(snapshot);
         });
     }
@@ -336,7 +343,13 @@ export class ReportScreen extends Component {
                     {
                         var category
 
-                        categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                        let uid = 'none';
+                        if(firebase.auth().currentUser) {
+                            uid = firebase.auth().currentUser.uid;
+                        }
+                        const userCategoryRef = userRef.child(uid).child('Category')
+
+                        userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
                             snapshot.forEach(element => {
                                 category = {
                                     key: element.key,

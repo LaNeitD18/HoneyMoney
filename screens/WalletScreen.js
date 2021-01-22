@@ -43,7 +43,7 @@ import {connect} from 'react-redux';
 //const rootRef = firebase.database().ref();
 //const walletRef = rootRef.child('Wallet');
 
-import {rootRef,walletRef} from '../components/DataConnect'
+import {rootRef,walletRef, userRef} from '../components/DataConnect'
 
 //Redux action
 import {UpdateWalletAction, SelectWallet } from "../actions";
@@ -59,7 +59,12 @@ export class WalletScreen extends Component {
     super(props);
   }
   componentDidMount(){
-    walletRef.on('value',(snap)=>{this.props.Update(snap)});
+    let uid = 'none';
+    if(firebase.auth().currentUser) {
+        uid = firebase.auth().currentUser.uid;
+    }
+    const userWalletRef = userRef.child(uid).child('Wallet')
+    userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
   }
   render() {
     return (
@@ -130,11 +135,16 @@ export class WalletScreen extends Component {
 }
 
 defaultChanged = (walletItem)=>{
-  walletRef.once('value',(snap)=>{
+    let uid = 'none';
+    if(firebase.auth().currentUser) {
+        uid = firebase.auth().currentUser.uid;
+    }
+    const userWalletRef = userRef.child(uid).child('Wallet')
+    userWalletRef.once('value',(snap)=>{
     snap.forEach(element => {
       if(element.toJSON().isDefault == "true")
       {
-        walletRef.child(element.key).update({
+        userWalletRef.child(element.key).update({
           //name: element.toJSON().name,
           //color: element.toJSON().color,
           //date: element.toJSON().date,
@@ -144,7 +154,7 @@ defaultChanged = (walletItem)=>{
       }
     });
   });
-  walletRef.child(walletItem.key).update({
+  userWalletRef.child(walletItem.key).update({
     //name: walletItem.name,
     //color: walletItem.color,
     //date:walletItem.date,

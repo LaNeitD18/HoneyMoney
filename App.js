@@ -76,6 +76,7 @@ import WalletTransferScreen from "./screens/WalletTransferScreen";
 import SettingScreensNavigator from "./screens/SettingScreensNavigator";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
+import EditTransactionScreen from "./screens/EditTransactionScreen";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -134,7 +135,7 @@ class Main extends Component {
             >
                 <Tab.Screen
                     name="Transactions"
-                    component={TransactionsScreen}
+                    component={TransactionNavigator}
                     options={{ title: "Giao dịch" }}
                 />
 
@@ -270,6 +271,27 @@ class RootContainer extends Component {
                     </Stack.Navigator>
                     
                 </NavigationContainer>
+        );
+    }
+}
+
+const TransactionStack = createStackNavigator();
+
+class TransactionNavigator extends Component{
+    render() {
+        return (
+            <TransactionStack.Navigator>
+                <TransactionStack.Screen
+                    name="TransactionScreen"
+                    component={TransactionsScreen}
+                    options={{ headerShown: false }}
+                />
+                <TransactionStack.Screen
+                    name="EditTransaction"
+                    component={EditTransactionScreen}
+                    options={{ headerShown: true, title: "Chỉnh sửa giao dịch" }}
+                />
+            </TransactionStack.Navigator>
         );
     }
 }

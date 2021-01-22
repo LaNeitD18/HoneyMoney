@@ -46,8 +46,9 @@ import {
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
-import { walletRef } from "../components/DataConnect";
+import { walletRef , userRef} from "../components/DataConnect";
 import { BaseRouter } from "@react-navigation/native";
+import * as firebase from 'firebase';
 
 export default class AddWalletScreen extends Component {
   constructor(props) {
@@ -87,12 +88,17 @@ export default class AddWalletScreen extends Component {
     var Mau = this.state.selectedColor;
     if(this.checkWalletValid())
     {
-      walletRef.push({
-        name: TenVi,
-        money: SoDu,
-        date: this.state.date,
-        isDefault: 'false',
-        color: Mau
+      let uid = 'none';
+      if(firebase.auth().currentUser) {
+        uid = firebase.auth().currentUser.uid;
+      }
+      const userWalletRef = userRef.child(uid).child('Wallet')
+      userWalletRef.push({
+      name: TenVi,
+      money: SoDu,
+      date: this.state.date,
+      isDefault: 'false',
+      color: Mau
       });
       //them vao day mot cai rhong bao pop up da tao vi thanh cong
       this.setState({

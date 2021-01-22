@@ -47,7 +47,8 @@ import {
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import {connect} from 'react-redux';
-import { walletRef } from "../components/DataConnect";
+import { walletRef, userRef } from "../components/DataConnect";
+import * as firebase from "firebase";
 //Navigator
 import { CommonActions } from '@react-navigation/native';
 
@@ -89,7 +90,12 @@ export class EditWalletScreen extends Component {
         var Mau = this.state.selectedColor;
         if(this.checkWalletValid())
         {
-            walletRef.child(this.props.selectedWallet.key).update({
+            let uid = 'none';
+            if(firebase.auth().currentUser) {
+              uid = firebase.auth().currentUser.uid;
+            }
+            const userWalletRef = userRef.child(uid).child('Wallet')
+            userWalletRef.child(this.props.selectedWallet.key).update({
                 name: TenVi,
                 money: SoDu,
                 color: Mau,
@@ -106,7 +112,16 @@ export class EditWalletScreen extends Component {
         //them bao loi o day
       }
       deleteWallet(){
-        walletRef.child(this.props.selectedWallet.key).update({
+        if(this.props.selectedWallet.isDefault == "true")
+        {
+          return 0;
+        }
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+          uid = firebase.auth().currentUser.uid;
+        }
+        const userWalletRef = userRef.child(uid).child('Wallet')
+        userWalletRef.child(this.props.selectedWallet.key).update({
             isDeleted: true,
         });
         this.props.navigation.goBack();

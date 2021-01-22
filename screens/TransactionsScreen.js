@@ -58,10 +58,10 @@ import {
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
-import { categoryRef } from "../components/DataConnect";
+import { categoryRef, userRef } from "../components/DataConnect";
 import { rootRef, walletRef } from "../components/DataConnect";
 
-import { UpdateWalletAction, SelectWallet } from "../actions";
+import { UpdateWalletAction, SelectWallet, SelectTransaction } from "../actions";
 import * as firebase from "firebase";
 
 import { changeType, changeName, openDialog } from "../actions/index";
@@ -71,6 +71,7 @@ import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 import { FlatList } from "react-native-gesture-handler";
 import toMoneyString from '../components/toMoneyString'
+import selectedTransactionReducer from "../reducers/selectedTransactionReducer";
 
 export class TransactionsScreen extends Component {
     constructor(props) {
@@ -83,9 +84,12 @@ export class TransactionsScreen extends Component {
         };
     }
     componentDidMount() {
-        walletRef.on("value", (snap) => {
-            this.props.Update(snap);
-        });
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userWalletRef = userRef.child(uid).child('Wallet')
+        userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
         
         //setTimeout(()=>{this.setState({monthlist: this.getMonthList()})}, 1500)
     }
@@ -238,9 +242,15 @@ export class TransactionsScreen extends Component {
         var lose = 0;
         data.forEach(item => 
             {
-                var category
+                var category = {}
 
-                categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                let uid = 'none';
+                if(firebase.auth().currentUser) {
+                    uid = firebase.auth().currentUser.uid;
+                }
+                const userCategoryRef = userRef.child(uid).child('Category')
+
+                userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
                     snapshot.forEach(element => {
                         category = {
                             key: element.key,
@@ -405,9 +415,15 @@ export class TransactionsScreen extends Component {
                     info.dayOfWeek = weekday[this.toDate(item.date).getDay()];
                     info.month = "Tháng " +(this.toDate(item.date).getMonth()+1)+"/"+this.toDate(item.date).getFullYear();
 
-                    var category
+                    var category = {}
 
-                    categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                    let uid = 'none';
+                    if(firebase.auth().currentUser) {
+                        uid = firebase.auth().currentUser.uid;
+                    }
+                    const userCategoryRef = userRef.child(uid).child('Category')
+
+                    userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
                         snapshot.forEach(element => {
                             category = {
                                 key: element.key,
@@ -446,7 +462,7 @@ export class TransactionsScreen extends Component {
                     //item to new data
                     var itemdata = {
                         subcategory: category.categoryName,
-                        onPress: {},
+                        onPress: ()=>{this.props.SelectTransaction(item.key); this.props.navigation.navigate("EditTransaction")},
                         source: findIcon(category.icon),
                         amount: b? "+" + item.money : "-" + item.money,
                         color: b? colors.greenDark : colors.redDark,
@@ -460,9 +476,15 @@ export class TransactionsScreen extends Component {
                 }
                 else
                 {
-                    var category
+                    var category = {}
 
-                    categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                    let uid = 'none';
+                    if(firebase.auth().currentUser) {
+                        uid = firebase.auth().currentUser.uid;
+                    }
+                    const userCategoryRef = userRef.child(uid).child('Category')
+
+                    userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
                         snapshot.forEach(element => {
                             category = {
                                 key: element.key,
@@ -503,7 +525,7 @@ export class TransactionsScreen extends Component {
                     //item to new data
                     var itemdata = {
                         subcategory: category.categoryName,
-                        onPress: {},
+                        onPress: ()=>{this.props.SelectTransaction(item.key); this.props.navigation.navigate("EditTransaction")},
                         source: findIcon(category.icon),
                         amount: b? "+" + item.money : "-" + item.money,
                         color: b? colors.greenDark : colors.redDark,
@@ -595,6 +617,9 @@ const mapDispatchToProps = (dispatch) => {
         SelectWallet: (value) => {
             dispatch(SelectWallet(value));
         },
+        SelectTransaction: (value) => {
+            dispatch(SelectTransaction(value))
+        }
     };
 };
 

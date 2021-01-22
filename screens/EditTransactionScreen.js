@@ -30,7 +30,7 @@ import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 import { StackRouter } from "react-navigation";
 
-export class AddTransactionScreen extends Component {
+export class EditTransactionScreen extends Component {
   
   _isMounted = false;
   constructor(props)
@@ -41,7 +41,6 @@ export class AddTransactionScreen extends Component {
       //selectedTenVi: this.props.route.params?.walletName ?? '',
       //defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       fulllist: false,
-      add: this.props.route.params?.add
     };
   }
   toString(date) {
@@ -114,14 +113,6 @@ export class AddTransactionScreen extends Component {
     }
   }
   componentDidMount(){
-    // if(this.state.add)
-    // {
-    //   this.props.changeType('003')
-    // }
-    // else
-    // {
-    //   this.props.changeType('002')
-    // }
     let uid = 'none';
     if(firebase.auth().currentUser) {
         uid = firebase.auth().currentUser.uid;
@@ -134,6 +125,10 @@ export class AddTransactionScreen extends Component {
           this.props.SelectWallet(element)
       }
     })
+    const userCategoryRef = userRef.child(uid).child('Category')
+        userCategoryRef.on("value", (snapshot) => {
+            this.props.updateCategories(snapshot);
+        });
     // let tempTen = '';
     // let tempColor = '';
     // if(this.state.selectedTenVi == '')
@@ -309,7 +304,7 @@ export class AddTransactionScreen extends Component {
     }   return;
   }
 
-  addNewTransaction = () =>{
+  editTransaction = () =>{
     if(!this.props.selectedCategory || !this.props.newSoDu)
     {
       return;
@@ -572,7 +567,7 @@ export class AddTransactionScreen extends Component {
             <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." Input={this.state.note} onChangeText={text=>{this.setState({note: text})}}
                         ref={input => { this.textInput = input }}/>
         </View>
-        <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.addNewTransaction()}}>
+        <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.editTransaction()}}>
             Thực hiện giao dịch
         </OutlineButton>
       </ScreenView>
@@ -583,6 +578,7 @@ export class AddTransactionScreen extends Component {
 function mapStateToProps(state) {
   return {
       walletData: state.WalletReducer,
+      selectedTransaction: state.selectedTransaction,
 
       selectedType: state.selectedType,
       allCategories: state.allCategories,
@@ -644,4 +640,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTransactionScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTransactionScreen);

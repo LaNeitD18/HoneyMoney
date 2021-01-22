@@ -21,6 +21,7 @@ import sodu_transReducer from './sodu_transReducer';
 import datemode_transReducer from './datemode_transReducer';
 import date_transReducer from './date_transReducer';
 import selectedWalletReducer from './selectedWalletReducer';
+import selectedTransactionReducer from './selectedTransactionReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -34,6 +35,7 @@ const allReducers = combineReducers({
     datemode_transReducer,
     date_transReducer,
     selectedWalletReducer,
+    selectedTransactionReducer,
 
     //Tien
     selectedType: selectedTypeReducer,

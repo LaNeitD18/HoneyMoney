@@ -97,6 +97,13 @@ export const SelectWallet = (value) =>{
         value: value
     }
 }
+
+export const SelectTransaction = (value) => {
+    return {
+        type: "SELECT_TRANS",
+        value: value,
+    }
+}
 //#region Tien
 
 //#region selectedType 
