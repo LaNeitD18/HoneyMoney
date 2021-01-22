@@ -17,7 +17,7 @@ import {
     String,
     ScreenView,
     Card,
-    Divider,
+    Space,
     Heading,
     RowLeft,
     Number,
@@ -80,7 +80,7 @@ const ChooseIconDialog = () => {
             >
                 Biểu tượng danh mục
             </String>
-            <Divider />
+            <Space />
             <ScrollView
                 style={{ width: windowWidth - sizeFactor * 7 }}
                 vertical
@@ -131,8 +131,8 @@ const ChooseIconDialog = () => {
                     </View>
                 </View>
             </ScrollView>
-            <Divider />
-            <Divider />
+            <Space />
+            <Space />
             <TouchableOpacity>
                 <String style={{ color: colors.blue }}>Đồng ý</String>
             </TouchableOpacity>

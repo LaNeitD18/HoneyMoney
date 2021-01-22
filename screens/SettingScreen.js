@@ -101,7 +101,7 @@ export default class SettingScreen extends Component {
                     <SettingRow
                         color={colors.yellow}
                         iconName="account-circle"
-                        text="Đổi tên người dùng"
+                        text="Thông tin người dùng"
                         onPress={{}}
                     />
                     <SettingRow
