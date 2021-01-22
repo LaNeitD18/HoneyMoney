@@ -137,7 +137,6 @@ export default function App() {
                     />
                     <Tab.Screen
                         name="Add"
-                        component={WalletNavigator}
                         options={{
                             tabBarButton: (props) => (
                                 <View
@@ -170,7 +169,7 @@ export default function App() {
                                             size={50}
                                             title="Thu"
                                         >
-                                            <TouchableOpacity onPress={()=>{console.log("x")}}>
+                                            <TouchableOpacity onPress={()=>{this.stacknavigation.navigate("AddTransactionScreen")}}>
                                                 <Icon
                                                     name="database-plus"
                                                     type="material-community"
@@ -212,8 +211,9 @@ export default function App() {
                                     </ActionButton>
                                 </View>
                             ),
-                        }}
-                    />
+                        }}>
+                            {()=>{return (<WalletNavigator  ref={(ref) => {this.stacknavigation = ref}}/>)}}
+                        </Tab.Screen>
                     <Tab.Screen
                         name="Budget"
                         component={BudgetScreen}

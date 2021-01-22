@@ -110,7 +110,7 @@ export class TransactionsScreen extends Component {
     getMonthList() {
         var monthlist = [];
         var data = this.getDataAll();
-        if (data[0] == undefined) {
+        if (data[0] === undefined) {
             return [];
         }
 

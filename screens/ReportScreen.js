@@ -58,7 +58,7 @@ import { connect } from "react-redux";
 import { categoryRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog } from "../actions/index";
+import { changeType, changeName, openDialog, updateCategories } from "../actions/index";
 import { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
@@ -84,6 +84,9 @@ export class ReportScreen extends Component {
     }
     componentDidMount(){
         walletRef.on('value',(snap)=>{this.props.Update(snap)});
+        categoryRef.on("value", (snapshot) => {
+            this.props.updateCategories(snapshot);
+        });
     }
     
     toDate(datestring)
@@ -268,6 +271,50 @@ export class ReportScreen extends Component {
     {
         var gain = 0;
         var lose = 0;
+        var gainpie = [];
+        var losepie = [];
+        var start = this.toDate(this.state.selectedWeek);
+        var end = new Date(start.getFullYear(), start.getMonth(), start.getDate() + 6)
+        var data = this.getDataInTimeRangeDate(start, end)
+        const categories = this.props.allCategories;
+        var temp = categories.filter((item) => item.typeID === "003" || item.categoryName == "Đi vay" || item.categoryName == "Thu nợ");
+        for(let i = 0; i < temp.length; i++)
+        {
+            gainpie[i] = {
+                icon: findIcon(temp[i].icon),
+                money: 0,
+            }
+            data.forEach(item =>
+            {
+                if(item.category == temp[i].key)
+                {
+                    gainpie[i].money += parseInt(item.money);
+                    gain += parseInt(item.money);
+                }
+            })
+        }
+        temp = categories.filter((item) => item.typeID === "002" || item.categoryName == "Cho vay" || item.categoryName == "Trả nợ");
+        for(let i = 0; i < temp.length; i++)
+        {
+            losepie[i] = {
+                icon: findIcon(temp[i].icon),
+                money: 0,
+            }
+            data.forEach(item =>
+            {
+                if(item.category == temp[i].key)
+                {
+                    losepie[i].money += parseInt(item.money);
+                    lose += parseInt(item.money);
+                }
+            })
+        }
+        return {
+            gain: gain,
+            lose: lose,
+            gainpie: gainpie,
+            losepie: losepie,
+        }
     }
 
     mergeDataByDateInWeek()
@@ -353,6 +400,9 @@ export class ReportScreen extends Component {
         const clonedata = this.mergeDataByDateInWeek();
         const lineData1 = clonedata.gain;
         const lineData2 = clonedata.lose; 
+        const pie = this.mergeDataByCategory();
+        const greenpie = pie.gainpie;
+        const redpie = pie.losepie;
         //console.log(this.getDataInTimeRange("23/12/2020","25/12/2020"));
         //console.log(this.getDataInTimeRangeDate(new Date({date: 23, month: 12, year: 2020}),new Date({date: 24, month: 12, year: 2020})));
         const data = [50, 25, 40, 95, 85, 91];
@@ -377,22 +427,24 @@ export class ReportScreen extends Component {
             (Math.floor(Math.random() * 20) + 49) +
             "%)";
 
-        const pieData = data
-            .filter((value) => value > 0)
+        const pieData = greenpie
+            .filter((value) => value.money > 0)
             .map((value, index) => ({
-                value,
+                value: value.money,
                 svg: { fill: shadesOfGreen() },
                 key: `pie-${index}`,
+                icon: value.icon,
             }));
 
-        const pieData2 = data
-            .filter((value) => value > 0)
+        const pieData2 = redpie
+            .filter((value) => value.money > 0)
             .map((value, index) => ({
-                value,
+                value: value.money,
                 svg: { fill: shadesOfRed() },
                 key: `pie-${index}`,
+                icon: value.icon,
             }));
-        const Labels = ({ slices }) => {
+        const Labels1 = ({ slices }) => {
             return slices.map((slice, index) => {
                 const { labelCentroid, pieCentroid, data } = slice;
                 return (
@@ -419,7 +471,41 @@ export class ReportScreen extends Component {
                             height={25}
                             preserveAspectRatio="xMidYMid slice"
                             opacity="1"
-                            href={require("../assets/categories/vanchuyen.png")}
+                            href={pieData[index].icon}
+                        />
+                    </G>
+                );
+            });
+        };
+
+        const Labels2 = ({ slices }) => {
+            return slices.map((slice, index) => {
+                const { labelCentroid, pieCentroid, data } = slice;
+                return (
+                    <G key={index}>
+                        <Line
+                            x1={labelCentroid[0]}
+                            y1={labelCentroid[1]}
+                            x2={pieCentroid[0]}
+                            y2={pieCentroid[1]}
+                            stroke={data.svg.fill}
+                        />
+                        <Circle
+                            cx={labelCentroid[0]}
+                            cy={labelCentroid[1]}
+                            r={20}
+                            fill="white"
+                            stroke={data.svg.fill}
+                            strokeWidth={2}
+                        />
+                        <Image
+                            x={labelCentroid[0] - 12.25}
+                            y={labelCentroid[1] - 12.25}
+                            width={25}
+                            height={25}
+                            preserveAspectRatio="xMidYMid slice"
+                            opacity="1"
+                            href={pieData2[index].icon}
                         />
                     </G>
                 );
@@ -605,7 +691,7 @@ export class ReportScreen extends Component {
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                            70.000
+                            {pie.gain}
                         </Text>
                         <PieChart
                             style={{ height: 300 }}
@@ -614,7 +700,7 @@ export class ReportScreen extends Component {
                             outerRadius={82}
                             labelRadius={120}
                         >
-                            <Labels />
+                            <Labels1 />
                         </PieChart>
                     </View>
                     <View
@@ -644,7 +730,7 @@ export class ReportScreen extends Component {
                                 marginBottom: sizeFactor / 2,
                             }}
                         >
-                        20.000
+                        {pie.lose}
                     </Text>
                     <PieChart
                         style={{ height: 300 }}
@@ -653,7 +739,7 @@ export class ReportScreen extends Component {
                         outerRadius={82}
                         labelRadius={120}
                     >
-                        <Labels />
+                        <Labels2 />
                     </PieChart>
                 </View>
             </ScreenView>
@@ -665,6 +751,7 @@ const mapStateToProps = (state) => {
     return{
         walletData: state.WalletReducer,
         //selectedWallet: state.selectedWalletReducer,
+        allCategories: state.allCategories,
     }
   };
   
@@ -675,7 +762,10 @@ const mapStateToProps = (state) => {
         },
         SelectWallet: (value) => {
           dispatch(SelectWallet(value));
-        }
+        },
+        updateCategories: (categories) => {
+            dispatch(updateCategories(categories));
+        },
     };
   }
 
