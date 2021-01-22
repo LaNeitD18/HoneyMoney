@@ -505,11 +505,11 @@ export class TransactionsScreen extends Component {
     }
 
     render() {
-        const month = this.getMonthList();
+        //const month = this.getMonthList();
         return (
             <ScreenView>
                 <Title>Lịch sử giao dịch </Title>
-                <SimpleCarousel
+                {/* <SimpleCarousel
                     //scrollref={(ref)=>this.Carousel = ref}
                     ref={(ref) => {this.Carousel = ref}}
                     onScroll = {(event)=>{
@@ -537,7 +537,7 @@ export class TransactionsScreen extends Component {
                         }}
                         ></FlatList>
                 </SimpleCarousel>
-                <TransactionsFullList data={this.state.transactionData}/>
+                <TransactionsFullList data={this.state.transactionData}/> */}
             </ScreenView>
         );
     }

@@ -33,7 +33,7 @@ import {
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from "firebase";
-import { categoryRef } from "../components/DataConnect";
+import { categoryRef, userRef } from "../components/DataConnect";
 import IconImage, { findIcon } from "../components/Image";
 import { connect } from "react-redux";
 import {
@@ -55,7 +55,7 @@ import chosenCategoryReducer from "../reducers/chosenCategoryReducer";
 class CategoriesScreen extends React.Component {
     _isMounted = false;
 
-    constructor() {
+    constructor() { 
         super();
     }
 
@@ -79,6 +79,8 @@ class CategoriesScreen extends React.Component {
 
     getData = (typeID) => {
         const categories = this.props.allCategories;
+        console.log("ZZZ");
+        console.log(categories);
         const temp = categories.filter((item) => item.typeID === typeID);
         this.props.reloadCategory(temp);
     };
@@ -164,8 +166,16 @@ class CategoriesScreen extends React.Component {
     };
 
     componentDidMount() {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        // const categoryRef = rootRef.child('users').child(uid).child('Category');
+        // console.log(categoryRef);
+        const userCategoryRef = userRef.child(uid).child('Category')
+
         this._isMounted = true;
-        categoryRef.on("value", (snapshot) => {
+        userCategoryRef.on("value", (snapshot) => {
             this.props.updateCategories(snapshot);
         });
     }
@@ -260,6 +270,7 @@ function mapStateToProps(state) {
         allCategories: state.allCategories,
         renderedCategories: state.renderedCategories,
         searchText: state.searchText,
+        isSignedIn: state.isSignedIn
     };
 }
 

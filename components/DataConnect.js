@@ -19,11 +19,27 @@ const firebaseConfig = {
   };
   
 //FirebaseApp.initializeApp();
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+else {
+firebase.app(); // if already initialized, use that one
+}
 
 //console.log(firebase);
 
 export const rootRef = firebase.database().ref();
 export const walletRef = rootRef.child('Wallet');
 export const categoryRef = rootRef.child('Category');
+
+// let uid = 'none';
+// if(firebase.auth().currentUser) {
+//     uid = firebase.auth().currentUser.uid;
+// }
+
+export const userRef = rootRef.child('users');
+// export const userWalletRef = userRef.child(uid).child('Wallet');
+// export const userCategoryRef = userRef.child(uid).child('Category');
+// console.log(userCategoryRef);
+
 //export const subcategoryRef = rootRef.child('SubCategory');

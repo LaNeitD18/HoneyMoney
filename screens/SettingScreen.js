@@ -81,7 +81,7 @@ class SettingScreen extends Component {
     signOut = () => {
         this.props.signOut();
         firebase.auth().signOut().then(() => {
-            
+            console.log(firebase.auth().currentUser);
         })
         .catch(error => this.setState({ errorMessage: error.message }))
     } 
@@ -131,7 +131,7 @@ class SettingScreen extends Component {
                         color={colors.green}
                         iconName="package-variant"
                         text="Quản lý danh mục"
-                        onPress={() => this.props.navigation.navigate('CategoryNavigator')}
+                        onPress={() => {this.props.navigation.navigate('CategoryNavigator'); console.log(firebase.auth().currentUser.uid);}}
                     />
                     <SettingRow
                         color={colors.blue}
