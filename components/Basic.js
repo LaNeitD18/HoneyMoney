@@ -1125,7 +1125,7 @@ export class SimpleCarousel extends Component {
             <ScrollView
                 ref={(ref) => {this.scrollref = ref}}
                 horizontal
-                snapToInterval={windowWidth - sizeFactor * 2}
+                snapToInterval={Math.ceil(windowWidth - sizeFactor * 2)}
                 decelerationRate="fast"
                 showsHorizontalScrollIndicator={false}
                 bounces={false}
