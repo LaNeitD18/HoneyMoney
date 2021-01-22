@@ -373,7 +373,14 @@ export class TransactionsScreen extends Component {
                 if(d < this.toDate(item.date).getDate())
                 {
                     d = this.toDate(item.date).getDate();
-                    info.date = d;
+                    if(d < 10)
+                    {
+                        info.date = "0" + d
+                    }
+                    else
+                    {
+                        info.date = d;
+                    }
                     info.dayOfWeek = weekday[this.toDate(item.date).getDay()];
                     info.month = "Tháng " +(this.toDate(item.date).getMonth()+1)+"/"+this.toDate(item.date).getFullYear();
 

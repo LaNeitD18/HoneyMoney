@@ -50,6 +50,7 @@ import {UpdateWalletAction, SelectWallet } from "../actions";
 
 //Navigator
 import { CommonActions } from '@react-navigation/native';
+import toMoneyString from "../components/toMoneyString";
 
 export class WalletScreen extends Component {
   _isMounted = false;
@@ -119,7 +120,7 @@ export class WalletScreen extends Component {
             onPressEdit={()=>{this.props.SelectWallet(item); this.props.navigation.navigate({name: 'EditWalletScreen'})}}
             onPressSuDung={()=>{this.props.SelectWallet(item); this.props.navigation.navigate({name: 'AddTransactionScreen'})}}
           >
-            {item.money}
+            {toMoneyString(item.money)}
           </Wallet>)}}>
         </FlatList>
         <Space/>

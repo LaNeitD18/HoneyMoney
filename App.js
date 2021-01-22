@@ -216,7 +216,8 @@ export default function App() {
                         </Tab.Screen>
                     <Tab.Screen
                         name="Budget"
-                        component={BudgetScreen}
+                        //component={BudgetScreen}
+                        component={WalletNavigator}
                         options={{ title: "Tiết kiệm" }}
                     />
                     <Tab.Screen
