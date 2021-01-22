@@ -82,10 +82,14 @@ export default class RegisterScreen extends Component {
     }
 
     addDefaultCategories = () => {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
         //const userCategoryRef = userRef.ref('Category/');
         categoryRef.on('value', (snapshot) => {
             snapshot.forEach(element => {
-                userRef.child('Category/').push({
+                userRef.child(uid).child('Category/').push({
                     CategoryName: element.toJSON().CategoryName,
                     Icon: element.toJSON().Icon,
                     ParentID: element.toJSON().ParentID,
@@ -99,16 +103,21 @@ export default class RegisterScreen extends Component {
     }
 
     addDefaultWallet = () => {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        
         walletRef.on('value', (snapshot) => {
             snapshot.forEach(element => {
-                userRef.child('Wallet/').push({
+                userRef.child(uid).child('Wallet/').push({
                     color: element.toJSON().color,
                     date: element.toJSON().date,
                     isDefault: element.toJSON().isDefault,
                     money: element.toJSON().money,
                     name: element.toJSON().name,
                 })
-                //userRef.child('Category').push(element);
+
                 //console.log(element);
             });
         });
@@ -120,40 +129,36 @@ export default class RegisterScreen extends Component {
     }
 
     registerUser = () => {
-        // if(this.state.email === '' || this.state.password === '') {
-        //     Alert.alert('Enter details to signup!')
-        // } else {
-        //     this.setState({
-        //         isLoading: true,
-        //     })
-        //     firebase
-        //     .auth()
-        //     .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        //     .then((res) => {
-        //         res.user.updateProfile({
-        //         displayName: this.state.displayName
-        //         }).then(()=>{
-        //             firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
-        //         })
-        //         console.log('User registered successfully!')
-        //         this.setState({
-        //         isLoading: false,
-        //         displayName: '',
-        //         email: '', 
-        //         password: ''
-        //         })
-        //         this.props.navigation.navigate('SignIn')
-        //     })
-        //     .catch(error => this.setState({ errorMessage: error.message }))      
-        // }
-        //this.addDefaultDatabase();
-        console.log(firebase.auth().currentUser.uid);
+        if(this.state.email === '' || this.state.password === '') {
+            Alert.alert('Enter details to signup!')
+        } else {
+            this.setState({
+                isLoading: true,
+            })
+            firebase
+            .auth()
+            .createUserWithEmailAndPassword(this.state.email, this.state.password)
+            .then((res) => {
+                res.user.updateProfile({
+                displayName: this.state.displayName
+                }).then(()=>{
+                    firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
+                    this.addDefaultDatabase();
+                })
+                console.log('User registered successfully!')
+                this.setState({
+                isLoading: false,
+                displayName: '',
+                email: '', 
+                password: ''
+                })
+                this.props.navigation.navigate('SignIn')
+            })
+            .catch(error => this.setState({ errorMessage: error.message }))      
+        }
+        
 
-        // userRef.on('value', (snapshot) => {
-        //     snapshot.forEach(element => {
-        //         console.log(element.key);
-        //     })
-        // })
+        //this.addDefaultWallet();
     }
 
     render() {

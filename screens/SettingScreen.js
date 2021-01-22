@@ -82,6 +82,7 @@ class SettingScreen extends Component {
         this.props.signOut();
         firebase.auth().signOut().then(() => {
             console.log(firebase.auth().currentUser);
+            console.log(this.props.isSignedIn);
         })
         .catch(error => this.setState({ errorMessage: error.message }))
     } 
