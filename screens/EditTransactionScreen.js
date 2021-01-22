@@ -28,7 +28,7 @@ import { rootRef, walletRef, categoryRef, subcategoryRef, userRef } from "../com
 import { CommonActions } from "@react-navigation/native";
 import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
-import { StackRouter } from "react-navigation";
+import { getActiveChildNavigationOptions, StackRouter } from "react-navigation";
 
 export class EditTransactionScreen extends Component {
   
@@ -42,6 +42,10 @@ export class EditTransactionScreen extends Component {
       //defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       fulllist: false,
     };
+  }
+  toDate(datestring) {
+    var parts = datestring.split("/");
+    return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
   }
   toString(date) {
     var day = date.getDate(); //Current Date
@@ -126,21 +130,30 @@ export class EditTransactionScreen extends Component {
       }
     })
     const userCategoryRef = userRef.child(uid).child('Category')
-        userCategoryRef.on("value", (snapshot) => {
-            this.props.updateCategories(snapshot);
-        });
-    // let tempTen = '';
-    // let tempColor = '';
-    // if(this.state.selectedTenVi == '')
-    // {
-    //   walletRef.orderByChild("isDefault").equalTo('true').on('value', (snap) => {
-    //     snap.forEach(element => {
-    //       tempTen = element.toJSON().name;
-    //       tempColor = element.toJSON().color;
-    //   })
-    // })
-    // this.setState({selectedTenVi: tempTen, defaultColor: tempColor});
-    // }
+    userCategoryRef.on("value", (snapshot) => {
+        this.props.updateCategories(snapshot);
+    });
+
+    this.setState({fulllist : true})
+
+    const trans = this.props.selectedWallet.transactionList[this.props.selectedTransaction]
+    this.props.changeSoDu(trans.money);
+    //this.props.changeSoDu("");
+    const categories = this.props.allCategories;
+    const temp = categories.filter(item => item.typeID === trans.category.typeID);
+    this.props.reloadCategory(temp);
+
+    this.props.changeDateMode('Custom');
+    this.props.changeDate(this.toDate(trans.date))
+    this.props.chooseCategory(categories.filter(item => item.key == trans.category.key)[0])
+
+    this.setState({note: trans.note});
+    //this.props.deselectCategory();
+  }
+
+  componentWillUnmount()
+  {
+    
   }
 
   renderCategoryHorizon = () => {
@@ -293,16 +306,6 @@ export class EditTransactionScreen extends Component {
     
     return rows;
   }
-  renderKindSelect = () => {
-    if(this.props.searchText === "") {
-        return (
-            <KindSelect 
-                onPress={(index) => {this.getDataBasedOnType(index); this.props.deselectSub(); this.props.deselectCategory();}}
-                selectedIndex={this.props.selectedType}
-                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
-        );
-    }   return;
-  }
 
   editTransaction = () =>{
     if(!this.props.selectedCategory || !this.props.newSoDu)
@@ -310,12 +313,15 @@ export class EditTransactionScreen extends Component {
       return;
     }
     var wallet = this.props.selectedWallet;
+
+    const tempmoney = this.props.selectedWallet.transactionList[this.props.selectedTransaction].money
+
     let uid = 'none';
     if(firebase.auth().currentUser) {
         uid = firebase.auth().currentUser.uid;
     }
     const userWalletRef = userRef.child(uid).child('Wallet')
-    userWalletRef.child(wallet.key).child("transactionList").push().set({
+    userWalletRef.child(wallet.key).child("transactionList").child(this.props.selectedTransaction).update({
       category: this.props.selectedCategory,
       subCategory: this.props.selectedSub,
       money: this.props.newSoDu,
@@ -356,7 +362,7 @@ export class EditTransactionScreen extends Component {
       }
       const userWalletRef = userRef.child(uid).child('Wallet')
       userWalletRef.child(this.props.selectedWallet.key).update({
-        money: parseInt(this.props.selectedWallet.money)+ parseInt(this.props.newSoDu),
+        money: parseInt(this.props.selectedWallet.money)+ parseInt(this.props.newSoDu)-parseInt(tempmoney),
       });
     }
     else
@@ -367,7 +373,7 @@ export class EditTransactionScreen extends Component {
       }
       const userWalletRef = userRef.child(uid).child('Wallet')
       userWalletRef.child(this.props.selectedWallet.key).update({
-        money: this.props.selectedWallet.money - this.props.newSoDu,
+        money: this.props.selectedWallet.money - this.props.newSoDu + parseInt(tempmoney),
       });
     }
 
@@ -392,7 +398,7 @@ export class EditTransactionScreen extends Component {
 
   render() {
     let rows = this.state.fulllist? this.renderCategoryTable(): this.renderCategoryHorizon();
-    const kindSelect = this.renderKindSelect();
+    //const kindSelect = this.renderKindSelect();
     const subCategoryShow = this.props.selectedCategory.key == ''? <View></View>: 
     <View>
       <View
@@ -411,7 +417,6 @@ export class EditTransactionScreen extends Component {
       <ScreenView style={{ backgroundColor: this.props.selectedWallet?.color }}>
         <TouchableOpacity onPress={()=>{
           //this.props.navigation.goBack()
-          this.props.navigation.navigate('Ví');
           }}>
           <View
             style={{
@@ -461,7 +466,7 @@ export class EditTransactionScreen extends Component {
           </String>
           <TextInput
             maxLength={15}
-            text = {this.props.newSoDu}
+            value = {this.props.newSoDu}
             contextMenuHidden={true}
             placeholder='0'
             style={{
@@ -489,7 +494,6 @@ export class EditTransactionScreen extends Component {
             marginBottom: sizeFactor,
           }}
         >
-          {kindSelect}
           <ScrollView horizontal={true}>
             <CategoryTable rows={rows}/>
           </ScrollView>
@@ -564,11 +568,11 @@ export class EditTransactionScreen extends Component {
             }
             <Space />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
-            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." Input={this.state.note} onChangeText={text=>{this.setState({note: text})}}
+            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." value={this.state.note} onChangeText={text=>{this.setState({note: text})}}
                         ref={input => { this.textInput = input }}/>
         </View>
         <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.editTransaction()}}>
-            Thực hiện giao dịch
+            Lưu thay đổi
         </OutlineButton>
       </ScreenView>
     );
@@ -578,7 +582,7 @@ export class EditTransactionScreen extends Component {
 function mapStateToProps(state) {
   return {
       walletData: state.WalletReducer,
-      selectedTransaction: state.selectedTransaction,
+      selectedTransaction: state.selectedTransactionReducer,
 
       selectedType: state.selectedType,
       allCategories: state.allCategories,

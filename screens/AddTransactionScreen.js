@@ -382,7 +382,7 @@ export class AddTransactionScreen extends Component {
   resetAll = () =>{
     this.props.changeSoDu("");
     this.props.changeDateMode('Today');
-    //this.setState({note: ""});
+    this.setState({note: ""});
     this.props.deselectCategory();
     this.textInput.clear();
     this.textInput2.clear();
@@ -466,7 +466,7 @@ export class AddTransactionScreen extends Component {
           </String>
           <TextInput
             maxLength={15}
-            text = {this.props.newSoDu}
+            value = {this.props.newSoDu}
             contextMenuHidden={true}
             placeholder='0'
             style={{
@@ -569,7 +569,7 @@ export class AddTransactionScreen extends Component {
             }
             <Space />
             <String style={{ fontWeight: "bold" }}>Ghi chú</String>
-            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." Input={this.state.note} onChangeText={text=>{this.setState({note: text})}}
+            <TextInput style={styles.inputMultilineText} multiline={true} placeholder="Vài điều cần ghi lại..." value={this.state.note} onChangeText={text=>{this.setState({note: text})}}
                         ref={input => { this.textInput = input }}/>
         </View>
         <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.addNewTransaction()}}>
