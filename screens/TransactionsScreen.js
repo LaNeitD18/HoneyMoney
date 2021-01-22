@@ -477,14 +477,18 @@ export class TransactionsScreen extends Component {
                             }
                         }
                     }
+
+                    
                     //item to new data
                     var itemdata = {
                         subcategory: category.categoryName,
                         onPress: {},
                         source: findIcon(category.icon),
-                        amount: b? "+" + item.money : "-" + item.moeny,
+                        amount: b? "+" + item.money : "-" + item.money,
                         color: b? colors.greenDark : colors.redDark,
                     }
+
+                    console.log(itemdata)
                     clone.find(i => i.date == d).change += parseInt(itemdata.amount)
 
                     

@@ -11,9 +11,12 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 //redux
 import {connect} from 'react-redux';
-import { changeType, updateCategories, reloadCategory, 
+import { UpdateWalletAction, SelectWallet,
+  changeType, updateCategories, reloadCategory, 
   changeSearchText, chooseCategory, changeName, getSubCategories, DeselectCategoryAction, SelectSubAction, DeselectSubAction, UpdateSubAction, SetShowDatePicker, ChangeSoDuTransAction, ChangeDateModeaTransAction, ChangeDateTransAction
 } from '../actions/index';
+
+//import {UpdateWalletAction, SelectWallet } from "../actions";
 
 //firebase
 import * as firebase from "firebase";
@@ -109,6 +112,13 @@ export class AddTransactionScreen extends Component {
     }
   }
   componentDidMount(){
+    walletRef.on('value',(snap)=>{this.props.Update(snap)});
+    this.props.walletData.forEach((element) => {
+      if (element.isDefault == "true") {
+        if(this.props.selectedWallet != element)
+          this.props.SelectWallet(element)
+      }
+    })
     // let tempTen = '';
     // let tempColor = '';
     // if(this.state.selectedTenVi == '')
@@ -297,16 +307,57 @@ export class AddTransactionScreen extends Component {
       date: this.toString(this.props.date),
       note: this.state.note,
     });
+    var category = this.props.selectedCategory
+
+    var b;
+
+    if(category.typeID == "002")
+    {
+        b = false;
+    }
+    else
+    {
+        if(category.typeID == "003")
+        {
+            b = true;
+        }
+        else
+        {
+            if(category.categoryName == "Đi vay" || category.categoryName == "Thu nợ")
+            {
+                b = true;
+            }
+            else
+            {
+                b = false;
+            }
+        }
+    }
+    if(b)
+    {
+      walletRef.child(this.props.selectedWallet.key).update({
+        money: parseInt(this.props.selectedWallet.money)+ parseInt(this.props.newSoDu),
+      });
+    }
+    else
+    {
+      walletRef.child(this.props.selectedWallet.key).update({
+        money: this.props.selectedWallet.money - this.props.newSoDu,
+      });
+    }
+
     this.resetAll();
   }
 
   resetAll = () =>{
     this.props.changeSoDu("");
     this.props.changeDateMode('Today');
-    this.setState({note: ""});
+    //this.setState({note: ""});
     this.props.deselectCategory();
     this.textInput.clear();
     this.textInput2.clear();
+    walletRef.on('value',(snap)=>{this.props.Update(snap)});
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -330,7 +381,7 @@ export class AddTransactionScreen extends Component {
       <ScreenView style={{ backgroundColor: this.props.selectedWallet?.color }}>
         <TouchableOpacity onPress={()=>{
           //this.props.navigation.goBack()
-          this.props.navigation.navigate('WalletScreen');2
+          this.props.navigation.navigate('Ví');
           }}>
           <View
             style={{
@@ -496,6 +547,8 @@ export class AddTransactionScreen extends Component {
 
 function mapStateToProps(state) {
   return {
+      walletData: state.WalletReducer,
+
       selectedType: state.selectedType,
       allCategories: state.allCategories,
       renderedCategories: state.renderedCategories,
@@ -515,6 +568,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+      Update: (snap) => {
+        dispatch(UpdateWalletAction(snap));
+      },
+      SelectWallet: (value) => {
+        dispatch(SelectWallet(value));
+      },
+
       changeType: (selectedType) => { dispatch(changeType(selectedType))},
       updateCategories: (categories) => { dispatch(updateCategories(categories)) }, 
       reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
