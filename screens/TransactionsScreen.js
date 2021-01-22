@@ -77,13 +77,34 @@ export class TransactionsScreen extends Component {
         super(props);
         this.state = {
             transactionData: [],
+            monthlist: [],
+            offset: 0,
+            firstscroll: 0,
         };
     }
     componentDidMount() {
         walletRef.on("value", (snap) => {
             this.props.Update(snap);
         });
+        
+        //setTimeout(()=>{this.setState({monthlist: this.getMonthList()})}, 1500)
     }
+
+    componentDidUpdate(){
+        // if(this.state.firstscroll == 0)
+        // {
+        //     var month = this.getMonthList()
+        //     if(month.length > 0)
+        //     {
+        //         var today = new Date()
+        //         var x = today.getMonth() + 1 + today.getFullYear()*12
+        //         var get = month[0].index
+        //         //this.Carousel.scrollref.scrollTo({y: ((x-get))*(Math.ceil(windowWidth - 2 * sizeFactor)) + 1, animated: false})
+        //         this.setState({firstscroll: 1})
+        //     }
+        // }
+    }
+
     toDate(datestring) {
         var parts = datestring.split("/");
         return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
@@ -91,7 +112,7 @@ export class TransactionsScreen extends Component {
     getDataAll() {
         var temp = [];
         this.props.walletData.forEach((element) => {
-            if (element.transactionList != undefined && element.isDefault == "true") {
+            if (element.transactionList !== undefined && element.isDefault == "true") {
                 Object.keys(element.transactionList).forEach((transaction) => {
                     //console.log(transaction)
                     var tempInfo = {
@@ -488,7 +509,6 @@ export class TransactionsScreen extends Component {
                         color: b? colors.greenDark : colors.redDark,
                     }
 
-                    console.log(itemdata)
                     clone.find(i => i.date == d).change += parseInt(itemdata.amount)
 
                     
@@ -500,6 +520,8 @@ export class TransactionsScreen extends Component {
     getTransactionFullListData(offsetIndex)
     {
         var x = Math.ceil(offsetIndex) / Math.ceil(windowWidth - 2 * sizeFactor);
+        if(this.getMonthList().length == 0)
+        return []
         if(Math.ceil(offsetIndex) % Math.ceil(windowWidth - 2 * sizeFactor) == 0)
         {
             var monthcode = this.getMonthList()[x].index
@@ -510,14 +532,16 @@ export class TransactionsScreen extends Component {
                 m = 12;
                 y = y-1;
             }
-            this.setState({
-                transactionData: this.mergeDataByDate(this.getDataInMonth(m, y))
-            })
+            // this.setState({
+            //     transactionData: this.mergeDataByDate(this.getDataInMonth(m, y))
+            // })
+            return this.mergeDataByDate(this.getDataInMonth(m,y));
         }
+        return []
     }
 
     render() {
-        const month = this.getMonthList();
+        //const month = this.getMonthList();
         return (
             <ScreenView>
                 <Title>Lịch sử giao dịch </Title>
@@ -525,12 +549,13 @@ export class TransactionsScreen extends Component {
                     //scrollref={(ref)=>this.Carousel = ref}
                     ref={(ref) => {this.Carousel = ref}}
                     onScroll = {(event)=>{
-                        this.getTransactionFullListData(event.nativeEvent.contentOffset.x)
+                        this.setState({offset : event.nativeEvent.contentOffset.x})
+                        //this.getTransactionFullListData(event.nativeEvent.contentOffset.x)
                     }}
                 >
                     <FlatList
                         ref={(ref) => { this.flatListRef = ref; }}
-                        data={month}
+                        data={this.getMonthList()}
                         scrollEnabled={false}
                         horizontal={true}
                         keyExtractor={item => item.index}
@@ -549,7 +574,7 @@ export class TransactionsScreen extends Component {
                         }}
                         ></FlatList>
                 </SimpleCarousel>
-                <TransactionsFullList data={this.state.transactionData}/>
+                <TransactionsFullList data={this.getTransactionFullListData(this.state.offset)}/>
             </ScreenView>
         );
     }
