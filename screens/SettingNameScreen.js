@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Platform,
     TextInput,
+    Alert
 } from "react-native";
 import {
     String,
@@ -64,7 +65,38 @@ import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 
 export default class SettingNameScreen extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            userName: firebase.auth().currentUser.displayName
+        }
+    }
+
+    editUserInfo = () => {
+        firebase.auth().currentUser.updateProfile({
+            displayName: this.state.userName
+        }).then(function() {
+            //console.log("au " + firebase.auth().currentUser.displayName);
+            firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile")
+                .update({name : firebase.auth().currentUser.displayName});
+            Alert.alert("Thông báo", "Bạn đã cập nhật thông tin thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => console.log("OK pressed")
+                    }
+                ], {cancelable: false}
+            );
+            this.props.navigation.goBack();
+        }).catch(function(error) {
+
+        });
+    }
+
     render() {
+        const email = firebase.auth().currentUser.email;
+
         return (
             <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 10 }}>
                 <TouchableOpacity>
@@ -101,6 +133,8 @@ export default class SettingNameScreen extends Component {
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
                         keyboardType="email-address"
+                        disabled={true}
+                        value={email}
                     />
                     <HomoTextInput
                         label="Họ Và Tên"
@@ -110,10 +144,11 @@ export default class SettingNameScreen extends Component {
                             name: "account-circle",
                             color: colors.gray,
                         }}
-                        secureTextEntry={true}
                         textContentType="name"
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
+                        value={this.state.userName}
+                        onChangeText={(text) => {this.setState({ userName: text})}}
                     />
                 </View>
                 <View
@@ -123,7 +158,7 @@ export default class SettingNameScreen extends Component {
                         marginVertical: sizeFactor,
                     }}
                 >
-                    <Button1>Xác nhận</Button1>
+                    <Button1 onPress={() => this.editUserInfo()}>Xác nhận</Button1>
                 </View>
             </ScreenView>
         );
