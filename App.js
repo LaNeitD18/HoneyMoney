@@ -215,7 +215,7 @@ class Main extends Component {
                                         size={50}
                                         title="Chuyển ví"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletTransferScreen"})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletScreen"})}}>
                                             <Icon
                                                 name="wallet"
                                                 type="material-community"
@@ -271,7 +271,7 @@ function DisplayedScreens ()  {
                     <Stack.Screen
                                     options={({ navigation, route }) => ({
                                         headerTitle: getHeaderTitle(route),
-                                        headerShown: true,
+                                        headerShown: false,
                                         
                                         headerRight: () => (
                                             <View

@@ -28,6 +28,8 @@ import {
   windowWidth,
   AddWalletButton,
   Space,
+  NormalCard,
+  LooseDivider,
 } from "../components/Basic";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import SignedNumber from '../components/SignedNumber'
@@ -66,36 +68,43 @@ export class WalletScreen extends Component {
     const userWalletRef = userRef.child(uid).child('Wallet')
     userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
   }
+  tinhtong()
+  {
+    var i = 0
+    this.props.walletData.forEach(
+      item=>{
+        i += parseInt(item.money)
+      }
+    )
+    return i;
+  }
   render() {
     return (
       <ScreenView>
-        <Title>Tổng quan</Title>
-            <View style={{ paddingHorizontal: sizeFactor }}>
-                <Row>
-                    <HeadlessCard
-                        color="white"
-                        icon="wallet"
-                        width={(windowWidth - sizeFactor * 3) / 2}
-                        iconColor={colors.blue}
+        <View style={{}}>
+                    <NormalCard
+                        style={{
+                            alignItems: "stretch",
+                            marginBottom: sizeFactor * 2,
+                        }}
                     >
-                        <View>
-                            <Heading2>Số dư</Heading2>
-                            <SignedNumber>5,000,000</SignedNumber>
+                        <View style={{ alignItems: "center" }}>
+                            <String
+                                style={{
+                                    fontSize: sizeFactor,
+                                    fontWeight: "bold",
+                                    color: colors.gray,
+                                }}
+                            >
+                                Số dư toàn bộ ví
+                            </String>
                         </View>
-                    </HeadlessCard>
-                    <HeadlessCard
-                        color="white"
-                        width={(windowWidth - sizeFactor * 3) / 2}
-                        icon="wallet"
-                        iconColor={colors.blue}
-                    >
-                        <View>
-                            <Heading2>Tháng này</Heading2>
-                            <SignedNumber>-250,000</SignedNumber>
+                        <LooseDivider />
+                        <View style={{ alignItems: "center" }}>
+                            <String style={{ fontSize: sizeFactor * 2 }}>{toMoneyString(this.tinhtong())}</String>
                         </View>
-                    </HeadlessCard>
-                </Row>
-            </View>
+                    </NormalCard>
+                </View>
         <Row>
             <Title>Quản lí ví</Title>
             <View

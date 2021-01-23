@@ -401,6 +401,7 @@ export class EditTransactionScreen extends Component {
   }
 
   render() {
+
     let rows = this.state.fulllist? this.renderCategoryTable(): this.renderCategoryHorizon();
     //const kindSelect = this.renderKindSelect();
     const subCategoryShow = this.props.selectedCategory.key == ''? <View></View>: 
