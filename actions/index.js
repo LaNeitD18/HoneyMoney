@@ -280,4 +280,13 @@ export function workWithSubCategory() {
 }
 //#endregion
 
+//#region userName
+export function editUserName(name) {
+    return {
+        type: 'EDIT_NAME',
+        name: name
+    }
+}
+//#endregion
+
 //#endregion

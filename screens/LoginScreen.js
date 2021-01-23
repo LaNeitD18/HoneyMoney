@@ -202,7 +202,7 @@ class LoginScreen extends Component {
 
 function mapStateToProps(state) {
     return {
-        isSignedIn: state.isSignedIn,
+        
     };
 }
 

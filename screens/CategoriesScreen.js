@@ -275,7 +275,6 @@ function mapStateToProps(state) {
         allCategories: state.allCategories,
         renderedCategories: state.renderedCategories,
         searchText: state.searchText,
-        isSignedIn: state.isSignedIn,
         chosenCategory: state.chosenCategory,
     };
 }

@@ -24,6 +24,7 @@ import selectedWalletReducer from './selectedWalletReducer';
 import selectedTransactionReducer from './selectedTransactionReducer';
 import selectedIconReducer from './selectedIconReducer';
 import isWorkingWithSubReducer from './isWorkingWithSubReducer';
+import userNameReducer from './userNameReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -54,6 +55,7 @@ const allReducers = combineReducers({
     isSignedIn: isSignedInReducer,
     selectedIcon: selectedIconReducer,
     isWorkingWithSub: isWorkingWithSubReducer,
+    userName: userNameReducer
 })
 
 export default allReducers;

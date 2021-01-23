@@ -60,11 +60,11 @@ import * as firebase from "firebase";
 import { categoryRef } from "../components/DataConnect";
 
 import { findIcon } from "../components/Image";
-import { changeType, changeName, openDialog } from "../actions/index";
+import { changeType, changeName, openDialog, signIn, editUserName } from "../actions/index";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 
-export default class SettingNameScreen extends Component {
+class SettingNameScreen extends Component {
     constructor() {
         super();
 
@@ -87,11 +87,16 @@ export default class SettingNameScreen extends Component {
         });
         
         if(successful) {
+            this.props.editUserName(this.state.userName);
             Alert.alert("Thông báo", "Bạn đã cập nhật thông tin thành công", 
                 [
                     {
                         text: "OK",
-                        onPress: () => {console.log("OK pressed"); this.props.navigation.navigate('SettingScreen')}
+                        onPress: async() => {
+                            await firebase.auth().currentUser.reload();
+                            
+                            this.props.navigation.goBack();
+                        }
                     }
                 ], {cancelable: false}
             );
@@ -168,3 +173,17 @@ export default class SettingNameScreen extends Component {
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        editUserName: (name) => { dispatch(editUserName(name))}
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingNameScreen);
