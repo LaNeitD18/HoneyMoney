@@ -110,6 +110,8 @@ export default class RegisterScreen extends Component {
         
         walletRef.on('value', (snapshot) => {
             snapshot.forEach(element => {
+                //const color = typeof(element.toJSON().color) === 'undefined' ? "#ffff" : element.toJSON().color;  
+
                 userRef.child(uid).child('Wallet/').push({
                     color: element.toJSON().color,
                     date: element.toJSON().date,

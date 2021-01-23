@@ -21,6 +21,7 @@ import sodu_transReducer from './sodu_transReducer';
 import datemode_transReducer from './datemode_transReducer';
 import date_transReducer from './date_transReducer';
 import selectedWalletReducer from './selectedWalletReducer';
+import selectedIconReducer from './selectedIconReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -48,6 +49,7 @@ const allReducers = combineReducers({
     isVisibleIconDialog: isVisibleIconDialogReducer,
     editableButtonGroup: editableButtonGroupReducer,
     isSignedIn: isSignedInReducer,
+    selectedIcon: selectedIconReducer
 })
 
 export default allReducers;

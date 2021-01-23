@@ -52,11 +52,62 @@ import {
     IconCategory,
 } from "./Basic";
 
-import { closeIconDialog } from '../actions/index';
+import { closeIconDialog, selectIcon } from '../actions/index';
+import IconImage from './Image';
+
+
 
 class ChooseIconDialog extends Component {
     constructor() {
         super();
+
+        // this.state = {
+        //     selectedIndex: 0
+        // }
+    }
+
+    selectIcon = (index) => {
+        console.log("in " + index);
+        this.props.selectIcon(index);
+    }
+
+    IconRows = () => {
+        // them su kien click chon icon se thay doi j do bla bla
+        // ranh thi them het icon trong asset vo Image.js
+        const numberOfRows = Math.ceil((IconImage.length - 2) / 4);
+        let rows = [];
+
+        for(let i=0; i<numberOfRows; i++) {
+            let row = [];
+            for (let j = 0; j < 4; j++) {
+                const index = 4 * i + j;
+                if (index < IconImage.length - 2) {
+                    const iconPath = IconImage[index].iconPath;
+                    const isSelected = this.props.selectedIcon === index ? true : false;
+                    row.push(
+                        <IconCategory 
+                            choosed={isSelected} 
+                            source={iconPath}
+                            onPress={() => {this.selectIcon(index)}}    
+                        />
+                    );
+                    //console.log("dia " + this.props.selectedIcon);
+                }
+            }
+            rows.push(
+                <View style={{flexDirection: "row", marginRight: -sizeFactor / 2, marginBottom: sizeFactor / 2 }}>
+                    {row}
+                </View>
+            );
+        }
+        return rows;
+    }
+
+    closeDialog = () => {
+        const iconIndex = getIndex(this.props.chosenCategory.icon);
+        this.props.selectIcon(iconIndex);
+
+        this.props.closeIconDialog();
     }
 
     render() {
@@ -99,47 +150,12 @@ class ChooseIconDialog extends Component {
                             paddingLeft: sizeFactor / 4,
                         }}
                     >
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                marginRight: -sizeFactor / 2,
-                                marginBottom: sizeFactor / 2,
-                            }}
-                        >
-                            <IconCategory
-                                choosed={true}
-                                source={require("../assets/categories/general.png")}
-                            />
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                marginRight: -sizeFactor / 2,
-                                marginBottom: sizeFactor / 2,
-                            }}
-                        >
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                marginRight: -sizeFactor / 2,
-                                marginBottom: sizeFactor / 2,
-                            }}
-                        >
-                            <IconCategory source={require("../assets/categories/tuthien.png")} />
-                        </View>
+                        {this.IconRows()}
                     </View>
                 </ScrollView>
                 <Space />
                 <Space />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.closeIconDialog()}>
                     <String style={{ color: colors.blue }}>Đồng ý</String>
                 </TouchableOpacity>
             </Overlay>
@@ -150,12 +166,14 @@ class ChooseIconDialog extends Component {
 function mapStateToProps(state) {
     return {
         isVisibleIconDialog: state.isVisibleIconDialog,
+        selectedIcon: state.selectedIcon,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         closeIconDialog: () => { dispatch(closeIconDialog())},
+        selectIcon: (index) => { dispatch(selectIcon(index))},
     };
 }
 

@@ -905,9 +905,9 @@ export class SmallCategory extends Component {
 
 export class IconCategory extends Component {
     render() {
-        var choosed = this.props.choosed;
+        //var choosed = this.props.choosed;
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.props.onPress}>
                 <View
                     style={{
                         height: (windowWidth - sizeFactor * 9) / 4,
