@@ -249,6 +249,7 @@ const DisplayedScreens = () => {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{headerShown: false}}>
                         <Stack.Screen name="Main" component={Main}/>
+                        <Stack.Screen name="Action" component={WalletNavigator}/>
                 </Stack.Navigator>
             </NavigationContainer>
         );
@@ -284,11 +285,11 @@ class TransactionNavigator extends Component{
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        isSignedIn: state.isSignedIn,
-    };
-}
+// function mapStateToProps(state) {
+//     return {
+//         isSignedIn: state.isSignedIn,
+//     };
+// }
 
 // function mapDispatchToProps(dispatch) {
 //     return {
@@ -296,7 +297,7 @@ function mapStateToProps(state) {
 //     };
 // }
 
-const ConnectedRoot = connect(mapStateToProps)(RootContainer);
+//const ConnectedRoot = connect(mapStateToProps)(RootContainer);
 
 export default function App() {
     YellowBox.ignoreWarnings(["Animated: `useNativeDriver`"]);
