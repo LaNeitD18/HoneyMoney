@@ -39,24 +39,24 @@ class CategoryNavigator extends Component {
                     options={{
                         headerShown: true,
                         title: isEditing ? "Sửa danh mục" : "Xem danh mục",
-                        headerRight: () => (
-                            <View style={{ flexDirection: "row", marginRight: sizeFactor }}>
-                                <TouchableOpacity onPress={this.deleteCategory}>
-                                    <Icon
-                                    name="delete-outline"
-                                    type="material-community"
-                                    color={colors.red}
-                                    size={sizeFactor * 1.75}
-                                    style={{ marginRight: sizeFactor }}/>
-                                </TouchableOpacity>
-                                <Icon
-                                    name={isEditing ? "eye-outline" : "pencil-outline"}
-                                    type="material-community"
-                                    color={colors.gray}
-                                    size={sizeFactor * 1.75}
-                                />
-                            </View>
-                        ),
+                        // headerRight: () => (
+                        //     <View style={{ flexDirection: "row", marginRight: sizeFactor }}>
+                        //         <TouchableOpacity onPress={this.deleteCategory}>
+                        //             <Icon
+                        //             name="delete-outline"
+                        //             type="material-community"
+                        //             color={colors.red}
+                        //             size={sizeFactor * 1.75}
+                        //             style={{ marginRight: sizeFactor }}/>
+                        //         </TouchableOpacity>
+                        //         <Icon
+                        //             name={isEditing ? "eye-outline" : "pencil-outline"}
+                        //             type="material-community"
+                        //             color={colors.gray}
+                        //             size={sizeFactor * 1.75}
+                        //         />
+                        //     </View>
+                        // ),
                     }}
                 />
             </Stack.Navigator>

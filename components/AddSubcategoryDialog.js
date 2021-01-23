@@ -149,6 +149,7 @@ function mapStateToProps(state) {
     return {
         isVisible: state.isVisible,
         subCategories: state.subCategories,
+        selectedSub: state.selectedSubReducer
     };
 }
 

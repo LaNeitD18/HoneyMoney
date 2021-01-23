@@ -266,4 +266,18 @@ export function selectIcon(index) {
 }
 //#endregion
 
+//#region isWorkingWithSub
+export function workWithCategory() {
+    return {
+        type: 'WORKING_CATE',
+    }
+}
+
+export function workWithSubCategory() {
+    return {
+        type: 'WORKING_SUBCATE',
+    }
+}
+//#endregion
+
 //#endregion

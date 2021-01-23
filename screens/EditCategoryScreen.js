@@ -195,12 +195,10 @@ class EditCategoryScreen extends Component {
                         placeholder="Danh mục của tôi"
                         value={this.props.categoryName}
                         onChangeText={(text) => this.props.changeName(text)}
-                        editable={false}
                     />
                     <Space />
                     <String style={{ fontWeight: "bold" }}>Mục đích</String>
                     <AddWalletKindSelect
-                        disabled={this.props.editableButtonGroup}
                         selectedIndex={this.props.selectedType}
                         buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
                         onPress={(index) => this.props.changeType(index)}
@@ -211,34 +209,7 @@ class EditCategoryScreen extends Component {
                     {subCategoriesView}
 
                     <Swipeout style={{ marginBottom: sizeFactor / 2 }} {...swipeSettings}>
-                        <TouchableOpacity onPress={() => this.props.openDialog()}>
-                            <View
-                                style={{
-                                    backgroundColor: "white",
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Avatar
-                                    size={sizeFactor * 3}
-                                    avatarStyle={{
-                                        width: sizeFactor * 2.5,
-                                        height: sizeFactor * 2.5,
-                                        marginTop: sizeFactor * 0.25,
-                                        marginLeft: sizeFactor * 0.25,
-                                    }}
-                                    source={require("../assets/categories/tuthien.png")}
-                                ></Avatar>
-                                <String
-                                    style={{
-                                        marginLeft: sizeFactor / 2,
-                                        marginTop: sizeFactor * 0.75,
-                                    }}
-                                >
-                                    Từ thiện
-                                </String>
-                            </View>
-                        </TouchableOpacity>
+                        {this.renderSubCategoriesView()}
                     </Swipeout>
                     <TouchableOpacity onPress={() => this.props.openDialog()}>
                         <View
@@ -277,6 +248,15 @@ class EditCategoryScreen extends Component {
                     onPress={this.updateCategory}
                 >
                     Lưu thay đổi
+                </Button>
+                <Space />
+                <Button
+                    color="white"
+                    backgroundColor={colors.blue}
+                    style={{ marginHorizontal: sizeFactor }}
+                    onPress={this.deleteCategory}
+                >
+                    Xóa danh mục
                 </Button>
                 <AddSubcategoryDialog></AddSubcategoryDialog>
             </ScreenView>

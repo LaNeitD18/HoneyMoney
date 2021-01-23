@@ -72,7 +72,7 @@ class ChooseIconDialog extends Component {
     }
 
     IconRows = () => {
-        // them su kien click chon icon se thay doi j do bla bla
+        // dang phan van chuyen chon selectedIcon xong thi icon cua cate va cua subcate doi tum lum, lq chon icon cho cate va subcate
         // ranh thi them het icon trong asset vo Image.js
         const numberOfRows = Math.ceil((IconImage.length - 2) / 4);
         let rows = [];

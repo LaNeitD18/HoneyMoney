@@ -47,6 +47,7 @@ import {
     reloadAddedSubCategories,
     showType,
     selectIcon,
+    workWithCategory,
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -115,6 +116,7 @@ class CategoriesScreen extends React.Component {
 
     chooseCategory = async(category) => {
         await this.props.chooseCategory(category);
+        await this.props.workWithCategory();
 
         const iconIndex = getIndex(this.props.chosenCategory.icon);
         this.props.selectIcon(iconIndex);
@@ -290,6 +292,7 @@ function mapDispatchToProps(dispatch) {
         reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories()) },
         showType: (selectedType) => { dispatch(showType(selectedType)) },
         selectIcon: (index) => { dispatch(selectIcon(index))},
+        workWithCategory: () => { dispatch(workWithCategory())},
     }
 }
 
