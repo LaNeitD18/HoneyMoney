@@ -84,6 +84,18 @@ export class TransactionsScreen extends Component {
         };
     }
     componentWillMount(){
+        // let uid = 'none';
+        // if(firebase.auth().currentUser) {
+        //     uid = firebase.auth().currentUser.uid;
+        // }
+        // const userWalletRef = userRef.child(uid).child('Wallet')
+        // userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
+        // const userCategoryRef = userRef.child(uid).child('Category')
+        // userCategoryRef.on("value", (snapshot) => {
+        //     this.props.updateCategories(snapshot);
+        // });
+    }
+    componentDidMount() {
         let uid = 'none';
         if(firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
@@ -94,15 +106,6 @@ export class TransactionsScreen extends Component {
         userCategoryRef.on("value", (snapshot) => {
             this.props.updateCategories(snapshot);
         });
-    }
-    componentDidMount() {
-        let uid = 'none';
-        if(firebase.auth().currentUser) {
-            uid = firebase.auth().currentUser.uid;
-        }
-        const userWalletRef = userRef.child(uid).child('Wallet')
-        userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
-        
 
         //setTimeout(()=>{this.setState({monthlist: this.getMonthList()})}, 1500)
     }
@@ -257,24 +260,26 @@ export class TransactionsScreen extends Component {
             {
                 var category = {}
 
-                let uid = 'none';
-                if(firebase.auth().currentUser) {
-                    uid = firebase.auth().currentUser.uid;
-                }
-                const userCategoryRef = userRef.child(uid).child('Category')
+                // let uid = 'none';
+                // if(firebase.auth().currentUser) {
+                //     uid = firebase.auth().currentUser.uid;
+                // }
+                // const userCategoryRef = userRef.child(uid).child('Category')
 
-                userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                // userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
 
-                    snapshot.forEach(element => {
-                        category = {
-                            key: element.key,
-                            categoryName: element.toJSON().CategoryName,
-                            icon: element.toJSON().Icon,
-                            parentID: element.toJSON().ParentID,
-                            typeID: element.toJSON().TypeID
-                        }
-                    });
-                });
+                //     snapshot.forEach(element => {
+                //         category = {
+                //             key: element.key,
+                //             categoryName: element.toJSON().CategoryName,
+                //             icon: element.toJSON().Icon,
+                //             parentID: element.toJSON().ParentID,
+                //             typeID: element.toJSON().TypeID
+                //         }
+                //     });
+                // });
+                if(this.props.allCategories.filter(citem => citem.key == item.category).length > 0)
+                    category = this.props.allCategories.filter(citem => citem.key == item.category)[0]
 
                 var b;
 
@@ -620,6 +625,7 @@ const mapStateToProps = (state) => {
     return {
         walletData: state.WalletReducer,
         //selectedWallet: state.selectedWalletReducer,
+        allCategories: state.allCategories,
     };
 };
 
