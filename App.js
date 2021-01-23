@@ -157,7 +157,7 @@ class Main extends Component {
             >
                 <Tab.Screen
                     name="Transactions"
-                    component={TransactionNavigator}
+                    component={TransactionsScreen}
                     options={{ title: "Giao dịch" }}
                 />
 
@@ -253,7 +253,7 @@ class Main extends Component {
                 />
                 <Tab.Screen
                     name="Settings"
-                    component={SettingScreensNavigator}
+                    component={SettingScreen}
                     options={{ title: "Cài đặt" }}
                 />
             </Tab.Navigator>
@@ -311,7 +311,36 @@ function DisplayedScreens ()  {
                                     component={Main}
                                 />
                         <Stack.Screen name="Action" component={WalletNavigator}/>
-                        <Stack.Screen name="Wallet" component={WalletScreen}/>
+                        <Stack.Screen name="Ví" component={WalletScreen}/>
+                        <Stack.Screen
+                            name="WalletTransferScreen"
+                            component={WalletTransferScreen}
+                            options={{ headerShown: true, title: "Chuyển tiền qua ví" }}
+                        />
+                        <Stack.Screen
+                            name="EditTransaction"
+                            component={EditTransactionScreen}
+                            options={{ headerShown: true, title: "Chỉnh sửa giao dịch" }}
+                        />
+                        <Stack.Screen
+                            name="SettingNameScreen"
+                            component={SettingNameScreen}
+                            options={{ headerShown: true, title: "" }}
+                        />
+                        <Stack.Screen
+                            name="SettingPasswordScreen" 
+                            component={SettingPasswordScreen} 
+                            options={{headerShown: true, title: ""}}/>
+                        <Stack.Screen
+                            name="SettingAlertScreen"
+                            component={SettingAlertScreen}
+                            options={{ headerShown: true, title: "" }}
+                        />
+                        <Stack.Screen
+                            name="CategoryNavigator"
+                            component={CategoryNavigator}
+                            options={{ headerShown: true, title: "" }}
+                        />
                 </Stack.Navigator>
             </NavigationContainer>
         );

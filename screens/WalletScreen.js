@@ -132,7 +132,7 @@ export class WalletScreen extends Component {
               }
             }}
             onPressEdit={()=>{this.props.SelectWallet(item); this.props.navigation.navigate({name: 'EditWalletScreen'})}}
-            onPressSuDung={()=>{this.props.SelectWallet(item); this.props.navigation.navigate({name: 'AddTransactionScreen'})}}
+            onPressSuDung={()=>{this.props.SelectWallet(item); this.props.navigation.navigate({name: 'WalletTransferScreen'})}}
           >
             {toMoneyString(item.money)}
           </Wallet>)}}>
