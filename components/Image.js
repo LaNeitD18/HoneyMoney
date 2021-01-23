@@ -54,4 +54,15 @@ export const findIcon = (text) => {
     return temp;
 }
 
+export const getIndex = (icon) => {
+    let index = -1;
+    let length = IconImage.length;
+    for(let i=0; i < length; i++) {
+        if(icon === IconImage[i].type) {
+            index = i;
+        }
+    }
+    return index;
+}
+
 export default IconImage;

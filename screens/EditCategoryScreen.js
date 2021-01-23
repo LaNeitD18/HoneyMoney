@@ -54,8 +54,8 @@ import Swipeout from "react-native-swipeout";
 import * as firebase from "firebase";
 import { categoryRef } from "../components/DataConnect";
 
-import { findIcon } from '../components/Image';
-import { changeType, changeName, openDialog, openIconDialog } from '../actions/index';
+import IconImage, { findIcon, getIndex } from '../components/Image';
+import { changeType, changeName, openDialog, openIconDialog, selectIcon } from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 import ChooseIconDialog from '../components/ChooseIconDialog'
 
@@ -157,11 +157,11 @@ class EditCategoryScreen extends Component {
         // console.log("a ");
         // console.log(this.props.addedSubCategories);
 
-        const iconPath = findIcon(this.props.chosenCategory.icon);
+        const iconPath = IconImage[this.props.selectedIcon].iconPath;
 
         return (
             <ScreenView>
-                <ChooseIconDialog />
+                <ChooseIconDialog selectedIndex={this.props.selectedIcon}/>
                 <View
                     style={{
                         justifyContent: "center",
@@ -172,7 +172,7 @@ class EditCategoryScreen extends Component {
                     <Space />
                     <Space />
                     <Space />
-                    <TouchableOpacity onPress={this.props.openIconDialog}>
+                    <TouchableOpacity onPress={() => { this.props.openIconDialog()}}>
                         <Avatar
                             size={sizeFactor * 6}
                             avatarStyle={{
@@ -294,6 +294,7 @@ function mapStateToProps(state) {
         isVisible: state.isVisible,
         addedSubCategories: state.addedSubCategories,
         editableButtonGroup: state.editableButtonGroup,
+        selectedIcon: state.selectedIcon
     };
 }
 
@@ -303,6 +304,7 @@ function mapDispatchToProps(dispatch) {
         changeName: (text) => { dispatch(changeName(text))},
         openDialog: () => { dispatch(openDialog())},
         openIconDialog: () => { dispatch(openIconDialog())},
+        selectIcon: (index) => { dispatch(selectIcon(index))}
     };
 }
 

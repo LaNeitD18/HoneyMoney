@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, LogBox, YellowBox } from "react-native";
 import WalletScreen from "./screens/WalletScreen";
 import CategoriesScreen from "./screens/CategoriesScreen";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Redux
 import { createStore } from "redux";
@@ -77,6 +78,7 @@ import SettingScreensNavigator from "./screens/SettingScreensNavigator";
 import * as firebase from "firebase";
 import { connect } from "react-redux";
 import EditTransactionScreen from "./screens/EditTransactionScreen";
+import { signIn, signOut } from "./actions";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -239,40 +241,26 @@ class Main extends Component {
     }
 }
 
-class RootContainer extends Component {
-    constructor() {
-        super();
-    }
+const DisplayedScreens = () => {
+    const [user, loading, error] = useAuthState(firebase.auth());
 
-    render() {
+    if(user) {
         return (
             <NavigationContainer>
-                    {/* <Tab.Navigator tabBarOptions={{ activeTintColor: 'blue' }}>
-                    <Tab.Screen name="Danh mục" component={CategoryNavigator} options={{tittle: 'Categories'}}/>
-                    <Tab.Screen name="AddTrans" component={AddTransactionScreen} options={{tittle: 'Thêm giao dịch'}}/>
-                    <Tab.Screen name="AddWallet" component={AddWalletScreen} options={{tittle: 'Thêm ví'}}/>
-                    </Tab.Navigator> */}
-                    <Stack.Navigator screenOptions={{headerShown: false}}>
-                        {/* <Stack.Screen name="SignIn" component={LoginScreen}/>
-                        <Stack.Screen name="SignUp" component={RegisterScreen}/> */}
-                        
-                        {this.props.isSignedIn === false ? (
-                            <>
-                                <Stack.Screen name="SignIn" component={LoginScreen}/>
-                                <Stack.Screen name="SignUp" component={RegisterScreen}/>
-                            </>
-                        ) : (
-                        // User is signed in
-                        <>
-                            <Stack.Screen name="Main" component={Main}/>
-                            <Stack.Screen name="Action" component={WalletNavigator}/>
-                        </>
-                        )}
-                    </Stack.Navigator>
-                    
-                </NavigationContainer>
+                <Stack.Navigator screenOptions={{headerShown: false}}>
+                        <Stack.Screen name="Main" component={Main}/>
+                </Stack.Navigator>
+            </NavigationContainer>
         );
     }
+    return (
+        <NavigationContainer>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="SignIn" component={LoginScreen}/>
+                <Stack.Screen name="SignUp" component={RegisterScreen}/>
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
 const TransactionStack = createStackNavigator();
@@ -317,7 +305,7 @@ export default function App() {
 
     return (
         <Provider store={store}>
-            <ConnectedRoot/>
+            <DisplayedScreens/>
         </Provider>
     );
 }

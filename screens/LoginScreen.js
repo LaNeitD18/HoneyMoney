@@ -11,7 +11,8 @@ import {
     Platform,
     TextInput,
     ImageBackground,
-    Alert
+    Alert, 
+    AsyncStorage
 } from "react-native";
 import {
     String,
@@ -82,30 +83,30 @@ class LoginScreen extends Component {
 
     userLogin = () => {
         if(this.state.email === '' || this.state.password === '') {
-          Alert.alert('Enter details to signin!')
+            Alert.alert('Enter details to signin!')
         } else {
-          this.setState({
-            isLoading: true,
-          })
-          firebase
-          .auth()
-          .signInWithEmailAndPassword(this.state.email, this.state.password)
-          .then((res) => {
-            //console.log(res)
-            console.log('User logged-in successfully!')
             this.setState({
-              isLoading: false,
-              email: '', 
-              password: ''
+                isLoading: true,
             })
-            this.props.signIn();
-            //console.log(this.props.isSignedIn);
-            //this.props.navigation.navigate('Main')
-          })
-          .catch(error => this.setState({ errorMessage: error.message }))
-          console.log(this.state.errorMessage);
+            firebase
+            .auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((res) => {
+                //console.log(res)
+                console.log('User logged-in successfully!')
+                this.setState({
+                isLoading: false,
+                email: '', 
+                password: ''
+                })
+                this.props.signIn();
+                //console.log(this.props.isSignedIn);
+                //this.props.navigation.navigate('Main')
+            })
+            .catch(error => this.setState({ errorMessage: error.message }))
+            console.log(this.state.errorMessage);
         }
-      }
+    }
 
     render() {
         return (

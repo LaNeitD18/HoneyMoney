@@ -34,7 +34,7 @@ import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from "firebase";
 import { categoryRef, userRef } from "../components/DataConnect";
-import IconImage, { findIcon } from "../components/Image";
+import IconImage, { findIcon, getIndex } from "../components/Image";
 import { connect } from "react-redux";
 import {
     changeType,
@@ -46,6 +46,7 @@ import {
     getSubCategories,
     reloadAddedSubCategories,
     showType,
+    selectIcon,
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -79,8 +80,6 @@ class CategoriesScreen extends React.Component {
 
     getData = (typeID) => {
         const categories = this.props.allCategories;
-        console.log("ZZZ");
-        console.log(categories);
         const temp = categories.filter((item) => item.typeID === typeID);
         this.props.reloadCategory(temp);
     };
@@ -114,8 +113,12 @@ class CategoriesScreen extends React.Component {
         return categories;
     }
 
-    chooseCategory = (category) => {
-        this.props.chooseCategory(category);
+    chooseCategory = async(category) => {
+        await this.props.chooseCategory(category);
+
+        const iconIndex = getIndex(this.props.chosenCategory.icon);
+        this.props.selectIcon(iconIndex);
+
         this.props.changeName(category.categoryName);
         this.props.showType(this.props.selectedType);
 
@@ -270,7 +273,8 @@ function mapStateToProps(state) {
         allCategories: state.allCategories,
         renderedCategories: state.renderedCategories,
         searchText: state.searchText,
-        isSignedIn: state.isSignedIn
+        isSignedIn: state.isSignedIn,
+        chosenCategory: state.chosenCategory,
     };
 }
 
@@ -285,6 +289,7 @@ function mapDispatchToProps(dispatch) {
         getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
         reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories()) },
         showType: (selectedType) => { dispatch(showType(selectedType)) },
+        selectIcon: (index) => { dispatch(selectIcon(index))},
     }
 }
 

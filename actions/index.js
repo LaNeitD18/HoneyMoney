@@ -257,4 +257,13 @@ export function signOut() {
 }
 //#endregion
 
+//#region isSignedIn
+export function selectIcon(index) {
+    return {
+        type: 'SELECT_ICON',
+        index: index
+    }
+}
+//#endregion
+
 //#endregion
