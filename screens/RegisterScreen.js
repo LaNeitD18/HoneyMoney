@@ -96,7 +96,7 @@ export default class RegisterScreen extends Component {
                     TypeID: element.toJSON().TypeID,
                 })
                 //userRef.child('Category').push(element);
-                console.log(element);
+                //console.log(element);
             });
         });
         //console.log(userCategoryRef);
@@ -141,13 +141,15 @@ export default class RegisterScreen extends Component {
             .auth()
             .createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then((res) => {
+                //console.log(this.state.displayName);
+
                 res.user.updateProfile({
                 displayName: this.state.displayName
                 }).then(()=>{
-                    firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
+                    firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : firebase.auth().currentUser.displayName});
                     this.addDefaultDatabase();
                 })
-                console.log('User registered successfully!')
+                console.log('User registered successfully!');
                 this.setState({
                 isLoading: false,
                 displayName: '',

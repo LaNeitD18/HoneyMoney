@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Platform,
     TextInput,
+    Alert
 } from "react-native";
 import {
     String,
@@ -59,12 +60,52 @@ import * as firebase from "firebase";
 import { categoryRef } from "../components/DataConnect";
 
 import { findIcon } from "../components/Image";
-import { changeType, changeName, openDialog } from "../actions/index";
+import { changeType, changeName, openDialog, signIn, editUserName } from "../actions/index";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 
-export default class SettingNameScreen extends Component {
+class SettingNameScreen extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            userName: firebase.auth().currentUser.displayName
+        }
+    }
+
+    editUserInfo = async() => {
+        let successful = false;
+        await firebase.auth().currentUser.updateProfile({
+            displayName: this.state.userName
+        }).then(function() {
+            //console.log("au " + firebase.auth().currentUser.displayName);
+            firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile")
+                .update({name : firebase.auth().currentUser.displayName});
+            successful = true;
+        }).catch(function(error) {
+
+        });
+        
+        if(successful) {
+            this.props.editUserName(this.state.userName);
+            Alert.alert("Thông báo", "Bạn đã cập nhật thông tin thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: async() => {
+                            await firebase.auth().currentUser.reload();
+                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
+        }
+    }
+
     render() {
+        const email = firebase.auth().currentUser.email;
+
         return (
             <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 10 }}>
                 <TouchableOpacity>
@@ -101,6 +142,8 @@ export default class SettingNameScreen extends Component {
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
                         keyboardType="email-address"
+                        disabled={true}
+                        value={email}
                     />
                     <HomoTextInput
                         label="Họ Và Tên"
@@ -110,10 +153,11 @@ export default class SettingNameScreen extends Component {
                             name: "account-circle",
                             color: colors.gray,
                         }}
-                        secureTextEntry={true}
                         textContentType="name"
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
+                        value={this.state.userName}
+                        onChangeText={(text) => {this.setState({ userName: text})}}
                     />
                 </View>
                 <View
@@ -123,9 +167,23 @@ export default class SettingNameScreen extends Component {
                         marginVertical: sizeFactor,
                     }}
                 >
-                    <Button1>Xác nhận</Button1>
+                    <Button1 onPress={() => this.editUserInfo()}>Xác nhận</Button1>
                 </View>
             </ScreenView>
         );
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        editUserName: (name) => { dispatch(editUserName(name))}
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingNameScreen);

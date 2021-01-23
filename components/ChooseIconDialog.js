@@ -52,7 +52,7 @@ import {
     IconCategory,
 } from "./Basic";
 
-import { closeIconDialog, selectIcon } from '../actions/index';
+import { closeIconDialog, selectIcon, setAddingIcon, setEditingIcon } from '../actions/index';
 import IconImage from './Image';
 
 
@@ -66,13 +66,8 @@ class ChooseIconDialog extends Component {
         // }
     }
 
-    selectIcon = (index) => {
-        console.log("in " + index);
-        this.props.selectIcon(index);
-    }
-
     IconRows = () => {
-        // them su kien click chon icon se thay doi j do bla bla
+        // dang phan van chuyen chon selectedIcon xong thi icon cua cate va cua subcate doi tum lum, lq chon icon cho cate va subcate
         // ranh thi them het icon trong asset vo Image.js
         const numberOfRows = Math.ceil((IconImage.length - 2) / 4);
         let rows = [];
@@ -83,12 +78,12 @@ class ChooseIconDialog extends Component {
                 const index = 4 * i + j;
                 if (index < IconImage.length - 2) {
                     const iconPath = IconImage[index].iconPath;
-                    const isSelected = this.props.selectedIcon === index ? true : false;
+                    const isSelected = this.props.selectedIcon.selectedIndex === index ? true : false;
                     row.push(
                         <IconCategory 
                             choosed={isSelected} 
                             source={iconPath}
-                            onPress={() => {this.selectIcon(index)}}    
+                            onPress={() => { this.props.selectIcon(index); }} 
                         />
                     );
                     //console.log("dia " + this.props.selectedIcon);
@@ -103,11 +98,17 @@ class ChooseIconDialog extends Component {
         return rows;
     }
 
-    closeDialog = () => {
-        const iconIndex = getIndex(this.props.chosenCategory.icon);
-        this.props.selectIcon(iconIndex);
+    closeIconDialog = () => {
+        // dirty code to skip checking is adding or editing or working with subcategory
+        // can do this b/c in CategoriesScreen, i always setAddingIcon or setEditingIcon before navigating to add or edit screen
+        this.props.setAddingIcon(this.props.selectedIcon.selectedIndex);
+        this.props.setEditingIcon(this.props.selectedIcon.selectedIndex);
 
         this.props.closeIconDialog();
+    }
+
+    componentDidMount() {
+        
     }
 
     render() {
@@ -125,7 +126,7 @@ class ChooseIconDialog extends Component {
                 isVisible={this.props.isVisibleIconDialog}
             >
                 <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
-                    <TouchableOpacity onPress={this.props.closeIconDialog}>
+                    <TouchableOpacity onPress={() => this.props.closeIconDialog()}>
                         <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
                     </TouchableOpacity>
                 </View>
@@ -155,7 +156,7 @@ class ChooseIconDialog extends Component {
                 </ScrollView>
                 <Space />
                 <Space />
-                <TouchableOpacity onPress={() => this.props.closeIconDialog()}>
+                <TouchableOpacity onPress={() => this.closeIconDialog()}>
                     <String style={{ color: colors.blue }}>Đồng ý</String>
                 </TouchableOpacity>
             </Overlay>
@@ -174,6 +175,8 @@ function mapDispatchToProps(dispatch) {
     return {
         closeIconDialog: () => { dispatch(closeIconDialog())},
         selectIcon: (index) => { dispatch(selectIcon(index))},
+        setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
+        setEditingIcon: (index) => { dispatch(setEditingIcon(index))},
     };
 }
 

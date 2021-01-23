@@ -257,11 +257,55 @@ export function signOut() {
 }
 //#endregion
 
-//#region isSignedIn
+//#region selectedIcon
 export function selectIcon(index) {
     return {
         type: 'SELECT_ICON',
-        index: index
+        selectedIndex: index
+    }
+}
+
+export function setAddingIcon(index) {
+    return {
+        type: 'ADDING_ICON',
+        addIndex: index
+    }
+}
+
+export function setEditingIcon(index) {
+    return {
+        type: 'EDITING_ICON',
+        editIndex: index
+    }
+}
+
+export function setSubIcon(index) {
+    return {
+        type: 'SUB_ICON',
+        subIndex: index
+    }
+}
+//#endregion
+
+//#region isWorkingWithSub
+export function workWithCategory() {
+    return {
+        type: 'WORKING_CATE',
+    }
+}
+
+export function workWithSubCategory() {
+    return {
+        type: 'WORKING_SUBCATE',
+    }
+}
+//#endregion
+
+//#region userName
+export function editUserName(name) {
+    return {
+        type: 'EDIT_NAME',
+        name: name
     }
 }
 //#endregion

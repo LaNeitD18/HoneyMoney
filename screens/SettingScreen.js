@@ -62,7 +62,7 @@ import { connect } from "react-redux";
 import { categoryRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog, signOut } from "../actions/index";
+import { signOut, editUserName } from "../actions/index";
 import { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
@@ -73,9 +73,12 @@ class SettingScreen extends Component {
         super();
 
         this.state = {
-            displayName: '',
             email: ''
         }
+    }
+
+    componentDidMount() {
+        this.props.editUserName(firebase.auth().currentUser.displayName);
     }
 
     signOut = () => {
@@ -107,7 +110,7 @@ class SettingScreen extends Component {
                             fontSize: sizeFactor * 1.5,
                             marginBottom: sizeFactor * 0.25,
                         }}
-                    > {firebase.auth().currentUser.displayName}
+                    > {this.props.userName}
                     </Text>
                     <Text 
                         style={{ alignSelf: "center", fontSize: sizeFactor, color: colors.gray }}
@@ -255,13 +258,13 @@ class SettingScreen extends Component {
 
 function mapStateToProps(state) {
     return {
-        isSignedIn: state.isSignedIn,
+        userName: state.userName
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        
+        editUserName: (name) => { dispatch(editUserName(name))},
         signOut: () => { dispatch(signOut())},
     };
 }

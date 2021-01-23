@@ -23,6 +23,8 @@ import date_transReducer from './date_transReducer';
 import selectedWalletReducer from './selectedWalletReducer';
 import selectedTransactionReducer from './selectedTransactionReducer';
 import selectedIconReducer from './selectedIconReducer';
+import isWorkingWithSubReducer from './isWorkingWithSubReducer';
+import userNameReducer from './userNameReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -51,7 +53,9 @@ const allReducers = combineReducers({
     isVisibleIconDialog: isVisibleIconDialogReducer,
     editableButtonGroup: editableButtonGroupReducer,
     isSignedIn: isSignedInReducer,
-    selectedIcon: selectedIconReducer
+    selectedIcon: selectedIconReducer,
+    isWorkingWithSub: isWorkingWithSubReducer,
+    userName: userNameReducer
 })
 
 export default allReducers;

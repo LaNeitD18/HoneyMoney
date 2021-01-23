@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     Platform,
     TextInput,
+    Alert
 } from "react-native";
 import {
     String,
@@ -64,6 +65,42 @@ import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 
 export default class SettingPasswordScreen extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            currentPassword: '',
+            newPassword: ''
+        }
+    }
+
+    editPassword = async() => {
+        let successful = false;
+        const emailCredential = firebase.auth.EmailAuthProvider.credential(firebase.auth().currentUser.email, this.state.currentPassword);
+        await firebase.auth().currentUser.reauthenticateWithCredential(emailCredential)
+        .then(() => {
+            // User successfully reauthenticated.
+            firebase.auth().currentUser.updatePassword(this.state.newPassword);
+            successful = true;
+        })
+        .catch(error => {
+            // Handle error.
+            console.log("ZZZ");
+            console.log(error);
+        });
+
+        if(successful) {
+            Alert.alert("Thông báo", "Bạn đã cập nhật mật khẩu thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {console.log("OK pressed"); this.props.navigation.navigate('SettingScreen')}
+                    }
+                ], {cancelable: false}
+            );
+        }
+    }
+
     render() {
         return (
             <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 10 }}>
@@ -96,6 +133,8 @@ export default class SettingPasswordScreen extends Component {
                         textContentType="password"
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
+                        value={this.state.currentPassword}
+                        onChangeText={(text) => this.setState({ currentPassword: text})}
                     />
                     <HomoTextInput
                         label="Mật khẩu mới"
@@ -109,6 +148,8 @@ export default class SettingPasswordScreen extends Component {
                         textContentType="password"
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
+                        value={this.state.newPassword}
+                        onChangeText={(text) => this.setState({ newPassword: text})}
                     />
                 </View>
                 <View
@@ -118,7 +159,7 @@ export default class SettingPasswordScreen extends Component {
                         marginVertical: sizeFactor,
                     }}
                 >
-                    <Button1>Xác nhận</Button1>
+                    <Button1 onPress={() => this.editPassword()}>Xác nhận</Button1>
                 </View>
             </ScreenView>
         );
