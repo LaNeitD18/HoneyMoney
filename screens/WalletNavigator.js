@@ -6,6 +6,7 @@ import WalletScreen from './WalletScreen';
 import AddWalletScreen from './AddWalletScreen';
 import AddTransactionScreen from './AddTransactionScreen';
 import EditWalletScreen from './EditWalletScreen';
+import WalletTransferScreen from './WalletTransferScreen'
 
 const WalletStack = createStackNavigator();
 
@@ -31,6 +32,11 @@ export default class WalletNavigator extends Component {
                     name="AddTransactionScreen"
                     component={AddTransactionScreen}
                     options={{ headerShown: true, title: "Tạo giao dịch" }}
+                />
+                <WalletStack.Screen
+                    name="WalletTransferScreen"
+                    component={WalletTransferScreen}
+                    options={{ headerShown: true, title: "Chuyển tiền qua ví" }}
                 />
             </WalletStack.Navigator>
         );

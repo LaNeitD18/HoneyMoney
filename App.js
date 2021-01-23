@@ -79,6 +79,7 @@ import * as firebase from "firebase";
 import { connect } from "react-redux";
 import EditTransactionScreen from "./screens/EditTransactionScreen";
 import { signIn, signOut } from "./actions";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -87,9 +88,28 @@ const Stack = createStackNavigator();
 //Redux
 let store = createStore(allReducers);
 
+function getHeaderTitle(route) {
+    // If the focused route is not found, we need to assume it's the initial screen
+    // This can happen during if there hasn't been any navigation inside the screen
+    // In our case, it's "Feed" as that's the first screen inside the navigator
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Transactions';
+  
+    switch (routeName) {
+      case 'Transactions':
+        return 'Lịch sử giao dịch';
+      case 'Report':
+        return 'Báo cáo';
+      case 'Budget':
+        return 'Quản lí tiết kiệm';
+      case 'Settings':
+        return 'Cài đặt';
+    }
+  }
+
 class Main extends Component {
     render()
     {
+        this.props.navigation.setOptions({ headerTitle: getHeaderTitle(this.props.route) });
         return (
             <Tab.Navigator
                 screenOptions={({ route }) => ({
@@ -195,7 +215,7 @@ class Main extends Component {
                                         size={50}
                                         title="Chuyển ví"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletScreen"})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletTransferScreen"})}}>
                                             <Icon
                                                 name="wallet"
                                                 type="material-community"
@@ -227,8 +247,8 @@ class Main extends Component {
                     </Tab.Screen>
                 <Tab.Screen
                     name="Budget"
-                    //component={BudgetScreen}
-                    component={WalletNavigator}
+                    component={BudgetScreen}
+                    //component={WalletNavigator}
                     options={{ title: "Tiết kiệm" }}
                 />
                 <Tab.Screen
@@ -241,15 +261,57 @@ class Main extends Component {
     }
 }
 
-const DisplayedScreens = () => {
+function DisplayedScreens ()  {
     const [user, loading, error] = useAuthState(firebase.auth());
 
     if(user) {
         return (
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{headerShown: false}}>
-                        <Stack.Screen name="Main" component={Main}/>
+                    <Stack.Screen
+                                    options={({ navigation, route }) => ({
+                                        headerTitle: getHeaderTitle(route),
+                                        headerShown: true,
+                                        
+                                        headerRight: () => (
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    marginRight: sizeFactor,
+                                                }}
+                                            >
+                                                <TouchableOpacity onPress={()=>{}/*navigation.navigate("Wallet")*/}>
+                                                    <View
+                                                        style={{
+                                                            flexDirection: "row",
+                                                            alignItems: "center",
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            name="wallet"
+                                                            type="material-community"
+                                                            color={colors.blue}
+                                                            size={sizeFactor * 1.75}
+                                                            style={{ marginRight: sizeFactor / 2 }}
+                                                        />
+                                                        <String
+                                                            style={{
+                                                                marginBottom: 4,
+                                                                color: colors.blue,
+                                                            }}
+                                                        >
+                                                            Đổi ví
+                                                        </String>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        ),
+                                    })}
+                                    name="Main"
+                                    component={Main}
+                                />
                         <Stack.Screen name="Action" component={WalletNavigator}/>
+                        <Stack.Screen name="Wallet" component={WalletScreen}/>
                 </Stack.Navigator>
             </NavigationContainer>
         );
