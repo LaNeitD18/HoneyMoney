@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
     StyleSheet,
     Text,
@@ -65,10 +65,61 @@ import { changeType, changeName, openDialog } from "../actions/index";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Notifications } from "expo";
+import { Alert } from "react-native";
+
 export default class SettingAlertScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: false,
+            hours: "21",
+            minutes: "00",
+            bat: true,
+            expoPushToken: "",
+            notification: {},
+        };
+    }
+    showTimePicker = () => {
+        this.setState({ show: true, bat: true });
+    };
+    tat = () => {
+        this.setState({ bat: false });
+    };
+    confirm = (date) => {
+        const temp = date;
+        this.setState({ hours: temp.getHours(), minutes: temp.getMinutes(), show: false });
+        this.sendNotificationImmediately();
+    };
+    cancel = () => {
+        this.setState({ show: false });
+    };
+    saveChanges = async () => {
+        var datetime = new Date();
+        datetime.setHours(this.state.hours, this.state.minutes, 0);
+        let notificationId = await Notifications.scheduleLocalNotificationAsync(
+            {
+                title: "Honey Money: Nhắc nhở",
+                body: "Đừng quên cập nhật chi tiêu cho hôm nay nhé!",
+            },
+            {
+                time: datetime,
+            }
+        );
+        // can be saved in AsyncStorage or send to server
+    };
+
     render() {
         return (
             <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 10 }}>
+                <DateTimePickerModal
+                    isVisible={this.state.show}
+                    mode="time"
+                    onConfirm={this.confirm}
+                    onCancel={this.cancel}
+                    date={Date.now()}
+                />
                 <TouchableOpacity>
                     <View style={{ margin: 0, alignItems: "center" }}>
                         <Image
@@ -102,41 +153,44 @@ export default class SettingAlertScreen extends Component {
                         marginBottom: sizeFactor,
                     }}
                 >
-                    <Row>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon
-                                name="radiobox-blank"
-                                type="material-community"
-                                color={colors.gray}
-                                style={{ marginRight: sizeFactor / 2 }}
-                            />
-                            <String>Cuối buổi (11:00) (16:00) (21:00)</String>
-                        </View>
-                    </Row>
+                    <TouchableOpacity onPress={this.showTimePicker}>
+                        <Row>
+                            <View style={{ flexDirection: "row" }}>
+                                <Icon
+                                    name={this.state.bat ? "radiobox-marked" : "radiobox-blank"}
+                                    type="material-community"
+                                    color={this.state.bat ? colors.blue : colors.gray}
+                                    style={{ marginRight: sizeFactor / 2 }}
+                                />
+                                <String
+                                    style={{ color: this.state.bat ? colors.blue : colors.gray }}
+                                >
+                                    Bật
+                                </String>
+                            </View>
+                            <String style={{ color: this.state.bat ? colors.blue : colors.gray }}>
+                                {"Vào lúc " + this.state.hours + ":" + this.state.minutes}
+                            </String>
+                        </Row>
+                    </TouchableOpacity>
                     <LooseDivider />
-                    <Row>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon
-                                name="radiobox-marked"
-                                type="material-community"
-                                color={colors.blue}
-                                style={{ marginRight: sizeFactor / 2 }}
-                            />
-                            <String style={{ color: colors.blue }}>Cuối ngày (21:00)</String>
-                        </View>
-                    </Row>
-                    <LooseDivider />
-                    <Row>
-                        <View style={{ flexDirection: "row" }}>
-                            <Icon
-                                name="radiobox-blank"
-                                type="material-community"
-                                color={colors.gray}
-                                style={{ marginRight: sizeFactor / 2 }}
-                            />
-                            <String>Tắt</String>
-                        </View>
-                    </Row>
+                    <TouchableOpacity onPress={this.tat}>
+                        <Row>
+                            <View style={{ flexDirection: "row" }}>
+                                <Icon
+                                    name={this.state.bat ? "radiobox-blank" : "radiobox-marked"}
+                                    type="material-community"
+                                    color={this.state.bat ? colors.gray : colors.blue}
+                                    style={{ marginRight: sizeFactor / 2 }}
+                                />
+                                <String
+                                    style={{ color: this.state.bat ? colors.gray : colors.blue }}
+                                >
+                                    Tắt
+                                </String>
+                            </View>
+                        </Row>
+                    </TouchableOpacity>
                 </View>
                 <View
                     style={{
@@ -145,7 +199,7 @@ export default class SettingAlertScreen extends Component {
                         marginVertical: sizeFactor,
                     }}
                 >
-                    <Button1>Xác nhận</Button1>
+                    <Button1 onPress={this.saveChanges}>Lưu thay đổi</Button1>
                 </View>
             </ScreenView>
         );

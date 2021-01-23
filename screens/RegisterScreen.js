@@ -67,103 +67,108 @@ import Swipeout from "react-native-swipeout";
 export default class RegisterScreen extends Component {
     constructor() {
         super();
-        this.state = { 
-            displayName: '',
-            email: '', 
-            password: '',
-            isLoading: false
-        }
+        this.state = {
+            displayName: "",
+            email: "",
+            password: "",
+            isLoading: false,
+        };
     }
 
     updateInputVal = (val, prop) => {
         const state = this.state;
         state[prop] = val;
         this.setState(state);
-    }
+    };
 
     addDefaultCategories = () => {
         //const userCategoryRef = userRef.ref('Category/');
-        categoryRef.on('value', (snapshot) => {
-            snapshot.forEach(element => {
-                userRef.child('Category/').push({
+        categoryRef.on("value", (snapshot) => {
+            snapshot.forEach((element) => {
+                userRef.child("Category/").push({
                     CategoryName: element.toJSON().CategoryName,
                     Icon: element.toJSON().Icon,
                     ParentID: element.toJSON().ParentID,
                     TypeID: element.toJSON().TypeID,
-                })
+                });
                 //userRef.child('Category').push(element);
                 console.log(element);
             });
         });
         //console.log(userCategoryRef);
-    }
+    };
 
     addDefaultWallet = () => {
-        walletRef.on('value', (snapshot) => {
-            snapshot.forEach(element => {
-                userRef.child('Wallet/').push({
+        walletRef.on("value", (snapshot) => {
+            snapshot.forEach((element) => {
+                userRef.child("Wallet/").push({
                     color: element.toJSON().color,
                     date: element.toJSON().date,
                     isDefault: element.toJSON().isDefault,
                     money: element.toJSON().money,
                     name: element.toJSON().name,
-                })
+                });
                 //userRef.child('Category').push(element);
                 //console.log(element);
             });
         });
-    }
+    };
 
     addDefaultDatabase = () => {
         this.addDefaultCategories();
-        this.addDefaultWallet();
-    }
+        //this.addDefaultWallet();
+    };
 
     registerUser = () => {
-        // if(this.state.email === '' || this.state.password === '') {
-        //     Alert.alert('Enter details to signup!')
-        // } else {
-        //     this.setState({
-        //         isLoading: true,
-        //     })
-        //     firebase
-        //     .auth()
-        //     .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        //     .then((res) => {
-        //         res.user.updateProfile({
-        //         displayName: this.state.displayName
-        //         }).then(()=>{
-        //             firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile").set({name : this.state.displayName});
-        //         })
-        //         console.log('User registered successfully!')
-        //         this.setState({
-        //         isLoading: false,
-        //         displayName: '',
-        //         email: '', 
-        //         password: ''
-        //         })
-        //         this.props.navigation.navigate('SignIn')
-        //     })
-        //     .catch(error => this.setState({ errorMessage: error.message }))      
-        // }
-        //this.addDefaultDatabase();
-        console.log(firebase.auth().currentUser.uid);
+        if (this.state.email === "" || this.state.password === "") {
+            Alert.alert("Enter details to signup!");
+        } else {
+            this.setState({
+                isLoading: true,
+            });
+            firebase
+                .auth()
+                .createUserWithEmailAndPassword(this.state.email, this.state.password)
+                .then((res) => {
+                    res.user
+                        .updateProfile({
+                            displayName: this.state.displayName,
+                        })
+                        .then(() => {
+                            firebase
+                                .database()
+                                .ref("users/" + firebase.auth().currentUser.uid + "/profile")
+                                .set({ name: this.state.displayName });
+                        });
+                    console.log("User registered successfully!");
+                    this.setState({
+                        isLoading: false,
+                        displayName: "",
+                        email: "",
+                        password: "",
+                    });
+                    this.props.navigation.navigate("SignIn");
+                })
+                .catch((error) => this.setState({ errorMessage: error.message }));
+        }
+        this.addDefaultDatabase();
+        //console.log(firebase.auth().currentUser.uid);
 
         // userRef.on('value', (snapshot) => {
         //     snapshot.forEach(element => {
         //         console.log(element.key);
         //     })
         // })
-    }
+    };
 
     render() {
-        if(this.state.isLoading){
-            return(
-              <View style={styles.preloader}>
-                <ActivityIndicator size="large" color="#9E9E9E"/>
-              </View>
-            )
-          } 
+        if (this.state.isLoading) {
+            return (
+                <View style={styles.preloader}>
+                    <ActivityIndicator size="large" color="#9E9E9E" />
+                </View>
+            );
+        }
 
         return (
             <View
@@ -212,7 +217,7 @@ export default class RegisterScreen extends Component {
                                 textContentType="name"
                                 errorMessage=""
                                 value={this.state.displayName}
-                                onChangeText={(val) => this.updateInputVal(val, 'displayName')}
+                                onChangeText={(val) => this.updateInputVal(val, "displayName")}
                             />
                             <HomoTextInput
                                 leftIcon={{ name: "email", color: colors.gray }}
@@ -220,7 +225,7 @@ export default class RegisterScreen extends Component {
                                 keyboardType="email-address"
                                 errorMessage=""
                                 value={this.state.email}
-                                onChangeText={(val) => this.updateInputVal(val, 'email')}
+                                onChangeText={(val) => this.updateInputVal(val, "email")}
                             />
                             <HomoTextInput
                                 label="Mật khẩu"
@@ -230,7 +235,7 @@ export default class RegisterScreen extends Component {
                                 secureTextEntry={true}
                                 errorMessage=""
                                 value={this.state.password}
-                                onChangeText={(val) => this.updateInputVal(val, 'password')}
+                                onChangeText={(val) => this.updateInputVal(val, "password")}
                             />
 
                             <View
@@ -241,14 +246,18 @@ export default class RegisterScreen extends Component {
                                     marginTop: sizeFactor / 2,
                                 }}
                             >
-                                <Button2 
+                                <Button2
                                     style={{ width: sizeFactor * 8.5 }}
-                                    onPress={() => this.props.navigation.navigate('SignIn')}
-                                >Hủy bỏ</Button2>
-                                <Button1 
+                                    onPress={() => this.props.navigation.navigate("SignIn")}
+                                >
+                                    Hủy bỏ
+                                </Button2>
+                                <Button1
                                     style={{ width: sizeFactor * 8.5 }}
                                     onPress={() => this.registerUser()}
-                                >Xác nhận</Button1>
+                                >
+                                    Xác nhận
+                                </Button1>
                             </View>
                         </View>
                         <Text style={{ color: colors.white }}>

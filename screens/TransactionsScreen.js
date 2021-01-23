@@ -70,7 +70,7 @@ import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
 import { FlatList } from "react-native-gesture-handler";
-import toMoneyString from '../components/toMoneyString'
+import toMoneyString from "../components/toMoneyString";
 
 export class TransactionsScreen extends Component {
     constructor(props) {
@@ -86,11 +86,11 @@ export class TransactionsScreen extends Component {
         walletRef.on("value", (snap) => {
             this.props.Update(snap);
         });
-        
+
         //setTimeout(()=>{this.setState({monthlist: this.getMonthList()})}, 1500)
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         // if(this.state.firstscroll == 0)
         // {
         //     var month = this.getMonthList()
@@ -144,17 +144,16 @@ export class TransactionsScreen extends Component {
 
         var today = new Date();
 
-        if(endmonth+endyear*12 < today.getMonth + 1 + today.getFullYear*12)
-        {
+        if (endmonth + endyear * 12 < today.getMonth + 1 + today.getFullYear * 12) {
             endmonth = today.getMonth() + 1;
             endyear = today.getFullYear();
         }
 
-        var transactionList = this.getDataInMonth(startmonth, startyear)
-        var cal = this.caculateChange(transactionList)
+        var transactionList = this.getDataInMonth(startmonth, startyear);
+        var cal = this.caculateChange(transactionList);
         //dau tien
         var item = {
-            index: startmonth + startyear*12,
+            index: startmonth + startyear * 12,
             month: "Tháng " + startmonth + "/" + startyear,
             left: 0,
             right: 1,
@@ -170,12 +169,11 @@ export class TransactionsScreen extends Component {
             startyear += 1;
         }
         //doan giua
-        while (startyear*12 + startmonth < endyear*12 + endmonth)
-        {
-            transactionList = this.getDataInMonth(startmonth, startyear)
-            cal = this.caculateChange(transactionList)
+        while (startyear * 12 + startmonth < endyear * 12 + endmonth) {
+            transactionList = this.getDataInMonth(startmonth, startyear);
+            cal = this.caculateChange(transactionList);
             var item = {
-                index: startmonth + startyear*12,
+                index: startmonth + startyear * 12,
                 month: "Tháng " + startmonth + "/" + startyear,
                 left: 1,
                 right: 1,
@@ -191,11 +189,11 @@ export class TransactionsScreen extends Component {
                 startyear += 1;
             }
         }
-        transactionList = this.getDataInMonth(startmonth, startyear)
-        cal = this.caculateChange(transactionList)
+        transactionList = this.getDataInMonth(startmonth, startyear);
+        cal = this.caculateChange(transactionList);
         //phan tu cuoi cung
         var item = {
-            index: startmonth + startyear*12,
+            index: startmonth + startyear * 12,
             month: "Tháng " + startmonth + "/" + startyear,
             left: 1,
             right: 0,
@@ -209,96 +207,88 @@ export class TransactionsScreen extends Component {
         return monthlist;
     }
 
-    numberOfDayInMonth(month, year)
-    {
-        switch (month){
-            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+    numberOfDayInMonth(month, year) {
+        switch (month) {
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
                 return 31;
-            case 4: case 6: case 9: case 11:
+            case 4:
+            case 6:
+            case 9:
+            case 11:
                 return 30;
             default:
         }
-        if(month == 2)
-        {
-            if((year % 4 == 0 && year % 100 != 0)|| year % 400 == 0)
-            {
+        if (month == 2) {
+            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
                 return 29;
-            }
-            else
-            {
+            } else {
                 return 28;
             }
         }
     }
 
-    caculateChange(data)
-    {
-        var change = 0
+    caculateChange(data) {
+        var change = 0;
         var gain = 0;
         var lose = 0;
-        data.forEach(item => 
-            {
-                var category
+        data.forEach((item) => {
+            var category;
 
-                categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
-                    snapshot.forEach(element => {
+            categoryRef
+                .orderByKey()
+                .equalTo(item.category)
+                .on("value", (snapshot) => {
+                    snapshot.forEach((element) => {
                         category = {
                             key: element.key,
                             categoryName: element.toJSON().CategoryName,
                             icon: element.toJSON().Icon,
                             parentID: element.toJSON().ParentID,
-                            typeID: element.toJSON().TypeID
-                        }
+                            typeID: element.toJSON().TypeID,
+                        };
                     });
                 });
 
-                var b;
+            var b;
 
-                if(category.typeID == "002")
-                {
-                    b = false;
-                }
-                else
-                {
-                    if(category.typeID == "003")
-                    {
+            if (category.typeID == "002") {
+                b = false;
+            } else {
+                if (category.typeID == "003") {
+                    b = true;
+                } else {
+                    if (category.categoryName == "Đi vay" || category.categoryName == "Thu nợ") {
                         b = true;
-                    }
-                    else
-                    {
-                        if(category.categoryName == "Đi vay" ||category.categoryName == "Thu nợ")
-                        {
-                            b = true;
-                        }
-                        else
-                        {
-                            b = false;
-                        }
+                    } else {
+                        b = false;
                     }
                 }
-                if(b)
-                {
-                    gain += parseInt(item.money);
-                    change += parseInt(item.money)
-                }
-                else
-                {
-                    lose -= parseInt(item.money);
-                    change -= parseInt(item.money);
-                }
-            })
+            }
+            if (b) {
+                gain += parseInt(item.money);
+                change += parseInt(item.money);
+            } else {
+                lose -= parseInt(item.money);
+                change -= parseInt(item.money);
+            }
+        });
 
         return {
             change: change > 0 ? "+" + change : change,
             gain: gain > 0 ? "+" + gain : gain,
-            lose: lose
-        }
+            lose: lose,
+        };
     }
 
-    getDataInMonth(month, year)
-    {
+    getDataInMonth(month, year) {
         var start = new Date(year, month - 1, 1);
-        var end = new Date(year, month - 1, this.numberOfDayInMonth(month,year));
+        var end = new Date(year, month - 1, this.numberOfDayInMonth(month, year));
         return this.getDataInTimeRangeDate(start, end);
     }
 
@@ -364,9 +354,8 @@ export class TransactionsScreen extends Component {
         });
     }
 
-    mergeDataByDate(data)
-    {
-        var clone = []
+    mergeDataByDate(data) {
+        var clone = [];
         var d = 0;
 
         var weekday = new Array(7);
@@ -379,165 +368,150 @@ export class TransactionsScreen extends Component {
         weekday[6] = "Thứ bảy";
 
         data.sort((a, b) => {
-            return - this.toDate(a.date) + this.toDate(b.date);
+            return -this.toDate(a.date) + this.toDate(b.date);
         });
-        
-        data.forEach(item =>
-            {
-                var info = {
-                    date: "",
-                    dayOfWeek: "",
-                    month: "",
-                    change: 0,
-                    list: [],
+
+        data.forEach((item) => {
+            var info = {
+                date: "",
+                dayOfWeek: "",
+                month: "",
+                change: 0,
+                list: [],
+            };
+            if (d < this.toDate(item.date).getDate()) {
+                d = this.toDate(item.date).getDate();
+                if (d < 10) {
+                    info.date = "0" + d;
+                } else {
+                    info.date = d;
                 }
-                if(d < this.toDate(item.date).getDate())
-                {
-                    d = this.toDate(item.date).getDate();
-                    if(d < 10)
-                    {
-                        info.date = "0" + d
-                    }
-                    else
-                    {
-                        info.date = d;
-                    }
-                    info.dayOfWeek = weekday[this.toDate(item.date).getDay()];
-                    info.month = "Tháng " +(this.toDate(item.date).getMonth()+1)+"/"+this.toDate(item.date).getFullYear();
+                info.dayOfWeek = weekday[this.toDate(item.date).getDay()];
+                info.month =
+                    "Tháng " +
+                    (this.toDate(item.date).getMonth() + 1) +
+                    "/" +
+                    this.toDate(item.date).getFullYear();
 
-                    var category
+                var category;
 
-                    categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
-                        snapshot.forEach(element => {
+                categoryRef
+                    .orderByKey()
+                    .equalTo(item.category)
+                    .on("value", (snapshot) => {
+                        snapshot.forEach((element) => {
                             category = {
                                 key: element.key,
                                 categoryName: element.toJSON().CategoryName,
                                 icon: element.toJSON().Icon,
                                 parentID: element.toJSON().ParentID,
-                                typeID: element.toJSON().TypeID
-                            }
+                                typeID: element.toJSON().TypeID,
+                            };
                         });
                     });
 
-                    var b;
+                var b;
 
-                    if(category.typeID == "002")
-                    {
-                        b = false;
-                    }
-                    else
-                    {
-                        if(category.typeID == "003")
-                        {
+                if (category.typeID == "002") {
+                    b = false;
+                } else {
+                    if (category.typeID == "003") {
+                        b = true;
+                    } else {
+                        if (
+                            category.categoryName == "Đi vay" ||
+                            category.categoryName == "Thu nợ"
+                        ) {
                             b = true;
-                        }
-                        else
-                        {
-                            if(category.categoryName == "Đi vay" ||category.categoryName == "Thu nợ")
-                            {
-                                b = true;
-                            }
-                            else
-                            {
-                                b = false;
-                            }
+                        } else {
+                            b = false;
                         }
                     }
-                    //item to new data
-                    var itemdata = {
-                        subcategory: category.categoryName,
-                        onPress: {},
-                        source: findIcon(category.icon),
-                        amount: b? "+" + item.money : "-" + item.money,
-                        color: b? colors.greenDark : colors.redDark,
-                    }
-
-                    info.list.push(itemdata);
-                    info.change = 0;
-                    info.change += parseInt(itemdata.amount);
-
-                    clone.push(info);
                 }
-                else
-                {
-                    var category
+                //item to new data
+                var itemdata = {
+                    subcategory: category.categoryName,
+                    onPress: {},
+                    source: findIcon(category.icon),
+                    amount: b ? "+" + item.money : "-" + item.money,
+                    color: b ? colors.greenDark : colors.redDark,
+                };
 
-                    categoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
-                        snapshot.forEach(element => {
+                info.list.push(itemdata);
+                info.change = 0;
+                info.change += parseInt(itemdata.amount);
+
+                clone.push(info);
+            } else {
+                var category;
+
+                categoryRef
+                    .orderByKey()
+                    .equalTo(item.category)
+                    .on("value", (snapshot) => {
+                        snapshot.forEach((element) => {
                             category = {
                                 key: element.key,
                                 categoryName: element.toJSON().CategoryName,
                                 icon: element.toJSON().Icon,
                                 parentID: element.toJSON().ParentID,
-                                typeID: element.toJSON().TypeID
-                            }
+                                typeID: element.toJSON().TypeID,
+                            };
                         });
                     });
 
-                    var b;
+                var b;
 
-                    if(category.typeID == "002")
-                    {
-                        b = false;
-                    }
-                    else
-                    {
-                        if(category.typeID == "003")
-                        {
+                if (category.typeID == "002") {
+                    b = false;
+                } else {
+                    if (category.typeID == "003") {
+                        b = true;
+                    } else {
+                        if (
+                            category.categoryName == "Đi vay" ||
+                            category.categoryName == "Thu nợ"
+                        ) {
                             b = true;
-                        }
-                        else
-                        {
-                            if(category.categoryName == "Đi vay" || category.categoryName == "Thu nợ")
-                            {
-                                b = true;
-                            }
-                            else
-                            {
-                                b = false;
-                            }
+                        } else {
+                            b = false;
                         }
                     }
-
-                    
-                    //item to new data
-                    var itemdata = {
-                        subcategory: category.categoryName,
-                        onPress: {},
-                        source: findIcon(category.icon),
-                        amount: b? "+" + item.money : "-" + item.money,
-                        color: b? colors.greenDark : colors.redDark,
-                    }
-
-                    clone.find(i => i.date == d).change += parseInt(itemdata.amount)
-
-                    
-                    clone.find(i => i.date == d).list.push(itemdata)
                 }
-            })
-            return clone;
+
+                //item to new data
+                var itemdata = {
+                    subcategory: category.categoryName,
+                    onPress: {},
+                    source: findIcon(category.icon),
+                    amount: b ? "+" + item.money : "-" + item.money,
+                    color: b ? colors.greenDark : colors.redDark,
+                };
+
+                clone.find((i) => i.date == d).change += parseInt(itemdata.amount);
+
+                clone.find((i) => i.date == d).list.push(itemdata);
+            }
+        });
+        return clone;
     }
-    getTransactionFullListData(offsetIndex)
-    {
+    getTransactionFullListData(offsetIndex) {
         var x = Math.ceil(offsetIndex) / Math.ceil(windowWidth - 2 * sizeFactor);
-        if(this.getMonthList().length == 0)
-        return []
-        if(Math.ceil(offsetIndex) % Math.ceil(windowWidth - 2 * sizeFactor) == 0)
-        {
-            var monthcode = this.getMonthList()[x].index
-            var m = monthcode % 12
-            var y = monthcode / 12
-            if(m == 0)
-            {
+        if (this.getMonthList().length == 0) return [];
+        if (Math.ceil(offsetIndex) % Math.ceil(windowWidth - 2 * sizeFactor) == 0) {
+            var monthcode = this.getMonthList()[x].index;
+            var m = monthcode % 12;
+            var y = monthcode / 12;
+            if (m == 0) {
                 m = 12;
-                y = y-1;
+                y = y - 1;
             }
             // this.setState({
             //     transactionData: this.mergeDataByDate(this.getDataInMonth(m, y))
             // })
-            return this.mergeDataByDate(this.getDataInMonth(m,y));
+            return this.mergeDataByDate(this.getDataInMonth(m, y));
         }
-        return []
+        return [];
     }
 
     render() {
@@ -547,18 +521,22 @@ export class TransactionsScreen extends Component {
                 <Title>Lịch sử giao dịch </Title>
                 <SimpleCarousel
                     //scrollref={(ref)=>this.Carousel = ref}
-                    ref={(ref) => {this.Carousel = ref}}
-                    onScroll = {(event)=>{
-                        this.setState({offset : event.nativeEvent.contentOffset.x})
+                    ref={(ref) => {
+                        this.Carousel = ref;
+                    }}
+                    onScroll={(event) => {
+                        this.setState({ offset: event.nativeEvent.contentOffset.x });
                         //this.getTransactionFullListData(event.nativeEvent.contentOffset.x)
                     }}
                 >
                     <FlatList
-                        ref={(ref) => { this.flatListRef = ref; }}
+                        ref={(ref) => {
+                            this.flatListRef = ref;
+                        }}
                         data={this.getMonthList()}
                         scrollEnabled={false}
                         horizontal={true}
-                        keyExtractor={item => item.index}
+                        keyExtractor={(item) => item.index}
                         renderItem={({ item }) => {
                             return (
                                 <TransactionMonthSummary
@@ -566,15 +544,17 @@ export class TransactionsScreen extends Component {
                                     openBalance={toMoneyString(item.openBalance)}
                                     endBalance={toMoneyString(item.endBalance)}
                                     change={toMoneyString(item.change)}
-                                    changeColor={item.change > 0?  colors.greenDark : colors.redDark}
+                                    changeColor={
+                                        item.change > 0 ? colors.greenDark : colors.redDark
+                                    }
                                     leftChevronOpacity={item.left}
                                     rightChevronOpacity={item.right}
                                 />
                             );
                         }}
-                        ></FlatList>
+                    ></FlatList>
                 </SimpleCarousel>
-                <TransactionsFullList data={this.getTransactionFullListData(this.state.offset)}/>
+                <TransactionsFullList data={this.getTransactionFullListData(this.state.offset)} />
             </ScreenView>
         );
     }
