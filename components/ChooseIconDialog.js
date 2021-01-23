@@ -52,7 +52,7 @@ import {
     IconCategory,
 } from "./Basic";
 
-import { closeIconDialog, selectIcon, setAddingIcon } from '../actions/index';
+import { closeIconDialog, selectIcon, setAddingIcon, setEditingIcon } from '../actions/index';
 import IconImage from './Image';
 
 
@@ -99,7 +99,11 @@ class ChooseIconDialog extends Component {
     }
 
     closeIconDialog = () => {
+        // dirty code to skip checking is adding or editing or working with subcategory
+        // can do this b/c in CategoriesScreen, i always setAddingIcon or setEditingIcon before navigating to add or edit screen
         this.props.setAddingIcon(this.props.selectedIcon.selectedIndex);
+        this.props.setEditingIcon(this.props.selectedIcon.selectedIndex);
+
         this.props.closeIconDialog();
     }
 
@@ -172,6 +176,7 @@ function mapDispatchToProps(dispatch) {
         closeIconDialog: () => { dispatch(closeIconDialog())},
         selectIcon: (index) => { dispatch(selectIcon(index))},
         setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
+        setEditingIcon: (index) => { dispatch(setEditingIcon(index))},
     };
 }
 

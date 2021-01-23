@@ -49,7 +49,8 @@ import {
     selectIcon,
     workWithCategory,
     closeIconDialog,
-    setAddingIcon
+    setAddingIcon,
+    setEditingIcon
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -122,7 +123,7 @@ class CategoriesScreen extends React.Component {
         await this.props.workWithCategory();
 
         const iconIndex = getIndex(this.props.chosenCategory.icon);
-        this.props.selectIcon(iconIndex);
+        this.props.setEditingIcon(iconIndex);
         this.props.closeIconDialog();
 
         this.props.changeName(category.categoryName);
@@ -157,7 +158,7 @@ class CategoriesScreen extends React.Component {
                             {name}
                         </Category>
                     );
-                } else if (index == categories.length) {
+                } else if (index == categories.length && this.props.selectedType !== 0) {
                     row.push(
                         <Category
                             key={index}
@@ -229,7 +230,7 @@ class CategoriesScreen extends React.Component {
                 <KindSelect
                     onPress={(index) => this.getDataBasedOnType(index)}
                     selectedIndex={this.props.selectedType}
-                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]}
+                    buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]}
                 />
             );
         }
@@ -298,6 +299,7 @@ function mapDispatchToProps(dispatch) {
         workWithCategory: () => { dispatch(workWithCategory())},
         closeIconDialog: () => { dispatch(closeIconDialog())},
         setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
+        setEditingIcon: (index) => { dispatch(setEditingIcon(index))},
     }
 }
 

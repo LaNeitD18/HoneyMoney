@@ -115,6 +115,8 @@ class AddCategoryScreen extends Component {
     };
 
     openIconDialog = () => {
+        // reset selectedIndex whenever open icon dialog
+        // b/c if choose icon and close dialog, without reseting, selectedIndex != addIndex (expect ==)
         this.props.selectIcon(this.props.selectedIcon.addIndex);
         this.props.openIconDialog();
     }

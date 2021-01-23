@@ -11,7 +11,6 @@ const selectedIconReducer = (state = defaultState, action) => {
                 ...state,
                 selectedIndex: action.selectedIndex,
             }
-            console.log(state);
             return state;
         case 'ADDING_ICON':
             state = {

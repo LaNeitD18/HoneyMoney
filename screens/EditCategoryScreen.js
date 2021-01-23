@@ -52,7 +52,7 @@ import { connect } from "react-redux";
 import Swipeout from "react-native-swipeout";
 
 import * as firebase from "firebase";
-import { categoryRef } from "../components/DataConnect";
+import { userCategoryRef } from "../components/DataConnect";
 
 import IconImage, { findIcon, getIndex } from '../components/Image';
 import { changeType, changeName, openDialog, openIconDialog, selectIcon } from '../actions/index';
@@ -85,26 +85,30 @@ class EditCategoryScreen extends Component {
         const category = this.props.chosenCategory;
         const type =
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
-        categoryRef.child(category.key).update({
+        const icon = IconImage[this.props.selectedIcon.editIndex].type;
+
+        userCategoryRef.child(category.key).update({
             CategoryName: this.props.categoryName,
+            Icon: icon,
             TypeID: type,
         });
 
-        const subCategories = this.props.addedSubCategories;
-        //let update = {};
-        subCategories.map(item => {
-            categoryRef.child(category.key).child('SubCategories').push({
-                CategoryName: item.categoryName,
-                Icon: item.icon
-            });
-        })
+        // const subCategories = this.props.addedSubCategories;
+        // //let update = {};
+        // subCategories.map(item => {
+        //     categoryRef.child(category.key).child('SubCategories').push({
+        //         CategoryName: item.categoryName,
+        //         Icon: item.icon
+        //     });
+        // })
+
        // exit this screen
         this.props.navigation.goBack();
     };
 
     deleteCategory = () => {
         const category = this.props.chosenCategory;
-        categoryRef.child(category.key).remove();
+        userCategoryRef.child(category.key).remove();
 
         // exit this screen
         this.props.navigation.goBack();
@@ -140,6 +144,13 @@ class EditCategoryScreen extends Component {
         </View>
     }
 
+    openIconDialog = () => {
+        // reset selectedIndex whenever open icon dialog
+        // b/c if choose icon and close dialog, without reseting, selectedIndex != editIndex (expect ==)
+        this.props.selectIcon(this.props.selectedIcon.editIndex);
+        this.props.openIconDialog();
+    }
+
     render() {
         const swipeSettings = {
             autoClose: true,
@@ -157,11 +168,11 @@ class EditCategoryScreen extends Component {
         // console.log("a ");
         // console.log(this.props.addedSubCategories);
 
-        const iconPath = IconImage[this.props.selectedIcon].iconPath;
+        const iconPath = IconImage[this.props.selectedIcon.editIndex].iconPath;
 
         return (
             <ScreenView>
-                <ChooseIconDialog selectedIndex={this.props.selectedIcon}/>
+                <ChooseIconDialog />
                 <View
                     style={{
                         justifyContent: "center",
@@ -172,7 +183,7 @@ class EditCategoryScreen extends Component {
                     <Space />
                     <Space />
                     <Space />
-                    <TouchableOpacity onPress={() => { this.props.openIconDialog()}}>
+                    <TouchableOpacity onPress={() => { this.openIconDialog()}}>
                         <Avatar
                             size={sizeFactor * 6}
                             avatarStyle={{
@@ -245,7 +256,7 @@ class EditCategoryScreen extends Component {
                     color="white"
                     backgroundColor={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
-                    onPress={this.updateCategory}
+                    onPress={() => this.updateCategory()}
                 >
                     Lưu thay đổi
                 </Button>
@@ -254,7 +265,7 @@ class EditCategoryScreen extends Component {
                     color="white"
                     backgroundColor={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
-                    onPress={this.deleteCategory}
+                    onPress={() => this.deleteCategory()}
                 >
                     Xóa danh mục
                 </Button>
