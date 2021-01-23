@@ -117,6 +117,8 @@ export class EditTransactionScreen extends Component {
     }
   }
   componentDidMount(){
+    this.resetAll();
+
     let uid = 'none';
     if(firebase.auth().currentUser) {
         uid = firebase.auth().currentUser.uid;
@@ -125,7 +127,7 @@ export class EditTransactionScreen extends Component {
     userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
     this.props.walletData.forEach((element) => {
       if (element.isDefault == "true") {
-        if(this.props.selectedWallet != element)
+        if(this.props.selectedWallet === "" || this.props.selectedWallet != element)
           this.props.SelectWallet(element)
       }
     })
@@ -378,6 +380,7 @@ export class EditTransactionScreen extends Component {
     }
 
     this.resetAll();
+    this.props.navigation.goBack();
   }
 
   resetAll = () =>{
@@ -393,7 +396,7 @@ export class EditTransactionScreen extends Component {
     }
     const userWalletRef = userRef.child(uid).child('Wallet')
     userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
-    this.props.navigation.goBack();
+    this._isMounted = false;
   }
 
   render() {

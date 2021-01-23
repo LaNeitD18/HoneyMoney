@@ -1,9 +1,14 @@
 import * as firebase from 'firebase';
-import { categoryRef } from '../components/DataConnect'; 
+import { categoryRef, userRef } from '../components/DataConnect'; 
 
 const defaultCategories = () => {
     const categories = [];
-    categoryRef.orderByChild('TypeID').equalTo('002').on('value', (snapshot) => {
+    let uid = 'none';
+    if(firebase.auth().currentUser) {
+        uid = firebase.auth().currentUser.uid;
+    }
+    const userCategoryRef = userRef.child(uid).child('Category')
+    userCategoryRef.orderByChild('TypeID').equalTo('002').on('value', (snapshot) => {
         snapshot.forEach(element => {
             categories.push({
                 key: element.key,

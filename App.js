@@ -179,7 +179,7 @@ class Main extends Component {
                                         size={50}
                                         title="Thu"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {add: true}})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {typeID: "003"}})}}>
                                             <Icon
                                                 name="database-plus"
                                                 type="material-community"
@@ -206,7 +206,7 @@ class Main extends Component {
                                         size={50}
                                         title="Chi"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {add: false}})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {typeID: "002"}})}}>
                                             <Icon
                                                 name="database-minus"
                                                 type="material-community"

@@ -61,7 +61,7 @@ import { connect } from "react-redux";
 import { categoryRef, userRef } from "../components/DataConnect";
 import { rootRef, walletRef } from "../components/DataConnect";
 
-import { UpdateWalletAction, SelectWallet, SelectTransaction } from "../actions";
+import { UpdateWalletAction, SelectWallet, SelectTransaction, updateCategories } from "../actions";
 import * as firebase from "firebase";
 
 import { changeType, changeName, openDialog } from "../actions/index";
@@ -83,6 +83,18 @@ export class TransactionsScreen extends Component {
             firstscroll: 0,
         };
     }
+    componentWillMount(){
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userWalletRef = userRef.child(uid).child('Wallet')
+        userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
+        const userCategoryRef = userRef.child(uid).child('Category')
+        userCategoryRef.on("value", (snapshot) => {
+            this.props.updateCategories(snapshot);
+        });
+    }
     componentDidMount() {
         let uid = 'none';
         if(firebase.auth().currentUser) {
@@ -91,6 +103,7 @@ export class TransactionsScreen extends Component {
         const userWalletRef = userRef.child(uid).child('Wallet')
         userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
         
+
         //setTimeout(()=>{this.setState({monthlist: this.getMonthList()})}, 1500)
     }
 
@@ -240,7 +253,7 @@ export class TransactionsScreen extends Component {
         var change = 0
         var gain = 0;
         var lose = 0;
-        data.forEach(item => 
+        data.forEach((item) => 
             {
                 var category = {}
 
@@ -251,6 +264,7 @@ export class TransactionsScreen extends Component {
                 const userCategoryRef = userRef.child(uid).child('Category')
 
                 userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
+                    console.log(category)
                     snapshot.forEach(element => {
                         category = {
                             key: element.key,
@@ -619,7 +633,8 @@ const mapDispatchToProps = (dispatch) => {
         },
         SelectTransaction: (value) => {
             dispatch(SelectTransaction(value))
-        }
+        },
+        updateCategories: (categories) => { dispatch(updateCategories(categories)) }, 
     };
 };
 

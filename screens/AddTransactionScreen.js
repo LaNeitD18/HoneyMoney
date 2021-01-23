@@ -41,7 +41,7 @@ export class AddTransactionScreen extends Component {
       //selectedTenVi: this.props.route.params?.walletName ?? '',
       //defaultColor: this.props.route.params?.walletColor ?? colors.blue,
       fulllist: false,
-      add: this.props.route.params?.add
+      typeID: this.props.route.params?.typeID
     };
   }
   toString(date) {
@@ -114,6 +114,7 @@ export class AddTransactionScreen extends Component {
     }
   }
   componentDidMount(){
+    this.resetAll();
     // if(this.state.add)
     // {
     //   this.props.changeType('003')
@@ -134,6 +135,17 @@ export class AddTransactionScreen extends Component {
           this.props.SelectWallet(element)
       }
     })
+    const userCategoryRef = userRef.child(uid).child('Category')
+    userCategoryRef.on("value", (snapshot) => {
+        this.props.updateCategories(snapshot);
+    });
+
+    this.props.changeType(parseInt(this.state.typeID)-1);
+
+    const categories = this.props.allCategories;
+    const temp = categories.filter(item => item.typeID === this.state.typeID);
+    this.props.reloadCategory(temp);
+
     // let tempTen = '';
     // let tempColor = '';
     // if(this.state.selectedTenVi == '')
@@ -377,6 +389,7 @@ export class AddTransactionScreen extends Component {
     }
 
     this.resetAll();
+    this.props.navigation.goBack();
   }
 
   resetAll = () =>{
@@ -392,7 +405,7 @@ export class AddTransactionScreen extends Component {
     }
     const userWalletRef = userRef.child(uid).child('Wallet')
     userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
-    this.props.navigation.goBack();
+
   }
 
   render() {
