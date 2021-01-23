@@ -63,50 +63,66 @@ import { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
+import { Notifications } from "expo";
+import { Permissions } from "expo-permissions";
 
 class LoginScreen extends Component {
     constructor() {
         super();
-        this.state = { 
-          email: '', 
-          password: '',
-          isLoading: false,
-          errorMessage: ''
-        }
+        this.state = {
+            email: "",
+            password: "",
+            isLoading: false,
+            errorMessage: "",
+        };
     }
 
     updateInputVal = (val, prop) => {
         const state = this.state;
         state[prop] = val;
         this.setState(state);
-    }
+    };
 
     userLogin = () => {
-        if(this.state.email === '' || this.state.password === '') {
-            Alert.alert('Enter details to signin!')
+        if (this.state.email === "" || this.state.password === "") {
+            Alert.alert("Tài khoản hoặc mật khẩu không đúng!");
         } else {
             this.setState({
                 isLoading: true,
-            })
+            });
             firebase
-            .auth()
-            .signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then((res) => {
-                //console.log(res)
-                console.log('User logged-in successfully!')
-                this.setState({
-                isLoading: false,
-                email: '', 
-                password: ''
+                .auth()
+                .signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then((res) => {
+                    //console.log(res)
+                    console.log("User logged-in successfully!");
+                    this.setState({
+                        isLoading: false,
+                        email: "",
+                        password: "",
+                    });
+                    this.props.signIn();
+                    //console.log(this.props.isSignedIn);
+                    //this.props.navigation.navigate('Main')
                 })
-                this.props.signIn();
-                //console.log(this.props.isSignedIn);
-                //this.props.navigation.navigate('Main')
-            })
-            .catch(error => this.setState({ errorMessage: error.message }))
+                .catch((error) => this.setState({ errorMessage: error.message }));
             console.log(this.state.errorMessage);
+            Notifications.dismissAllNotificationsAsync();
+            this.askPermissions();
         }
-    }
+    };
+    askPermissions = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+        if (existingStatus !== "granted") {
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+        }
+        if (finalStatus !== "granted") {
+            return false;
+        }
+        return true;
+    };
 
     render() {
         return (
@@ -162,7 +178,7 @@ class LoginScreen extends Component {
                                 keyboardType="email-address"
                                 errorMessage=""
                                 value={this.state.email}
-                                onChangeText={(val) => this.updateInputVal(val, 'email')}
+                                onChangeText={(val) => this.updateInputVal(val, "email")}
                             />
                             <HomoTextInput
                                 label="Mật khẩu"
@@ -172,7 +188,7 @@ class LoginScreen extends Component {
                                 textContentType="password"
                                 errorMessage=""
                                 value={this.state.password}
-                                onChangeText={(val) => this.updateInputVal(val, 'password')}
+                                onChangeText={(val) => this.updateInputVal(val, "password")}
                             />
                             <View
                                 style={{
@@ -182,16 +198,22 @@ class LoginScreen extends Component {
                                     marginTop: sizeFactor / 2,
                                 }}
                             >
-                                <Button2 
+                                <Button2
                                     style={{ width: sizeFactor * 8.5 }}
-                                    onPress={() => this.props.navigation.navigate('SignUp')}
-                                >Đăng ký</Button2>
-                                <Button1 
+                                    onPress={() => this.props.navigation.navigate("SignUp")}
+                                >
+                                    Đăng ký
+                                </Button2>
+                                <Button1
                                     style={{ width: sizeFactor * 8.5 }}
                                     onPress={() => this.userLogin()}
-                                >Đăng nhập</Button1>
+                                >
+                                    Đăng nhập
+                                </Button1>
                             </View>
-                            <Button3 onPress={() => console.log(firebase.auth().currentUser)}>Quên mật khẩu</Button3>
+                            <Button3 onPress={() => console.log(firebase.auth().currentUser)}>
+                                Quên mật khẩu
+                            </Button3>
                         </View>
                     </View>
                 </ImageBackground>
@@ -208,8 +230,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        
-        signIn: () => { dispatch(signIn())},
+        signIn: () => {
+            dispatch(signIn());
+        },
     };
 }
 

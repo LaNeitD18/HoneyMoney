@@ -1049,7 +1049,6 @@ export class TransactionsList extends Component {
 
 export class TransactionsFullList extends Component {
     render() {
-
         const Item = ({ date, dayOfWeek, month, change, list }) => (
             <NormalCard>
                 <Row style={{ alignItems: "center", marginBottom: sizeFactor }}>
@@ -1124,7 +1123,9 @@ export class SimpleCarousel extends Component {
     render() {
         return (
             <ScrollView
-                ref={(ref) => {this.scrollref = ref}}
+                ref={(ref) => {
+                    this.scrollref = ref;
+                }}
                 horizontal
                 snapToInterval={Math.ceil(windowWidth - sizeFactor * 2)}
                 decelerationRate="fast"
@@ -1140,7 +1141,6 @@ export class SimpleCarousel extends Component {
             >
                 {this.props.children}
             </ScrollView>
-            
         );
     }
 }
