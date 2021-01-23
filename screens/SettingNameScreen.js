@@ -80,18 +80,18 @@ export default class SettingNameScreen extends Component {
             //console.log("au " + firebase.auth().currentUser.displayName);
             firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile")
                 .update({name : firebase.auth().currentUser.displayName});
-            Alert.alert("Thông báo", "Bạn đã cập nhật thông tin thành công", 
-                [
-                    {
-                        text: "OK",
-                        onPress: () => console.log("OK pressed")
-                    }
-                ], {cancelable: false}
-            );
-            this.props.navigation.goBack();
         }).catch(function(error) {
 
         });
+        //this.props.navigation.navigate('SettingScreen')
+        Alert.alert("Thông báo", "Bạn đã cập nhật thông tin thành công", 
+            [
+                {
+                    text: "OK",
+                    onPress: () => {console.log("OK pressed"); this.props.navigation.navigate('SettingScreen')}
+                }
+            ], {cancelable: false}
+        );
     }
 
     render() {
