@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView, SafeAreaView, Image, TouchableOpacity, Platform, TextInput } from "react-native";
-import { String, ScreenView, Card, Space, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, OutlineToggleButton, Button, ToggleButton } from "../components/Basic";
+import { String, ScreenView, Card, Space, Heading, RowLeft, Number, NegativeNumber, Wallet, colors, sizeFactor, styles, KindSelect, Title, Category, TouchableText, ScrollSelect, CategoryTable, windowWidth, windowHeight, Heading2, OutlineButton, Row, HeadlessCard, SmallScrollSelect, SmallKindSelect, OutlineToggleButton, Button, ToggleButton, Button2 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import CategoriesScreen from "../screens/CategoriesScreen";
@@ -384,6 +384,18 @@ export class EditTransactionScreen extends Component {
     this.props.navigation.goBack();
   }
 
+  deleteTransaction(){
+    var wallet = this.props.selectedWallet;
+
+    let uid = 'none';
+    if(firebase.auth().currentUser) {
+      uid = firebase.auth().currentUser.uid;
+    }
+    const userWalletRef = userRef.child(uid).child('Wallet')
+    userWalletRef.child(wallet.key).child("transactionList").child(this.props.selectedTransaction).remove(); 
+    this.props.navigation.goBack();
+  }
+
   resetAll = () =>{
     this.props.changeSoDu("");
     this.props.changeDateMode('Today');
@@ -579,6 +591,9 @@ export class EditTransactionScreen extends Component {
         <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.editTransaction()}}>
             Lưu thay đổi
         </OutlineButton>
+        <Button2 style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.deleteTransaction()}}>
+            Xoá giao dịch
+        </Button2>
       </ScreenView>
     );
   }
