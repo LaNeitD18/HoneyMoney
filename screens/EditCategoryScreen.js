@@ -284,7 +284,7 @@ function mapDispatchToProps(dispatch) {
         changeName: (text) => { dispatch(changeName(text))},
         openDialog: () => { dispatch(openDialog())},
         openIconDialog: () => { dispatch(openIconDialog())},
-        selectIcon: (index) => { dispatch(selectIcon(index))}
+        selectIcon: (index) => { dispatch(selectIcon(index))},
     };
 }
 

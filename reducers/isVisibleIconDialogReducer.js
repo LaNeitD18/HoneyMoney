@@ -1,9 +1,11 @@
 const isVisibleIconDialogReducer = (state=false, action) => {
     switch(action.type){
         case 'OPEN_ICON_DIALOG':
-            return !state;
+            state = true;
+            return state;
         case 'CLOSE_ICON_DIALOG':
-            return !state;
+            state = false;
+            return state;
         default:
             return state;
     }

@@ -48,24 +48,35 @@ import {
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
-import { categoryRef } from "../components/DataConnect";
+import { categoryRef, userRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog } from "../actions/index";
-import { findIcon } from "../components/Image";
+import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog } from "../actions/index";
+import IconImage, { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import Swipeout from "react-native-swipeout";
+import ChooseIconDialog from '../components/ChooseIconDialog';
 
 class AddCategoryScreen extends Component {
+    constructor() {
+        super();
+    }
+
     createCategory = () => {
         const name = this.props.categoryName;
         const type =
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
+        const icon = IconImage[this.props.selectedIcon.addIndex].type;
 
-        categoryRef.push({
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+
+        userRef.child(uid).child('Category/').push({
             CategoryName: name,
-            Icon: "",
+            Icon: icon,
             ParentID: "",
             TypeID: type,
         });
@@ -103,6 +114,16 @@ class AddCategoryScreen extends Component {
         );
     };
 
+    openIconDialog = () => {
+        this.props.selectIcon(this.props.selectedIcon.addIndex);
+        this.props.openIconDialog();
+    }
+
+    componentDidMount() {
+        this.props.closeIconDialog();
+        //this.props.selectIcon(9);
+    }
+
     render() {
         const swipeSettings = {
             autoClose: true,
@@ -117,9 +138,12 @@ class AddCategoryScreen extends Component {
             ],
         };
         const subCategoriesView = this.renderSubCategoriesView();
+        
+        const iconPath = IconImage[this.props.selectedIcon.addIndex].iconPath;
 
         return (
             <ScreenView>
+                <ChooseIconDialog />
                 <View
                     style={{
                         justifyContent: "center",
@@ -130,7 +154,7 @@ class AddCategoryScreen extends Component {
                     <Space />
                     <Space />
                     <Space />
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => { this.openIconDialog()}}>
                         <Avatar
                             size={sizeFactor * 6}
                             avatarStyle={{
@@ -139,7 +163,7 @@ class AddCategoryScreen extends Component {
                                 marginLeft: sizeFactor * 0.75,
                                 marginTop: sizeFactor * 0.75,
                             }}
-                            source={require("../assets/categories/tuthien.png")}
+                            source={iconPath}
                         >
                             <Accessory size={sizeFactor * 1.75} />
                         </Avatar>
@@ -229,7 +253,7 @@ class AddCategoryScreen extends Component {
                     color="white"
                     background={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
-                    onPress={this.createCategory}
+                    onPress={() => this.createCategory()}
                 >
                     Lưu thay đổi
                 </Button>
@@ -244,6 +268,7 @@ function mapStateToProps(state) {
         categoryName: state.categoryName,
         selectedType: state.selectedType,
         subCategories: state.subCategories,
+        selectedIcon: state.selectedIcon
     };
 }
 
@@ -258,6 +283,9 @@ function mapDispatchToProps(dispatch) {
         openDialog: () => {
             dispatch(openDialog());
         },
+        openIconDialog: () => { dispatch(openIconDialog())},
+        selectIcon: (index) => { dispatch(selectIcon(index))},
+        closeIconDialog: () => { dispatch(closeIconDialog())},
     };
 }
 

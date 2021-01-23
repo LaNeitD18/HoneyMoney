@@ -48,6 +48,8 @@ import {
     showType,
     selectIcon,
     workWithCategory,
+    closeIconDialog,
+    setAddingIcon
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -88,6 +90,7 @@ class CategoriesScreen extends React.Component {
     createNewCategory = () => {
         const category = [];
         this.props.getSubCategories(category);
+        this.props.setAddingIcon(9);
         this.props.navigation.navigate("AddCategoryScreen");
     };
 
@@ -120,6 +123,7 @@ class CategoriesScreen extends React.Component {
 
         const iconIndex = getIndex(this.props.chosenCategory.icon);
         this.props.selectIcon(iconIndex);
+        this.props.closeIconDialog();
 
         this.props.changeName(category.categoryName);
         this.props.showType(this.props.selectedType);
@@ -292,6 +296,8 @@ function mapDispatchToProps(dispatch) {
         showType: (selectedType) => { dispatch(showType(selectedType)) },
         selectIcon: (index) => { dispatch(selectIcon(index))},
         workWithCategory: () => { dispatch(workWithCategory())},
+        closeIconDialog: () => { dispatch(closeIconDialog())},
+        setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
     }
 }
 
