@@ -405,7 +405,6 @@ export class AddTransactionScreen extends Component {
     }
     const userWalletRef = userRef.child(uid).child('Wallet')
     userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
-
   }
 
   render() {

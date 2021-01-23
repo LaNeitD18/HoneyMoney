@@ -264,7 +264,7 @@ export class TransactionsScreen extends Component {
                 const userCategoryRef = userRef.child(uid).child('Category')
 
                 userCategoryRef.orderByKey().equalTo(item.category).on('value', (snapshot) => {
-                    console.log(category)
+
                     snapshot.forEach(element => {
                         category = {
                             key: element.key,

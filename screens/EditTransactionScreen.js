@@ -118,7 +118,7 @@ export class EditTransactionScreen extends Component {
   }
   componentDidMount(){
     this.resetAll();
-
+    var swallet;
     let uid = 'none';
     if(firebase.auth().currentUser) {
         uid = firebase.auth().currentUser.uid;
@@ -127,18 +127,19 @@ export class EditTransactionScreen extends Component {
     userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
     this.props.walletData.forEach((element) => {
       if (element.isDefault == "true") {
-        if(this.props.selectedWallet === "" || this.props.selectedWallet != element)
           this.props.SelectWallet(element)
+          swallet = element
       }
     })
     const userCategoryRef = userRef.child(uid).child('Category')
     userCategoryRef.on("value", (snapshot) => {
-        this.props.updateCategories(snapshot);
+
+      this.props.updateCategories(snapshot);
     });
 
     this.setState({fulllist : true})
 
-    const trans = this.props.selectedWallet.transactionList[this.props.selectedTransaction]
+    const trans = swallet.transactionList[this.props.selectedTransaction]
     this.props.changeSoDu(trans.money);
     //this.props.changeSoDu("");
     const categories = this.props.allCategories;
