@@ -264,7 +264,7 @@ class CategoriesScreen extends React.Component {
                     }}
                 />
                 <ScrollView style={{ flex: 0.9 }}>
-                    <Title style={{ marginTop: 0 }}>Danh mục</Title>
+                    {/* {<Title style={{ marginTop: 0 }}>Danh mục</Title>} */}
                     {kindSelect}
                     <CategoryTable rows={rows} />
                     <Space />

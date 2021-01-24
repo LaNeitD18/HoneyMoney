@@ -1339,7 +1339,7 @@ export class WalletRow extends Component {
 export class ChooseWalletList extends Component {
     render() {
         const Item = ({ name, color }) => <WalletRow name={name} color={color} />;
-        const renderItem = ({ item }) => <Item name={item.name} color={item.color} />;
+        const renderItem = ({ item }) => <TouchableOpacity onPress={item.onPress}><Item name={item.name} color={item.color} /></TouchableOpacity>;
         return <FlatList data={this.props.data} renderItem={renderItem} />;
     }
 }

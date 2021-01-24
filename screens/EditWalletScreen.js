@@ -129,7 +129,7 @@ export class EditWalletScreen extends Component {
       componentDidMount() {
         this.setState({
             newTenVi: this.props.selectedWallet.name,
-            newSoDu: this.props.selectedWallet.money,
+            newSoDu: "" + this.props.selectedWallet.money,
             selectedColor: this.props.selectedWallet.color
         });
         var that = this;

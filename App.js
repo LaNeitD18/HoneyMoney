@@ -245,7 +245,7 @@ class Main extends Component {
                     name="Budget"
                     //component={BudgetScreen}
                     component={WalletScreen}
-                    options={{ title: "Tiết kiệm" }}
+                    options={{ title: "Ví" }}
                 />
                 <Tab.Screen
                     name="Settings"
@@ -325,7 +325,7 @@ function DisplayedScreens() {
                         <Stack.Screen
                             name="WalletTransferScreen"
                             component={WalletTransferScreen}
-                            options={{ headerShown: true, title: "Chuyển tiền qua ví" }}
+                            options={{ headerShown: true, title: "" }}
                         />
                         <Stack.Screen
                             name="EditTransaction"
@@ -351,7 +351,7 @@ function DisplayedScreens() {
                             component={CategoryNavigator}
                             options={{ headerShown: true, title: "" }}
                         />
-                        <Stack.Screen name="CategoriesScreen" component={CategoriesScreen} options={{ headerShown: true, title: "" }}/>
+                        <Stack.Screen name="CategoriesScreen" component={CategoriesScreen} options={{ headerShown: true, title: "Danh mục" }}/>
                         <Stack.Screen
                             name="AddCategoryScreen"
                             component={AddCategoryScreen}
