@@ -243,8 +243,8 @@ class Main extends Component {
                 ></Tab.Screen>
                 <Tab.Screen
                     name="Budget"
-                    component={BudgetScreen}
-                    //component={WalletScreen}
+                    //component={BudgetScreen}
+                    component={WalletScreen}
                     //component={AddBudgetScreen}
                     options={{ title: "Ví" }}
                 />
