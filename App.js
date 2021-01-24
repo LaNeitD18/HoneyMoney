@@ -389,6 +389,11 @@ function DisplayedScreens() {
                             component={AddBudgetScreen}
                             options={{ headerShown: true, title: "Thêm hạn mức" }}
                         />
+                        <Stack.Screen
+                            name="BudgetScreen"
+                            component={BudgetScreen}
+                            options={{ headerShown: true, title: "Quản lí hạn mức" }}
+                        />
                 </Stack.Navigator>
             </NavigationContainer>
         );

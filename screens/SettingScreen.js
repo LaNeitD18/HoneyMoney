@@ -138,6 +138,12 @@ class SettingScreen extends Component {
                         onPress={() => {this.props.navigation.navigate('CategoriesScreen'); console.log(firebase.auth().currentUser.uid);}}
                     />
                     <SettingRow
+                        color={colors.green}
+                        iconName="bank"
+                        text="Quản lí hạn mức"
+                        onPress={() => this.props.navigation.navigate('BudgetScreen')}
+                    />
+                    <SettingRow
                         color={colors.blue}
                         iconName="bell-ring"
                         text="Thông báo"
