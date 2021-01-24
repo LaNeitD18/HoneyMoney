@@ -1107,7 +1107,7 @@ export class TransactionsFullList extends Component {
                 list={item.list}
             />
         );
-        return <FlatList data={this.props.data} renderItem={renderItem} />;
+        return <FlatList data={this.props.data} renderItem={renderItem} ListEmptyComponent={this.props.ListEmptyComponent}/>;
     }
 }
 

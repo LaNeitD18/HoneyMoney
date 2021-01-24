@@ -581,7 +581,23 @@ export class TransactionsScreen extends Component {
         return []
     }
 
+    _listEmptyComponent = () => {
+        return (
+            <View>
+                <String>Ví này chưa có giao dịch nào</String>
+            </View>
+        )
+    }
+    _listEmptyComponentMonth = () => {
+        return (
+            <View>
+                <String>Không có giao dịch nào trong tháng này</String>
+            </View>
+        )
+    }
+
     render() {
+        
         //const month = this.getMonthList();
         return (
             <ScreenView>
@@ -600,6 +616,7 @@ export class TransactionsScreen extends Component {
                         scrollEnabled={false}
                         horizontal={true}
                         keyExtractor={item => item.index}
+                        ListEmptyComponent={this._listEmptyComponent}
                         renderItem={({ item }) => {
                             return (
                                 <TransactionMonthSummary
@@ -615,7 +632,7 @@ export class TransactionsScreen extends Component {
                         }}
                         ></FlatList>
                 </SimpleCarousel>
-                <TransactionsFullList data={this.getTransactionFullListData(this.state.offset)}/>
+                <TransactionsFullList data={this.getTransactionFullListData(this.state.offset)} ListEmptyComponent={this._listEmptyComponentMonth}/>
             </ScreenView>
         );
     }
