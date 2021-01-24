@@ -25,6 +25,7 @@ import selectedTransactionReducer from './selectedTransactionReducer';
 import selectedIconReducer from './selectedIconReducer';
 import isWorkingWithSubReducer from './isWorkingWithSubReducer';
 import userNameReducer from './userNameReducer';
+import subcategoryNameReducer from './subcategoryNameReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -55,7 +56,8 @@ const allReducers = combineReducers({
     isSignedIn: isSignedInReducer,
     selectedIcon: selectedIconReducer,
     isWorkingWithSub: isWorkingWithSubReducer,
-    userName: userNameReducer
+    userName: userNameReducer,
+    subcategoryName: subcategoryNameReducer
 })
 
 export default allReducers;
