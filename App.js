@@ -80,6 +80,7 @@ import { connect } from "react-redux";
 import EditTransactionScreen from "./screens/EditTransactionScreen";
 import { signIn, signOut } from "./actions";
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import EditWalletScreen from "./screens/EditWalletScreen";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -158,7 +159,7 @@ class Main extends Component {
                 <Tab.Screen
                     name="Transactions"
                     component={TransactionsScreen}
-                    options={{ title: "Giao dịch" }}
+                    options={{ title: "Lịch sử giao dịch"}}
                 />
 
                 <Tab.Screen
@@ -201,7 +202,7 @@ class Main extends Component {
                                         size={50}
                                         title="Thu"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {typeID: "003"}})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("AddTransactionScreen", {typeID: "003"})}}>
                                             <Icon
                                                 name="database-plus"
                                                 type="material-community"
@@ -215,7 +216,7 @@ class Main extends Component {
                                         size={50}
                                         title="Chuyển ví"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletScreen"})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("WalletTransferScreen")}}>
                                             <Icon
                                                 name="wallet"
                                                 type="material-community"
@@ -228,7 +229,7 @@ class Main extends Component {
                                         size={50}
                                         title="Chi"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {typeID: "002"}})}}>
+                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("AddTransactionScreen", {typeID: "002"})}}>
                                             <Icon
                                                 name="database-minus"
                                                 type="material-community"
@@ -247,8 +248,8 @@ class Main extends Component {
                     </Tab.Screen>
                 <Tab.Screen
                     name="Budget"
-                    component={BudgetScreen}
-                    //component={WalletNavigator}
+                    //component={BudgetScreen}
+                    component={WalletScreen}
                     options={{ title: "Tiết kiệm" }}
                 />
                 <Tab.Screen
@@ -263,7 +264,7 @@ class Main extends Component {
 
 function DisplayedScreens ()  {
     const [user, loading, error] = useAuthState(firebase.auth());
-
+    const isEditing = 0;
     if(user) {
         return (
             <NavigationContainer>
@@ -271,40 +272,40 @@ function DisplayedScreens ()  {
                     <Stack.Screen
                                     options={({ navigation, route }) => ({
                                         headerTitle: getHeaderTitle(route),
-                                        headerShown: false,
+                                        headerShown: true,
                                         
-                                        headerRight: () => (
-                                            <View
-                                                style={{
-                                                    flexDirection: "row",
-                                                    marginRight: sizeFactor,
-                                                }}
-                                            >
-                                                <TouchableOpacity onPress={()=>{}/*navigation.navigate("Wallet")*/}>
-                                                    <View
-                                                        style={{
-                                                            flexDirection: "row",
-                                                            alignItems: "center",
-                                                        }}
-                                                    >
-                                                        <Icon
-                                                            name="wallet"
-                                                            type="material-community"
-                                                            color={colors.blue}
-                                                            size={sizeFactor * 1.75}
-                                                            style={{ marginRight: sizeFactor / 2 }}
-                                                        />
-                                                        <String
-                                                            style={{
-                                                                marginBottom: 4,
-                                                                color: colors.blue,
-                                                            }}
-                                                        >
-                                                            Đổi ví
-                                                        </String>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
+                                        headerRight: () => (<View></View>
+                                            // <View
+                                            //     style={{
+                                            //         flexDirection: "row",
+                                            //         marginRight: sizeFactor,
+                                            //     }}
+                                            // >
+                                            //     <TouchableOpacity onPress={()=>{}/*navigation.navigate("Wallet")*/}>
+                                            //         <View
+                                            //             style={{
+                                            //                 flexDirection: "row",
+                                            //                 alignItems: "center",
+                                            //             }}
+                                            //         >
+                                            //             <Icon
+                                            //                 name="wallet"
+                                            //                 type="material-community"
+                                            //                 color={colors.blue}
+                                            //                 size={sizeFactor * 1.75}
+                                            //                 style={{ marginRight: sizeFactor / 2 }}
+                                            //             />
+                                            //             <String
+                                            //                 style={{
+                                            //                     marginBottom: 4,
+                                            //                     color: colors.blue,
+                                            //                 }}
+                                            //             >
+                                            //                 Đổi ví
+                                            //             </String>
+                                            //         </View>
+                                            //     </TouchableOpacity>
+                                            // </View>
                                         ),
                                     })}
                                     name="Main"
@@ -312,6 +313,20 @@ function DisplayedScreens ()  {
                                 />
                         <Stack.Screen name="Action" component={WalletNavigator}/>
                         <Stack.Screen name="Ví" component={WalletScreen}/>
+                        <Stack.Screen
+                            name="AddWalletScreen"
+                            component={AddWalletScreen}
+                            options={{ headerShown: true, title: "Tạo ví mới" }}
+                        />
+                        <Stack.Screen
+                            name="EditWalletScreen" 
+                            component={EditWalletScreen} 
+                            options={{headerShown: true, title: "Sửa ví"}}/>
+                        <Stack.Screen
+                            name="AddTransactionScreen"
+                            component={AddTransactionScreen}
+                            options={{ headerShown: true, title: "Tạo giao dịch" }}
+                        />
                         <Stack.Screen
                             name="WalletTransferScreen"
                             component={WalletTransferScreen}
@@ -340,6 +355,38 @@ function DisplayedScreens ()  {
                             name="CategoryNavigator"
                             component={CategoryNavigator}
                             options={{ headerShown: true, title: "" }}
+                        />
+                        <Stack.Screen name="CategoriesScreen" component={CategoriesScreen} options={{ headerShown: true, title: "" }}/>
+                        <Stack.Screen
+                            name="AddCategoryScreen"
+                            component={AddCategoryScreen}
+                            options={{ headerShown: true, title: "Thêm danh mục" }}
+                        />
+                        <Stack.Screen
+                            name="EditCategoryScreen"
+                            component={EditCategoryScreen}
+                            options={{
+                                headerShown: true,
+                                title: isEditing ? "Sửa danh mục" : "Xem danh mục",
+                                // headerRight: () => (
+                                //     <View style={{ flexDirection: "row", marginRight: sizeFactor }}>
+                                //         <TouchableOpacity onPress={this.deleteCategory}>
+                                //             <Icon
+                                //             name="delete-outline"
+                                //             type="material-community"
+                                //             color={colors.red}
+                                //             size={sizeFactor * 1.75}
+                                //             style={{ marginRight: sizeFactor }}/>
+                                //         </TouchableOpacity>
+                                //         <Icon
+                                //             name={isEditing ? "eye-outline" : "pencil-outline"}
+                                //             type="material-community"
+                                //             color={colors.gray}
+                                //             size={sizeFactor * 1.75}
+                                //         />
+                                //     </View>
+                                // ),
+                            }}
                         />
                 </Stack.Navigator>
             </NavigationContainer>

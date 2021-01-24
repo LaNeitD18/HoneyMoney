@@ -117,7 +117,7 @@ class SettingScreen extends Component {
                     > {firebase.auth().currentUser.email}
                     </Text>
                 </View>
-                <Title style={{ marginBottom: sizeFactor / 4 }}>Cài đặt</Title>
+                {/* {<Title style={{ marginBottom: sizeFactor / 4 }}>Cài đặt</Title>} */}
                 <NormalCard style={{ paddingHorizontal: 0 }}>
                     <SettingRow
                         color={colors.yellow}
@@ -135,7 +135,7 @@ class SettingScreen extends Component {
                         color={colors.green}
                         iconName="package-variant"
                         text="Quản lý danh mục"
-                        onPress={() => {this.props.navigation.navigate('CategoryNavigator'); console.log(firebase.auth().currentUser.uid);}}
+                        onPress={() => {this.props.navigation.navigate('CategoriesScreen'); console.log(firebase.auth().currentUser.uid);}}
                     />
                     <SettingRow
                         color={colors.blue}

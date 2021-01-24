@@ -585,7 +585,7 @@ export class TransactionsScreen extends Component {
         //const month = this.getMonthList();
         return (
             <ScreenView>
-                <Title>Lịch sử giao dịch </Title>
+                {/* {<Title>Lịch sử giao dịch </Title>} */}
                 <SimpleCarousel
                     //scrollref={(ref)=>this.Carousel = ref}
                     ref={(ref) => {this.Carousel = ref}}

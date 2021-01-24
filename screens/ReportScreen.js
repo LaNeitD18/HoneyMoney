@@ -560,7 +560,7 @@ export class ReportScreen extends Component {
 
         return (
             <ScreenView>
-                <Title>Báo cáo</Title>
+                {/* {<Title>Báo cáo</Title>} */}
                 <View
                     style={{
                         padding: sizeFactor,
