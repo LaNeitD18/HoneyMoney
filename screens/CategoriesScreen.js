@@ -33,7 +33,7 @@ import {
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from "firebase";
-import { categoryRef, userCategoryRef, userRef } from "../components/DataConnect";
+import { categoryRef, userRef } from "../components/DataConnect";
 import IconImage, { findIcon, getIndex } from "../components/Image";
 import { connect } from "react-redux";
 import {
@@ -57,6 +57,8 @@ import {
 import EditCategoryScreen from "./EditCategoryScreen";
 import { CommonActions } from "@react-navigation/native";
 import chosenCategoryReducer from "../reducers/chosenCategoryReducer";
+import { useAuthState } from "react-firebase-hooks/auth";
+//const [user, loading, error] = useAuthState(firebase.auth());
 
 class CategoriesScreen extends React.Component {
     _isMounted = false;
@@ -99,6 +101,12 @@ class CategoriesScreen extends React.Component {
     };
 
     getSubCategories = (chosenCategory) => {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userCategoryRef = userRef.child(uid).child('Category')
+
         const categories = [];
         userCategoryRef.child(chosenCategory.key).child('SubCategories/').once('value', (snapshot) => {
             snapshot.forEach(element => {
@@ -182,6 +190,7 @@ class CategoriesScreen extends React.Component {
     componentDidMount() {
         let uid = 'none';
         if(firebase.auth().currentUser) {
+            console.log(firebase.auth().currentUser);
             uid = firebase.auth().currentUser.uid;
         }
         // const categoryRef = rootRef.child('users').child(uid).child('Category');
