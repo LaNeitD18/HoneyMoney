@@ -122,6 +122,12 @@ export const styles = StyleSheet.create({
         width: ((windowWidth - 5 * sizeFactor) / 4) * 0.75,
         height: ((windowWidth - 5 * sizeFactor) / 4) * 0.75,
     },
+    hugeCategoryInManagerScreen: {
+        alignSelf: "center",
+        marginBottom: sizeFactor / 2,
+        width: (windowWidth - 5 * sizeFactor) / 4,
+        height: (windowWidth - 5 * sizeFactor) / 4,
+    },
     smallCategory: {
         marginBottom: sizeFactor,
         width: (windowWidth - 8 * sizeFactor) / 4,
@@ -354,10 +360,7 @@ export class ScreenView extends Component {
     render() {
         return (
             <SafeAreaView style={[styles.background, this.props.style]}>
-                <KeyboardAvoidingView
-                    behavior="position"
-                    enabled={Platform.OS === "android" ? false : true}
-                >
+                <KeyboardAvoidingView behavior="height" enabled={true}>
                     <ScrollView showsVerticalScrollIndicator={false}>
                         <View style={{ paddingBottom: 40, paddingTop: 20 }}>
                             {this.props.children}
@@ -1008,6 +1011,70 @@ export class Category extends Component {
     }
 }
 
+export class CategoryInManagerScreen extends Component {
+    render() {
+        var choosed = this.props.choosed;
+        return (
+            <TouchableOpacity onPress={this.props.onPress}>
+                <View style={{ marginRight: sizeFactor }}>
+                    <View
+                        style={{
+                            height: styles.hugeCategoryInManagerScreen.height + sizeFactor / 2,
+                            alignContent: "center",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Image
+                            source={require("../assets/categories/choosed.png")}
+                            style={[
+                                styles.hugeCategoryInManagerScreen,
+                                { opacity: this.props.choosed ? 1 : 0, position: "absolute" },
+                            ]}
+                        ></Image>
+                        <Image
+                            source={this.props.source}
+                            style={[
+                                styles.hugeCategoryInManagerScreen,
+                                {
+                                    marginTop: sizeFactor * 0.24,
+                                    marginLeft: sizeFactor * 0.03,
+                                    opacity: 1,
+                                    width:
+                                        styles.hugeCategoryInManagerScreen.height -
+                                        sizeFactor * 1.25,
+                                    height:
+                                        styles.hugeCategoryInManagerScreen.height -
+                                        sizeFactor * 1.25,
+                                },
+                            ]}
+                        ></Image>
+                    </View>
+                    <View
+                        style={[
+                            {
+                                width: styles.hugeCategoryInManagerScreen.width,
+                                alignItems: "center",
+                            },
+                            this.props.stringContainerStyle,
+                        ]}
+                    >
+                        <String
+                            style={{
+                                fontSize: sizeFactor * 0.75,
+                                fontWeight: this.props.choosed ? "bold" : "normal",
+                                color: this.props.choosed ? colors.blue : "black",
+                            }}
+                        >
+                            {this.props.children}
+                        </String>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+}
+
 export class TransactionsList extends Component {
     render() {
         const Item = ({ subcategory, onPress, source, amount, color }) => (
@@ -1157,7 +1224,7 @@ export class SimpleCarousel extends Component {
 
 export class CategoryTable extends Component {
     render() {
-        return <View>{this.props.rows}</View>;
+        return <View style={this.props.style}>{this.props.rows}</View>;
     }
 }
 

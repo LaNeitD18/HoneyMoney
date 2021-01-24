@@ -114,7 +114,7 @@ export default class SettingAlertScreen extends Component {
 
     render() {
         return (
-            <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 10 }}>
+            <ScreenView style={{ backgroundColor: "white" }}>
                 <DateTimePickerModal
                     isVisible={this.state.show}
                     mode="time"
@@ -123,7 +123,7 @@ export default class SettingAlertScreen extends Component {
                     date={Date.now()}
                 />
                 <TouchableOpacity>
-                    <View style={{ margin: 0, alignItems: "center" }}>
+                    <View style={{ margin: 0, alignItems: "center", marginTop: sizeFactor * 2 }}>
                         <Image
                             source={require("../assets/alert.png")}
                             style={[

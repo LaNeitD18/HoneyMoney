@@ -25,7 +25,7 @@ import {
     styles,
     KindSelect,
     Title,
-    Category,
+    CategoryInManagerScreen,
     TouchableText,
     LargeScrollSelect,
     CategoryTable,
@@ -51,7 +51,7 @@ import {
     closeIconDialog,
     setAddingIcon,
     setEditingIcon,
-    closeDialog
+    closeDialog,
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -63,7 +63,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 class CategoriesScreen extends React.Component {
     _isMounted = false;
 
-    constructor() { 
+    constructor() {
         super();
     }
 
@@ -101,22 +101,25 @@ class CategoriesScreen extends React.Component {
     };
 
     getSubCategories = (chosenCategory) => {
-        let uid = 'none';
-        if(firebase.auth().currentUser) {
+        let uid = "none";
+        if (firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
-        const userCategoryRef = userRef.child(uid).child('Category')
+        const userCategoryRef = userRef.child(uid).child("Category");
 
         const categories = [];
-        userCategoryRef.child(chosenCategory.key).child('SubCategories/').once('value', (snapshot) => {
-            snapshot.forEach(element => {
-                categories.push({
-                    key: element.key,
-                    categoryName: element.toJSON().CategoryName,
-                    icon: element.toJSON().Icon,
+        userCategoryRef
+            .child(chosenCategory.key)
+            .child("SubCategories/")
+            .once("value", (snapshot) => {
+                snapshot.forEach((element) => {
+                    categories.push({
+                        key: element.key,
+                        categoryName: element.toJSON().CategoryName,
+                        icon: element.toJSON().Icon,
+                    });
                 });
             });
-        });
         // categories.push({
         //     key: 0,
         //     categoryName: 'Thêm mới',
@@ -127,9 +130,9 @@ class CategoriesScreen extends React.Component {
         // console.log("ZZZ");
         // console.log(categories);
         return categories;
-    }
+    };
 
-    chooseCategory = async(category) => {
+    chooseCategory = async (category) => {
         await this.props.chooseCategory(category);
         await this.props.workWithCategory();
 
@@ -146,7 +149,7 @@ class CategoriesScreen extends React.Component {
         this.props.reloadAddedSubCategories();
 
         this.props.navigation.navigate("EditCategoryScreen");
-    }
+    };
 
     renderCategoryTable = () => {
         const categories = this.props.renderedCategories;
@@ -162,23 +165,23 @@ class CategoriesScreen extends React.Component {
                     const icon = categories[index].icon;
                     const iconPath = findIcon(icon);
                     row.push(
-                        <Category
+                        <CategoryInManagerScreen
                             key={categories[index].key}
                             source={iconPath}
                             onPress={() => this.chooseCategory(categories[index])}
                         >
                             {name}
-                        </Category>
+                        </CategoryInManagerScreen>
                     );
                 } else if (index == categories.length && this.props.selectedType !== 0) {
                     row.push(
-                        <Category
+                        <CategoryInManagerScreen
                             key={index}
                             source={require("../assets/categories/themdanhmuc.png")}
                             onPress={() => this.createNewCategory()}
                         >
                             {"Thêm danh mục"}
-                        </Category>
+                        </CategoryInManagerScreen>
                     );
                 }
             }
@@ -188,14 +191,14 @@ class CategoriesScreen extends React.Component {
     };
 
     componentDidMount() {
-        let uid = 'none';
-        if(firebase.auth().currentUser) {
+        let uid = "none";
+        if (firebase.auth().currentUser) {
             console.log(firebase.auth().currentUser);
             uid = firebase.auth().currentUser.uid;
         }
         // const categoryRef = rootRef.child('users').child(uid).child('Category');
         // console.log(categoryRef);
-        const userCategoryRef = userRef.child(uid).child('Category')
+        const userCategoryRef = userRef.child(uid).child("Category");
 
         this._isMounted = true;
         userCategoryRef.on("value", (snapshot) => {
@@ -276,12 +279,19 @@ class CategoriesScreen extends React.Component {
                         paddingHorizontal: sizeFactor / 2.5,
                     }}
                 />
-                <ScrollView style={{ flex: 0.9 }}>
-                    {/* {<Title style={{ marginTop: 0 }}>Danh mục</Title>} */}
-                    {kindSelect}
-                    <CategoryTable rows={rows} />
-                    <Space />
-                </ScrollView>
+                <Space />
+                <Space />
+                <Space />
+                <Space />
+                {/* {<Title style={{ marginTop: 0 }}>Danh mục</Title>} */}
+                {kindSelect}
+                <Space />
+                <View style={{ flex: 0.9, alignItems: "center", paddingLeft: sizeFactor }}>
+                    <ScrollView>
+                        <CategoryTable style={{ marginBottom: 70 }} rows={rows} />
+                        <Space />
+                    </ScrollView>
+                </View>
             </View>
         );
     }
@@ -299,22 +309,52 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeType: (selectedType) => { dispatch(changeType(selectedType)) },
-        updateCategories: (categories) => { dispatch(updateCategories(categories)) },
-        reloadCategory: (categories) => { dispatch(reloadCategory(categories)) },
-        changeSearchText: (text) => { dispatch(changeSearchText(text)) },
-        chooseCategory: (category) => { dispatch(chooseCategory(category)) },
-        changeName: (text) => { dispatch(changeName(text)) },
-        getSubCategories: (categories) => { dispatch(getSubCategories(categories)) },
-        reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories()) },
-        showType: (selectedType) => { dispatch(showType(selectedType)) },
-        selectIcon: (index) => { dispatch(selectIcon(index))},
-        workWithCategory: () => { dispatch(workWithCategory())},
-        closeIconDialog: () => { dispatch(closeIconDialog())},
-        closeDialog: () => { dispatch(closeDialog())},
-        setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
-        setEditingIcon: (index) => { dispatch(setEditingIcon(index))},
-    }
+        changeType: (selectedType) => {
+            dispatch(changeType(selectedType));
+        },
+        updateCategories: (categories) => {
+            dispatch(updateCategories(categories));
+        },
+        reloadCategory: (categories) => {
+            dispatch(reloadCategory(categories));
+        },
+        changeSearchText: (text) => {
+            dispatch(changeSearchText(text));
+        },
+        chooseCategory: (category) => {
+            dispatch(chooseCategory(category));
+        },
+        changeName: (text) => {
+            dispatch(changeName(text));
+        },
+        getSubCategories: (categories) => {
+            dispatch(getSubCategories(categories));
+        },
+        reloadAddedSubCategories: () => {
+            dispatch(reloadAddedSubCategories());
+        },
+        showType: (selectedType) => {
+            dispatch(showType(selectedType));
+        },
+        selectIcon: (index) => {
+            dispatch(selectIcon(index));
+        },
+        workWithCategory: () => {
+            dispatch(workWithCategory());
+        },
+        closeIconDialog: () => {
+            dispatch(closeIconDialog());
+        },
+        closeDialog: () => {
+            dispatch(closeDialog());
+        },
+        setAddingIcon: (index) => {
+            dispatch(setAddingIcon(index));
+        },
+        setEditingIcon: (index) => {
+            dispatch(setEditingIcon(index));
+        },
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategoriesScreen);

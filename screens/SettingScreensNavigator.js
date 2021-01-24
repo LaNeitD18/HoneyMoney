@@ -2,11 +2,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React, { Component } from "react";
 
-import SettingScreen from './SettingScreen';
-import SettingNameScreen from './SettingNameScreen';
-import SettingPasswordScreen from './SettingPasswordScreen';
-import SettingAlertScreen from './SettingAlertScreen';
-import CategoryNavigator from './CategoryNavigator';
+import SettingScreen from "./SettingScreen";
+import SettingNameScreen from "./SettingNameScreen";
+import SettingPasswordScreen from "./SettingPasswordScreen";
+import SettingAlertScreen from "./SettingAlertScreen";
+import CategoryNavigator from "./CategoryNavigator";
 
 const SettingStack = createStackNavigator();
 
@@ -25,9 +25,10 @@ export default class SettingScreensNavigator extends Component {
                     options={{ headerShown: false, title: "" }}
                 />
                 <SettingStack.Screen
-                    name="SettingPasswordScreen" 
-                    component={SettingPasswordScreen} 
-                    options={{headerShown: false, title: ""}}/>
+                    name="SettingPasswordScreen"
+                    component={SettingPasswordScreen}
+                    options={{ headerShown: false, title: "" }}
+                />
                 <SettingStack.Screen
                     name="SettingAlertScreen"
                     component={SettingAlertScreen}

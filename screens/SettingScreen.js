@@ -73,8 +73,8 @@ class SettingScreen extends Component {
         super();
 
         this.state = {
-            email: ''
-        }
+            email: "",
+        };
     }
 
     componentDidMount() {
@@ -83,12 +83,15 @@ class SettingScreen extends Component {
 
     signOut = () => {
         this.props.signOut();
-        firebase.auth().signOut().then(() => {
-            console.log(firebase.auth().currentUser);
-            console.log(this.props.isSignedIn);
-        })
-        .catch(error => this.setState({ errorMessage: error.message }))
-    } 
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                console.log(firebase.auth().currentUser);
+                console.log(this.props.isSignedIn);
+            })
+            .catch((error) => this.setState({ errorMessage: error.message }));
+    };
 
     render() {
         return (
@@ -110,11 +113,13 @@ class SettingScreen extends Component {
                             fontSize: sizeFactor * 1.5,
                             marginBottom: sizeFactor * 0.25,
                         }}
-                    > {this.props.userName}
+                    >
+                        {" "}
+                        {this.props.userName}
                     </Text>
-                    <Text 
-                        style={{ alignSelf: "center", fontSize: sizeFactor, color: colors.gray }}
-                    > {firebase.auth().currentUser.email}
+                    <Text style={{ alignSelf: "center", fontSize: sizeFactor, color: colors.gray }}>
+                        {" "}
+                        {firebase.auth().currentUser.email}
                     </Text>
                 </View>
                 {/* {<Title style={{ marginBottom: sizeFactor / 4 }}>Cài đặt</Title>} */}
@@ -123,31 +128,34 @@ class SettingScreen extends Component {
                         color={colors.yellow}
                         iconName="account-circle"
                         text="Thông tin người dùng"
-                        onPress={() => this.props.navigation.navigate('SettingNameScreen')}
+                        onPress={() => this.props.navigation.navigate("SettingNameScreen")}
                     />
                     <SettingRow
                         color={colors.yellow}
                         iconName="key"
                         text="Thay đổi mật khẩu"
-                        onPress={() => this.props.navigation.navigate('SettingPasswordScreen')}
+                        onPress={() => this.props.navigation.navigate("SettingPasswordScreen")}
                     />
                     <SettingRow
                         color={colors.green}
                         iconName="package-variant"
                         text="Quản lý danh mục"
-                        onPress={() => {this.props.navigation.navigate('CategoriesScreen'); console.log(firebase.auth().currentUser.uid);}}
+                        onPress={() => {
+                            this.props.navigation.navigate("CategoriesScreen");
+                            console.log(firebase.auth().currentUser.uid);
+                        }}
                     />
                     <SettingRow
                         color={colors.green}
                         iconName="bank"
                         text="Quản lí hạn mức"
-                        onPress={() => this.props.navigation.navigate('BudgetScreen')}
+                        onPress={() => this.props.navigation.navigate("BudgetScreen")}
                     />
                     <SettingRow
                         color={colors.blue}
                         iconName="bell-ring"
                         text="Thông báo"
-                        onPress={() => this.props.navigation.navigate('SettingAlertScreen')}
+                        onPress={() => this.props.navigation.navigate("SettingAlertScreen")}
                     />
                     <View style={{ marginBottom: sizeFactor / 4, paddingHorizontal: sizeFactor }}>
                         <View
@@ -172,9 +180,11 @@ class SettingScreen extends Component {
                                     color: colors.red,
                                     fontSize: sizeFactor,
                                 }}
-                                onPress={() => {this.signOut()}}
+                                onPress={() => {
+                                    this.signOut();
+                                }}
                             >
-                                <Text>Đăng xuất tài khoản</Text>
+                                <Text style={{ color: colors.red }}>Đăng xuất tài khoản</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -189,23 +199,13 @@ class SettingScreen extends Component {
                     <TouchableOpacity>
                         <Image
                             style={{
-                                width: sizeFactor * 5,
-                                height: sizeFactor * 5,
+                                width: sizeFactor * 8 * 1.50226244344,
+                                height: sizeFactor * 8,
                                 marginBottom: sizeFactor,
                             }}
-                            source={require("../assets/icon.png")}
+                            source={require("../assets/coloredlogo.png")}
                         />
                     </TouchableOpacity>
-                    <String
-                        style={{
-                            fontSize: sizeFactor * 2,
-                            fontWeight: "700",
-                            color: colors.gray3,
-                            marginBottom: sizeFactor / 4,
-                        }}
-                    >
-                        Honey Money
-                    </String>
                     <String
                         style={{
                             fontSize: sizeFactor * 0.8,
@@ -264,14 +264,18 @@ class SettingScreen extends Component {
 
 function mapStateToProps(state) {
     return {
-        userName: state.userName
+        userName: state.userName,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        editUserName: (name) => { dispatch(editUserName(name))},
-        signOut: () => { dispatch(signOut())},
+        editUserName: (name) => {
+            dispatch(editUserName(name));
+        },
+        signOut: () => {
+            dispatch(signOut());
+        },
     };
 }
 
