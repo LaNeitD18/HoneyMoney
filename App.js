@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, LogBox, YellowBox } from "react-native";
 import WalletScreen from "./screens/WalletScreen";
 import CategoriesScreen from "./screens/CategoriesScreen";
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState } from "react-firebase-hooks/auth";
 
 //Redux
 import { createStore } from "redux";
@@ -79,7 +79,7 @@ import * as firebase from "firebase";
 import { connect } from "react-redux";
 import EditTransactionScreen from "./screens/EditTransactionScreen";
 import { signIn, signOut } from "./actions";
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 //Navigator
 const Tab = createBottomTabNavigator();
@@ -92,23 +92,22 @@ function getHeaderTitle(route) {
     // If the focused route is not found, we need to assume it's the initial screen
     // This can happen during if there hasn't been any navigation inside the screen
     // In our case, it's "Feed" as that's the first screen inside the navigator
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Transactions';
-  
+    const routeName = getFocusedRouteNameFromRoute(route) ?? "Transactions";
+
     switch (routeName) {
-      case 'Transactions':
-        return 'Lịch sử giao dịch';
-      case 'Report':
-        return 'Báo cáo';
-      case 'Budget':
-        return 'Quản lí tiết kiệm';
-      case 'Settings':
-        return 'Cài đặt';
+        case "Transactions":
+            return "Lịch sử giao dịch";
+        case "Report":
+            return "Báo cáo";
+        case "Budget":
+            return "Quản lí tiết kiệm";
+        case "Settings":
+            return "Cài đặt";
     }
-  }
+}
 
 class Main extends Component {
-    render()
-    {
+    render() {
         this.props.navigation.setOptions({ headerTitle: getHeaderTitle(this.props.route) });
         return (
             <Tab.Navigator
@@ -161,11 +160,7 @@ class Main extends Component {
                     options={{ title: "Giao dịch" }}
                 />
 
-                <Tab.Screen
-                    name="Report"
-                    component={ReportScreen}
-                    options={{ title: "Báo cáo" }}
-                />
+                <Tab.Screen name="Report" component={ReportScreen} options={{ title: "Báo cáo" }} />
                 <Tab.Screen
                     name="Add"
                     component={ActionButton}
@@ -180,7 +175,7 @@ class Main extends Component {
                                     buttonColor={colors.yellow}
                                     size={60}
                                     degrees={315}
-                                    onPress={()=>{}}
+                                    onPress={() => {}}
                                     //onOverlayPress={()=>{console.log("a")}}
                                     icon={
                                         <Icon
@@ -201,7 +196,14 @@ class Main extends Component {
                                         size={50}
                                         title="Thu"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {typeID: "003"}})}}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                this.props.navigation.navigate("Action", {
+                                                    screen: "AddTransactionScreen",
+                                                    params: { typeID: "003" },
+                                                });
+                                            }}
+                                        >
                                             <Icon
                                                 name="database-plus"
                                                 type="material-community"
@@ -215,7 +217,13 @@ class Main extends Component {
                                         size={50}
                                         title="Chuyển ví"
                                     >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "WalletScreen"})}}>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                this.props.navigation.navigate("Action", {
+                                                    screen: "WalletScreen",
+                                                });
+                                            }}
+                                        >
                                             <Icon
                                                 name="wallet"
                                                 type="material-community"
@@ -223,12 +231,15 @@ class Main extends Component {
                                             />
                                         </TouchableOpacity>
                                     </ActionButton.Item>
-                                    <ActionButton.Item
-                                        buttonColor="#F55555"
-                                        size={50}
-                                        title="Chi"
-                                    >
-                                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Action",{screen: "AddTransactionScreen", params: {typeID: "002"}})}}>
+                                    <ActionButton.Item buttonColor="#F55555" size={50} title="Chi">
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                this.props.navigation.navigate("Action", {
+                                                    screen: "AddTransactionScreen",
+                                                    params: { typeID: "002" },
+                                                });
+                                            }}
+                                        >
                                             <Icon
                                                 name="database-minus"
                                                 type="material-community"
@@ -243,11 +254,11 @@ class Main extends Component {
                                 </ActionButton>
                             </View>
                         ),
-                    }}>
-                    </Tab.Screen>
+                    }}
+                ></Tab.Screen>
                 <Tab.Screen
                     name="Budget"
-                    component={BudgetScreen}
+                    component={WalletTransferScreen}
                     //component={WalletNavigator}
                     options={{ title: "Tiết kiệm" }}
                 />
@@ -261,66 +272,68 @@ class Main extends Component {
     }
 }
 
-function DisplayedScreens ()  {
+function DisplayedScreens() {
     const [user, loading, error] = useAuthState(firebase.auth());
 
-    if(user) {
+    if (user) {
         return (
             <NavigationContainer>
-                <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen
-                                    options={({ navigation, route }) => ({
-                                        headerTitle: getHeaderTitle(route),
-                                        headerShown: false,
-                                        
-                                        headerRight: () => (
-                                            <View
+                        options={({ navigation, route }) => ({
+                            headerTitle: getHeaderTitle(route),
+                            headerShown: false,
+
+                            headerRight: () => (
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        marginRight: sizeFactor,
+                                    }}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => {} /*navigation.navigate("Wallet")*/}
+                                    >
+                                        <View
+                                            style={{
+                                                flexDirection: "row",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <Icon
+                                                name="wallet"
+                                                type="material-community"
+                                                color={colors.blue}
+                                                size={sizeFactor * 1.75}
+                                                style={{ marginRight: sizeFactor / 2 }}
+                                            />
+                                            <String
                                                 style={{
-                                                    flexDirection: "row",
-                                                    marginRight: sizeFactor,
+                                                    marginBottom: 4,
+                                                    color: colors.blue,
                                                 }}
                                             >
-                                                <TouchableOpacity onPress={()=>{}/*navigation.navigate("Wallet")*/}>
-                                                    <View
-                                                        style={{
-                                                            flexDirection: "row",
-                                                            alignItems: "center",
-                                                        }}
-                                                    >
-                                                        <Icon
-                                                            name="wallet"
-                                                            type="material-community"
-                                                            color={colors.blue}
-                                                            size={sizeFactor * 1.75}
-                                                            style={{ marginRight: sizeFactor / 2 }}
-                                                        />
-                                                        <String
-                                                            style={{
-                                                                marginBottom: 4,
-                                                                color: colors.blue,
-                                                            }}
-                                                        >
-                                                            Đổi ví
-                                                        </String>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-                                        ),
-                                    })}
-                                    name="Main"
-                                    component={Main}
-                                />
-                        <Stack.Screen name="Action" component={WalletNavigator}/>
-                        <Stack.Screen name="Wallet" component={WalletScreen}/>
+                                                Đổi ví
+                                            </String>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            ),
+                        })}
+                        name="Main"
+                        component={Main}
+                    />
+                    <Stack.Screen name="Action" component={WalletNavigator} />
+                    <Stack.Screen name="Wallet" component={WalletScreen} />
                 </Stack.Navigator>
             </NavigationContainer>
         );
     }
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{headerShown: false}}>
-                <Stack.Screen name="SignIn" component={LoginScreen}/>
-                <Stack.Screen name="SignUp" component={RegisterScreen}/>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="SignIn" component={LoginScreen} />
+                <Stack.Screen name="SignUp" component={RegisterScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );
@@ -328,7 +341,7 @@ function DisplayedScreens ()  {
 
 const TransactionStack = createStackNavigator();
 
-class TransactionNavigator extends Component{
+class TransactionNavigator extends Component {
     render() {
         return (
             <TransactionStack.Navigator>
@@ -368,7 +381,7 @@ export default function App() {
 
     return (
         <Provider store={store}>
-            <DisplayedScreens/>
+            <DisplayedScreens />
         </Provider>
     );
 }

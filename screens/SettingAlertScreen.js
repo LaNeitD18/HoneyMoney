@@ -107,6 +107,8 @@ export default class SettingAlertScreen extends Component {
                 time: datetime,
             }
         );
+
+        this.props.navigation.goBack();
         // can be saved in AsyncStorage or send to server
     };
 
