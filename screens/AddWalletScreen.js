@@ -50,6 +50,7 @@ import TextTicker from "react-native-text-ticker";
 import { walletRef , userRef} from "../components/DataConnect";
 import { BaseRouter } from "@react-navigation/native";
 import * as firebase from 'firebase';
+import { Alert } from "react-native";
 
 export default class AddWalletScreen extends Component {
   constructor(props) {
@@ -107,9 +108,30 @@ export default class AddWalletScreen extends Component {
         newSoDu: '',
         selectedColor: colors.blue
       })
-      this.props.navigation.goBack();
+      Alert.alert("Thông báo", "Bạn đã thêm ví mới thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
+      //this.props.navigation.goBack();
     }
-    //else
+    else
+    {
+      Alert.alert("Thông báo", "Vui lòng nhập đủ các trường", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                        }
+                    }
+                ], {cancelable: false}
+            );
+    }
     //them bao loi o day
   }
   componentDidMount() {

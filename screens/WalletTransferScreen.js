@@ -75,6 +75,7 @@ import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 import ConfirmDialog from "../components/ConfirmDialog";
 import ChooseWalletDialog from "../components/ChooseWalletDialog";
+import { Alert } from "react-native";
 
 const data1 = [
     {
@@ -133,7 +134,16 @@ export class WalletTransferScreen extends Component {
         userWalletRef.child(this.state.dich.key).update({
             money: parseInt(this.state.dich.money) + parseInt(this.state.newSoDu),
         });
-        this.props.navigation.pop();
+        Alert.alert("Thông báo", "Bạn đã chuyển tiền giữa các ví thành công", 
+        [
+            {
+                text: "OK",
+                onPress: () => {                            
+                    this.props.navigation.goBack();
+                }
+            }
+        ], {cancelable: false}
+    );
     }
     render() {
         const Item = ({ name, color }) =>

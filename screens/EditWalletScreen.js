@@ -52,6 +52,7 @@ import { walletRef, userRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 //Navigator
 import { CommonActions } from '@react-navigation/native';
+import { Alert } from "react-native";
 
 export class EditWalletScreen extends Component {
     constructor(props) {
@@ -107,14 +108,43 @@ export class EditWalletScreen extends Component {
             newSoDu: '',
             selectedColor: colors.blue
           })
-          this.props.navigation.goBack();
+          Alert.alert("Thông báo", "Bạn đã sửa ví thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
         }
-        //else
-        //them bao loi o day
+        else
+        {
+          Alert.alert("Thông báo", "Thông tin không hợp lệ", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                        }
+                    }
+                ], {cancelable: false}
+            );
+        }
+        
       }
       deleteWallet(){
         if(this.props.selectedWallet.isDefault == "true")
         {
+          Alert.alert("Thông báo", "Bạn không thể xoá ví đang dùng làm mặc định", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                        }
+                    }
+                ], {cancelable: false}
+            );
           return 0;
         }
         let uid = 'none';
@@ -125,7 +155,16 @@ export class EditWalletScreen extends Component {
         userWalletRef.child(this.props.selectedWallet.key).update({
             isDeleted: true,
         });
-        this.props.navigation.goBack();
+        Alert.alert("Thông báo", "Bạn đã xoá ví thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
       }
       componentDidMount() {
         this.setState({

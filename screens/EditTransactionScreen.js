@@ -29,6 +29,7 @@ import { CommonActions } from "@react-navigation/native";
 import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 import { getActiveChildNavigationOptions, StackRouter } from "react-navigation";
+import { Alert } from "react-native";
 
 export class EditTransactionScreen extends Component {
   
@@ -313,6 +314,15 @@ export class EditTransactionScreen extends Component {
   editTransaction = () =>{
     if(!this.props.selectedCategory || !this.props.newSoDu)
     {
+      Alert.alert("Thông báo", "Thông tin không hợp lệ", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                        }
+                    }
+                ], {cancelable: false}
+            );
       return;
     }
     var wallet = this.props.selectedWallet;
@@ -381,7 +391,16 @@ export class EditTransactionScreen extends Component {
     }
 
     this.resetAll();
-    this.props.navigation.goBack();
+    Alert.alert("Thông báo", "Bạn đã sửa giao dịch thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
   }
 
   deleteTransaction(){
@@ -393,7 +412,16 @@ export class EditTransactionScreen extends Component {
     }
     const userWalletRef = userRef.child(uid).child('Wallet')
     userWalletRef.child(wallet.key).child("transactionList").child(this.props.selectedTransaction).remove(); 
-    this.props.navigation.goBack();
+    Alert.alert("Thông báo", "Bạn đã xoá giao dịch thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
   }
 
   resetAll = () =>{

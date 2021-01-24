@@ -29,6 +29,7 @@ import { CommonActions } from "@react-navigation/native";
 import { color } from "react-native-reanimated";
 import { FlatList } from "react-native-gesture-handler";
 import { StackRouter } from "react-navigation";
+import { Alert } from "react-native";
 
 export class AddTransactionScreen extends Component {
   
@@ -324,6 +325,15 @@ export class AddTransactionScreen extends Component {
   addNewTransaction = () =>{
     if(!this.props.selectedCategory || !this.props.newSoDu)
     {
+      Alert.alert("Thông báo", "Thông tin không hợp lệ", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                        }
+                    }
+                ], {cancelable: false}
+            );
       return;
     }
     var wallet = this.props.selectedWallet;
@@ -389,8 +399,17 @@ export class AddTransactionScreen extends Component {
     }
 
     this.resetAll();
-    this.props.navigation.goBack();
-  }
+    Alert.alert("Thông báo", "Bạn đã tạo giao dịch mới thành công", 
+                [
+                    {
+                        text: "OK",
+                        onPress: () => {                            
+                            this.props.navigation.goBack();
+                        }
+                    }
+                ], {cancelable: false}
+            );
+    }
 
   resetAll = () =>{
     this.props.changeSoDu("");
