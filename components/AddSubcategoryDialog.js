@@ -51,14 +51,11 @@ import {
 } from "./Basic";
 import { connect } from "react-redux";
 import IconImage, { findIcon, getIndex } from '../components/Image';
-import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon } from '../actions/index';
+import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon, DeselectSubAction, editSubName } from '../actions/index';
 
 class AddSubcategoryDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: "",
-        }
     }
 
     resetState = () => {
@@ -66,21 +63,28 @@ class AddSubcategoryDialog extends Component {
 
         this.props.setSubIcon(defaultIconIndex);
         this.props.selectIcon(defaultIconIndex);
+        //this.props.DeselectSubAction();
 
-        this.setState({
-            name: ''
-        })
     }
 
     addSubCategory = () => {
-        const name = this.state.name;
+        const name = this.props.subcategoryName;
         
         const subCategory = {
             categoryName: name,
             icon: IconImage[this.props.selectedIcon.subIndex].type
         }
-        this.props.updateSubCategories(subCategory);
-        this.props.addSubCategory(subCategory);
+
+        if(this.props.selectedSub.key === "") {
+            // neu la them thi code day
+            this.props.updateSubCategories(subCategory);
+            this.props.addSubCategory(subCategory);
+        }
+        else {
+            // day la code cho edit sub
+            console.log("X");
+        }
+        
         this.resetState();
 
         this.props.closeDialog();
@@ -88,12 +92,15 @@ class AddSubcategoryDialog extends Component {
     }
 
     closeDialog = () => {
-        console.log("subs\n "+this.props.subCategories.length);
-        console.log("adds\n "+this.props.addedSubCategories.length);
+        this.resetState();
+        this.props.closeDialog();
     }
+
 
     render() {
         const iconPath = IconImage[this.props.selectedIcon.subIndex].iconPath;
+
+        
 
         return (
             <Overlay
@@ -110,7 +117,7 @@ class AddSubcategoryDialog extends Component {
                 isVisible={this.props.isVisible}
             >
                 <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
-                    <TouchableOpacity onPress={this.props.closeDialog}>
+                    <TouchableOpacity onPress={() => this.closeDialog()}>
                         <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
                     </TouchableOpacity>
                 </View>
@@ -140,8 +147,8 @@ class AddSubcategoryDialog extends Component {
                     multiline 
                     style={{ fontSize: sizeFactor * 1.5, marginBottom: sizeFactor * 0.75, textAlign: "center" }} 
                     placeholder="Tên danh mục" 
-                    onChangeText={(text) => this.setState({ name: text })}
-                    value={this.state.name}
+                    onChangeText={(text) => this.props.editSubName(text)}
+                    value={this.props.subcategoryName}
                 />
                 <Space />
                 <View 
@@ -168,7 +175,9 @@ function mapStateToProps(state) {
         subCategories: state.subCategories,
         selectedSub: state.selectedSubReducer,
         selectedIcon: state.selectedIcon,
-        addedSubCategories: state.addedSubCategories
+        addedSubCategories: state.addedSubCategories,
+        selectedSub: state.selectedSubReducer,
+        subcategoryName: state.subcategoryName
     };
 }
 
@@ -181,6 +190,8 @@ function mapDispatchToProps(dispatch) {
         addSubCategory: (subCategory) => { dispatch(addSubCategory(subCategory))},
         selectIcon: (index) => { dispatch(selectIcon(index))},
         setSubIcon: (index) => { dispatch(setSubIcon(index))},
+        DeselectSubAction: () => { dispatch(DeselectSubAction())},
+        editSubName: (name) => { dispatch(editSubName(name))},
     };
 }
 

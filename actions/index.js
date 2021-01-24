@@ -316,4 +316,13 @@ export function editUserName(name) {
 }
 //#endregion
 
+//#region subcategoryName
+export function editSubName(name) {
+    return {
+        type: 'EDIT_SUBNAME',
+        name: name
+    }
+}
+//#endregion
+
 //#endregion

@@ -52,7 +52,7 @@ import { connect } from "react-redux";
 import { categoryRef, userRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog, clearSearchText } from "../actions/index";
+import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog, clearSearchText, workWithSubCategory } from "../actions/index";
 import IconImage, { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
@@ -62,6 +62,25 @@ import ChooseIconDialog from '../components/ChooseIconDialog';
 class AddCategoryScreen extends Component {
     constructor() {
         super();
+    }
+
+    addSubcategory = async(parentCategory) => {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userCategoryRef = userRef.child(uid).child('Category')
+
+        const subCategories = this.props.addedSubCategories;
+        const userSubcategoryRef = userCategoryRef.child(parentCategory.key).child('SubCategories/');
+        //let update = {};
+        await subCategories.map(item => {
+            userSubcategoryRef.push({
+                CategoryName: item.categoryName,
+                Icon: item.icon
+            });
+        })
+        this.props.reloadAddedSubCategories();
     }
 
     createCategory = () => {
@@ -81,6 +100,8 @@ class AddCategoryScreen extends Component {
             Icon: icon,
             ParentID: "",
             TypeID: type,
+        }).then(item => {
+            this.addSubcategory(item);
         });
 
         // if searching, don't find a category, user can add category immediately by pressing themdanhmuc, 
@@ -125,6 +146,15 @@ class AddCategoryScreen extends Component {
         // b/c if choose icon and close dialog, without reseting, selectedIndex != addIndex (expect ==)
         this.props.selectIcon(this.props.selectedIcon.addIndex);
         this.props.openIconDialog();
+    }
+
+    openAddSubDialog = () => {
+        this.props.workWithSubCategory();
+        this.setState({
+            deleteBtn_name: ""
+        })
+
+        this.props.openDialog();
     }
 
     componentDidMount() {
@@ -195,39 +225,12 @@ class AddCategoryScreen extends Component {
                     <Space />
                     <String style={{ fontWeight: "bold" }}>Danh mục con</String>
 
-                    {subCategoriesView}
+                    
 
                     <Swipeout style={{ marginBottom: sizeFactor / 2 }} {...swipeSettings}>
-                        <TouchableOpacity onPress={() => this.props.openDialog()}>
-                            <View
-                                style={{
-                                    backgroundColor: "white",
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Avatar
-                                    size={sizeFactor * 3}
-                                    avatarStyle={{
-                                        width: sizeFactor * 2.5,
-                                        height: sizeFactor * 2.5,
-                                        marginTop: sizeFactor * 0.25,
-                                        marginLeft: sizeFactor * 0.25,
-                                    }}
-                                    source={require("../assets/categories/tuthien.png")}
-                                ></Avatar>
-                                <String
-                                    style={{
-                                        marginLeft: sizeFactor / 2,
-                                        marginTop: sizeFactor * 0.75,
-                                    }}
-                                >
-                                    Từ thiện
-                                </String>
-                            </View>
-                        </TouchableOpacity>
+                        {subCategoriesView}
                     </Swipeout>
-                    <TouchableOpacity onPress={() => this.props.openDialog()}>
+                    <TouchableOpacity onPress={() => this.openAddSubDialog()}>
                         <View
                             style={{
                                 backgroundColor: "white",
@@ -276,7 +279,8 @@ function mapStateToProps(state) {
         categoryName: state.categoryName,
         selectedType: state.selectedType,
         subCategories: state.subCategories,
-        selectedIcon: state.selectedIcon
+        selectedIcon: state.selectedIcon,
+        addedSubCategories: state.addedSubCategories
     };
 }
 
@@ -295,6 +299,7 @@ function mapDispatchToProps(dispatch) {
         selectIcon: (index) => { dispatch(selectIcon(index))},
         closeIconDialog: () => { dispatch(closeIconDialog())},
         clearSearchText: () => { dispatch(clearSearchText())},
+        workWithSubCategory: () => { dispatch(workWithSubCategory())},
     };
 }
 

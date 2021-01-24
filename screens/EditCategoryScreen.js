@@ -55,7 +55,7 @@ import * as firebase from "firebase";
 import { userRef } from "../components/DataConnect";
 
 import IconImage, { findIcon, getIndex } from '../components/Image';
-import { changeType, changeName, openDialog, openIconDialog, selectIcon, setSubIcon, workWithSubCategory, workWithCategory, reloadAddedSubCategories } from '../actions/index';
+import { changeType, changeName, openDialog, openIconDialog, selectIcon, setSubIcon, workWithSubCategory, workWithCategory, reloadAddedSubCategories, SelectSubAction, editSubName, DeselectSubAction } from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 import ChooseIconDialog from '../components/ChooseIconDialog'
 
@@ -117,6 +117,7 @@ class EditCategoryScreen extends Component {
     };
 
     deleteCategory = () => {
+        // edit isDeleted
         let uid = 'none';
         if(firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
@@ -134,7 +135,7 @@ class EditCategoryScreen extends Component {
         const subCategories = this.props.subCategories;
         return <View>
             {subCategories.map((item, i) => (
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => this.openEditSubDialog(item)}>
                     <ListItem
                         key={item.key}
                         title={item.categoryName}
@@ -171,13 +172,26 @@ class EditCategoryScreen extends Component {
         this.props.workWithSubCategory();
         this.setState({
             deleteBtn_name: ""
-        })
+        });
+        this.props.DeselectSubAction();
+        this.props.editSubName("");
 
         this.props.openDialog();
     }
 
-    openEditSubDialog = () => {
+    openEditSubDialog = (subCategory) => {
+        this.props.workWithSubCategory();
+        this.setState({
+            deleteBtn_name: "Xóa"
+        });
 
+        const subIconIndex = getIndex(subCategory.icon);
+        this.props.setSubIcon(subIconIndex);
+        this.props.selectIcon(subIconIndex);
+        this.props.editSubName(subCategory.categoryName);
+        this.props.SelectSubAction(subCategory);
+
+        this.props.openDialog();
     }
 
     render() {
@@ -329,6 +343,9 @@ function mapDispatchToProps(dispatch) {
         workWithSubCategory: () => { dispatch(workWithSubCategory())},
         workWithCategory: () => { dispatch(workWithCategory())},
         reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories())},
+        SelectSubAction: (category) => { dispatch(SelectSubAction(category))},
+        DeselectSubAction: () => { dispatch(DeselectSubAction())},
+        editSubName: (name) => { dispatch(editSubName(name))},
     };
 }
 
