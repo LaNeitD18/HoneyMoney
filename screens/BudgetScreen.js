@@ -272,7 +272,7 @@ export class BudgetScreen extends Component {
                             <Row>
                                 <String
                                     style={{
-                                        color: colors.blue,
+                                        color: (item.money / parseFloat(item.category.budget))<1? colors.blue : colors.red,
                                         fontSize: sizeFactor * 0.9,
                                         marginBottom: 0,
                                     }}
@@ -297,7 +297,7 @@ export class BudgetScreen extends Component {
                                     marginBottom: sizeFactor / 2,
                                 }}
                                 progress={(item.money / parseFloat(item.category.budget))}
-                                color={colors.blue}
+                                color={(item.money / parseFloat(item.category.budget))<1? colors.blue : colors.red}
                             />
                             <View style={{ alignItems: "flex-end" }}>
                                 <String
