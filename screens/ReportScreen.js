@@ -79,7 +79,7 @@ export class ReportScreen extends Component {
         this.state = {
             selectedMonth: (new Date().getMonth() + 1),
             selectedYear: new Date().getFullYear(),
-            selectedWeek: "",
+            selectedWeek: this.toString(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - new Date().getDay())),
             yearlist: [],
         }
     }
