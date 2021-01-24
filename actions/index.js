@@ -140,6 +140,12 @@ export function changeSearchText(text) {
         text: text
     }
 }
+
+export function clearSearchText() {
+    return {
+        type: 'CLEAR_SEARCH_TEXT',
+    }
+}
 //#endregion
 
 //#region chosenCategory

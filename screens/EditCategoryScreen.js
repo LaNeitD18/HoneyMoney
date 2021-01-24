@@ -63,7 +63,8 @@ class EditCategoryScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addedSubCategories: []
+            addedSubCategories: [],
+            deleteBtn_name: 'Xóa'
         }
         // ko sd props subcate để push nữa mà tạo ra 1 state khác sẽ chỉ nhận các subcate cần thêm vào, update state này
         // và sd nó cho vc push các cate mới
@@ -156,6 +157,10 @@ class EditCategoryScreen extends Component {
 
     openAddSubDialog = () => {
         this.props.workWithSubCategory();
+        this.setState({
+            deleteBtn_name: ""
+        })
+
         this.props.openDialog();
     }
 
@@ -281,7 +286,7 @@ class EditCategoryScreen extends Component {
                 >
                     Xóa danh mục
                 </Button>
-                <AddSubcategoryDialog></AddSubcategoryDialog>
+                <AddSubcategoryDialog deleteBtn_name={this.state.deleteBtn_name}></AddSubcategoryDialog>
             </ScreenView>
         );
     }

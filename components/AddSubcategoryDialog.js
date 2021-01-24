@@ -154,7 +154,7 @@ class AddSubcategoryDialog extends Component {
                         <String style={{ color: colors.blue }}>Đồng ý</String>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.closeDialog()}>
-                        <String style={{ color: colors.redDark }}>Xóa</String>
+                        <String style={{ color: colors.redDark }} >{this.props.deleteBtn_name}</String>
                     </TouchableOpacity>
                 </View>
             </Overlay>
