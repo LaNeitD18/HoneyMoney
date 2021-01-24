@@ -183,7 +183,7 @@ export class EditTransactionScreen extends Component {
               <Category 
                   key={index} 
                   source={require("../assets/categories/themdanhmuc.png")} 
-                  onPress={() => this.createNewCategory()}>
+                  onPress={() => this.props.navigation.navigate("AddCategoryScreen")}>
               {'Thêm danh mục'}
               </Category>
           )
@@ -222,7 +222,7 @@ export class EditTransactionScreen extends Component {
                     <Category 
                         key={index} 
                         source={require("../assets/categories/themdanhmuc.png")} 
-                        onPress={() => this.createNewCategory()}>
+                        onPress={() => this.props.navigation.navigate("AddCategoryScreen")}>
                     {'Thêm danh mục'}
                     </Category>
                 )
