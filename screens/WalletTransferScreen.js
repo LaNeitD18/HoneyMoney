@@ -70,7 +70,13 @@ import * as firebase from "firebase";
 import { categoryRef, userRef } from "../components/DataConnect";
 
 import { findIcon } from "../components/Image";
-import { changeType, changeName, openDialog, UpdateWalletAction, SelectWallet } from "../actions/index";
+import {
+    changeType,
+    changeName,
+    openDialog,
+    UpdateWalletAction,
+    SelectWallet,
+} from "../actions/index";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
 import ChooseIconDialog from "../components/ChooseIconDialog";
 import ConfirmDialog from "../components/ConfirmDialog";
@@ -89,8 +95,7 @@ const data1 = [
 ];
 
 export class WalletTransferScreen extends Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props);
         this.state = {
             visible: false,
@@ -98,35 +103,34 @@ export class WalletTransferScreen extends Component {
             nguon: "",
             dich: "",
             newSoDu: "",
-        }
+        };
     }
-    componentDidMount()
-    {
-        let uid = 'none';
-        if(firebase.auth().currentUser) {
+    componentDidMount() {
+        let uid = "none";
+        if (firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
-        const userWalletRef = userRef.child(uid).child('Wallet')
-        userWalletRef.on('value',(snap)=>{this.props.Update(snap)});
+        const userWalletRef = userRef.child(uid).child("Wallet");
+        userWalletRef.on("value", (snap) => {
+            this.props.Update(snap);
+        });
 
         this.props.walletData.forEach((element) => {
             if (element.isDefault == "true") {
-              if(this.props.selectedWallet != element)
-                this.props.SelectWallet(element)
+                if (this.props.selectedWallet != element) this.props.SelectWallet(element);
                 this.setState({
                     nguon: element,
                     dich: element,
-                })
+                });
             }
-          })
+        });
     }
-    chuyentien()
-    {
-        let uid = 'none';
-        if(firebase.auth().currentUser) {
+    chuyentien() {
+        let uid = "none";
+        if (firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
-        const userWalletRef = userRef.child(uid).child('Wallet')
+        const userWalletRef = userRef.child(uid).child("Wallet");
 
         userWalletRef.child(this.state.nguon.key).update({
             money: parseInt(this.state.nguon.money) - parseInt(this.state.newSoDu),
@@ -134,58 +138,55 @@ export class WalletTransferScreen extends Component {
         userWalletRef.child(this.state.dich.key).update({
             money: parseInt(this.state.dich.money) + parseInt(this.state.newSoDu),
         });
-        Alert.alert("Thông báo", "Bạn đã chuyển tiền giữa các ví thành công", 
-        [
-            {
-                text: "OK",
-                onPress: () => {                            
-                    this.props.navigation.goBack();
-                }
-            }
-        ], {cancelable: false}
-    );
+        Alert.alert(
+            "Thông báo",
+            "Bạn đã chuyển tiền giữa các ví thành công",
+            [
+                {
+                    text: "OK",
+                    onPress: () => {
+                        this.props.navigation.goBack();
+                    },
+                },
+            ],
+            { cancelable: false }
+        );
     }
     render() {
-        const Item = ({ name, color }) =>
-        <View
-            style={{
-                alignContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                marginVertical: sizeFactor * 0.5,
-            }}
-        >
-            <Icon
-                style={{ marginRight: sizeFactor }}
-                name="wallet"
-                size={sizeFactor * 2.5}
-                type="material-community"
-                color={color}
-            />
-            <String style={{ marginBottom: 0, fontSize: sizeFactor * 1.5 }}>
-                {name}
-            </String>
-        </View>;
+        const Item = ({ name, color }) => (
+            <View
+                style={{
+                    alignContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    marginVertical: sizeFactor * 0.5,
+                }}
+            >
+                <Icon
+                    style={{ marginRight: sizeFactor }}
+                    name="wallet"
+                    size={sizeFactor * 2.5}
+                    type="material-community"
+                    color={color}
+                />
+                <String style={{ marginBottom: 0, fontSize: sizeFactor * 1.5 }}>{name}</String>
+            </View>
+        );
         const data = [];
-        this.props.walletData.forEach(
-            element => {
-                var info ={
-                    ...element,
-                    onPress: () => {
-                        this.setState({visible: false});
-                        if(this.state.select == 1)
-                        {
-                            this.setState({nguon: element});
-                        }
-                        else
-                        {
-                            this.setState({dich: element})
-                        }
+        this.props.walletData.forEach((element) => {
+            var info = {
+                ...element,
+                onPress: () => {
+                    this.setState({ visible: false });
+                    if (this.state.select == 1) {
+                        this.setState({ nguon: element });
+                    } else {
+                        this.setState({ dich: element });
                     }
-                }
-                data.push(info)
-            }
-        )
+                },
+            };
+            data.push(info);
+        });
         return (
             <ScreenView style={{ backgroundColor: "white" }}>
                 <Overlay
@@ -201,7 +202,11 @@ export class WalletTransferScreen extends Component {
                     isVisible={this.state.visible}
                 >
                     <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
-                        <TouchableOpacity onPress={()=>{this.setState({visible: false})}}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({ visible: false });
+                            }}
+                        >
                             <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
                         </TouchableOpacity>
                     </View>
@@ -213,7 +218,7 @@ export class WalletTransferScreen extends Component {
                             marginBottom: sizeFactor * 1.5,
                         }}
                     >
-                        {"Chọn ví " + (this.state.select == 1? "nguồn" : "đích" )}
+                        {"Chọn ví " + (this.state.select == 1 ? "nguồn" : "đích")}
                     </String>
                     <ScrollView
                         style={{ paddingHorizontal: sizeFactor / 2, marginBottom: sizeFactor }}
@@ -222,9 +227,7 @@ export class WalletTransferScreen extends Component {
                     </ScrollView>
                 </Overlay>
 
-                <View
-                    style={{ margin: sizeFactor, marginTop: sizeFactor * 4, alignItems: "center" }}
-                >
+                <View style={{ margin: sizeFactor, marginTop: sizeFactor, alignItems: "center" }}>
                     <Image
                         source={require("../assets/transfer.png")}
                         style={[
@@ -261,7 +264,11 @@ export class WalletTransferScreen extends Component {
                             Ví nguồn
                         </String>
                     </View>
-                    <TouchableOpacity onPress={()=>{this.setState({visible: true, select: 1})}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visible: true, select: 1 });
+                        }}
+                    >
                         <Row style={{ marginBottom: 0 }}>
                             <Item name={this.state.nguon.name} color={this.state.nguon.color} />
                             <Icon
@@ -292,9 +299,13 @@ export class WalletTransferScreen extends Component {
                             Ví đích
                         </String>
                     </View>
-                    <TouchableOpacity onPress={()=>{this.setState({visible: true, select: 2})}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.setState({ visible: true, select: 2 });
+                        }}
+                    >
                         <Row style={{ marginBottom: 0 }}>
-                            <Item name={this.state.dich.name} color={this.state.dich.color} />   
+                            <Item name={this.state.dich.name} color={this.state.dich.color} />
                             <Icon
                                 name="chevron-right"
                                 type="material-community"
@@ -312,7 +323,7 @@ export class WalletTransferScreen extends Component {
                     }}
                 >
                     <HomoTextInput
-                        value = {this.state.newSoDu}
+                        value={this.state.newSoDu}
                         label="Số tiền"
                         placeholder="000,000 VNĐ"
                         leftIcon={{
@@ -320,7 +331,9 @@ export class WalletTransferScreen extends Component {
                             name: "cash",
                             color: colors.gray,
                         }}
-                        onChangeText={(text)=>{this.setState({newSoDu: text})}}
+                        onChangeText={(text) => {
+                            this.setState({ newSoDu: text });
+                        }}
                         keyboardType="numeric"
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
@@ -333,7 +346,13 @@ export class WalletTransferScreen extends Component {
                         marginVertical: sizeFactor,
                     }}
                 >
-                    <Button1 onPress={()=>{this.chuyentien()}}>Xác nhận</Button1>
+                    <Button1
+                        onPress={() => {
+                            this.chuyentien();
+                        }}
+                    >
+                        Xác nhận
+                    </Button1>
                 </View>
             </ScreenView>
         );
@@ -341,20 +360,20 @@ export class WalletTransferScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return{
+    return {
         walletData: state.WalletReducer,
         selectedWallet: state.selectedWalletReducer,
-    }
-  };
-  
-const mapDispatchToProps = (dispatch) =>{
-return {
-    Update: (snap) => {
-        dispatch(UpdateWalletAction(snap));
-    },
-    SelectWallet: (value) => {
-        dispatch(SelectWallet(value));
-    }
-    }
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        Update: (snap) => {
+            dispatch(UpdateWalletAction(snap));
+        },
+        SelectWallet: (value) => {
+            dispatch(SelectWallet(value));
+        },
+    };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(WalletTransferScreen);

@@ -97,7 +97,7 @@ function getHeaderTitle(route) {
 
     switch (routeName) {
         case "Transactions":
-            return "Các giao dịch";
+            return "Giao dịch";
         case "Report":
             return "Báo cáo";
         case "Wallet":
@@ -158,7 +158,7 @@ class Main extends Component {
                 <Tab.Screen
                     name="Transactions"
                     component={TransactionsScreen}
-                    options={{ title: "Các giao dịch" }}
+                    options={{ title: "Giao dịch" }}
                 />
 
                 <Tab.Screen name="Report" component={ReportScreen} options={{ title: "Báo cáo" }} />
