@@ -52,7 +52,7 @@ import { connect } from "react-redux";
 import Swipeout from "react-native-swipeout";
 
 import * as firebase from "firebase";
-import { userCategoryRef } from "../components/DataConnect";
+import { userRef } from "../components/DataConnect";
 
 import IconImage, { findIcon, getIndex } from '../components/Image';
 import { changeType, changeName, openDialog, openIconDialog, selectIcon, setSubIcon, workWithSubCategory, workWithCategory, reloadAddedSubCategories } from '../actions/index';
@@ -88,6 +88,12 @@ class EditCategoryScreen extends Component {
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
         const icon = IconImage[this.props.selectedIcon.editIndex].type;
 
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userCategoryRef = userRef.child(uid).child('Category')
+
         userCategoryRef.child(category.key).update({
             CategoryName: this.props.categoryName,
             Icon: icon,
@@ -111,6 +117,12 @@ class EditCategoryScreen extends Component {
     };
 
     deleteCategory = () => {
+        let uid = 'none';
+        if(firebase.auth().currentUser) {
+            uid = firebase.auth().currentUser.uid;
+        }
+        const userCategoryRef = userRef.child(uid).child('Category')
+
         const category = this.props.chosenCategory;
         userCategoryRef.child(category.key).remove();
 

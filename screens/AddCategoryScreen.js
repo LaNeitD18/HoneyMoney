@@ -49,7 +49,7 @@ import {
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
-import { categoryRef, userRef, userCategoryRef } from "../components/DataConnect";
+import { categoryRef, userRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
 import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog, clearSearchText } from "../actions/index";
@@ -74,6 +74,7 @@ class AddCategoryScreen extends Component {
         if(firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
+        const userCategoryRef = userRef.child(uid).child('Category')
 
         userCategoryRef.push({
             CategoryName: name,
