@@ -26,6 +26,7 @@ import selectedIconReducer from './selectedIconReducer';
 import isWorkingWithSubReducer from './isWorkingWithSubReducer';
 import userNameReducer from './userNameReducer';
 import subcategoryNameReducer from './subcategoryNameReducer';
+import editedSubCategoriesReducer from './editedSubCategoriesReducer';
 
 const allReducers = combineReducers({
     SampleReducer,
@@ -57,7 +58,8 @@ const allReducers = combineReducers({
     selectedIcon: selectedIconReducer,
     isWorkingWithSub: isWorkingWithSubReducer,
     userName: userNameReducer,
-    subcategoryName: subcategoryNameReducer
+    subcategoryName: subcategoryNameReducer,
+    editedSubCategories: editedSubCategoriesReducer
 })
 
 export default allReducers;

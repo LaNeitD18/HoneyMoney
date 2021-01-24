@@ -204,6 +204,21 @@ export function reloadAddedSubCategories() {
 }
 //#endregion
 
+//#region editedSubCategories
+export function editSubCategory(subCategory) {
+    return {
+        type: 'EDIT_SUB',
+        subCategory: subCategory
+    }
+}
+
+export function reloadEditedSubCategories() {
+    return {
+        type: 'RELOAD_EDIT'
+    }
+}
+//#endregion
+
 //#region isVisible
 export function openDialog() {
     return {

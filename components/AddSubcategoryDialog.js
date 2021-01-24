@@ -51,7 +51,7 @@ import {
 } from "./Basic";
 import { connect } from "react-redux";
 import IconImage, { findIcon, getIndex } from '../components/Image';
-import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon, DeselectSubAction, editSubName } from '../actions/index';
+import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon, DeselectSubAction, editSubName, editSubCategory, getSubCategories } from '../actions/index';
 
 class AddSubcategoryDialog extends Component {
     constructor(props) {
@@ -71,6 +71,7 @@ class AddSubcategoryDialog extends Component {
         const name = this.props.subcategoryName;
         
         const subCategory = {
+            key: this.props.selectedSub.key,
             categoryName: name,
             icon: IconImage[this.props.selectedIcon.subIndex].type
         }
@@ -79,10 +80,21 @@ class AddSubcategoryDialog extends Component {
             // neu la them thi code day
             this.props.updateSubCategories(subCategory);
             this.props.addSubCategory(subCategory);
+            console.log(this.props.addedSubCategories);
         }
         else {
             // day la code cho edit sub
-            console.log("X");
+            var subCategories = this.props.subCategories;
+            subCategories.forEach((item, index) => {
+                if(subCategory.key === item.key) {
+                    subCategories[index] = subCategory;
+                    console.log(subCategories[index]);
+                }
+            })
+
+            this.props.getSubCategories(subCategories);
+            this.props.editSubCategory(subCategory);
+            console.log(this.props.subCategories);
         }
         
         this.resetState();
@@ -192,6 +204,8 @@ function mapDispatchToProps(dispatch) {
         setSubIcon: (index) => { dispatch(setSubIcon(index))},
         DeselectSubAction: () => { dispatch(DeselectSubAction())},
         editSubName: (name) => { dispatch(editSubName(name))},
+        editSubCategory: (subCategory) => { dispatch(editSubCategory(subCategory))},
+        getSubCategories: (subCategories) => { dispatch(getSubCategories(subCategories))},
     };
 }
 

@@ -67,7 +67,8 @@ import {
     reloadAddedSubCategories, 
     SelectSubAction, 
     editSubName, 
-    DeselectSubAction 
+    DeselectSubAction, 
+    reloadEditedSubCategories
 } from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 import ChooseIconDialog from '../components/ChooseIconDialog'
@@ -96,6 +97,7 @@ class EditCategoryScreen extends Component {
     };
 
     updateCategory = async () => {
+        // update parent category
         const category = this.props.chosenCategory;
         const type =
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
@@ -113,17 +115,29 @@ class EditCategoryScreen extends Component {
             TypeID: type,
         });
 
-        const subCategories = this.props.addedSubCategories;
+        // update sub categories of category
+        const addedSubCategories = this.props.addedSubCategories;
+        const editedSubCategories = this.props.editedSubCategories;
         const userSubcategoryRef = userCategoryRef.child(category.key).child("SubCategories/");
 
-        //let update = {};
-        await subCategories.map((item) => {
+        // add new subs
+        await addedSubCategories.map((item) => {
             userSubcategoryRef.push({
                 CategoryName: item.categoryName,
                 Icon: item.icon,
             });
         });
+
+        // update edited subs
+        await editedSubCategories.map((item) => {
+            userSubcategoryRef.child(item.key).update({
+                CategoryName: item.categoryName,
+                Icon: item.icon,
+            });
+        });
+
         this.props.reloadAddedSubCategories();
+        this.props.reloadEditedSubCategories();
 
         // exit this screen
         this.props.navigation.goBack();
@@ -349,6 +363,7 @@ function mapStateToProps(state) {
         addedSubCategories: state.addedSubCategories,
         editableButtonGroup: state.editableButtonGroup,
         selectedIcon: state.selectedIcon,
+        editedSubCategories: state.editedSubCategories
     };
 }
 
@@ -366,6 +381,7 @@ function mapDispatchToProps(dispatch) {
         SelectSubAction: (category) => { dispatch(SelectSubAction(category))},
         DeselectSubAction: () => { dispatch(DeselectSubAction())},
         editSubName: (name) => { dispatch(editSubName(name))},
+        reloadEditedSubCategories: () => { dispatch(reloadEditedSubCategories())},
     };
 }
 
