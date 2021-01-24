@@ -77,7 +77,9 @@ class AddCategoryScreen extends Component {
         await subCategories.map(item => {
             userSubcategoryRef.push({
                 CategoryName: item.categoryName,
-                Icon: item.icon
+                Icon: item.icon,
+                TypeID: parentCategory.TypeID,
+                IsDeleted: false
             });
         })
         this.props.reloadAddedSubCategories();
@@ -100,6 +102,7 @@ class AddCategoryScreen extends Component {
             Icon: icon,
             ParentID: "",
             TypeID: type,
+            IsDeleted: false
         }).then(item => {
             this.addSubcategory(item);
         });

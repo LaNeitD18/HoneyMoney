@@ -197,7 +197,7 @@ class CategoriesScreen extends React.Component {
         const userCategoryRef = userRef.child(uid).child("Category");
 
         this._isMounted = true;
-        userCategoryRef.on("value", (snapshot) => {
+        userCategoryRef.orderByChild('IsDeleted').equalTo(false).on("value", (snapshot) => {
             this.props.updateCategories(snapshot);
         });
     }
