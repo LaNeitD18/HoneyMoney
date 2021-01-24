@@ -229,7 +229,7 @@ class EditCategoryScreen extends Component {
                     <Space />
                     <String style={{ fontWeight: "bold" }}>Danh mục con</String>
 
-                    {subCategoriesView}
+                    {/* {subCategoriesView} */}
 
                     <Swipeout style={{ marginBottom: sizeFactor / 2 }} {...swipeSettings}>
                         {this.renderSubCategoriesView()}
