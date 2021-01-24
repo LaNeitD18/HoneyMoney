@@ -1307,3 +1307,39 @@ export class SettingRow extends Component {
         );
     }
 }
+
+export class WalletRow extends Component {
+    render() {
+        return (
+            <View>
+                <Row style={{ marginBottom: sizeFactor / 2 }}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            alignContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Icon
+                            style={{ marginRight: sizeFactor }}
+                            name="wallet"
+                            size={sizeFactor * 1.5}
+                            type="material-community"
+                            color={this.props.color}
+                        />
+                        <String style={{ marginBottom: 0 }}>{this.props.name}</String>
+                    </View>
+                </Row>
+                <LooseDivider />
+            </View>
+        );
+    }
+}
+
+export class ChooseWalletList extends Component {
+    render() {
+        const Item = ({ name, color }) => <WalletRow name={name} color={color} />;
+        const renderItem = ({ item }) => <Item name={item.name} color={item.color} />;
+        return <FlatList data={this.props.data} renderItem={renderItem} />;
+    }
+}

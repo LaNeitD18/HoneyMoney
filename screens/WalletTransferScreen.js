@@ -50,6 +50,7 @@ import {
     Button1,
     Button3,
     LooseDivider,
+    ChooseWalletList,
 } from "../components/Basic";
 import {
     Icon,
@@ -74,10 +75,21 @@ import ChooseIconDialog from "../components/ChooseIconDialog";
 import ConfirmDialog from "../components/ConfirmDialog";
 import ChooseWalletDialog from "../components/ChooseWalletDialog";
 
+const data1 = [
+    {
+        name: "Ví 1",
+        color: colors.purple,
+    },
+    {
+        name: "Ví 2",
+        color: colors.blue,
+    },
+];
+
 export default class WalletTransferScreen extends Component {
     render() {
         return (
-            <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 9 }}>
+            <ScreenView style={{ backgroundColor: "white" }}>
                 <Overlay
                     overlayStyle={{
                         borderRadius: sizeFactor,
@@ -88,7 +100,7 @@ export default class WalletTransferScreen extends Component {
                         alignContent: "center",
                         alignItems: "stretch",
                     }}
-                    isVisible={false}
+                    isVisible={true}
                 >
                     <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
                         <TouchableOpacity>
@@ -108,49 +120,13 @@ export default class WalletTransferScreen extends Component {
                     <ScrollView
                         style={{ paddingHorizontal: sizeFactor / 2, marginBottom: sizeFactor }}
                     >
-                        <Row style={{ marginBottom: sizeFactor / 2 }}>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Icon
-                                    style={{ marginRight: sizeFactor }}
-                                    name="wallet"
-                                    size={sizeFactor * 1.5}
-                                    type="material-community"
-                                    color={this.props.color}
-                                />
-                                <String style={{ marginBottom: 0 }}>Ví 1</String>
-                            </View>
-                        </Row>
-                        <LooseDivider />
-                        <Row style={{ marginBottom: sizeFactor / 2 }}>
-                            <View
-                                style={{
-                                    flexDirection: "row",
-                                    alignContent: "center",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Icon
-                                    style={{ marginRight: sizeFactor }}
-                                    name="wallet"
-                                    size={sizeFactor * 1.5}
-                                    type="material-community"
-                                    color={this.props.color}
-                                />
-                                <String style={{ marginBottom: 0 }}>Ví 2</String>
-                            </View>
-                        </Row>
-
-                        <LooseDivider />
+                        <ChooseWalletList data={data1} />
                     </ScrollView>
                 </Overlay>
 
-                <View style={{ margin: sizeFactor, alignItems: "center" }}>
+                <View
+                    style={{ margin: sizeFactor, marginTop: sizeFactor * 4, alignItems: "center" }}
+                >
                     <Image
                         source={require("../assets/transfer.png")}
                         style={[
@@ -168,25 +144,26 @@ export default class WalletTransferScreen extends Component {
                         Chuyển tiền giữa các ví
                     </String>
                 </View>
-                <TouchableOpacity>
-                    <View
-                        style={{
-                            alignItems: "stretch",
-                            marginTop: sizeFactor,
-                            marginHorizontal: sizeFactor * 2,
-                        }}
-                    >
-                        <View style={{ alignSelf: "flex-start" }}>
-                            <String
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: sizeFactor,
-                                    color: colors.gray,
-                                }}
-                            >
-                                Ví nguồn
-                            </String>
-                        </View>
+
+                <View
+                    style={{
+                        alignItems: "stretch",
+                        marginTop: sizeFactor,
+                        marginHorizontal: sizeFactor * 2,
+                    }}
+                >
+                    <View style={{ alignSelf: "flex-start" }}>
+                        <String
+                            style={{
+                                fontWeight: "bold",
+                                fontSize: sizeFactor,
+                                color: colors.gray,
+                            }}
+                        >
+                            Ví nguồn
+                        </String>
+                    </View>
+                    <TouchableOpacity>
                         <Row style={{ marginBottom: 0 }}>
                             <View
                                 style={{
@@ -214,28 +191,28 @@ export default class WalletTransferScreen extends Component {
                                 color={colors.gray}
                             />
                         </Row>
+                    </TouchableOpacity>
+                </View>
+
+                <View
+                    style={{
+                        alignItems: "stretch",
+                        marginTop: sizeFactor,
+                        marginHorizontal: sizeFactor * 2,
+                    }}
+                >
+                    <View style={{ alignSelf: "flex-start" }}>
+                        <String
+                            style={{
+                                fontWeight: "bold",
+                                fontSize: sizeFactor,
+                                color: colors.gray,
+                            }}
+                        >
+                            Ví đích
+                        </String>
                     </View>
-                </TouchableOpacity>
-                <TouchableOpacity>
-                    <View
-                        style={{
-                            alignItems: "stretch",
-                            margin: sizeFactor,
-                            marginHorizontal: sizeFactor * 2,
-                            marginBottom: sizeFactor * 2,
-                        }}
-                    >
-                        <View style={{ alignSelf: "flex-start" }}>
-                            <String
-                                style={{
-                                    fontWeight: "bold",
-                                    fontSize: sizeFactor,
-                                    color: colors.gray,
-                                }}
-                            >
-                                Ví đích
-                            </String>
-                        </View>
+                    <TouchableOpacity>
                         <Row style={{ marginBottom: 0 }}>
                             <View
                                 style={{
@@ -263,8 +240,28 @@ export default class WalletTransferScreen extends Component {
                                 color={colors.gray}
                             />
                         </Row>
-                    </View>
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </View>
+                <View
+                    style={{
+                        alignItems: "stretch",
+                        margin: sizeFactor,
+                        marginHorizontal: sizeFactor * 1.5,
+                    }}
+                >
+                    <HomoTextInput
+                        label="Số tiền"
+                        placeholder="000,000 VNĐ"
+                        leftIcon={{
+                            type: "material-community",
+                            name: "cash",
+                            color: colors.gray,
+                        }}
+                        keyboardType="numeric"
+                        errorMessage=""
+                        style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
+                    />
+                </View>
                 <View
                     style={{
                         alignItems: "stretch",
