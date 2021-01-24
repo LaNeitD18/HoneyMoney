@@ -55,7 +55,7 @@ import * as firebase from "firebase";
 import { userCategoryRef } from "../components/DataConnect";
 
 import IconImage, { findIcon, getIndex } from '../components/Image';
-import { changeType, changeName, openDialog, openIconDialog, selectIcon } from '../actions/index';
+import { changeType, changeName, openDialog, openIconDialog, selectIcon, setSubIcon, workWithSubCategory, workWithCategory, reloadAddedSubCategories } from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 import ChooseIconDialog from '../components/ChooseIconDialog'
 
@@ -63,7 +63,8 @@ class EditCategoryScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addedSubCategories: []
+            addedSubCategories: [],
+            deleteBtn_name: 'Xóa'
         }
         // ko sd props subcate để push nữa mà tạo ra 1 state khác sẽ chỉ nhận các subcate cần thêm vào, update state này
         // và sd nó cho vc push các cate mới
@@ -81,7 +82,7 @@ class EditCategoryScreen extends Component {
         }
     };
 
-    updateCategory = () => {
+    updateCategory = async() => {
         const category = this.props.chosenCategory;
         const type =
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
@@ -93,14 +94,17 @@ class EditCategoryScreen extends Component {
             TypeID: type,
         });
 
-        // const subCategories = this.props.addedSubCategories;
-        // //let update = {};
-        // subCategories.map(item => {
-        //     categoryRef.child(category.key).child('SubCategories').push({
-        //         CategoryName: item.categoryName,
-        //         Icon: item.icon
-        //     });
-        // })
+        const subCategories = this.props.addedSubCategories;
+        const userSubcategoryRef = userCategoryRef.child(category.key).child('SubCategories/');
+
+        //let update = {};
+        await subCategories.map(item => {
+            userSubcategoryRef.push({
+                CategoryName: item.categoryName,
+                Icon: item.icon
+            });
+        })
+        this.props.reloadAddedSubCategories();
 
        // exit this screen
         this.props.navigation.goBack();
@@ -149,6 +153,19 @@ class EditCategoryScreen extends Component {
         // b/c if choose icon and close dialog, without reseting, selectedIndex != editIndex (expect ==)
         this.props.selectIcon(this.props.selectedIcon.editIndex);
         this.props.openIconDialog();
+    }
+
+    openAddSubDialog = () => {
+        this.props.workWithSubCategory();
+        this.setState({
+            deleteBtn_name: ""
+        })
+
+        this.props.openDialog();
+    }
+
+    openEditSubDialog = () => {
+
     }
 
     render() {
@@ -217,12 +234,12 @@ class EditCategoryScreen extends Component {
                     <Space />
                     <String style={{ fontWeight: "bold" }}>Danh mục con</String>
 
-                    {subCategoriesView}
+                    {/* {subCategoriesView} */}
 
                     <Swipeout style={{ marginBottom: sizeFactor / 2 }} {...swipeSettings}>
                         {this.renderSubCategoriesView()}
                     </Swipeout>
-                    <TouchableOpacity onPress={() => this.props.openDialog()}>
+                    <TouchableOpacity onPress={() => this.openAddSubDialog()}>
                         <View
                             style={{
                                 backgroundColor: "white",
@@ -269,7 +286,7 @@ class EditCategoryScreen extends Component {
                 >
                     Xóa danh mục
                 </Button>
-                <AddSubcategoryDialog></AddSubcategoryDialog>
+                <AddSubcategoryDialog deleteBtn_name={this.state.deleteBtn_name}></AddSubcategoryDialog>
             </ScreenView>
         );
     }
@@ -296,6 +313,10 @@ function mapDispatchToProps(dispatch) {
         openDialog: () => { dispatch(openDialog())},
         openIconDialog: () => { dispatch(openIconDialog())},
         selectIcon: (index) => { dispatch(selectIcon(index))},
+        setSubIcon: (index) => { dispatch(setSubIcon(index))},
+        workWithSubCategory: () => { dispatch(workWithSubCategory())},
+        workWithCategory: () => { dispatch(workWithCategory())},
+        reloadAddedSubCategories: () => { dispatch(reloadAddedSubCategories())},
     };
 }
 

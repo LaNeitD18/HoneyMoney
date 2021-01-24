@@ -50,8 +50,8 @@ import {
     TouchableDeleteText,
 } from "./Basic";
 import { connect } from "react-redux";
-
-import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog } from '../actions/index';
+import IconImage, { findIcon, getIndex } from '../components/Image';
+import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon } from '../actions/index';
 
 class AddSubcategoryDialog extends Component {
     constructor(props) {
@@ -61,27 +61,40 @@ class AddSubcategoryDialog extends Component {
         }
     }
 
-    getName = (text) => {
+    resetState = () => {
+        const defaultIconIndex = 9;
+
+        this.props.setSubIcon(defaultIconIndex);
+        this.props.selectIcon(defaultIconIndex);
+
         this.setState({
-            name: text
+            name: ''
         })
     }
 
-    getSubCategory = () => {
-        const length = this.props.subCategories.length;
+    addSubCategory = () => {
         const name = this.state.name;
         
         const subCategory = {
             categoryName: name,
-            icon: 'diChuyen'
+            icon: IconImage[this.props.selectedIcon.subIndex].type
         }
         this.props.updateSubCategories(subCategory);
         this.props.addSubCategory(subCategory);
+        this.resetState();
+
         this.props.closeDialog();
         // đang tạo ra 1 state addedSub và mỗi lần nhấn đồng ý thì vừa thêm cate đó vô subs vừa thêm vô addedSubs 
     }
 
+    closeDialog = () => {
+        console.log("subs\n "+this.props.subCategories.length);
+        console.log("adds\n "+this.props.addedSubCategories.length);
+    }
+
     render() {
+        const iconPath = IconImage[this.props.selectedIcon.subIndex].iconPath;
+
         return (
             <Overlay
                 overlayStyle={{
@@ -108,7 +121,7 @@ class AddSubcategoryDialog extends Component {
                             width: sizeFactor * 3.5,
                             height: sizeFactor * 3.5,
                         }}
-                        source={require("../assets/categories/tuthien.png")}
+                        source={iconPath}
                     >
                         <Accessory size={sizeFactor * 1.25} />
                     </Avatar>
@@ -127,7 +140,9 @@ class AddSubcategoryDialog extends Component {
                     multiline 
                     style={{ fontSize: sizeFactor * 1.5, marginBottom: sizeFactor * 0.75, textAlign: "center" }} 
                     placeholder="Tên danh mục" 
-                    onChangeText={text => this.getName(text)}/>
+                    onChangeText={(text) => this.setState({ name: text })}
+                    value={this.state.name}
+                />
                 <Space />
                 <View 
                     style={{ 
@@ -135,10 +150,12 @@ class AddSubcategoryDialog extends Component {
                         flexDirection: "row-reverse", 
                         justifyContent: "space-between", 
                         marginBottom: 0 }}>
-                    <TouchableOpacity onPress={this.getSubCategory}>
+                    <TouchableOpacity onPress={() => this.addSubCategory()}>
                         <String style={{ color: colors.blue }}>Đồng ý</String>
                     </TouchableOpacity>
-                    <String style={{ color: colors.redDark }}>Xóa</String>
+                    <TouchableOpacity onPress={() => this.closeDialog()}>
+                        <String style={{ color: colors.redDark }} >{this.props.deleteBtn_name}</String>
+                    </TouchableOpacity>
                 </View>
             </Overlay>
         );
@@ -149,7 +166,9 @@ function mapStateToProps(state) {
     return {
         isVisible: state.isVisible,
         subCategories: state.subCategories,
-        selectedSub: state.selectedSubReducer
+        selectedSub: state.selectedSubReducer,
+        selectedIcon: state.selectedIcon,
+        addedSubCategories: state.addedSubCategories
     };
 }
 
@@ -160,6 +179,8 @@ function mapDispatchToProps(dispatch) {
         closeDialog: () => { dispatch(closeDialog())},
         updateSubCategories: (subCategory) => { dispatch(updateSubCategories(subCategory))},
         addSubCategory: (subCategory) => { dispatch(addSubCategory(subCategory))},
+        selectIcon: (index) => { dispatch(selectIcon(index))},
+        setSubIcon: (index) => { dispatch(setSubIcon(index))},
     };
 }
 

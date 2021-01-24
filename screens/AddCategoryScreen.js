@@ -49,10 +49,10 @@ import {
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import { connect } from "react-redux";
-import { categoryRef, userRef } from "../components/DataConnect";
+import { categoryRef, userRef, userCategoryRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog } from "../actions/index";
+import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog, clearSearchText } from "../actions/index";
 import IconImage, { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
@@ -75,12 +75,16 @@ class AddCategoryScreen extends Component {
             uid = firebase.auth().currentUser.uid;
         }
 
-        userRef.child(uid).child('Category/').push({
+        userCategoryRef.push({
             CategoryName: name,
             Icon: icon,
             ParentID: "",
             TypeID: type,
         });
+
+        // if searching, don't find a category, user can add category immediately by pressing themdanhmuc, 
+        // after adding, clear search text to stop searchings
+        this.props.clearSearchText();
         this.props.navigation.goBack();
     };
 
@@ -289,6 +293,7 @@ function mapDispatchToProps(dispatch) {
         openIconDialog: () => { dispatch(openIconDialog())},
         selectIcon: (index) => { dispatch(selectIcon(index))},
         closeIconDialog: () => { dispatch(closeIconDialog())},
+        clearSearchText: () => { dispatch(clearSearchText())},
     };
 }
 

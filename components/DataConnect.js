@@ -38,8 +38,8 @@ if(firebase.auth().currentUser) {
 }
 
 export const userRef = rootRef.child('users');
-export const userWalletRef = userRef.child(uid).child('Wallet');
-export const userCategoryRef = userRef.child(uid).child('Category');
+export const userWalletRef = userRef.child(uid).child('Wallet/');
+export const userCategoryRef = userRef.child(uid).child('Category/');
 // console.log(userCategoryRef);
 
 //export const subcategoryRef = rootRef.child('SubCategory');
