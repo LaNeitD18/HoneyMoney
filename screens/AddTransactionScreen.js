@@ -447,7 +447,7 @@ export class AddTransactionScreen extends Component {
       <ScreenView style={{ backgroundColor: this.props.selectedWallet?.color }}>
         <TouchableOpacity onPress={()=>{
           //this.props.navigation.goBack()
-          this.props.navigation.navigate('Ví');
+          //this.props.navigation.navigate('Ví');
           }}>
           <View
             style={{
