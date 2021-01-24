@@ -353,22 +353,22 @@ function DisplayedScreens() {
                     <Stack.Screen
                         name="SettingNameScreen"
                         component={SettingNameScreen}
-                        options={{ headerShown: true, title: "" }}
+                        options={{ headerShown: true, title: "Thông tin người dùng" }}
                     />
                     <Stack.Screen
                         name="SettingPasswordScreen"
                         component={SettingPasswordScreen}
-                        options={{ headerShown: true, title: "" }}
+                        options={{ headerShown: true, title: "Thay đổi mật khẩu" }}
                     />
                     <Stack.Screen
                         name="SettingAlertScreen"
                         component={SettingAlertScreen}
-                        options={{ headerShown: true, title: "" }}
+                        options={{ headerShown: true, title: "Thông báo" }}
                     />
                     <Stack.Screen
                         name="CategoryNavigator"
                         component={CategoryNavigator}
-                        options={{ headerShown: true, title: "" }}
+                        options={{ headerShown: true, title: "Quản lý danh mục" }}
                     />
                     <Stack.Screen
                         name="CategoriesScreen"
@@ -407,10 +407,10 @@ function DisplayedScreens() {
                         }}
                     />
                     <Stack.Screen
-                            name="AddBudgetScreen"
-                            component={AddBudgetScreen}
-                            options={{ headerShown: true, title: "Thêm hạn mức" }}
-                        />
+                        name="AddBudgetScreen"
+                        component={AddBudgetScreen}
+                        options={{ headerShown: true, title: "Thêm hạn mức" }}
+                    />
                     <Stack.Screen
                         name="BudgetScreen"
                         component={BudgetScreen}

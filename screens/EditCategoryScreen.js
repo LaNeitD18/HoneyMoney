@@ -55,7 +55,20 @@ import * as firebase from "firebase";
 import { userRef } from "../components/DataConnect";
 
 import IconImage, { findIcon, getIndex } from '../components/Image';
-import { changeType, changeName, openDialog, openIconDialog, selectIcon, setSubIcon, workWithSubCategory, workWithCategory, reloadAddedSubCategories, SelectSubAction, editSubName, DeselectSubAction } from '../actions/index';
+import { 
+    changeType, 
+    changeName, 
+    openDialog, 
+    openIconDialog, 
+    selectIcon, 
+    setSubIcon, 
+    workWithSubCategory, 
+    workWithCategory, 
+    reloadAddedSubCategories, 
+    SelectSubAction, 
+    editSubName, 
+    DeselectSubAction 
+} from '../actions/index';
 import AddSubcategoryDialog from '../components/AddSubcategoryDialog';
 import ChooseIconDialog from '../components/ChooseIconDialog'
 
@@ -64,8 +77,8 @@ class EditCategoryScreen extends Component {
         super(props);
         this.state = {
             addedSubCategories: [],
-            deleteBtn_name: 'Xóa'
-        }
+            deleteBtn_name: "Xóa",
+        };
         // ko sd props subcate để push nữa mà tạo ra 1 state khác sẽ chỉ nhận các subcate cần thêm vào, update state này
         // và sd nó cho vc push các cate mới
     }
@@ -82,17 +95,17 @@ class EditCategoryScreen extends Component {
         }
     };
 
-    updateCategory = async() => {
+    updateCategory = async () => {
         const category = this.props.chosenCategory;
         const type =
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
         const icon = IconImage[this.props.selectedIcon.editIndex].type;
 
-        let uid = 'none';
-        if(firebase.auth().currentUser) {
+        let uid = "none";
+        if (firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
-        const userCategoryRef = userRef.child(uid).child('Category')
+        const userCategoryRef = userRef.child(uid).child("Category");
 
         userCategoryRef.child(category.key).update({
             CategoryName: this.props.categoryName,
@@ -101,18 +114,18 @@ class EditCategoryScreen extends Component {
         });
 
         const subCategories = this.props.addedSubCategories;
-        const userSubcategoryRef = userCategoryRef.child(category.key).child('SubCategories/');
+        const userSubcategoryRef = userCategoryRef.child(category.key).child("SubCategories/");
 
         //let update = {};
-        await subCategories.map(item => {
+        await subCategories.map((item) => {
             userSubcategoryRef.push({
                 CategoryName: item.categoryName,
-                Icon: item.icon
+                Icon: item.icon,
             });
-        })
+        });
         this.props.reloadAddedSubCategories();
 
-       // exit this screen
+        // exit this screen
         this.props.navigation.goBack();
     };
 
@@ -122,7 +135,7 @@ class EditCategoryScreen extends Component {
         if(firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
-        const userCategoryRef = userRef.child(uid).child('Category')
+        const userCategoryRef = userRef.child(uid).child("Category");
 
         const category = this.props.chosenCategory;
         userCategoryRef.child(category.key).remove();
@@ -166,7 +179,7 @@ class EditCategoryScreen extends Component {
         // b/c if choose icon and close dialog, without reseting, selectedIndex != editIndex (expect ==)
         this.props.selectIcon(this.props.selectedIcon.editIndex);
         this.props.openIconDialog();
-    }
+    };
 
     openAddSubDialog = () => {
         this.props.workWithSubCategory();
@@ -201,7 +214,9 @@ class EditCategoryScreen extends Component {
             onOpen: (secID, rowID, direction) => {},
             right: [
                 {
-                    onPress: () => {this.deleteCategory},
+                    onPress: () => {
+                        this.deleteCategory;
+                    },
                     text: "Xóa",
                     type: "delete",
                 },
@@ -226,7 +241,11 @@ class EditCategoryScreen extends Component {
                     <Space />
                     <Space />
                     <Space />
-                    <TouchableOpacity onPress={() => { this.openIconDialog()}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.openIconDialog();
+                        }}
+                    >
                         <Avatar
                             size={sizeFactor * 6}
                             avatarStyle={{
@@ -303,16 +322,17 @@ class EditCategoryScreen extends Component {
                 >
                     Lưu thay đổi
                 </Button>
-                <Space />
                 <Button
                     color="white"
-                    backgroundColor={colors.blue}
+                    backgroundColor={colors.red}
                     style={{ marginHorizontal: sizeFactor }}
                     onPress={() => this.deleteCategory()}
                 >
                     Xóa danh mục
                 </Button>
-                <AddSubcategoryDialog deleteBtn_name={this.state.deleteBtn_name}></AddSubcategoryDialog>
+                <AddSubcategoryDialog
+                    deleteBtn_name={this.state.deleteBtn_name}
+                ></AddSubcategoryDialog>
             </ScreenView>
         );
     }
@@ -328,7 +348,7 @@ function mapStateToProps(state) {
         isVisible: state.isVisible,
         addedSubCategories: state.addedSubCategories,
         editableButtonGroup: state.editableButtonGroup,
-        selectedIcon: state.selectedIcon
+        selectedIcon: state.selectedIcon,
     };
 }
 

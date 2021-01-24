@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     Platform,
     TextInput,
-    Alert
+    Alert,
 } from "react-native";
 import {
     String,
@@ -69,65 +69,72 @@ class SettingNameScreen extends Component {
         super();
 
         this.state = {
-            userName: firebase.auth().currentUser.displayName
-        }
+            userName: firebase.auth().currentUser.displayName,
+        };
     }
 
-    editUserInfo = async() => {
+    editUserInfo = async () => {
         let successful = false;
-        await firebase.auth().currentUser.updateProfile({
-            displayName: this.state.userName
-        }).then(function() {
-            //console.log("au " + firebase.auth().currentUser.displayName);
-            firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/profile")
-                .update({name : firebase.auth().currentUser.displayName});
-            successful = true;
-        }).catch(function(error) {
+        await firebase
+            .auth()
+            .currentUser.updateProfile({
+                displayName: this.state.userName,
+            })
+            .then(function () {
+                //console.log("au " + firebase.auth().currentUser.displayName);
+                firebase
+                    .database()
+                    .ref("users/" + firebase.auth().currentUser.uid + "/profile")
+                    .update({ name: firebase.auth().currentUser.displayName });
+                successful = true;
+            })
+            .catch(function (error) {});
 
-        });
-        
-        if(successful) {
+        if (successful) {
             this.props.editUserName(this.state.userName);
-            Alert.alert("Thông báo", "Bạn đã cập nhật thông tin thành công", 
+            Alert.alert(
+                "Thông báo",
+                "Bạn đã cập nhật thông tin thành công",
                 [
                     {
                         text: "OK",
-                        onPress: async() => {
+                        onPress: async () => {
                             await firebase.auth().currentUser.reload();
-                            
+
                             this.props.navigation.goBack();
-                        }
-                    }
-                ], {cancelable: false}
+                        },
+                    },
+                ],
+                { cancelable: false }
             );
         }
-    }
+    };
 
     render() {
         const email = firebase.auth().currentUser.email;
 
         return (
-            <ScreenView style={{ backgroundColor: "white", paddingTop: windowHeight / 10 }}>
-                <TouchableOpacity>
-                    <View style={{ margin: sizeFactor, alignItems: "center" }}>
-                        <Image
-                            source={require("../assets/info.png")}
-                            style={[
-                                styles.hugeCategory,
-                                {
-                                    opacity: 1,
-                                    width: styles.hugeCategory.height - sizeFactor * 1.25,
-                                    height: styles.hugeCategory.height - sizeFactor * 1.25,
-                                    marginBottom: sizeFactor,
-                                },
-                            ]}
-                        />
+            <ScreenView style={{ backgroundColor: "white" }}>
+                <View
+                    style={{ margin: sizeFactor, alignItems: "center", marginTop: sizeFactor * 2 }}
+                >
+                    <Image
+                        source={require("../assets/info.png")}
+                        style={[
+                            styles.hugeCategory,
+                            {
+                                opacity: 1,
+                                width: styles.hugeCategory.height - sizeFactor * 1.25,
+                                height: styles.hugeCategory.height - sizeFactor * 1.25,
+                                marginBottom: sizeFactor,
+                            },
+                        ]}
+                    />
 
-                        <String style={{ fontWeight: "bold", fontSize: sizeFactor * 1.5 }}>
-                            Thông tin người dùng
-                        </String>
-                    </View>
-                </TouchableOpacity>
+                    <String style={{ fontWeight: "bold", fontSize: sizeFactor * 1.5 }}>
+                        Thông tin người dùng
+                    </String>
+                </View>
                 <View style={{ alignItems: "center", margin: sizeFactor }}>
                     <HomoTextInput
                         label="Email"
@@ -157,7 +164,9 @@ class SettingNameScreen extends Component {
                         errorMessage=""
                         style={{ width: windowWidth - sizeFactor * 4, margin: 0 }}
                         value={this.state.userName}
-                        onChangeText={(text) => {this.setState({ userName: text})}}
+                        onChangeText={(text) => {
+                            this.setState({ userName: text });
+                        }}
                     />
                 </View>
                 <View
@@ -175,14 +184,14 @@ class SettingNameScreen extends Component {
 }
 
 function mapStateToProps(state) {
-    return {
-        
-    };
+    return {};
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        editUserName: (name) => { dispatch(editUserName(name))}
+        editUserName: (name) => {
+            dispatch(editUserName(name));
+        },
     };
 }
 
