@@ -44,6 +44,7 @@ import {
     ToggleButton,
     ColorSelectButton,
     RoundedView,
+    Button1,
 } from "../components/Basic";
 import { Icon, SearchBar, Input, Avatar, Accessory, ListItem } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -251,14 +252,14 @@ class AddCategoryScreen extends Component {
                     </TouchableOpacity>
                 </RoundedView>
                 <Space />
-                <Button
+                <Button1
                     color="white"
                     background={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
                     onPress={() => this.createCategory()}
                 >
                     Lưu thay đổi
-                </Button>
+                </Button1>
                 <AddSubcategoryDialog></AddSubcategoryDialog>
             </ScreenView>
         );

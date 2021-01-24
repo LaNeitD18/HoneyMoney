@@ -43,6 +43,7 @@ import {
     ToggleButton,
     ColorSelectButton,
     RoundedView,
+    Button1,
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -201,7 +202,7 @@ export class EditWalletScreen extends Component {
 
                     </RoundedView>
                     <Space />
-                <Button
+                <Button1
                     color="white"
                     background={colors.blue}
                     style={{ marginHorizontal: sizeFactor }}
@@ -209,7 +210,7 @@ export class EditWalletScreen extends Component {
                     onPress={()=>{this.editWallet()}}
                 >
                     Lưu thay đổi
-        </Button>
+        </Button1>
                 <Button
                     color={colors.redDark}
                     style={{ marginHorizontal: sizeFactor }}

@@ -43,6 +43,7 @@ import {
     ToggleButton,
     ColorSelectButton,
     RoundedView,
+    Button1,
 } from "../components/Basic";
 import { Icon, SearchBar, Avatar, Input } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
@@ -185,14 +186,14 @@ export default class AddWalletScreen extends Component {
           <String style={styles.inputText}>{this.state.date}</String>
         </RoundedView>
         <Space />
-        <Button
+        <Button1
           color="white"
           background={colors.blue}
           style={{ marginHorizontal: sizeFactor }}
           onPress={()=>{this.addNewWallet()}}
         >
           Lưu thay đổi
-        </Button>
+        </Button1>
             </ScreenView>
         );
     }

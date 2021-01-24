@@ -591,7 +591,7 @@ export class EditTransactionScreen extends Component {
         <OutlineButton style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.editTransaction()}}>
             Lưu thay đổi
         </OutlineButton>
-        <Button2 style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="white" color="white" onPress={()=>{this.deleteTransaction()}}>
+        <Button2 style={{ marginHorizontal: sizeFactor * 1.5 }} backgroundColor="red" color="red" onPress={()=>{this.deleteTransaction()}}>
             Xoá giao dịch
         </Button2>
       </ScreenView>

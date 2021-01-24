@@ -183,7 +183,7 @@ export class AddTransactionScreen extends Component {
               <Category 
                   key={index} 
                   source={require("../assets/categories/themdanhmuc.png")} 
-                  onPress={() => this.createNewCategory()}>
+                  onPress={() => this.props.navigation.navigate("AddCategoryScreen")}>
               {'Thêm danh mục'}
               </Category>
           )
@@ -222,7 +222,7 @@ export class AddTransactionScreen extends Component {
                     <Category 
                         key={index} 
                         source={require("../assets/categories/themdanhmuc.png")} 
-                        onPress={() => this.createNewCategory()}>
+                        onPress={() => this.props.navigation.navigate("AddCategoryScreen")}>
                     {'Thêm danh mục'}
                     </Category>
                 )
@@ -316,7 +316,7 @@ export class AddTransactionScreen extends Component {
             <KindSelect 
                 onPress={(index) => {this.getDataBasedOnType(index); this.props.deselectSub(); this.props.deselectCategory();}}
                 selectedIndex={this.props.selectedType}
-                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập", "Các ví"]} />
+                buttons={["Vay/Trả", "Chi tiêu", "Thu nhập"]} />
         );
     }   return;
   }
