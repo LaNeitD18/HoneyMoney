@@ -542,7 +542,9 @@ export class TransactionsScreen extends Component {
                 clone.find((i) => i.date == d).list.push(itemdata);
             }
         });
-        return clone;
+        return clone.sort((a, b) => {
+            return - parseInt(a.date) + parseInt(b.date);
+        });;
     }
     getTransactionFullListData(offsetIndex) {
         var x = Math.ceil(offsetIndex) / Math.ceil(windowWidth - 2 * sizeFactor);

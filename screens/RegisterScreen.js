@@ -94,6 +94,7 @@ export default class RegisterScreen extends Component {
                     Icon: element.toJSON().Icon,
                     ParentID: element.toJSON().ParentID,
                     TypeID: element.toJSON().TypeID,
+                    IsDeleted: false
                 })
                 //userRef.child('Category').push(element);
                 //console.log(element);

@@ -51,14 +51,11 @@ import {
 } from "./Basic";
 import { connect } from "react-redux";
 import IconImage, { findIcon, getIndex } from '../components/Image';
-import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon } from '../actions/index';
+import { openDialog, closeDialog, updateSubCategories, addSubCategory, openIconDialog, selectIcon, setSubIcon, DeselectSubAction, editSubName, editSubCategory, getSubCategories } from '../actions/index';
 
 class AddSubcategoryDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: "",
-        }
     }
 
     resetState = () => {
@@ -66,31 +63,67 @@ class AddSubcategoryDialog extends Component {
 
         this.props.setSubIcon(defaultIconIndex);
         this.props.selectIcon(defaultIconIndex);
+        //this.props.DeselectSubAction();
 
-        this.setState({
-            name: ''
-        })
     }
 
     addSubCategory = () => {
-        const name = this.state.name;
+        const name = this.props.subcategoryName;
         
         const subCategory = {
+            key: this.props.selectedSub.key,
             categoryName: name,
-            icon: IconImage[this.props.selectedIcon.subIndex].type
+            icon: IconImage[this.props.selectedIcon.subIndex].type,
+            isDeleted: false
         }
-        this.props.updateSubCategories(subCategory);
-        this.props.addSubCategory(subCategory);
-        this.resetState();
 
-        this.props.closeDialog();
+        if(this.props.selectedSub.key === "") {
+            // neu la them thi code day
+            this.props.updateSubCategories(subCategory);
+            this.props.addSubCategory(subCategory);
+        }
+        else {
+            // day la code cho edit sub
+            var subCategories = this.props.subCategories;
+            subCategories.forEach((item, index) => {
+                if(subCategory.key === item.key) {
+                    subCategories[index] = subCategory;
+                }
+            })
+
+            this.props.getSubCategories(subCategories);
+            this.props.editSubCategory(subCategory);
+        }
+        
+        this.closeDialog();
         // đang tạo ra 1 state addedSub và mỗi lần nhấn đồng ý thì vừa thêm cate đó vô subs vừa thêm vô addedSubs 
     }
 
-    closeDialog = () => {
-        console.log("subs\n "+this.props.subCategories.length);
-        console.log("adds\n "+this.props.addedSubCategories.length);
+    // delete = edit isDeleted to true
+    deleteSubcategory = () => {
+        const subCategory = {
+            ...this.props.selectedSub,
+            isDeleted: true
+        }
+
+        var subCategories = this.props.subCategories;
+        subCategories.forEach((item, index) => {
+            if(subCategory.key === item.key) {
+                subCategories.splice(index, 1);
+            }
+        })
+
+        this.props.getSubCategories(subCategories);
+        this.props.editSubCategory(subCategory);
+
+        this.closeDialog();
     }
+
+    closeDialog = () => {
+        this.resetState();
+        this.props.closeDialog();
+    }
+
 
     render() {
         const iconPath = IconImage[this.props.selectedIcon.subIndex].iconPath;
@@ -110,7 +143,7 @@ class AddSubcategoryDialog extends Component {
                 isVisible={this.props.isVisible}
             >
                 <View style={{ right: sizeFactor, top: sizeFactor, position: "absolute" }}>
-                    <TouchableOpacity onPress={this.props.closeDialog}>
+                    <TouchableOpacity onPress={() => this.closeDialog()}>
                         <Icon name="clear" color={colors.gray} size={sizeFactor * 2} />
                     </TouchableOpacity>
                 </View>
@@ -140,8 +173,8 @@ class AddSubcategoryDialog extends Component {
                     multiline 
                     style={{ fontSize: sizeFactor * 1.5, marginBottom: sizeFactor * 0.75, textAlign: "center" }} 
                     placeholder="Tên danh mục" 
-                    onChangeText={(text) => this.setState({ name: text })}
-                    value={this.state.name}
+                    onChangeText={(text) => this.props.editSubName(text)}
+                    value={this.props.subcategoryName}
                 />
                 <Space />
                 <View 
@@ -153,7 +186,7 @@ class AddSubcategoryDialog extends Component {
                     <TouchableOpacity onPress={() => this.addSubCategory()}>
                         <String style={{ color: colors.blue }}>Đồng ý</String>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.closeDialog()}>
+                    <TouchableOpacity onPress={() => this.deleteSubcategory()}>
                         <String style={{ color: colors.redDark }} >{this.props.deleteBtn_name}</String>
                     </TouchableOpacity>
                 </View>
@@ -168,7 +201,9 @@ function mapStateToProps(state) {
         subCategories: state.subCategories,
         selectedSub: state.selectedSubReducer,
         selectedIcon: state.selectedIcon,
-        addedSubCategories: state.addedSubCategories
+        addedSubCategories: state.addedSubCategories,
+        selectedSub: state.selectedSubReducer,
+        subcategoryName: state.subcategoryName
     };
 }
 
@@ -181,6 +216,10 @@ function mapDispatchToProps(dispatch) {
         addSubCategory: (subCategory) => { dispatch(addSubCategory(subCategory))},
         selectIcon: (index) => { dispatch(selectIcon(index))},
         setSubIcon: (index) => { dispatch(setSubIcon(index))},
+        DeselectSubAction: () => { dispatch(DeselectSubAction())},
+        editSubName: (name) => { dispatch(editSubName(name))},
+        editSubCategory: (subCategory) => { dispatch(editSubCategory(subCategory))},
+        getSubCategories: (subCategories) => { dispatch(getSubCategories(subCategories))},
     };
 }
 

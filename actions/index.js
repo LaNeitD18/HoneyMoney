@@ -204,6 +204,21 @@ export function reloadAddedSubCategories() {
 }
 //#endregion
 
+//#region editedSubCategories
+export function editSubCategory(subCategory) {
+    return {
+        type: 'EDIT_SUB',
+        subCategory: subCategory
+    }
+}
+
+export function reloadEditedSubCategories() {
+    return {
+        type: 'RELOAD_EDIT'
+    }
+}
+//#endregion
+
 //#region isVisible
 export function openDialog() {
     return {
@@ -311,6 +326,15 @@ export function workWithSubCategory() {
 export function editUserName(name) {
     return {
         type: 'EDIT_NAME',
+        name: name
+    }
+}
+//#endregion
+
+//#region subcategoryName
+export function editSubName(name) {
+    return {
+        type: 'EDIT_SUBNAME',
         name: name
     }
 }

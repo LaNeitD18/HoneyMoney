@@ -122,6 +122,10 @@ export class WalletTransferScreen extends Component {
                     nguon: element,
                     dich: element,
                 });
+            } else {
+                this.setState({
+                    dich: element,
+                });
             }
         });
     }

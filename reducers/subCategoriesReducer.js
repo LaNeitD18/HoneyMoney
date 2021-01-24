@@ -4,8 +4,6 @@ const subCategoriesReducer = (state = [], action) => {
             return action.subCategories;
         case 'UPDATE_SUB':
             state.push(action.subCategory);
-            console.log("c");
-            console.log(state);
             return state;
         case 'BACK_BEFORE_EDITING':
             return action.subCategories;
