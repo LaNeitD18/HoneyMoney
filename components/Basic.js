@@ -119,8 +119,8 @@ export const styles = StyleSheet.create({
     hugeCategory: {
         alignSelf: "center",
         marginBottom: sizeFactor / 2,
-        width: (windowWidth - 5 * sizeFactor) / 4,
-        height: (windowWidth - 5 * sizeFactor) / 4,
+        width: ((windowWidth - 5 * sizeFactor) / 4) * 0.75,
+        height: ((windowWidth - 5 * sizeFactor) / 4) * 0.75,
     },
     smallCategory: {
         marginBottom: sizeFactor,
@@ -471,10 +471,13 @@ export class Button2 extends Component {
                 ]}
             >
                 <String
-                    style={{
-                        color: "black",
-                        fontWeight: "bold",
-                    }}
+                    style={[
+                        {
+                            color: "black",
+                            fontWeight: "bold",
+                        },
+                        this.props.textStyle,
+                    ]}
                 >
                     {this.props.children}
                 </String>
@@ -560,8 +563,9 @@ export class OutlineToggleButton extends Component {
                     borderWidth: 1.25,
                     paddingHorizontal: sizeFactor,
                     borderColor: this.props.color,
+                    backgroundColor: checked == "true" ? "transparent" : this.props.color,
                     borderRadius: 9999,
-                    borderStyle: checked == "false" ? "dashed" : "solid",
+                    borderStyle: checked == "true" ? "dashed" : "solid",
                     paddingTop: sizeFactor * 0.75,
                     flexDirection: "row",
                     marginBottom: sizeFactor,
@@ -576,12 +580,12 @@ export class OutlineToggleButton extends Component {
                 />
                 <String
                     style={{
-                        color: this.props.color,
-                        fontWeight: checked == "false" ? "normal" : "bold",
+                        color: checked == "true" ? this.props.color : this.props.uncheckColor,
+                        fontWeight: checked == "true" ? "normal" : "bold",
                     }}
                 >
                     {this.props.uncheckIcon == "" ? "" : " "}
-                    {this.props.children}
+                    {checked == "true" ? this.props.checkedText : this.props.children}
                 </String>
             </TouchableOpacity>
         );
@@ -610,6 +614,7 @@ export class OutlineButton extends Component {
                 <String
                     style={{
                         color: this.props.color,
+                        fontWeight: "bold",
                     }}
                 >
                     {this.props.children}
@@ -644,23 +649,17 @@ export class Wallet extends Component {
                     </String>
                 </Row>
                 <Space />
-                <Row>
-                    <OutlineToggleButton
-                        checked={this.props.isDefault}
-                        checkIcon="check-circle-outline"
-                        color="white"
-                        onPress={this.props.onPressDefault}
-                    >
-                        Ví mặc định
-                    </OutlineToggleButton>
-                    <Button
-                        color={this.props.color}
-                        backgroundColor="white"
-                        onPress={this.props.onPressSuDung}
-                    >
-                        Sử dụng
-                    </Button>
-                </Row>
+
+                <OutlineToggleButton
+                    checked={this.props.isDefault}
+                    checkIcon="check-circle-outline"
+                    color="white"
+                    uncheckColor={this.props.color}
+                    onPress={this.props.onPressDefault}
+                    checkedText="Đang sử dụng"
+                >
+                    Sử dụng
+                </OutlineToggleButton>
             </Card>
         );
     }
@@ -975,6 +974,8 @@ export class Category extends Component {
                             style={[
                                 styles.hugeCategory,
                                 {
+                                    marginTop: sizeFactor * 0.24,
+                                    marginLeft: sizeFactor * 0.03,
                                     opacity: 1,
                                     width: styles.hugeCategory.height - sizeFactor * 1.25,
                                     height: styles.hugeCategory.height - sizeFactor * 1.25,
@@ -983,10 +984,13 @@ export class Category extends Component {
                         ></Image>
                     </View>
                     <View
-                        style={{
-                            width: styles.hugeCategory.width,
-                            alignItems: "center",
-                        }}
+                        style={[
+                            {
+                                width: styles.hugeCategory.width,
+                                alignItems: "center",
+                            },
+                            this.props.stringContainerStyle,
+                        ]}
                     >
                         <String
                             style={{
@@ -1107,7 +1111,13 @@ export class TransactionsFullList extends Component {
                 list={item.list}
             />
         );
-        return <FlatList data={this.props.data} renderItem={renderItem} ListEmptyComponent={this.props.ListEmptyComponent}/>;
+        return (
+            <FlatList
+                data={this.props.data}
+                renderItem={renderItem}
+                ListEmptyComponent={this.props.ListEmptyComponent}
+            />
+        );
     }
 }
 
@@ -1339,7 +1349,31 @@ export class WalletRow extends Component {
 export class ChooseWalletList extends Component {
     render() {
         const Item = ({ name, color }) => <WalletRow name={name} color={color} />;
-        const renderItem = ({ item }) => <TouchableOpacity onPress={item.onPress}><Item name={item.name} color={item.color} /></TouchableOpacity>;
+        const renderItem = ({ item }) => (
+            <TouchableOpacity onPress={item.onPress}>
+                <Item name={item.name} color={item.color} />
+            </TouchableOpacity>
+        );
         return <FlatList data={this.props.data} renderItem={renderItem} />;
+    }
+}
+
+export class EmtpyTransactionsIndicator extends Component {
+    render() {
+        return (
+            <View style={{ alignItems: "center", marginVertical: sizeFactor * 4 }}>
+                <Image
+                    style={{
+                        width: sizeFactor * 6,
+                        height: sizeFactor * 6 * 0.56666666666,
+                        marginBottom: sizeFactor * 1.25,
+                    }}
+                    source={require("../assets/empty.png")}
+                />
+                <String style={{ fontSize: sizeFactor, fontWeight: "bold", color: colors.gray3 }}>
+                    Bạn chưa có giao dịch nào!
+                </String>
+            </View>
+        );
     }
 }
