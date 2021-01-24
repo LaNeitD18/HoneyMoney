@@ -113,20 +113,16 @@ class CategoriesScreen extends React.Component {
             .child("SubCategories/")
             .once("value", (snapshot) => {
                 snapshot.forEach((element) => {
-                    categories.push({
-                        key: element.key,
-                        categoryName: element.toJSON().CategoryName,
-                        icon: element.toJSON().Icon,
-                    });
+                    if(element.toJSON().IsDeleted === false) {
+                        categories.push({
+                            key: element.key,
+                            categoryName: element.toJSON().CategoryName,
+                            icon: element.toJSON().Icon,
+                        });
+                    }
                 });
             });
-        // categories.push({
-        //     key: 0,
-        //     categoryName: 'Thêm mới',
-        //     icon: 'themdanhmuccon',
-        //     parentID: '',
-        //     typeID: ''
-        // });
+
         // console.log("ZZZ");
         // console.log(categories);
         return categories;
