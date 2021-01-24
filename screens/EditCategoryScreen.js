@@ -125,6 +125,7 @@ class EditCategoryScreen extends Component {
             userSubcategoryRef.push({
                 CategoryName: item.categoryName,
                 Icon: item.icon,
+                IsDeleted: item.isDeleted
             });
         });
 
@@ -133,6 +134,7 @@ class EditCategoryScreen extends Component {
             userSubcategoryRef.child(item.key).update({
                 CategoryName: item.categoryName,
                 Icon: item.icon,
+                IsDeleted: item.isDeleted
             });
         });
 

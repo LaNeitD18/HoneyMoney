@@ -73,14 +73,14 @@ class AddSubcategoryDialog extends Component {
         const subCategory = {
             key: this.props.selectedSub.key,
             categoryName: name,
-            icon: IconImage[this.props.selectedIcon.subIndex].type
+            icon: IconImage[this.props.selectedIcon.subIndex].type,
+            isDeleted: false
         }
 
         if(this.props.selectedSub.key === "") {
             // neu la them thi code day
             this.props.updateSubCategories(subCategory);
             this.props.addSubCategory(subCategory);
-            console.log(this.props.addedSubCategories);
         }
         else {
             // day la code cho edit sub
@@ -88,19 +88,35 @@ class AddSubcategoryDialog extends Component {
             subCategories.forEach((item, index) => {
                 if(subCategory.key === item.key) {
                     subCategories[index] = subCategory;
-                    console.log(subCategories[index]);
                 }
             })
 
             this.props.getSubCategories(subCategories);
             this.props.editSubCategory(subCategory);
-            console.log(this.props.subCategories);
         }
         
-        this.resetState();
-
-        this.props.closeDialog();
+        this.closeDialog();
         // đang tạo ra 1 state addedSub và mỗi lần nhấn đồng ý thì vừa thêm cate đó vô subs vừa thêm vô addedSubs 
+    }
+
+    // delete = edit isDeleted to true
+    deleteSubcategory = () => {
+        const subCategory = {
+            ...this.props.selectedSub,
+            isDeleted: true
+        }
+
+        var subCategories = this.props.subCategories;
+        subCategories.forEach((item, index) => {
+            if(subCategory.key === item.key) {
+                subCategories.splice(index, 1);
+            }
+        })
+
+        this.props.getSubCategories(subCategories);
+        this.props.editSubCategory(subCategory);
+
+        this.closeDialog();
     }
 
     closeDialog = () => {
@@ -111,8 +127,6 @@ class AddSubcategoryDialog extends Component {
 
     render() {
         const iconPath = IconImage[this.props.selectedIcon.subIndex].iconPath;
-
-        
 
         return (
             <Overlay
@@ -172,7 +186,7 @@ class AddSubcategoryDialog extends Component {
                     <TouchableOpacity onPress={() => this.addSubCategory()}>
                         <String style={{ color: colors.blue }}>Đồng ý</String>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.closeDialog()}>
+                    <TouchableOpacity onPress={() => this.deleteSubcategory()}>
                         <String style={{ color: colors.redDark }} >{this.props.deleteBtn_name}</String>
                     </TouchableOpacity>
                 </View>
