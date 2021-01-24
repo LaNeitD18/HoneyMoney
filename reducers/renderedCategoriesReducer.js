@@ -15,9 +15,11 @@ const defaultCategories = () => {
                 categoryName: element.toJSON().CategoryName,
                 icon: element.toJSON().Icon,
                 parentID: element.toJSON().ParentID,
-                typeID: element.toJSON().TypeID
+                typeID: element.toJSON().TypeID,
+                isDeleted: element.IsDeleted
             });
         });
+        console.log("rer " + categories[2].isDeleted);
     });
     return categories;
 }
@@ -31,9 +33,11 @@ const renderedCategoriesReducer = (state = defaultCategories(), action) => {
                 categoryName: element.categoryName,
                 icon: element.icon,
                 parentID: element.parentID,
-                typeID: element.typeID
+                typeID: element.typeID,
+                isDeleted: element.isDeleted
             });
         });
+        //console.log("rr " + state[2].isDeleted);
         return state;
     }
     return state;

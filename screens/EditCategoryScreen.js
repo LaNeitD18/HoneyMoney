@@ -154,7 +154,12 @@ class EditCategoryScreen extends Component {
         const userCategoryRef = userRef.child(uid).child("Category");
 
         const category = this.props.chosenCategory;
-        userCategoryRef.child(category.key).remove();
+        //console.log(this.props.chosenCategory);
+        userCategoryRef.child(category.key).update({
+            CategoryName: category.categoryName,
+            Icon: category.icon,
+            IsDeleted: true
+        });
 
         // exit this screen
         this.props.navigation.goBack();
