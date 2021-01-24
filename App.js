@@ -243,8 +243,9 @@ class Main extends Component {
                 ></Tab.Screen>
                 <Tab.Screen
                     name="Budget"
-                    //component={BudgetScreen}
-                    component={WalletScreen}
+                    component={BudgetScreen}
+                    //component={WalletScreen}
+                    //component={AddBudgetScreen}
                     options={{ title: "Ví" }}
                 />
                 <Tab.Screen
@@ -382,6 +383,11 @@ function DisplayedScreens() {
                                 //     </View>
                                 // ),
                             }}
+                        />
+                        <Stack.Screen
+                            name="AddBudgetScreen"
+                            component={AddBudgetScreen}
+                            options={{ headerShown: true, title: "Thêm hạn mức" }}
                         />
                 </Stack.Navigator>
             </NavigationContainer>
