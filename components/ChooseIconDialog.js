@@ -52,7 +52,7 @@ import {
     IconCategory,
 } from "./Basic";
 
-import { closeIconDialog, selectIcon, setAddingIcon, setEditingIcon } from '../actions/index';
+import { closeIconDialog, selectIcon, setAddingIcon, setEditingIcon, setSubIcon } from '../actions/index';
 import IconImage from './Image';
 
 
@@ -101,9 +101,15 @@ class ChooseIconDialog extends Component {
     closeIconDialog = () => {
         // dirty code to skip checking is adding or editing or working with subcategory
         // can do this b/c in CategoriesScreen, i always setAddingIcon or setEditingIcon before navigating to add or edit screen
-        this.props.setAddingIcon(this.props.selectedIcon.selectedIndex);
-        this.props.setEditingIcon(this.props.selectedIcon.selectedIndex);
-
+        // set sub in EditCategoryScreen before ...
+        console.log("wsub "+this.props.isWorkingWithSub)
+        if(this.props.isWorkingWithSub) {
+            this.props.setSubIcon(this.props.selectedIcon.selectedIndex);
+        }
+        else {
+            this.props.setAddingIcon(this.props.selectedIcon.selectedIndex);
+            this.props.setEditingIcon(this.props.selectedIcon.selectedIndex);    
+        }
         this.props.closeIconDialog();
     }
 
@@ -168,6 +174,8 @@ function mapStateToProps(state) {
     return {
         isVisibleIconDialog: state.isVisibleIconDialog,
         selectedIcon: state.selectedIcon,
+        isWorkingWithSub: state.isWorkingWithSub
+
     };
 }
 
@@ -177,6 +185,7 @@ function mapDispatchToProps(dispatch) {
         selectIcon: (index) => { dispatch(selectIcon(index))},
         setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
         setEditingIcon: (index) => { dispatch(setEditingIcon(index))},
+        setSubIcon: (index) => { dispatch(setSubIcon(index))},
     };
 }
 

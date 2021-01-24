@@ -33,7 +33,7 @@ import {
 import { Icon, SearchBar, Avatar } from "react-native-elements";
 import TextTicker from "react-native-text-ticker";
 import * as firebase from "firebase";
-import { categoryRef, userRef } from "../components/DataConnect";
+import { categoryRef, userCategoryRef, userRef } from "../components/DataConnect";
 import IconImage, { findIcon, getIndex } from "../components/Image";
 import { connect } from "react-redux";
 import {
@@ -50,7 +50,8 @@ import {
     workWithCategory,
     closeIconDialog,
     setAddingIcon,
-    setEditingIcon
+    setEditingIcon,
+    closeDialog
 } from "../actions/index";
 
 import EditCategoryScreen from "./EditCategoryScreen";
@@ -89,15 +90,17 @@ class CategoriesScreen extends React.Component {
     };
 
     createNewCategory = () => {
+        // create new -> no subcategory
         const category = [];
         this.props.getSubCategories(category);
+
         this.props.setAddingIcon(9);
         this.props.navigation.navigate("AddCategoryScreen");
     };
 
     getSubCategories = (chosenCategory) => {
         const categories = [];
-        categoryRef.child(chosenCategory.key).child('SubCategories').once('value', (snapshot) => {
+        userCategoryRef.child(chosenCategory.key).child('SubCategories/').once('value', (snapshot) => {
             snapshot.forEach(element => {
                 categories.push({
                     key: element.key,
@@ -125,6 +128,7 @@ class CategoriesScreen extends React.Component {
         const iconIndex = getIndex(this.props.chosenCategory.icon);
         this.props.setEditingIcon(iconIndex);
         this.props.closeIconDialog();
+        this.props.closeDialog();
 
         this.props.changeName(category.categoryName);
         this.props.showType(this.props.selectedType);
@@ -298,6 +302,7 @@ function mapDispatchToProps(dispatch) {
         selectIcon: (index) => { dispatch(selectIcon(index))},
         workWithCategory: () => { dispatch(workWithCategory())},
         closeIconDialog: () => { dispatch(closeIconDialog())},
+        closeDialog: () => { dispatch(closeDialog())},
         setAddingIcon: (index) => { dispatch(setAddingIcon(index))},
         setEditingIcon: (index) => { dispatch(setEditingIcon(index))},
     }
