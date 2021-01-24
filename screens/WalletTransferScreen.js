@@ -118,6 +118,12 @@ export class WalletTransferScreen extends Component {
                     dich: element,
                 })
             }
+            else
+            {
+                this.setState({
+                    dich: element,
+                })
+            }
           })
     }
     chuyentien()
