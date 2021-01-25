@@ -18,8 +18,11 @@ const defaultCategories = () => {
                 categoryName: element.toJSON().CategoryName,
                 icon: element.toJSON().Icon,
                 parentID: element.toJSON().ParentID,
-                typeID: element.toJSON().TypeID
+                typeID: element.toJSON().TypeID,
+                isDeleted: element.toJSON().IsDeleted
             });
+            console.log("e " + element.toJSON().IsDeleted)
+            console.log("ek " + element.toJSON().TypeID)
         });
     });
     console.log(userCategoryRef);
@@ -36,7 +39,8 @@ const allCategoriesReducer = (state = defaultCategories(), action) => {
                 categoryName: element.toJSON().CategoryName,
                 icon: element.toJSON().Icon,
                 parentID: element.toJSON().ParentID,
-                typeID: element.toJSON().TypeID
+                typeID: element.toJSON().TypeID,
+                isDeleted: element.toJSON().IsDeleted
             });
         });
         return state;

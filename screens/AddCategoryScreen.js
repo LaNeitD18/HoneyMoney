@@ -52,7 +52,7 @@ import { connect } from "react-redux";
 import { categoryRef, userRef } from "../components/DataConnect";
 import * as firebase from "firebase";
 
-import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog, clearSearchText, workWithSubCategory } from "../actions/index";
+import { changeType, changeName, openDialog, openIconDialog, selectIcon, closeIconDialog, clearSearchText, workWithSubCategory, chooseCategory } from "../actions/index";
 import IconImage, { findIcon } from "../components/Image";
 import { sub } from "react-native-reanimated";
 import AddSubcategoryDialog from "../components/AddSubcategoryDialog";
@@ -70,22 +70,26 @@ class AddCategoryScreen extends Component {
             uid = firebase.auth().currentUser.uid;
         }
         const userCategoryRef = userRef.child(uid).child('Category')
-
+        
         const subCategories = this.props.addedSubCategories;
-        const userSubcategoryRef = userCategoryRef.child(parentCategory.key).child('SubCategories/');
+        console.log("ad\n ");
+        console.log(this.props.addedSubCategories);
+        const userSubcategoryRef = userCategoryRef.child(this.props.chosenCategory.key).child('SubCategories/');
+        console.log("ref " + userSubcategoryRef);
         //let update = {};
         await subCategories.map(item => {
             userSubcategoryRef.push({
                 CategoryName: item.categoryName,
                 Icon: item.icon,
-                TypeID: parentCategory.TypeID,
+                TypeID: this.props.chosenCategory.TypeID,
                 IsDeleted: false
             });
+            //console.log("pid " + parentCategory.key);
         })
         this.props.reloadAddedSubCategories();
     }
 
-    createCategory = () => {
+    createCategory = async() => {
         const name = this.props.categoryName;
         const type =
             this.props.selectedType == 0 ? "001" : this.props.selectedType == 1 ? "002" : "003";
@@ -95,18 +99,35 @@ class AddCategoryScreen extends Component {
         if(firebase.auth().currentUser) {
             uid = firebase.auth().currentUser.uid;
         }
-        const userCategoryRef = userRef.child(uid).child('Category')
-
-        userCategoryRef.push({
+        const userCategoryRef = userRef.child(uid).child('Category');
+        
+        await userCategoryRef.push({
             CategoryName: name,
             Icon: icon,
             ParentID: "",
             TypeID: type,
             IsDeleted: false
         }).then(item => {
-            this.addSubcategory(item);
+            item.once('value', (snapshot) => {
+                console.log(snapshot);
+                const category = {
+                    key: item.key,
+                    categoryName: snapshot.toJSON().CategoryName,
+                    icon: snapshot.toJSON().Icon,
+                    isDeleted: snapshot.toJSON().IsDeleted,
+                    parentID: snapshot.toJSON().ParentID,
+                    typeID: snapshot.toJSON().TypeID
+                }
+                console.log("###")
+                console.log(category);
+                this.props.chooseCategory(category);
+            });
+            
+            console.log(this.props.chosenCategory);
+            
         });
-
+        //console.log(category);
+        this.addSubcategory(this.props.chosenCategory);
         // if searching, don't find a category, user can add category immediately by pressing themdanhmuc, 
         // after adding, clear search text to stop searchings
         this.props.clearSearchText();
@@ -283,7 +304,8 @@ function mapStateToProps(state) {
         selectedType: state.selectedType,
         subCategories: state.subCategories,
         selectedIcon: state.selectedIcon,
-        addedSubCategories: state.addedSubCategories
+        addedSubCategories: state.addedSubCategories,
+        chosenCategory: state.chooseCategory
     };
 }
 
@@ -303,6 +325,7 @@ function mapDispatchToProps(dispatch) {
         closeIconDialog: () => { dispatch(closeIconDialog())},
         clearSearchText: () => { dispatch(clearSearchText())},
         workWithSubCategory: () => { dispatch(workWithSubCategory())},
+        chooseCategory: (category) => { dispatch(chooseCategory(category))},
     };
 }
 
