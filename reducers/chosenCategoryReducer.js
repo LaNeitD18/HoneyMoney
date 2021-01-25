@@ -11,7 +11,7 @@ const chosenCategoryReducer = (state = {key: ""}, action) => {
             typeID: action.category.typeID,
             isDeleted: action.category.isDeleted
         };
-        //console.log("sis " + state.key);
+        console.log(state);
         return state;
     }
     if(action.type === DESELECTCATEGORY) {

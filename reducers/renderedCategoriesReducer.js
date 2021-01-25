@@ -19,7 +19,7 @@ const defaultCategories = () => {
                 isDeleted: element.IsDeleted
             });
         });
-        console.log("rer " + categories[2].isDeleted);
+        //console.log("rer " + categories[2].isDeleted);
     });
     return categories;
 }

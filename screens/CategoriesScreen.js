@@ -87,9 +87,9 @@ class CategoriesScreen extends React.Component {
 
     getData = (typeID) => {
         const categories = this.props.allCategories;
-        console.log("call " + this.props.allCategories[2].isDeleted)
+        //console.log("call " + this.props.allCategories[2].isDeleted)
         const temp = categories.filter((item) => item.typeID === typeID);
-        console.log("cs " + categories[2].isDeleted)
+        //console.log("cs " + categories[2].isDeleted)
         this.props.reloadCategory(temp);
     };
 
