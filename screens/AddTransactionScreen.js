@@ -211,7 +211,7 @@ export class AddTransactionScreen extends Component {
     }
 
     renderCategoryHorizon = () => {
-        const categories = this.props.renderedCategories;
+        const categories = this.props.renderedCategories.filter(item => item.isDeleted == false);
         const rows = [];
         const row = [];
         for (let index = 0; index <= categories.length; index++) {
@@ -248,7 +248,7 @@ export class AddTransactionScreen extends Component {
     };
 
     renderCategoryTable = () => {
-        const categories = this.props.renderedCategories;
+        const categories = this.props.renderedCategories.filter(item => item.isDeleted == false);;
         const numberOfRows = Math.ceil((categories.length + 1) / 4);
         const rows = [];
 
